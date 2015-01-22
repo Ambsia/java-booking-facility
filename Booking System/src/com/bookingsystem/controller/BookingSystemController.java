@@ -28,6 +28,7 @@ public class BookingSystemController {
 	public class LoginHandler implements ActionListener {
 
 		@Override
+
 		public void actionPerformed(ActionEvent arg0) {
 			String username, unHashedPassword;
 			username = loginPanel.GetLoginUsernameText();

@@ -1,24 +1,29 @@
 package com.bookingsystem.model;
 
-import java.sql.Date;
-import java.sql.Time;
-import java.util.List;
+import com.sun.media.sound.InvalidFormatException;
 
+import java.util.Date;
+
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.List;
+import java.util.Locale;
 
 
 public class Booking {
 	private int bookingID;
 	private String bookingName;
 	private String bookingType;
-	private Time bookingTime;
-	private Date bookingDate;
+	private String bookingTime;
+	private String bookingDate;
 	
 	private List<Equipment> requiredEquipment;
 	private String bookingHolder;
 
 	
-	public Booking(int bookingID, String bookingName, String bookingType, Time bookingTime,
-				   Date bookingDate, List<Equipment> requiredEquipment,
+	public Booking(int bookingID, String bookingName, String bookingType, String bookingTime,
+				   String bookingDate, List<Equipment> requiredEquipment,
 				   String bookingHolder) {
 		this.bookingID = bookingID;
 		this.bookingName = bookingName;
@@ -30,9 +35,17 @@ public class Booking {
 	}
 	
 	public boolean Validation() {
+		try {
+			DateFormat format = new SimpleDateFormat("d MMMM, yyyy", Locale.ENGLISH);
+			Date dateConvert = format.parse(this.bookingDate);
+
+		} catch (ParseException e) {
+
+		}
 		return (this.bookingName.isEmpty() || this.bookingType.isEmpty() || 
 			    this.bookingTime.isEmpty() || this.bookingDate.isEmpty() || 
 				this.bookingHolder.isEmpty());
+
 	}
 
 }

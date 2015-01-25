@@ -21,7 +21,11 @@ $RECYCLE.BIN/
 .metadata
 .recommenders
 .idea
-
+bin/com/bookingsystem
+.settings
+.classpath
+.project
+*.iml
 # =========================
 # Operating System Files
 # =========================

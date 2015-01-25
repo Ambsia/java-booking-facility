@@ -17,6 +17,11 @@ $RECYCLE.BIN/
 # Windows shortcuts
 *.lnk
 
+# Folders/files to ignore
+.metadata
+.recommenders
+.idea
+
 # =========================
 # Operating System Files
 # =========================

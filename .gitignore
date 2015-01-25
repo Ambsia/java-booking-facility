@@ -21,7 +21,7 @@ $RECYCLE.BIN/
 .metadata
 .recommenders
 .idea
-bin/com/bookingsystem
+bin
 .settings
 .classpath
 .project

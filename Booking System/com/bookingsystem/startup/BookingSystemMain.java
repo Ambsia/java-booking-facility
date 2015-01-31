@@ -1,7 +1,6 @@
 package  com.bookingsystem.startup;
 
 import com.bookingsystem.controller.BookingSystemController;
-import com.bookingsystem.model.Account;
 import com.bookingsystem.view.BookingSystemUILoader;
 
 public final class BookingSystemMain {

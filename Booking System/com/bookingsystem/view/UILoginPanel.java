@@ -1,10 +1,8 @@
 package  com.bookingsystem.view;
 
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.Insets;
-import java.awt.event.ActionListener;
 import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionListener;
 
 public class UILoginPanel extends JPanel {
 

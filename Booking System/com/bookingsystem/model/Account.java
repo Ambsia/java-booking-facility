@@ -1,10 +1,10 @@
 package com.bookingsystem.model;
+
+import org.apache.commons.codec.digest.*;
+
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
-
-import org.apache.commons.codec.digest.*;
-import org.omg.CosNaming.NamingContextExtPackage.InvalidAddress;
 public class Account {
 
 	private int userID;
@@ -18,7 +18,7 @@ public class Account {
 	private boolean accountCreation = false;
 
 	public Account(int userID, int userLevel, String username,
-			String hashedPassword) throws Exception {
+			String hashedPassword) {
 
 		this.userID = userID;
 		this.userLevel = userLevel;
@@ -26,7 +26,6 @@ public class Account {
 		this.hashedPassword = SHA1_HASH(hashedPassword);
 		
 		if (!Validation()) {
-			throw new Exception();
 		}
 	}
 
@@ -43,11 +42,7 @@ public class Account {
 	}
 
 	public void CreateAccount() {
-		try {
-			userSalt = GenerateSalt();	
-		} catch (UnsupportedEncodingException | NoSuchAlgorithmException e) {
-			e.printStackTrace();
-		}
+			userSalt = GenerateSalt();
 	}
 	
 	public void Login() {
@@ -61,30 +56,24 @@ public class Account {
 		String sqlCommand = "Select Username,Password from tblUsers where" +
 		"Username=@Username AND Password=@Password";
 		
-		//Pass paramteres for username and password
+		//Pass parameter's for username and password
 		//execute command
 		//Logged in = true or false
 		
 	}
 
 	public String SHA1_HASH(String unHashedString) {
-		
-		if (!accountCreation) { 
+
+		if (!accountCreation) {
 		//sql connection string
-		try {
-			
-		} 
-		catch (Exception e) {
-			
-		}
-				//try connect to database
+		//try connect to database
 				
-				//create sql command
-				String sqlCommand = "Select UserID from tblUsers"
-						+ " where Username=@Username" + "VALUES (@Username)";
-				//sql datareader
-				//userID = sqlreader
-				//userSalt = sqlreader
+		//create sql command
+		//String sqlCommand = "Select UserID from tblUsers"
+		// + " where Username=@Username" + "VALUES (@Username)";
+		//sql datareader
+		//userID = sqlreader
+		//userSalt = sqlreader
 		
 		
 		}
@@ -93,11 +82,14 @@ public class Account {
 		return hashedString;
 	}
 
-	public String GenerateSalt() throws UnsupportedEncodingException, NoSuchAlgorithmException {
-		
-		SecureRandom random = SecureRandom.getInstance("SHA1PRNG");
-		int salt = random.nextInt(random.nextInt(1000000) + (Integer.MAX_VALUE - 1000000));	
-
+	public String GenerateSalt() {
+		int salt = 0;
+		try {
+			SecureRandom random = SecureRandom.getInstance("SHA1PRNG");
+			salt = random.nextInt(random.nextInt(1000000) + (Integer.MAX_VALUE - 1000000));
+		} catch (NoSuchAlgorithmException e) {
+			salt = 0;
+		}
 		
 		return new String(Integer.toString(salt));
 	} 

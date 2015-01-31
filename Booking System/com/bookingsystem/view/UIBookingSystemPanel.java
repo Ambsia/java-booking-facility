@@ -1,6 +1,6 @@
 package  com.bookingsystem.view;
 
-import javax.swing.JPanel;
+import javax.swing.*;
 
 public class UIBookingSystemPanel extends JPanel {
 

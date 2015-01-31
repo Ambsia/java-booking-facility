@@ -1,10 +1,11 @@
 package com.bookingsystem.controller;
 
+import com.bookingsystem.model.Account;
+import com.bookingsystem.view.BookingSystemUILoader;
+import com.bookingsystem.view.UILoginPanel;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
-import com.bookingsystem.model.Account;
-import com.bookingsystem.view.*;
 
 public class BookingSystemController {
 

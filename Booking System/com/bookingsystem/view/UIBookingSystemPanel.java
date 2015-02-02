@@ -1,18 +1,26 @@
 package  com.bookingsystem.view;
 
-import com.bookingsystem.model.Booking;
-
-import javax.swing.*;
-import java.awt.*;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
+import java.awt.event.ActionListener;
 import java.util.List;
+
+import javax.swing.DefaultListModel;
+import javax.swing.JButton;
+import javax.swing.JList;
+import javax.swing.JPanel;
+
+import com.bookingsystem.model.Booking;
 
 public class UIBookingSystemPanel extends JPanel {
 
 	private JButton btnAddBooking;
 	private DefaultListModel<Booking> listBoxOfBookings;
 	private JList<Booking> jList;
-
+	
 	public UIBookingSystemPanel() {
+
 		listBoxOfBookings = new DefaultListModel<Booking>();
 		jList = new JList<Booking>(listBoxOfBookings);
 		btnAddBooking = new JButton();
@@ -27,11 +35,20 @@ public class UIBookingSystemPanel extends JPanel {
 		gbc.gridy = 0;
 
 		this.add(jList);
+		
+		gbc.gridx = 1;
+		gbc.gridy = 1;
+		
+		this.add(btnAddBooking);
 	}
 
 
-
+	public void addSubmitListener(ActionListener ai) {
+		btnAddBooking.addActionListener(ai);
+	}
+	
 	public void addBookingToList(Booking booking) {
+		System.out.println(booking.toString());
 		listBoxOfBookings.addElement(booking);
 	}
 

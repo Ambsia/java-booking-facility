@@ -1,11 +1,9 @@
 package com.bookingsystem.model;
 
-import org.apache.commons.codec.digest.*;
-
-import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
-import java.sql.SQLException;
+
+import org.apache.commons.codec.digest.DigestUtils;
 
 public class Account {
 

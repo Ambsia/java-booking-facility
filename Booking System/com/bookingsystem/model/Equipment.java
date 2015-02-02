@@ -1,6 +1,5 @@
 package  com.bookingsystem.model;
 
-import java.util.Iterator;
 
 public class Equipment {
 	

@@ -42,7 +42,66 @@ public class Booking {
 		return (this.bookingName.isEmpty() || this.bookingType.isEmpty() || 
 			    this.bookingTime.isEmpty() || this.bookingDate.isEmpty() || 
 				this.bookingHolder.isEmpty());
-
 	}
 
+	public int getBookingID() {
+		return bookingID;
+	}
+
+	public String getBookingType() {
+		return bookingType;
+	}
+
+	public String getBookingTime() {
+		return bookingTime;
+	}
+
+	public String getBookingDate() {
+		return bookingDate;
+	}
+
+	public List<Equipment> getRequiredEquipment() {
+		return requiredEquipment;
+	}
+
+	public String getBookingHolder() {
+		return bookingHolder;
+	}
+
+	public void setBookingName(String bookingName) {
+		this.bookingName = bookingName;
+	}
+
+	public void setBookingType(String bookingType) {
+		this.bookingType = bookingType;
+	}
+
+	public void setBookingTime(String bookingTime) {
+		this.bookingTime = bookingTime;
+	}
+
+	public void setBookingDate(String bookingDate) {
+		this.bookingDate = bookingDate;
+	}
+
+	public void setRequiredEquipment(List<Equipment> requiredEquipment) {
+		this.requiredEquipment = requiredEquipment;
+	}
+
+	public void setBookingHolder(String bookingHolder) {
+		this.bookingHolder = bookingHolder;
+	}
+
+	@Override
+	public String toString() {
+		return "Booking{" +
+				"bookingID=" + bookingID +
+				", bookingName='" + bookingName + '\'' +
+				", bookingType='" + bookingType + '\'' +
+				", bookingTime='" + bookingTime + '\'' +
+				", bookingDate='" + bookingDate + '\'' +
+				", requiredEquipment=" + requiredEquipment +
+				", bookingHolder='" + bookingHolder + '\'' +
+				'}';
+	}
 }

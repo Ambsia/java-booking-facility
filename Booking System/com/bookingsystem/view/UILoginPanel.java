@@ -74,4 +74,5 @@ public class UILoginPanel extends JPanel {
 		this.txtLoginPassword.setText("");
 		this.txtLoginUsername.setText("");
 	}
+
 }

@@ -5,6 +5,8 @@ import org.apache.commons.codec.digest.*;
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
+import java.sql.SQLException;
+
 public class Account {
 
 	private int userID;
@@ -17,45 +19,54 @@ public class Account {
 	
 	private boolean accountCreation = false;
 
-	public Account(int userID, int userLevel, String username,
-			String hashedPassword) {
+	private static boolean loggedIn = false;
 
+	public Account(int userID, int userLevel, String userLogonName,
+			String hashedPassword) {
 		this.userID = userID;
 		this.userLevel = userLevel;
-		this.userLogonName = username;
+		this.userLogonName = userLogonName;
 		this.hashedPassword = SHA1_HASH(hashedPassword);
-		
-		if (!Validation()) {
-		}
 	}
 
-	public boolean Validation() {
+	public boolean validation() {
 		return !this.userLogonName.isEmpty() || !this.hashedPassword.isEmpty();
 	}
 
-	public String GetUsername() {
+	public static boolean isLoggedIn() {
+		return loggedIn;
+	}
+
+	public String getUsername() {
 		return this.userLogonName;
 	}
 
-	public String GetHashedPassword() {
+	public String getHashedPassword() {
 		return this.hashedPassword;
 	}
 
-	public void CreateAccount() {
-			userSalt = GenerateSalt();
+	public void createAccount() {
+			userSalt = generateSalt();
 	}
 	
-	public void Login() {
+	public boolean login() {
 		
 		
 		//sql connection string
 		
 		//try connect
-		
+		//try {
+		//
+		//} catch (SQLException e) {
+		//
+		//}
+		if (userLogonName.equals("alex")) {
+			return true;
+		}
 		//create sql command
 		String sqlCommand = "Select Username,Password from tblUsers where" +
 		"Username=@Username AND Password=@Password";
-		
+		return false;
 		//Pass parameter's for username and password
 		//execute command
 		//Logged in = true or false
@@ -82,7 +93,7 @@ public class Account {
 		return hashedString;
 	}
 
-	public String GenerateSalt() {
+	public String generateSalt() {
 		int salt = 0;
 		try {
 			SecureRandom random = SecureRandom.getInstance("SHA1PRNG");
@@ -94,17 +105,24 @@ public class Account {
 		return new String(Integer.toString(salt));
 	} 
 
-	public Account ReturnAccount() {
+	public Account returnAccount() {
 
 		return null;
 	}
 
 	@Override
 	public String toString() {
-		return "UserID: " + "\t" + userID + "\n" + "Username:" + "\t"
-				+ userLogonName + "\n" + "Password: " + "\t" + hashedPassword
-				+ "\n" + "User Level: " + "\t" + userLevel + "\n" + "Salt: "
-				+ userSalt;
+		return "Account{" +
+				"userID=" + userID +
+				", userLogonName='" + userLogonName + '\'' +
+				", hashedPassword='" + hashedPassword + '\'' +
+				", userLevel=" + userLevel +
+				", userSalt='" + userSalt + '\'' +
+				", accountCreation=" + accountCreation +
+				'}';
 	}
+
+
+
 
 }

@@ -8,6 +8,7 @@ import java.awt.*;
 public class BookingSystemUILoader extends JFrame {
 
 	private UILoginPanel loginPanel;
+	private UIBookingSystemPanel bookingSystemPanel;
 
 	public BookingSystemUILoader() {
 		Dimension d = new Dimension(500, 250);
@@ -16,21 +17,28 @@ public class BookingSystemUILoader extends JFrame {
 
 		this.setTitle("LGS Booking System");
 
-		loginPanel = new UILoginPanel();
-
-		this.add(loginPanel);
 
 		this.setLocationRelativeTo(null);
-		this.setVisible(true);
 	}
 
-	public UILoginPanel GetLoginPanel() {
-		return loginPanel;
+
+	public void showLoginPanel() {
+		loginPanel = new UILoginPanel();
+		this.add(loginPanel);
 	}
 
-	public void RemoveLoginPanel() {
-		this.remove(loginPanel);
-		loginPanel = null;
+	public void showBookingSystemPanel() {
+		bookingSystemPanel = new UIBookingSystemPanel();
+		this.add(bookingSystemPanel);
 	}
+
+	public UIBookingSystemPanel getBookingSystemPanel() { return bookingSystemPanel; }
+
+	public UILoginPanel getLoginPanel() { return loginPanel; }
+
+	public void removeLoginPanel() { this.remove(loginPanel); }
+
+	public void removeBookingSystemPanel() {this.remove(bookingSystemPanel); }
+
 
 }

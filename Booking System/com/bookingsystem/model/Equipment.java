@@ -2,7 +2,7 @@ package  com.bookingsystem.model;
 
 import java.util.Iterator;
 
-public class Equipment implements Iterable<Equipment>{
+public class Equipment {
 	
 	
 	int equipmentUsage;
@@ -34,17 +34,13 @@ public class Equipment implements Iterable<Equipment>{
 	public int GetEquipmentUsageStatistic() {
 		return this.equipmentUsage;
 	}
-	
-	
-	@Override
-	public Iterator<Equipment> iterator() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	
+
+
 	@Override
 	public String toString() {
-		return "Equipment name: " + this.equipmentName + "\n" + "Equipment Usage: " + this.equipmentUsage;
+		return "Equipment{" +
+				"equipmentUsage=" + equipmentUsage +
+				", equipmentName='" + equipmentName + '\'' +
+				'}';
 	}
-
 }

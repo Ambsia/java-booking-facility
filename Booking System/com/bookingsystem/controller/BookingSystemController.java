@@ -49,46 +49,51 @@ public class BookingSystemController {
 
         bookingSystemPanel = view.getBookingSystemPanel();
 
-        bookingSystemPanel.addSubmitListener(new AddBookingHandler());
+        bookingSystemPanel.addSubmitListener(new BookingHandler());
     }
 
     public void RegisterAccount() {
 
     }
 
-    public class AddBookingHandler implements ActionListener {
+    public class BookingHandler implements ActionListener {
 
         @Override
         public void actionPerformed(ActionEvent arg0) {
-            ///List<Equipment> equipment = new ArrayList<Equipment>();
-            //Booking booking = new Booking(0,"","","","",equipment,"");
 
-            //bookingSystemPanel.addBookingToList(booking);
-            JFileChooser fc = new JFileChooser();
-
-
+            JFileChooser jFileChooser = new JFileChooser();
             long startTime = System.nanoTime();
-
+            
+            File file;
+            FileInputStream fileInputStream;
+            XSSFWorkbook workBook = null;
+            XSSFSheet sheet = null;
+            XSSFRow row;
+            XSSFCell cell;
             try {
-                File file = null;
-                int returnVal = fc.showOpenDialog(view);
+                int returnVal = jFileChooser.showOpenDialog(view);
 
                 if (returnVal == JFileChooser.APPROVE_OPTION) {
-                    file = fc.getSelectedFile();
-                    System.out.println("Opening: " + file.getName() + "." + "\n");
+                	if (jFileChooser.getSelectedFile().getName().endsWith(".xlsx")) {
+                		file = jFileChooser.getSelectedFile();
+                		System.out.println("Opening: " + file.getName() + "." + "\n");
+                		fileInputStream = new FileInputStream(file);
+                		workBook = (XSSFWorkbook) WorkbookFactory.create(new PushbackInputStream
+                        		(fileInputStream));
+                		fileInputStream.close();
+                		sheet = workBook.getSheetAt(0);
+                	} else { throw new IllegalArgumentException(); }
                 } else {
                     System.out.println("Open command cancelled by user." + "\n");
                 }
-                //FileOutputStream stream = new FileOutputStream(f);
-                FileInputStream fileInputStream = new FileInputStream(file);
-                XSSFWorkbook wb = (XSSFWorkbook) WorkbookFactory.create(new PushbackInputStream(fileInputStream));
-                XSSFSheet sheet = wb.getSheetAt(0);
-                XSSFRow row;
-                XSSFCell cell;
+            } catch (Exception e) {
+            	
+            }
+            
+          
+            int rows = sheet.getPhysicalNumberOfRows();
 
-                int rows = sheet.getPhysicalNumberOfRows();
-
-                int cols = 6; // No of columns
+            int cols = 6; // No of columns
 
                 int tmp = 0;
 
@@ -109,7 +114,7 @@ public class BookingSystemController {
                 String bookingLocation = "";
                 String bookingTime = "";
                 String bookingDate = "";
-                List<Equipment> equipments = new ArrayList<Equipment>();
+                List<Equipment> equipments = null; 
                 String booker = "";
                 Equipment e = null;
 
@@ -134,30 +139,27 @@ public class BookingSystemController {
                                         ;
                                     case 4:
                                         booker = cell.toString();
+                                        System.out.println(booker);
                                         ;
-                                    case 5:
+                                    case 5: 
+                                    	equipments = new ArrayList<Equipment>();
                                         e = new Equipment(r, cell.toString());
                                         ;
                                 }
-                                System.out.println(cell.toString().replaceAll("\\s+", ""));
                             }
                         }
                         equipments.add(e);
                         test.add(new Booking(r, dayOfBooking, bookingDate, bookingTime, bookingLocation, booker, equipments));
-                        equipments.clear();
+                        equipments.remove(e);
 
                     }
                 }
                 bookingSystemPanel.addBookingsToList(test);
-            } catch (Exception ioe) {
-                ioe.printStackTrace();
-            }
+            } 
             long endTime = System.nanoTime();
-            System.out.println(endTime - startTime / 1000000000);
-
+            //System.out.println(endTime - startTime / 1000000000);
         }
 
-    }
 
     public class LoginHandler implements ActionListener {
 

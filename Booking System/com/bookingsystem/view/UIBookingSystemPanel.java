@@ -6,10 +6,7 @@ import java.awt.Insets;
 import java.awt.event.ActionListener;
 import java.util.List;
 
-import javax.swing.DefaultListModel;
-import javax.swing.JButton;
-import javax.swing.JList;
-import javax.swing.JPanel;
+import javax.swing.*;
 
 import com.bookingsystem.model.Booking;
 
@@ -18,12 +15,27 @@ public class UIBookingSystemPanel extends JPanel {
 	private JButton btnAddBooking;
 	private DefaultListModel<Booking> listBoxOfBookings;
 	private JList<Booking> jList;
-	
+
+	private JMenuBar jMenuBar;
+	private JMenu jFileMenu;
+	private JMenuItem jImportMenuItem;
+
 	public UIBookingSystemPanel() {
 
+		jImportMenuItem = new JMenuItem("Import");
+		jFileMenu = new JMenu("File");
+		jMenuBar = new JMenuBar();
+
+		jFileMenu.add(jImportMenuItem);
+		jMenuBar.add(jFileMenu);
+
+		this.add(jMenuBar);
 		listBoxOfBookings = new DefaultListModel<Booking>();
 		jList = new JList<Booking>(listBoxOfBookings);
-		btnAddBooking = new JButton();
+
+		JScrollPane jScrollPane = new JScrollPane(jList);
+
+		btnAddBooking = new JButton("import");
 
 		this.setLayout(new GridBagLayout());
 		GridBagConstraints gbc = new GridBagConstraints();
@@ -34,7 +46,7 @@ public class UIBookingSystemPanel extends JPanel {
 		gbc.gridx = 0;
 		gbc.gridy = 0;
 
-		this.add(jList);
+		this.add(jScrollPane);
 		
 		gbc.gridx = 1;
 		gbc.gridy = 1;

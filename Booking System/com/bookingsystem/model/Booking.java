@@ -9,25 +9,82 @@ import java.util.Locale;
 
 public class Booking {
 	private int bookingID;
-	private String bookingName;
-	private String bookingType;
+	private String bookingDay;
+	private String bookingLocation;
 	private String bookingTime;
 	private String bookingDate;
 	
 	private List<Equipment> requiredEquipment;
 	private String bookingHolder;
+	//Booking(r, dayOfBooking, bookingDate, bookingTime, bookingLocation,booker,equipments));
 
-	
-	public Booking(int bookingID, String bookingName, String bookingType, String bookingTime,
-				   String bookingDate, List<Equipment> requiredEquipment,
-				   String bookingHolder) {
+
+	public int getBookingID() {
+		return bookingID;
+	}
+
+	public void setBookingID(int bookingID) {
 		this.bookingID = bookingID;
-		this.bookingName = bookingName;
-		this.bookingType = bookingType;
+	}
+
+	public String getBookingDay() {
+		return bookingDay;
+	}
+
+	public void setBookingDay(String bookingDay) {
+		this.bookingDay = bookingDay;
+	}
+
+	public String getBookingLocation() {
+		return bookingLocation;
+	}
+
+	public void setBookingLocation(String bookingLocation) {
+		this.bookingLocation = bookingLocation;
+	}
+
+	public String getBookingTime() {
+		return bookingTime;
+	}
+
+	public void setBookingTime(String bookingTime) {
+		this.bookingTime = bookingTime;
+	}
+
+	public String getBookingDate() {
+		return bookingDate;
+	}
+
+	public void setBookingDate(String bookingDate) {
+		this.bookingDate = bookingDate;
+	}
+
+	public List<Equipment> getRequiredEquipment() {
+		return requiredEquipment;
+	}
+
+	public void setRequiredEquipment(List<Equipment> requiredEquipment) {
+		this.requiredEquipment = requiredEquipment;
+	}
+
+	public String getBookingHolder() {
+		return bookingHolder;
+	}
+
+	public void setBookingHolder(String bookingHolder) {
+		this.bookingHolder = bookingHolder;
+	}
+
+	public Booking(int bookingID, String bookingDay, String bookingDate, String bookingTime,
+				   String bookingLocation, String bookingHolder, List<Equipment> requiredEquipment
+				   ) {
+		this.bookingID = bookingID;
+		this.bookingDay = bookingDay;
 		this.bookingDate = bookingDate;
 		this.bookingTime = bookingTime;
-		this.requiredEquipment = requiredEquipment; // this list will be passed when the booking is made;
+		this.bookingLocation = bookingLocation;
 		this.bookingHolder = bookingHolder;
+		this.requiredEquipment = requiredEquipment; // this list will be passed when the booking is made
 	}
 	
 	public boolean Validation() {
@@ -38,65 +95,17 @@ public class Booking {
 		} catch (ParseException e) {
 
 		}
-		return (this.bookingName.isEmpty() || this.bookingType.isEmpty() || 
+		return (this.bookingDay.isEmpty() || this.bookingLocation.isEmpty() ||
 			    this.bookingTime.isEmpty() || this.bookingDate.isEmpty() || 
 				this.bookingHolder.isEmpty());
-	}
-
-	public int getBookingID() {
-		return bookingID;
-	}
-
-	public String getBookingType() {
-		return bookingType;
-	}
-
-	public String getBookingTime() {
-		return bookingTime;
-	}
-
-	public String getBookingDate() {
-		return bookingDate;
-	}
-
-	public List<Equipment> getRequiredEquipment() {
-		return requiredEquipment;
-	}
-
-	public String getBookingHolder() {
-		return bookingHolder;
-	}
-
-	public void setBookingName(String bookingName) {
-		this.bookingName = bookingName;
-	}
-
-	public void setBookingType(String bookingType) {
-		this.bookingType = bookingType;
-	}
-
-	public void setBookingTime(String bookingTime) {
-		this.bookingTime = bookingTime;
-	}
-
-	public void setBookingDate(String bookingDate) {
-		this.bookingDate = bookingDate;
-	}
-
-	public void setRequiredEquipment(List<Equipment> requiredEquipment) {
-		this.requiredEquipment = requiredEquipment;
-	}
-
-	public void setBookingHolder(String bookingHolder) {
-		this.bookingHolder = bookingHolder;
 	}
 
 	@Override
 	public String toString() {
 		return "Booking{" +
 				"bookingID=" + bookingID +
-				", bookingName='" + bookingName + '\'' +
-				", bookingType='" + bookingType + '\'' +
+				", bookingDay='" + bookingDay + '\'' +
+				", bookingLocation='" + bookingLocation + '\'' +
 				", bookingTime='" + bookingTime + '\'' +
 				", bookingDate='" + bookingDate + '\'' +
 				", requiredEquipment=" + requiredEquipment +

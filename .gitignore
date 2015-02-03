@@ -25,7 +25,7 @@ bin
 .settings
 .classpath
 .project
-*.xlsx
+#*.xlsx
 *.iml
 
 # =========================

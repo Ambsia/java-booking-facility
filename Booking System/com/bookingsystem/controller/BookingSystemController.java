@@ -15,7 +15,6 @@ import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-
 import com.bookingsystem.model.Account;
 import com.bookingsystem.view.BookingSystemUILoader;
 import com.bookingsystem.view.UIBookingSystemPanel;
@@ -62,7 +61,7 @@ public class BookingSystemController {
         public void actionPerformed(ActionEvent arg0) {
 
             JFileChooser jFileChooser = new JFileChooser();
-            long startTime = System.nanoTime();
+            long startTime = System.currentTimeMillis();
             
             File file;
             FileInputStream fileInputStream;
@@ -70,6 +69,7 @@ public class BookingSystemController {
             XSSFSheet sheet = null;
             XSSFRow row;
             XSSFCell cell;
+            int rows = 0;
             try {
                 int returnVal = jFileChooser.showOpenDialog(view);
 
@@ -82,77 +82,44 @@ public class BookingSystemController {
                         		(fileInputStream));
                 		fileInputStream.close();
                 		sheet = workBook.getSheetAt(0);
-                	} else { throw new IllegalArgumentException(); }
+                        rows = sheet.getPhysicalNumberOfRows();
+                	} else { throw new NullPointerException(); }
                 } else {
                     System.out.println("Open command cancelled by user." + "\n");
                 }
             } catch (Exception e) {
             	
             }
-            
-          
-            int rows = sheet.getPhysicalNumberOfRows();
+           // int cols = 0;
+         //   int tmp = 0;
 
-            int cols = 6; // No of columns
+            //This trick ensures that we get the data properly even if it doesn't start from first few rows
+            //for (int i = 0; i < 10 || i < rows; i++) {
+                //row = sheet.getRow(i);
+                //if (row != null) {
+                //   tmp = sheet.getRow(i).getPhysicalNumberOfCells();
+                //   if (tmp > cols) cols = tmp;
+              // }
 
-                int tmp = 0;
+            Booking importedBooking = null;
 
-
-                // This trick ensures that we get the data properly even if it doesn't start from first few rows
-              //  for (int i = 0; i < 10 || i < rows; i++) {
-
-              //      row = sheet.getRow(i);
-             //       if (row != null) {
-             //           tmp = sheet.getRow(i).getPhysicalNumberOfCells();
-              //          if (tmp > cols) cols = tmp;
-             //       }
-             //   }
-
-                List<Booking> test = new ArrayList<Booking>();
-                String dayOfBooking = "";
-                String bookingname = "";
-                String bookingLocation = "";
-                String bookingTime = "";
-                String bookingDate = "";
-                String booker = "";
-                Equipment e = null;
-
-                for (int r = 0; r < rows; r++) {
-                    row = sheet.getRow(r);
-                    if (row != null) {
-                        for (int c = 0; c < cols; c++) {
-                            cell = row.getCell((short) c);
-                            if (cell != null) {
-                                switch (c) {
-                                    case 0:
-                                        dayOfBooking = cell.toString();
-                                        ;
-                                    case 1:
-                                        bookingDate = cell.toString();
-                                        ;
-                                    case 2:
-                                        bookingTime = cell.toString();
-                                        ;
-                                    case 3:
-                                        bookingLocation = cell.toString();
-                                        ;
-                                    case 4:
-                                        booker = cell.toString();
-                                        ;
-                                    case 5:
-                                        e = new Equipment(r, cell.toString());
-                                       ;
-                                }
-                            }//271469805
-                        }
-                        test.add(new Booking(r, dayOfBooking, bookingDate, bookingTime, bookingLocation, booker, e));
-                        System.out.println(test);
-
+            for (int r = 0; r < rows; r++) {
+                row = sheet.getRow(r);
+                if (row != null) {
+                    if (row.getCell((short) 0) != null) {
+                        importedBooking = new Booking(r,
+                                row.getCell((short) 0).toString(),
+                                row.getCell((short) 1).toString(),
+                                row.getCell((short) 2).toString(),
+                                row.getCell((short) 3).toString(),
+                                row.getCell((short) 4).toString(),
+                                new Equipment(r, row.getCell((short) 5).toString()));
                     }
+                    bookingSystemPanel.addBookingToList(importedBooking);
                 }
-                bookingSystemPanel.addBookingsToList(test);
-            long endTime = System.nanoTime();
-            System.out.println(endTime - startTime / 1000000000);
+            }
+            long endTime = System.currentTimeMillis();
+            System.out.println(endTime - startTime);
             }
         }
 

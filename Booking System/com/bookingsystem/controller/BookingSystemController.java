@@ -143,7 +143,7 @@ public class BookingSystemController {
                                         e = new Equipment(r, cell.toString());
                                        ;
                                 }
-                            }//27146980506547
+                            }//271469805
                         }
                         test.add(new Booking(r, dayOfBooking, bookingDate, bookingTime, bookingLocation, booker, e));
                         System.out.println(test);

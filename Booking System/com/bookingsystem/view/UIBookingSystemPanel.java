@@ -16,20 +16,10 @@ public class UIBookingSystemPanel extends JPanel {
 	private DefaultListModel<Booking> listBoxOfBookings;
 	private JList<Booking> jList;
 
-	private JMenuBar jMenuBar;
-	private JMenu jFileMenu;
-	private JMenuItem jImportMenuItem;
 
 	public UIBookingSystemPanel() {
 
-		jImportMenuItem = new JMenuItem("Import");
-		jFileMenu = new JMenu("File");
-		jMenuBar = new JMenuBar();
 
-		jFileMenu.add(jImportMenuItem);
-		jMenuBar.add(jFileMenu);
-
-		this.add(jMenuBar);
 		listBoxOfBookings = new DefaultListModel<Booking>();
 		jList = new JList<Booking>(listBoxOfBookings);
 

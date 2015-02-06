@@ -16,8 +16,6 @@ public class Booking {
 	
 	private Equipment requiredEquipment;
 	private String bookingHolder;
-	//Booking(r, dayOfBooking, bookingDate, bookingTime, bookingLocation,booker,equipments));
-
 
 	public int getBookingID() {
 		return bookingID;

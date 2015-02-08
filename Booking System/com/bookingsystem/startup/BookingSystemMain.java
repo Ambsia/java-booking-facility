@@ -14,7 +14,6 @@ public final class BookingSystemMain {
 	}
 
 	private BookingSystemMain() {
-		System.out.println("loaded");
 		this.view = new BookingSystemUILoader();
 
 		this.controller = new BookingSystemController(view);

@@ -16,13 +16,14 @@ public class BookingSystemUILoader extends JFrame {
 		this.setDimension(500, 250);
 		bookingSystemPanel = new UIBookingSystemPanel();
 		loginPanel = new UILoginPanel();
-
 		menuBarLoader = new UIBookingSystemMenuBarLoader();
+		setLayout(new BorderLayout());
 
 		this.setTitle("LGS Booking System");
 
-		this.setVisible(true);
+		this.pack();
 		this.setLocationRelativeTo(null);
+		this.setVisible(true);
 	}
 
 
@@ -37,8 +38,11 @@ public class BookingSystemUILoader extends JFrame {
 
 	public void showBookingSystemPanel() {
 		this.setDimension(1000,450);
-		this.add(bookingSystemPanel);
+
 		this.setJMenuBar(menuBarLoader);
+
+		this.add(bookingSystemPanel);
+
 		this.setVisible(true);
 	}
 	

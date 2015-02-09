@@ -1,12 +1,11 @@
 package  com.bookingsystem.view;
 
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.Insets;
+import java.awt.*;
 import java.awt.event.ActionListener;
 import java.util.List;
 
 import javax.swing.*;
+import javax.swing.border.Border;
 
 import com.bookingsystem.model.Booking;
 
@@ -16,32 +15,30 @@ public class UIBookingSystemPanel extends JPanel {
 	private DefaultListModel<Booking> listBoxOfBookings;
 	private JList<Booking> jList;
 
-
 	public UIBookingSystemPanel() {
-
-
+		Border outline = BorderFactory.createLineBorder(Color.black);
+		setLayout(new GridBagLayout());
+		GridBagConstraints gbc = new GridBagConstraints();
 		listBoxOfBookings = new DefaultListModel<Booking>();
 		jList = new JList<Booking>(listBoxOfBookings);
 
 		JScrollPane jScrollPane = new JScrollPane(jList);
+		jList.setPreferredSize(new Dimension(500,200));
+		jScrollPane.setPreferredSize(jList.getPreferredSize());
+		btnAddBooking = new JButton("Add");
 
-		btnAddBooking = new JButton("import");
+    	this.setBorder(outline);
 
-		this.setLayout(new GridBagLayout());
-		GridBagConstraints gbc = new GridBagConstraints();
 
-		gbc.anchor = GridBagConstraints.WEST;
 		gbc.insets = new Insets(2, 2, 10, 2);
+		jScrollPane.setBorder(outline);
+		gbc.anchor = GridBagConstraints.WEST;
+		gbc.ipadx = 30;
+		gbc.ipady = 10;
+		gbc.weightx = 1;
 
-		gbc.gridx = 0;
-		gbc.gridy = 0;
-
-		this.add(jScrollPane);
-		
-		gbc.gridx = 1;
-		gbc.gridy = 1;
-		
-		this.add(btnAddBooking);
+		this.add(jScrollPane, gbc);
+		//this.add(btnAddBooking);
 	}
 
 
@@ -50,7 +47,6 @@ public class UIBookingSystemPanel extends JPanel {
 	}
 	
 	public void addBookingToList(Booking booking) {
-		System.out.println(booking.toString());
 		listBoxOfBookings.addElement(booking);
 	}
 

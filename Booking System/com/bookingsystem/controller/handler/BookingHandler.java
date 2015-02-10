@@ -60,6 +60,7 @@ public class BookingHandler implements ActionListener {
 							rows = sheet.getPhysicalNumberOfRows();
 						}
 					}
+					System.out.println(rows);
 					for (int r = 0; r < rows; r++) {
 						row = sheet.getRow(r);
 						if (row.toString() != null) {

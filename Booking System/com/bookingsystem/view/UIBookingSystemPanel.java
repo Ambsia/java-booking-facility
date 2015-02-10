@@ -2,43 +2,66 @@ package  com.bookingsystem.view;
 
 import java.awt.*;
 import java.awt.event.ActionListener;
+import java.awt.print.Book;
 import java.util.List;
 
 import javax.swing.*;
 import javax.swing.border.Border;
 
 import com.bookingsystem.model.Booking;
+import com.bookingsystem.model.BookingTableModel;
 
 public class UIBookingSystemPanel extends JPanel {
 
 	private JButton btnAddBooking;
-	private DefaultListModel<Booking> listBoxOfBookings;
-	private JList<Booking> jList;
 
+	private JTable jTable;
+
+	BookingTableModel model;
+	UIBookingSystemViewPanel uiBookingSystemViewPanel;
 	public UIBookingSystemPanel() {
+
+		uiBookingSystemViewPanel = new UIBookingSystemViewPanel();
+
 		Border outline = BorderFactory.createLineBorder(Color.black);
 		setLayout(new GridBagLayout());
 		GridBagConstraints gbc = new GridBagConstraints();
-		listBoxOfBookings = new DefaultListModel<Booking>();
-		jList = new JList<Booking>(listBoxOfBookings);
 
-		JScrollPane jScrollPane = new JScrollPane(jList);
-		jList.setPreferredSize(new Dimension(500,200));
-		jScrollPane.setPreferredSize(jList.getPreferredSize());
-		btnAddBooking = new JButton("Add");
-
-    	this.setBorder(outline);
+		gbc.insets = new Insets(10, 10, 10, 10);
 
 
-		gbc.insets = new Insets(2, 2, 10, 2);
+		this.setBorder(outline);
+
+		gbc.anchor = GridBagConstraints.NORTHWEST;
+
+		gbc.weightx = 0.8;
+		gbc.weighty = 0.8;
+		gbc.gridx= 0;
+		gbc.gridy= 0;
+		jTable = new JTable(new BookingTableModel()) {
+			private static final long serialVersionUID = 1L;
+
+			public boolean isCellEditable(int row, int column) {
+				return false;
+			};
+		};
+		model = (BookingTableModel) jTable.getModel();
+
+		JScrollPane jScrollPane = new JScrollPane(jTable);
+		jScrollPane.setPreferredSize(new Dimension(800,300));
+
 		jScrollPane.setBorder(outline);
-		gbc.anchor = GridBagConstraints.WEST;
-		gbc.ipadx = 30;
-		gbc.ipady = 10;
-		gbc.weightx = 1;
-
 		this.add(jScrollPane, gbc);
-		//this.add(btnAddBooking);
+		gbc.weightx = 0.2;
+		gbc.weighty = 0.2;
+		gbc.anchor = GridBagConstraints.NORTHWEST;
+		gbc.gridx++;
+		this.add(uiBookingSystemViewPanel, gbc);
+	}
+
+	public void initialiseBookingTable() {
+
+
 	}
 
 
@@ -47,13 +70,29 @@ public class UIBookingSystemPanel extends JPanel {
 	}
 	
 	public void addBookingToList(Booking booking) {
-		listBoxOfBookings.addElement(booking);
+		model.addRow(new Object[]{booking.getBookingID(),
+				booking.getBookingDay(),
+				booking.getBookingDate(),
+				booking.getBookingTime(),
+				booking.getBookingLocation(),
+				booking.getBookingHolder(),
+				booking.getRequiredEquipment().GetEquipmentName()});
+
 	}
 
 	public void addBookingsToList(List<Booking> listOfBookings) {
+
 		for (Booking booking : listOfBookings) {
-			listBoxOfBookings.addElement(booking);
+			model.addRow(new Object[]{booking.getBookingID(),
+					booking.getBookingDay(),
+					booking.getBookingDate(),
+					booking.getBookingTime(),
+					booking.getBookingLocation(),
+					booking.getBookingHolder(),
+					booking.getRequiredEquipment().GetEquipmentName()});
 		}
 	}
+
+
 
 }

@@ -63,6 +63,7 @@ public class BookingSystemController {
             if (loggedInSuccessful) {
                 view.removeLoginPanel();
                 view.showBookingSystemPanel();
+                bookingSystemPanel.initialiseBookingTable();
                 view.setVisible(true);
             }
         }

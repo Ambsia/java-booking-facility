@@ -7,7 +7,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-public class Booking {
+public class Booking  {
 	private int bookingID;
 	private String bookingDay;
 	private String bookingLocation;

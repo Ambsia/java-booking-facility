@@ -12,7 +12,7 @@ public class Account {
 	private String hashedPassword;
 	private int userLevel;
 	private String userSalt;
-
+	private String unHashedPassword;
 	public static String validationMsg = "";
 	
 	private boolean accountCreation = false;
@@ -20,11 +20,11 @@ public class Account {
 	private static boolean loggedIn = false;
 
 	public Account(int userID, int userLevel, String userLogonName,
-			String hashedPassword) {
+			String unHashedPassword) {
 		this.userID = userID;
 		this.userLevel = userLevel;
 		this.userLogonName = userLogonName;
-		this.hashedPassword = SHA1_HASH(hashedPassword);
+		this.hashedPassword = SHA1_HASH(unHashedPassword);
 	}
 
 	public boolean validation() {

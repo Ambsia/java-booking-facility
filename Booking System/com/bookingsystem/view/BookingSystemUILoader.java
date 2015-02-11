@@ -37,7 +37,7 @@ public class BookingSystemUILoader extends JFrame {
 	}
 
 	public void showBookingSystemPanel() {
-		this.setDimension(1200,650);
+		this.setDimension(1050,460);
 
 		this.setJMenuBar(menuBarLoader);
 
@@ -50,6 +50,7 @@ public class BookingSystemUILoader extends JFrame {
 		Dimension d = new Dimension(x,y);
 		this.setSize(d);
 		this.setMinimumSize(d);
+
 	}
 
 	public UIBookingSystemPanel getBookingSystemPanel() { return bookingSystemPanel; }

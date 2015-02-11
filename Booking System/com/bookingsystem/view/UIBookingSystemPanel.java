@@ -34,28 +34,34 @@ public class UIBookingSystemPanel extends JPanel {
 
 		gbc.anchor = GridBagConstraints.NORTHWEST;
 
-		gbc.weightx = 0.8;
-		gbc.weighty = 0.8;
+		gbc.weightx = .2;
+		gbc.weighty = 1;
 		gbc.gridx= 0;
 		gbc.gridy= 0;
+		gbc.ipadx = 700;
+		gbc.ipady = 350;
 		jTable = new JTable(new BookingTableModel()) {
 			private static final long serialVersionUID = 1L;
 
 			public boolean isCellEditable(int row, int column) {
 				return false;
 			};
+
+
 		};
+		jTable.getTableHeader().setReorderingAllowed(false);
 		model = (BookingTableModel) jTable.getModel();
 
 		JScrollPane jScrollPane = new JScrollPane(jTable);
-		jScrollPane.setPreferredSize(new Dimension(800,300));
 
 		jScrollPane.setBorder(outline);
 		this.add(jScrollPane, gbc);
-		gbc.weightx = 0.2;
-		gbc.weighty = 0.2;
+
+		gbc.gridx = 1;
+		gbc.weightx = .8;
+		gbc.ipadx = 300;
+		gbc.ipady = 350;
 		gbc.anchor = GridBagConstraints.NORTHWEST;
-		gbc.gridx++;
 		this.add(uiBookingSystemViewPanel, gbc);
 	}
 

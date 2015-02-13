@@ -75,7 +75,7 @@ public class UIBookingSystemPanel extends JPanel {
 		btnAddBooking.addActionListener(ai);
 	}
 	
-	public void addBookingToList(Booking booking) {
+	public void addBookingToList(Booking booking, Color c) {
 		model.addRow(new Object[]{booking.getBookingID(),
 				booking.getBookingDay(),
 				booking.getBookingDate(),
@@ -83,6 +83,7 @@ public class UIBookingSystemPanel extends JPanel {
 				booking.getBookingLocation(),
 				booking.getBookingHolder(),
 				booking.getRequiredEquipment().GetEquipmentName()});
+	jTable.Colo
 
 	}
 

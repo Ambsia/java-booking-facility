@@ -1,5 +1,6 @@
 package com.bookingsystem.controller.handler;
 
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -10,6 +11,8 @@ import javax.swing.JFileChooser;
 
 import com.bookingsystem.view.BookingSystemUILoader;
 import com.bookingsystem.view.UIBookingSystemPanel;
+
+import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
@@ -56,11 +59,22 @@ public class BookingHandler implements ActionListener {
 							workBook = (XSSFWorkbook) WorkbookFactory
 									.create(new PushbackInputStream(fileInputStream));
 
-							sheet = workBook.getSheetAt(0);
+							sheet = workBook.getSheetAt(1);
 							rows = sheet.getPhysicalNumberOfRows();
+							System.out.println(rows);
 						}
 					}
 					System.out.println(rows);
+				//	int cols = 0;
+				//	int tmp = 0;
+				//	for (int i = 0; i < 10 || i < rows; i++) {
+				//		 row = sheet.getRow(i);
+				//		 if (row != null) {
+				//		 tmp = sheet.getRow(i).getPhysicalNumberOfCells();
+				//		 if (tmp > cols) cols = tmp;
+				//		 }
+				//	}
+					Color c;
 					for (int r = 0; r < rows; r++) {
 						row = sheet.getRow(r);
 						if (row.toString() != null) {
@@ -72,9 +86,14 @@ public class BookingHandler implements ActionListener {
 										row.getCell((short) 3).toString(),
 										row.getCell((short) 4).toString(),
 										new Equipment(r, row.getCell((short) 5).toString()));
+								
+								CellStyle cellStyle = row.getCell((short) 0).getCellStyle();
+								c = (Color) cellStyle.getFillBackgroundColorColor();
+								
 							}
+								System.out.println(importedBooking.toString());
 							bookingSystemPanel
-									.addBookingToList(importedBooking);
+									.addBookingToList(importedBooking,c);
 						}
 					}
 				} catch (Exception e) {
@@ -83,9 +102,8 @@ public class BookingHandler implements ActionListener {
 				;
 			case "add":
 
-				;
-				// int cols = 0;
-				// int tmp = 0;
+				
+				// 
 
 				// This trick ensures that we get the data properly even if it
 				// doesn't start from first few rows

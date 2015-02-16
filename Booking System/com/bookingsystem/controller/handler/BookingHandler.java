@@ -74,7 +74,7 @@ public class BookingHandler implements ActionListener {
 				//		 if (tmp > cols) cols = tmp;
 				//		 }
 				//	}
-					Color c;
+					Color c = Color.white;
 					for (int r = 0; r < rows; r++) {
 						row = sheet.getRow(r);
 						if (row.toString() != null) {

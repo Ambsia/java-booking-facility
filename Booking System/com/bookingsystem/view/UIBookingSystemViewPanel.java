@@ -1,5 +1,7 @@
 package com.bookingsystem.view;
 
+import sun.plugin.javascript.navig.Anchor;
+
 import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
@@ -18,7 +20,7 @@ public class UIBookingSystemViewPanel extends JPanel {
     private JTextField jTxtBookingLocation;
     private JTextField jTxtBookingHolder;
     private JTextArea  jTxtAreaEquipment;
-
+    private JPanel jp;
     Border outline = BorderFactory.createLineBorder(Color.black);
     public UIBookingSystemViewPanel() {
         setLayout(new GridBagLayout());
@@ -30,28 +32,23 @@ public class UIBookingSystemViewPanel extends JPanel {
         jTxtBookingHolder = new JTextField(6);
         jTxtAreaEquipment = new JTextArea();
 
-
-        GridBagConstraints gbc = new GridBagConstraints();
-        gbc.insets = new Insets(2,2,2,2);
-
-
-        gbc.anchor = GridBagConstraints.WEST;
-        gbc.gridy = 0;
-        this.add(jTxtId,gbc);
-        gbc.gridy++;
-        this.add(jTxtBookingDay,gbc);
-        gbc.gridy++;
-        this.add(jTxtBookingDate,gbc);
-        gbc.gridy++;
-        this.add(jTxtBookingTime,gbc);
-        gbc.gridy++;
-        this.add(jTxtBookingLocation,gbc);
-        gbc.gridy++;
-        this.add(jTxtBookingHolder,gbc);
-        gbc.gridy++;
-        this.add(jTxtAreaEquipment,gbc);
-
+        addControlToPanel(jTxtId,0,0,GridBagConstraints.WEST);
+        addControlToPanel(jTxtBookingDate, 0, 1, GridBagConstraints.WEST);
+        addControlToPanel(jTxtBookingTime,0,2,GridBagConstraints.WEST);
+        addControlToPanel(jTxtBookingLocation,0,3,GridBagConstraints.WEST);
+        addControlToPanel(jTxtBookingHolder,0,4,GridBagConstraints.WEST);
+        addControlToPanel(jTxtAreaEquipment,0,5,GridBagConstraints.WEST);
         setBorder(outline);
+    }
+
+
+    public void addControlToPanel(Component component, int gridX, int gridY, int alignment) {
+        GridBagConstraints gbc = new GridBagConstraints();
+
+        gbc.gridx = gridX;
+        gbc.gridy = gridY;
+        gbc.anchor = alignment;
+        add(component, gbc);
     }
 
     public JTextField getjTxtId() {

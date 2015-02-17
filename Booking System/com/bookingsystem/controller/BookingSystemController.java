@@ -13,15 +13,19 @@ import com.bookingsystem.controller.handler.BookingHandler;
 import com.bookingsystem.model.Account;
 import com.bookingsystem.view.BookingSystemUILoader;
 import com.bookingsystem.view.UIBookingSystemPanel;
+import com.bookingsystem.view.UIBookingSystemViewPanel;
 import com.bookingsystem.view.UILoginPanel;
 
 import javax.swing.*;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 public class BookingSystemController {
 
     private BookingSystemUILoader view;
     private UILoginPanel loginPanel;
     private UIBookingSystemPanel bookingSystemPanel;
+    private UIBookingSystemViewPanel bookingSystemViewPanel;
 
     private Account accountModel; // only need to instantiate it when used
 
@@ -34,6 +38,7 @@ public class BookingSystemController {
 
 
         bookingSystemPanel = view.getBookingSystemPanel();
+        bookingSystemViewPanel = view.getBookingSystemViewPanel();
         loginPanel = view.getLoginPanel();
 
         loginPanel.addSubmitListener(new LoginHandler());
@@ -42,6 +47,7 @@ public class BookingSystemController {
         bookingSystemPanel = view.getBookingSystemPanel();
 
         view.getMenuBarLoader().addImportOptionListener(new BookingHandler(view));
+
     }
 
     public void RegisterAccount() {
@@ -63,7 +69,6 @@ public class BookingSystemController {
             if (loggedInSuccessful) {
                 view.removeLoginPanel();
                 view.showBookingSystemPanel();
-                bookingSystemPanel.initialiseBookingTable();
                 view.setVisible(true);
             }
         }

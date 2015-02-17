@@ -65,20 +65,12 @@ public class BookingHandler implements ActionListener {
 						}
 					}
 					System.out.println(rows);
-				//	int cols = 0;
-				//	int tmp = 0;
-				//	for (int i = 0; i < 10 || i < rows; i++) {
-				//		 row = sheet.getRow(i);
-				//		 if (row != null) {
-				//		 tmp = sheet.getRow(i).getPhysicalNumberOfCells();
-				//		 if (tmp > cols) cols = tmp;
-				//		 }
-				//	}
+
 					Color c = Color.white;
 					for (int r = 0; r < rows; r++) {
 						row = sheet.getRow(r);
-						if (row.toString() != null) {
-							if (row.getCell((short) 0).toString() != null) {
+						if (row.toString() != "") {
+							if (row.getCell((short) 0).toString() != "") {
 								importedBooking = new Booking(r,
 										row.getCell((short) 0).toString(),
 										row.getCell((short) 1).toString(),
@@ -87,10 +79,11 @@ public class BookingHandler implements ActionListener {
 										row.getCell((short) 4).toString(),
 										new Equipment(row.getCell((short) 5).toString()));
 
-							}
+								bookingSystemPanel
+										.addBookingToList(importedBooking,c);
 								System.out.println(importedBooking.toString());
-							bookingSystemPanel
-									.addBookingToList(importedBooking,c);
+
+							}
 						}
 					}
 				} catch (Exception e) {

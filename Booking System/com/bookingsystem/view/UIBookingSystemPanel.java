@@ -17,8 +17,10 @@ import com.bookingsystem.model.Booking;
 import com.bookingsystem.model.BookingTableModel;
 import com.bookingsystem.model.Equipment;
 
+
 public class UIBookingSystemPanel extends JPanel {
 
+	private UIBookingSystemViewPanel bookingSystemViewPanel;
 	private JButton btnAddBooking;
 
 	private JTable jTable;
@@ -28,19 +30,21 @@ public class UIBookingSystemPanel extends JPanel {
 	public UIBookingSystemPanel() {
 		setLayout(new GridBagLayout());
 		GridBagConstraints gbc = new GridBagConstraints();
-
+		bookingSystemViewPanel = new UIBookingSystemViewPanel();
 
 		gbc.insets = new Insets(10, 10, 10, 10);
 
 
 		this.setBorder(outline);
 
-		gbc.anchor = GridBagConstraints.NORTHWEST;
 
 		gbc.gridx= 0;
 		gbc.gridy= 0;
-		gbc.ipadx = 750;
-		gbc.ipady = 350;
+		
+		gbc.weightx = 0.8;
+		gbc.weighty = 1;
+		gbc.anchor = GridBagConstraints.FIRST_LINE_START;
+		gbc.fill = GridBagConstraints.BOTH;
 		jTable = new JTable(new BookingTableModel()) {
 			private static final long serialVersionUID = 1L;
 
@@ -69,10 +73,29 @@ public class UIBookingSystemPanel extends JPanel {
 
 		jScrollPane.setBorder(outline);
 		this.add(jScrollPane, gbc);
+		
+		gbc.gridy = 0;
+		gbc.gridx = 1;
+		
+		gbc.weightx = 0.2;
+		gbc.weighty = 0.5;
+		gbc.anchor = GridBagConstraints.PAGE_START;
+		this.add(bookingSystemViewPanel,gbc);
+		
+		JPanel filler = new JPanel();
+		gbc.gridy = 1;
+		gbc.gridx = 1;
+		gbc.gridheight = 2;
+		gbc.weightx = 0.2;
+		gbc.weighty = 0.5;
+		gbc.fill = GridBagConstraints.BOTH;
+		filler.setBackground(Color.BLACK);
+		this.add(filler,gbc);
 	}
 
 
-
+	public UIBookingSystemViewPanel getBookingSystemViewPanel() { return bookingSystemViewPanel; }
+	
 	public void addSubmitListener(ActionListener ai) {
 		btnAddBooking.addActionListener(ai);
 	}

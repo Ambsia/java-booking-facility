@@ -25,9 +25,8 @@ import com.bookingsystem.model.Equipment;
 public class BookingHandler implements ActionListener {
 	private BookingSystemUILoader view;
 	private UIBookingSystemPanel bookingSystemPanel;
-	public BookingHandler(BookingSystemUILoader view) {
-		this.view = view;
-		bookingSystemPanel = view.getBookingSystemPanel();
+	public BookingHandler(UIBookingSystemPanel bookingSystemPanel) {
+		this.bookingSystemPanel = bookingSystemPanel;
 	}
 	@Override
 	public void actionPerformed(ActionEvent eventOccurred) {

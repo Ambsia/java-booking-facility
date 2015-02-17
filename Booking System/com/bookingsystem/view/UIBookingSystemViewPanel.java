@@ -1,6 +1,6 @@
 package com.bookingsystem.view;
 
-import sun.plugin.javascript.navig.Anchor;
+
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -18,12 +18,13 @@ public class UIBookingSystemViewPanel extends JPanel {
 
     Border outline = BorderFactory.createLineBorder(Color.black);
 
-    public static ArrayList<TextField> listOfViewBoxes;
+    public static ArrayList<JLabel> listOfViewBoxes;
     public UIBookingSystemViewPanel() {
         setLayout(new GridBagLayout());
-        listOfViewBoxes = new ArrayList<TextField>();
+        this.setPreferredSize(new Dimension(150,150));
+        listOfViewBoxes = new ArrayList<JLabel>();
         for(int i = 0; i <= 6;i++) {
-            listOfViewBoxes.add(new TextField(8));
+            listOfViewBoxes.add(new JLabel());
             addControlToPanel(listOfViewBoxes.get(i),0,i,GridBagConstraints.WEST);
         }
         setBorder(outline);
@@ -35,12 +36,13 @@ public class UIBookingSystemViewPanel extends JPanel {
         gbc.insets = new Insets(2,2,2,2);
         gbc.gridx = gridX;
         gbc.gridy = gridY;
-        gbc.anchor = alignment;
+        gbc.anchor = GridBagConstraints.FIRST_LINE_START;
+        gbc.fill = GridBagConstraints.BOTH;
         add(component, gbc);
     }
 
     public String getTextFromField(int i) {
-        TextField textField = (TextField) listOfViewBoxes.get(i); return textField.getText();
+    	return listOfViewBoxes.get(i).getText();
     }
     public static void setTextToField(ArrayList<String> listOfStrings) {
         for (int i =0; i<=6; i++)

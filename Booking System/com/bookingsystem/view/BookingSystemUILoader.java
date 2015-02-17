@@ -9,23 +9,18 @@ import javax.swing.*;
 public class BookingSystemUILoader extends JFrame {
 
 	private UILoginPanel loginPanel;
-	private UIBookingSystemPanel bookingSystemPanel;
 	private UIBookingSystemMenuBarLoader menuBarLoader;
-	private UIBookingSystemViewPanel bookingSystemViewPanel;
+	private UIBookingSystemTabbedPane bookingSystemTabbedPane;
 
 	public BookingSystemUILoader() {
 		this.setDimension(500, 250);
-		bookingSystemPanel = new UIBookingSystemPanel();
+
 		loginPanel = new UILoginPanel();
 		menuBarLoader = new UIBookingSystemMenuBarLoader();
-		bookingSystemViewPanel = new UIBookingSystemViewPanel();
+		bookingSystemTabbedPane = new UIBookingSystemTabbedPane();
 		setLayout(new BorderLayout());
 
 		this.setTitle("LGS Booking System");
-
-		this.pack();
-		this.setLocationRelativeTo(null);
-		this.setVisible(true);
 	}
 
 
@@ -35,34 +30,36 @@ public class BookingSystemUILoader extends JFrame {
 
 	public void showLoginPanel() {
 		this.add(loginPanel);
+		this.pack();
+		this.setLocationRelativeTo(null);
 		this.setVisible(true);
 	}
 
 	public void showBookingSystemPanel() {
-		this.setDimension(1150,460);
 		setLayout(new GridBagLayout());
 		GridBagConstraints gridBagConstraints = new GridBagConstraints();
 		this.setJMenuBar(menuBarLoader);
 
 
-		gridBagConstraints.gridx = 0;
-		gridBagConstraints.weightx = 0.7;
+		gridBagConstraints.weightx = 1;
+		gridBagConstraints.weighty = 1;
+		gridBagConstraints.anchor = GridBagConstraints.FIRST_LINE_START;
+		gridBagConstraints.fill = GridBagConstraints.BOTH;
+		this.add(bookingSystemTabbedPane, gridBagConstraints);
 
-		gridBagConstraints.anchor = GridBagConstraints.NORTHWEST;
-		this.add(bookingSystemPanel,gridBagConstraints);
-
-
-		gridBagConstraints.ipadx = 250;
-		gridBagConstraints.ipady = 100;
-		gridBagConstraints.anchor = GridBagConstraints.NORTHWEST;
-		gridBagConstraints.weightx = 0.2;
-		gridBagConstraints.gridx = 1;
-		this.add(bookingSystemViewPanel,gridBagConstraints);
-
-
+		this.setMinimumSize(new Dimension(1000,500));
+		this.pack();
+		this.setLocationRelativeTo(null);
 		this.setVisible(true);
 	}
 	
+	public UIBookingSystemTabbedPane getbookingSystemTabbedPane() {
+		return bookingSystemTabbedPane;
+	}
+	
+	public void removeBookingSystemTabbedPane() {
+		this.remove(bookingSystemTabbedPane);
+	}
 	public void setDimension(int x, int y) {
 		Dimension d = new Dimension(x,y);
 		this.setSize(d);
@@ -70,15 +67,11 @@ public class BookingSystemUILoader extends JFrame {
 
 	}
 
-	public UIBookingSystemPanel getBookingSystemPanel() { return bookingSystemPanel; }
-
-	public UIBookingSystemViewPanel getBookingSystemViewPanel() { return bookingSystemViewPanel; }
-
 	public UILoginPanel getLoginPanel() { return loginPanel; }
 
 	public void removeLoginPanel() { this.remove(loginPanel); }
 
-	public void removeBookingSystemPanel() {this.remove(bookingSystemPanel); }
+
 
 
 }

@@ -9,10 +9,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.bookingsystem.controller.handler.BookingHandler;
-
 import com.bookingsystem.model.Account;
 import com.bookingsystem.view.BookingSystemUILoader;
 import com.bookingsystem.view.UIBookingSystemPanel;
+import com.bookingsystem.view.UIBookingSystemTabbedPane;
 import com.bookingsystem.view.UIBookingSystemViewPanel;
 import com.bookingsystem.view.UILoginPanel;
 
@@ -24,6 +24,7 @@ public class BookingSystemController {
 
     private BookingSystemUILoader view;
     private UILoginPanel loginPanel;
+    private UIBookingSystemTabbedPane bookingSystemTabbedPane;
     private UIBookingSystemPanel bookingSystemPanel;
     private UIBookingSystemViewPanel bookingSystemViewPanel;
 
@@ -35,18 +36,17 @@ public class BookingSystemController {
     public BookingSystemController(BookingSystemUILoader view) {
         this.view = view;
         view.showLoginPanel();
-
-
-        bookingSystemPanel = view.getBookingSystemPanel();
-        bookingSystemViewPanel = view.getBookingSystemViewPanel();
+        
         loginPanel = view.getLoginPanel();
+        bookingSystemTabbedPane = view.getbookingSystemTabbedPane();
+        bookingSystemPanel = bookingSystemTabbedPane.getBookingSystemPanel();
+        bookingSystemViewPanel = bookingSystemPanel.getBookingSystemViewPanel();
+     
 
         loginPanel.addSubmitListener(new LoginHandler());
         loginPanel.addClearListener(new ClearHandler());
 
-        bookingSystemPanel = view.getBookingSystemPanel();
-
-        view.getMenuBarLoader().addImportOptionListener(new BookingHandler(view));
+        view.getMenuBarLoader().addImportOptionListener(new BookingHandler(bookingSystemPanel));
 
     }
 

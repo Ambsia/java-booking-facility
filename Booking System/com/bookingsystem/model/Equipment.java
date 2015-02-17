@@ -7,8 +7,7 @@ public class Equipment {
 	int equipmentUsage;
 	String equipmentName;
 	
-	public Equipment(int equipmentUsage, String equipmentName) {
-		this.equipmentUsage = equipmentUsage;
+	public Equipment(String equipmentName) {
 		this.equipmentName = equipmentName;
 	}
 

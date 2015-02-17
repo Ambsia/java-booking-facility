@@ -85,11 +85,8 @@ public class BookingHandler implements ActionListener {
 										row.getCell((short) 2).toString(),
 										row.getCell((short) 3).toString(),
 										row.getCell((short) 4).toString(),
-										new Equipment(r, row.getCell((short) 5).toString()));
-								
-								CellStyle cellStyle = row.getCell((short) 0).getCellStyle();
-								c = (Color) cellStyle.getFillBackgroundColorColor();
-								
+										new Equipment(row.getCell((short) 5).toString()));
+
 							}
 								System.out.println(importedBooking.toString());
 							bookingSystemPanel

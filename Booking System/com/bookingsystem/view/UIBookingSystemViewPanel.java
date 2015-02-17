@@ -4,7 +4,9 @@ import sun.plugin.javascript.navig.Anchor;
 
 import javax.swing.*;
 import javax.swing.border.Border;
+import javax.xml.soap.Text;
 import java.awt.*;
+import java.util.ArrayList;
 
 /**
  * Created by Alex on 10/02/2015.
@@ -13,95 +15,38 @@ import java.awt.*;
  */
 public class UIBookingSystemViewPanel extends JPanel {
 
-    private JTextField jTxtId;
-    private JTextField jTxtBookingDay;
-    private JTextField jTxtBookingDate;
-    private JTextField jTxtBookingTime;
-    private JTextField jTxtBookingLocation;
-    private JTextField jTxtBookingHolder;
-    private JTextArea  jTxtAreaEquipment;
-    private JPanel jp;
+
     Border outline = BorderFactory.createLineBorder(Color.black);
+
+    public static ArrayList<TextField> listOfViewBoxes;
     public UIBookingSystemViewPanel() {
         setLayout(new GridBagLayout());
-        jTxtId = new JTextField(6);
-        jTxtBookingDay = new JTextField(6);
-        jTxtBookingDate = new JTextField(6);
-        jTxtBookingTime = new JTextField(6);
-        jTxtBookingLocation = new JTextField(6);
-        jTxtBookingHolder = new JTextField(6);
-        jTxtAreaEquipment = new JTextArea();
-
-        addControlToPanel(jTxtId,0,0,GridBagConstraints.WEST);
-        addControlToPanel(jTxtBookingDate, 0, 1, GridBagConstraints.WEST);
-        addControlToPanel(jTxtBookingTime,0,2,GridBagConstraints.WEST);
-        addControlToPanel(jTxtBookingLocation,0,3,GridBagConstraints.WEST);
-        addControlToPanel(jTxtBookingHolder,0,4,GridBagConstraints.WEST);
-        addControlToPanel(jTxtAreaEquipment,0,5,GridBagConstraints.WEST);
+        listOfViewBoxes = new ArrayList<TextField>();
+        for(int i = 0; i <= 6;i++) {
+            listOfViewBoxes.add(new TextField(8));
+            addControlToPanel(listOfViewBoxes.get(i),0,i,GridBagConstraints.WEST);
+        }
         setBorder(outline);
     }
 
 
     public void addControlToPanel(Component component, int gridX, int gridY, int alignment) {
         GridBagConstraints gbc = new GridBagConstraints();
-
+        gbc.insets = new Insets(2,2,2,2);
         gbc.gridx = gridX;
         gbc.gridy = gridY;
         gbc.anchor = alignment;
         add(component, gbc);
     }
 
-    public JTextField getjTxtId() {
-        return jTxtId;
+    public String getTextFromField(int i) {
+        TextField textField = (TextField) listOfViewBoxes.get(i); return textField.getText();
+    }
+    public static void setTextToField(ArrayList<String> listOfStrings) {
+        for (int i =0; i<=6; i++)
+            listOfViewBoxes.get(i).setText(listOfStrings.get(i));
     }
 
-    public JTextField getjTxtBookingDay() {
-        return jTxtBookingDay;
-    }
-
-    public void setjTxtBookingDay(JTextField jTxtBookingDay) {
-        this.jTxtBookingDay = jTxtBookingDay;
-    }
-
-    public JTextField getjTxtBookingDate() {
-        return jTxtBookingDate;
-    }
-
-    public void setjTxtBookingDate(JTextField jTxtBookingDate) {
-        this.jTxtBookingDate = jTxtBookingDate;
-    }
-
-    public JTextField getjTxtBookingTime() {
-        return jTxtBookingTime;
-    }
-
-    public void setjTxtBookingTime(JTextField jTxtBookingTime) {
-        this.jTxtBookingTime = jTxtBookingTime;
-    }
-
-    public JTextField getjTxtBookingLocation() {
-        return jTxtBookingLocation;
-    }
-
-    public void setjTxtBookingLocation(JTextField jTxtBookingLocation) {
-        this.jTxtBookingLocation = jTxtBookingLocation;
-    }
-
-    public JTextField getjTxtBookingHolder() {
-        return jTxtBookingHolder;
-    }
-
-    public void setjTxtBookingHolder(JTextField jTxtBookingHolder) {
-        this.jTxtBookingHolder = jTxtBookingHolder;
-    }
-
-    public JTextArea getjTxtAreaEquipment() {
-        return jTxtAreaEquipment;
-    }
-
-    public void setjTxtAreaEquipment(JTextArea jTxtAreaEquipment) {
-        this.jTxtAreaEquipment = jTxtAreaEquipment;
-    }
 
 
 

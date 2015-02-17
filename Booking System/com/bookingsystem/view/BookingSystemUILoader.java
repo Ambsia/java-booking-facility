@@ -39,14 +39,25 @@ public class BookingSystemUILoader extends JFrame {
 	}
 
 	public void showBookingSystemPanel() {
-		this.setDimension(1050,460);
-
+		this.setDimension(1150,460);
+		setLayout(new GridBagLayout());
+		GridBagConstraints gridBagConstraints = new GridBagConstraints();
 		this.setJMenuBar(menuBarLoader);
 
 
-		this.add(bookingSystemPanel);
+		gridBagConstraints.gridx = 0;
+		gridBagConstraints.weightx = 0.7;
 
-		this.add(bookingSystemViewPanel);
+		gridBagConstraints.anchor = GridBagConstraints.NORTHWEST;
+		this.add(bookingSystemPanel,gridBagConstraints);
+
+
+		gridBagConstraints.ipadx = 250;
+		gridBagConstraints.ipady = 100;
+		gridBagConstraints.anchor = GridBagConstraints.NORTHWEST;
+		gridBagConstraints.weightx = 0.2;
+		gridBagConstraints.gridx = 1;
+		this.add(bookingSystemViewPanel,gridBagConstraints);
 
 
 		this.setVisible(true);
@@ -60,6 +71,8 @@ public class BookingSystemUILoader extends JFrame {
 	}
 
 	public UIBookingSystemPanel getBookingSystemPanel() { return bookingSystemPanel; }
+
+	public UIBookingSystemViewPanel getBookingSystemViewPanel() { return bookingSystemViewPanel; }
 
 	public UILoginPanel getLoginPanel() { return loginPanel; }
 

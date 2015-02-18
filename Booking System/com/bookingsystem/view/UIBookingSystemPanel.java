@@ -40,7 +40,7 @@ public class UIBookingSystemPanel extends JPanel {
 
 		gbc.gridx= 0;
 		gbc.gridy= 0;
-		
+
 		gbc.weightx = 0.8;
 		gbc.weighty = 1;
 		gbc.anchor = GridBagConstraints.FIRST_LINE_START;
@@ -70,26 +70,31 @@ public class UIBookingSystemPanel extends JPanel {
 		model = (BookingTableModel) jTable.getModel();
 
 		JScrollPane jScrollPane = new JScrollPane(jTable);
-
+		gbc.gridheight = 2;
 		jScrollPane.setBorder(outline);
 		this.add(jScrollPane, gbc);
-		
+
+		JScrollPane jScrollPane1 = new JScrollPane(bookingSystemViewPanel);
+		gbc.gridheight = 1;
 		gbc.gridy = 0;
 		gbc.gridx = 1;
-		
-		gbc.weightx = 0.2;
-		gbc.weighty = 0.5;
+		gbc.weightx = .1;
+		gbc.weighty = .4;
 		gbc.anchor = GridBagConstraints.PAGE_START;
-		this.add(bookingSystemViewPanel,gbc);
-		
+		gbc.fill = GridBagConstraints.BOTH;
+		jScrollPane1.setMinimumSize(new Dimension(100,100));
+		jScrollPane1.setPreferredSize(new Dimension(100,100));
+		this.add(jScrollPane1,gbc);
+
 		JPanel filler = new JPanel();
 		gbc.gridy = 1;
 		gbc.gridx = 1;
-		gbc.gridheight = 2;
-		gbc.weightx = 0.2;
-		gbc.weighty = 0.5;
+		gbc.weightx = .2;
+		gbc.weighty = .7;
+		gbc.anchor = GridBagConstraints.LAST_LINE_END;
 		gbc.fill = GridBagConstraints.BOTH;
-		filler.setBackground(Color.BLACK);
+		filler.setBorder(outline);
+
 		this.add(filler,gbc);
 	}
 

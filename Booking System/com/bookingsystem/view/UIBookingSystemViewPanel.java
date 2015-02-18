@@ -21,23 +21,26 @@ public class UIBookingSystemViewPanel extends JPanel {
     public static ArrayList<JLabel> listOfViewBoxes;
     public UIBookingSystemViewPanel() {
         setLayout(new GridBagLayout());
-        this.setPreferredSize(new Dimension(150,150));
         listOfViewBoxes = new ArrayList<JLabel>();
+        GridBagConstraints gbc = new GridBagConstraints();
         for(int i = 0; i <= 6;i++) {
-            listOfViewBoxes.add(new JLabel());
-            addControlToPanel(listOfViewBoxes.get(i),0,i,GridBagConstraints.WEST);
+            JLabel jLabel = new JLabel();
+            listOfViewBoxes.add(jLabel);
+         addControlToPanel(listOfViewBoxes.get(i),0,i,1,1,GridBagConstraints.HORIZONTAL,GridBagConstraints.EAST);
         }
         setBorder(outline);
+
     }
-
-
-    public void addControlToPanel(Component component, int gridX, int gridY, int alignment) {
+    public void addControlToPanel(Component component, int gridX, int gridY,int weightX, int weightY, int alignment,int anchor) {
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(2,2,2,2);
         gbc.gridx = gridX;
         gbc.gridy = gridY;
-        gbc.anchor = GridBagConstraints.FIRST_LINE_START;
-        gbc.fill = GridBagConstraints.BOTH;
+        gbc.anchor = anchor;
+        gbc.fill = alignment;
+        gbc.weightx = weightX;
+        gbc.weighty = weightY;
+
         add(component, gbc);
     }
 
@@ -45,11 +48,9 @@ public class UIBookingSystemViewPanel extends JPanel {
     	return listOfViewBoxes.get(i).getText();
     }
     public static void setTextToField(ArrayList<String> listOfStrings) {
+        listOfStrings.add(0,"Booking #".concat(listOfStrings.get(0)));
+        listOfStrings.remove(1);
         for (int i =0; i<=6; i++)
             listOfViewBoxes.get(i).setText(listOfStrings.get(i));
     }
-
-
-
-
 }

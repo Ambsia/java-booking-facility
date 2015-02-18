@@ -47,6 +47,7 @@ public class BookingSystemUILoader extends JFrame {
 		gridBagConstraints.fill = GridBagConstraints.BOTH;
 		this.add(bookingSystemTabbedPane, gridBagConstraints);
 
+		this.setPreferredSize(new Dimension(1000,500));
 		this.setMinimumSize(new Dimension(1000,500));
 		this.pack();
 		this.setLocationRelativeTo(null);

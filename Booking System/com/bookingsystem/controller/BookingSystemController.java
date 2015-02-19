@@ -10,11 +10,7 @@ import java.util.List;
 
 import com.bookingsystem.controller.handler.BookingHandler;
 import com.bookingsystem.model.Account;
-import com.bookingsystem.view.BookingSystemUILoader;
-import com.bookingsystem.view.UIBookingSystemPanel;
-import com.bookingsystem.view.UIBookingSystemTabbedPane;
-import com.bookingsystem.view.UIBookingSystemViewPanel;
-import com.bookingsystem.view.UILoginPanel;
+import com.bookingsystem.view.*;
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
@@ -27,6 +23,7 @@ public class BookingSystemController {
     private UIBookingSystemTabbedPane bookingSystemTabbedPane;
     private UIBookingSystemPanel bookingSystemPanel;
     private UIBookingSystemViewPanel bookingSystemViewPanel;
+    private UIBookingSystemControlPanel bookingSystemControlPanel;
 
     private Account accountModel; // only need to instantiate it when used
 
@@ -41,12 +38,13 @@ public class BookingSystemController {
         bookingSystemTabbedPane = view.getbookingSystemTabbedPane();
         bookingSystemPanel = bookingSystemTabbedPane.getBookingSystemPanel();
         bookingSystemViewPanel = bookingSystemPanel.getBookingSystemViewPanel();
-     
+        bookingSystemControlPanel = bookingSystemPanel.getBookingSystemControlPanel();
 
         loginPanel.addSubmitListener(new LoginHandler());
         loginPanel.addClearListener(new ClearHandler());
 
         view.getMenuBarLoader().addImportOptionListener(new BookingHandler(bookingSystemPanel));
+        bookingSystemControlPanel.addListeners(new BookingHandler(bookingSystemPanel));
 
     }
 

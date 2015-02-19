@@ -30,10 +30,7 @@ public class BookingHandler implements ActionListener {
 	}
 	@Override
 	public void actionPerformed(ActionEvent eventOccurred) {
-		// TODO Auto-generated method stub
-
 		switch (eventOccurred.getActionCommand()) {
-
 			case "Import":
 				JFileChooser jFileChooser = new JFileChooser();
 				long startTime = System.currentTimeMillis();
@@ -86,24 +83,31 @@ public class BookingHandler implements ActionListener {
 						}
 					}
 				} catch (Exception e) {
-
-				}
-				;
-			case "add":
-
-				
-				// 
-
-				// This trick ensures that we get the data properly even if it
-				// doesn't start from first few rows
-				// for (int i = 0; i < 10 || i < rows; i++) {
-				// row = sheet.getRow(i);
-				// if (row != null) {
-				// tmp = sheet.getRow(i).getPhysicalNumberOfCells();
-				// if (tmp > cols) cols = tmp;
-				// }
+					System.out.println("Exception was thrown; " + e.toString());
+				} break;
+			case "Export":
+				System.out.println("export clicked"); break;
+			case "Add":
+				System.out.println("add clicked"); break;
+			case "Remove":
+				System.out.println("remove clicked");break;
+			case "Edit":
+				System.out.println("edit clicked");break;
+			default:
+				System.out.println("control handler not found");
 
 		}
 	}
 
 }
+
+//
+
+// This trick ensures that we get the data properly even if it
+// doesn't start from first few rows
+// for (int i = 0; i < 10 || i < rows; i++) {
+// row = sheet.getRow(i);
+// if (row != null) {
+// tmp = sheet.getRow(i).getPhysicalNumberOfCells();
+// if (tmp > cols) cols = tmp;
+// }

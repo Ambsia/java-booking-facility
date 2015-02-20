@@ -10,6 +10,7 @@ import java.io.PushbackInputStream;
 import javax.swing.JFileChooser;
 
 import com.bookingsystem.view.BookingSystemUILoader;
+import com.bookingsystem.view.UIBookingSystemControlPanel;
 import com.bookingsystem.view.UIBookingSystemPanel;
 
 import org.apache.poi.ss.usermodel.CellStyle;
@@ -25,8 +26,11 @@ import com.bookingsystem.model.Equipment;
 public class BookingHandler implements ActionListener {
 	private BookingSystemUILoader view;
 	private UIBookingSystemPanel bookingSystemPanel;
+	private UIBookingSystemControlPanel bookingSystemControlPanel;
+
 	public BookingHandler(UIBookingSystemPanel bookingSystemPanel) {
 		this.bookingSystemPanel = bookingSystemPanel;
+		bookingSystemControlPanel = this.bookingSystemPanel.getBookingSystemControlPanel();
 	}
 	@Override
 	public void actionPerformed(ActionEvent eventOccurred) {

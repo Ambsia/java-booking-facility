@@ -51,18 +51,17 @@ public class UIBookingSystemPanel extends JPanel {
 				return false;
 			};
 
-		}; jTable.getTableHeader().setReorderingAllowed(false);
+		};
+		jTable.getTableHeader().setReorderingAllowed(false);
 
 		jTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
 			@Override
 			public void valueChanged(ListSelectionEvent e) {
-
 				ArrayList<String> bookingData = new ArrayList<String>();
 				for(int i = 0; i<=6;i++) {
 					bookingData.add(jTable.getValueAt(jTable.getSelectedRow(),i).toString());
 				}
 				UIBookingSystemViewPanel.setTextToField(bookingData);
-
 			}
 		});
 

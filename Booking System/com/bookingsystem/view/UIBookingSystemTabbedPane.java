@@ -1,6 +1,6 @@
 package com.bookingsystem.view;
 
-import java.awt.Dimension;
+import java.awt.*;
 
 import javax.swing.JTabbedPane;
 
@@ -10,7 +10,9 @@ public class UIBookingSystemTabbedPane extends JTabbedPane{
 
 	
 	public UIBookingSystemTabbedPane() {
+		this.setBackground(Color.DARK_GRAY);
 		bookingSystemPanel = new UIBookingSystemPanel();
+		bookingSystemPanel.setBackground(Color.DARK_GRAY);
 		this.add(bookingSystemPanel, "View Bookings");
 	}
 	

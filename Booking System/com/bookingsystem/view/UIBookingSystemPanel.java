@@ -29,10 +29,10 @@ public class UIBookingSystemPanel extends JPanel {
 
 	BookingTableModel model;
 	public UIBookingSystemPanel() {
+		this.setBackground(Color.DARK_GRAY);
 		setLayout(new GridBagLayout());
 		GridBagConstraints gbc = new GridBagConstraints();
 		bookingSystemViewPanel = new UIBookingSystemViewPanel();
-
 		gbc.insets = new Insets(10, 10, 10, 10);
 
 		this.setBorder(outline);

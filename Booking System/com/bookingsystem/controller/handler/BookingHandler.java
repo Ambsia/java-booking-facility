@@ -37,7 +37,6 @@ public class BookingHandler implements ActionListener {
 		switch (eventOccurred.getActionCommand()) {
 			case "Import":
 				JFileChooser jFileChooser = new JFileChooser();
-				//long startTime = System.currentTimeMillis();
 
 				File file;
 				FileInputStream fileInputStream;
@@ -63,7 +62,6 @@ public class BookingHandler implements ActionListener {
 							System.out.println(rows);
 						}
 					}
-					System.out.println(rows);
 
 					Color c = Color.white;
 					for (int r = 0; r < rows; r++) {
@@ -88,6 +86,8 @@ public class BookingHandler implements ActionListener {
 				} catch (Exception e) {
 					System.out.println("Exception was thrown; " + e.toString());
 				} break;
+			case "Details":
+				System.out.println("details clicked"); break;
 			case "Export":
 				System.out.println("export clicked"); break;
 			case "Add":

@@ -4,6 +4,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import com.bookingsystem.controller.handler.BookingHandler;
 import com.bookingsystem.model.Account;
+import com.bookingsystem.model.Booking;
 import com.bookingsystem.view.*;
 
 public class BookingSystemController {
@@ -35,7 +36,6 @@ public class BookingSystemController {
 
         view.getMenuBarLoader().addImportOptionListener(new BookingHandler(bookingSystemPanel));
         bookingSystemControlPanel.addListeners(new BookingHandler(bookingSystemPanel));
-
     }
 
     public void RegisterAccount() {

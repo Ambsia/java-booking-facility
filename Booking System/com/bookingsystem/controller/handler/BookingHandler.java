@@ -13,9 +13,7 @@ import com.bookingsystem.view.BookingSystemUILoader;
 import com.bookingsystem.view.UIBookingSystemControlPanel;
 import com.bookingsystem.view.UIBookingSystemPanel;
 
-import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
-import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -34,17 +32,18 @@ public class BookingHandler implements ActionListener {
 	}
 	@Override
 	public void actionPerformed(ActionEvent eventOccurred) {
+		String event = eventOccurred.getActionCommand().replace(" ", "");
+		System.out.println(event);
 		switch (eventOccurred.getActionCommand()) {
 			case "Import":
 				JFileChooser jFileChooser = new JFileChooser();
-				long startTime = System.currentTimeMillis();
+				//long startTime = System.currentTimeMillis();
 
 				File file;
 				FileInputStream fileInputStream;
 				XSSFWorkbook workBook = null;
 				XSSFSheet sheet = null;
 				XSSFRow row;
-				XSSFCell cell;
 				int rows = 0;
 				Booking importedBooking = null;
 				try {

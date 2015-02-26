@@ -2,19 +2,9 @@ package com.bookingsystem.controller;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.PushbackInputStream;
-import java.util.ArrayList;
-import java.util.List;
-
 import com.bookingsystem.controller.handler.BookingHandler;
 import com.bookingsystem.model.Account;
 import com.bookingsystem.view.*;
-
-import javax.swing.*;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 
 public class BookingSystemController {
 

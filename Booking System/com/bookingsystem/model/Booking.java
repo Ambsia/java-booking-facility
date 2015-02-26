@@ -4,7 +4,6 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
 import java.util.Locale;
 
 public class Booking  {
@@ -87,10 +86,10 @@ public class Booking  {
 	
 	public boolean Validation() {
 		try {
-			DateFormat format = new SimpleDateFormat("d MMMM, yyyy", Locale.ENGLISH);
-			Date dateConvert = format.parse(this.bookingDate);
+			//DateFormat format = new SimpleDateFormat("d MMMM, yyyy", Locale.ENGLISH);
+			//Date dateConvert = format.parse(this.bookingDate);
 
-		} catch (ParseException e) {
+		} catch (Exception e) {
 
 		}
 		return (this.bookingDay.isEmpty() || this.bookingLocation.isEmpty() ||

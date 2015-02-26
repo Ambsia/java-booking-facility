@@ -4,7 +4,6 @@ package com.bookingsystem.view;
 
 import javax.swing.*;
 import javax.swing.border.Border;
-import javax.xml.soap.Text;
 import java.awt.*;
 import java.util.ArrayList;
 
@@ -22,7 +21,7 @@ public class UIBookingSystemViewPanel extends JPanel {
     public UIBookingSystemViewPanel() {
         setLayout(new GridBagLayout());
         listOfViewBoxes = new ArrayList<JLabel>();
-        GridBagConstraints gbc = new GridBagConstraints();
+
         for(int i = 0; i <= 6;i++) {
             listOfViewBoxes.add( new JLabel());
          addControlToPanel(listOfViewBoxes.get(i),0,i,1,1,GridBagConstraints.HORIZONTAL,GridBagConstraints.EAST);

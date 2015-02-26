@@ -2,20 +2,15 @@ package  com.bookingsystem.view;
 
 import java.awt.*;
 import java.awt.event.ActionListener;
-import java.awt.print.Book;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.management.ListenerNotFoundException;
 import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-import javax.swing.text.TableView;
-
 import com.bookingsystem.model.Booking;
 import com.bookingsystem.model.BookingTableModel;
-import com.bookingsystem.model.Equipment;
 
 
 public class UIBookingSystemPanel extends JPanel {
@@ -40,13 +35,14 @@ public class UIBookingSystemPanel extends JPanel {
 		gbc.gridx= 0;
 		gbc.gridy= 0;
 
-		gbc.weightx = 0.8;
+		gbc.weightx = 0.7;
 		gbc.weighty = 1;
 		gbc.anchor = GridBagConstraints.FIRST_LINE_START;
 		gbc.fill = GridBagConstraints.BOTH;
 		jTable = new JTable(new BookingTableModel()) {
 			private static final long serialVersionUID = 1L;
 
+			@Override
 			public boolean isCellEditable(int row, int column) {
 				return false;
 			};
@@ -77,7 +73,7 @@ public class UIBookingSystemPanel extends JPanel {
 		gbc.gridy = 0;
 		gbc.gridx = 1;
 		gbc.weightx = .1;
-		gbc.weighty = .8;
+		gbc.weighty = .6;
 		gbc.anchor = GridBagConstraints.PAGE_START;
 		gbc.fill = GridBagConstraints.BOTH;
 		jScrollPane1.setMinimumSize(new Dimension(100,100));
@@ -87,8 +83,8 @@ public class UIBookingSystemPanel extends JPanel {
 		bookingSystemControlPanel = new UIBookingSystemControlPanel();
 		gbc.gridy = 1;
 		gbc.gridx = 1;
-		gbc.weightx = .2;
-		gbc.weighty = .2;
+		gbc.weightx = .3;
+		gbc.weighty = .4;
 		gbc.anchor = GridBagConstraints.LAST_LINE_END;
 		gbc.fill = GridBagConstraints.BOTH;
 		bookingSystemControlPanel.setMinimumSize(new Dimension(100,100));

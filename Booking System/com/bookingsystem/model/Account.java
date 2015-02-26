@@ -12,7 +12,7 @@ public class Account {
 	private String hashedPassword;
 	private int userLevel;
 	private String userSalt;
-	private String unHashedPassword;
+
 	public static String validationMsg = "";
 	
 	private boolean accountCreation = false;
@@ -60,8 +60,8 @@ public class Account {
 		//}
 
 		//create sql command
-		String sqlCommand = "Select Username,Password from tblUsers where" +
-		"Username=@Username AND Password=@Password";
+		//String sqlCommand = "Select Username,Password from tblUsers where" +
+		//"Username=@Username AND Password=@Password";
 		return true;
 		//Pass parameter's for username and password
 		//execute command

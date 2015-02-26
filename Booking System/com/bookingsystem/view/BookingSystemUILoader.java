@@ -1,13 +1,6 @@
 package  com.bookingsystem.view;
 
-import com.sun.xml.internal.fastinfoset.util.CharArray;
-import org.apache.commons.codec.binary.Hex;
-import org.w3c.dom.css.CSSPrimitiveValue;
-import org.w3c.dom.css.RGBColor;
-
 import java.awt.*;
-import java.lang.reflect.Array;
-
 import javax.swing.*;
 
 ;
@@ -57,7 +50,7 @@ public class BookingSystemUILoader extends JFrame {
 		bookingSystemTabbedPane.setBackground(Color.DARK_GRAY);
 		this.add(bookingSystemTabbedPane, gridBagConstraints);
 
-		this.setPreferredSize(new Dimension(1000,500));
+		this.setPreferredSize(new Dimension(1148,550));
 		this.setMinimumSize(new Dimension(1000,500));
 
 		this.pack();

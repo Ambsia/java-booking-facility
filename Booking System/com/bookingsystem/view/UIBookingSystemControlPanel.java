@@ -22,28 +22,21 @@ public class UIBookingSystemControlPanel extends JPanel {
         int colsPassed = 0;
         for ( int buttonNo = 0; buttonNo<buttonNames.length;buttonNo++) {
         	JPanel jPanel = new JPanel();
-
+        	JButton jButton = new JButton(buttonNames[buttonNo]);
+        	jButton.setPreferredSize(new Dimension(83,25));
         	
         	
         	if (colsPassed == 3) { rowsPassed++; colsPassed = 0; } 
 
         	addControlToPanel(jPanel, colsPassed++, rowsPassed,1,1);
 
-        	controlButtonList.add(new JButton(buttonNames[buttonNo]));
+        	controlButtonList.add(jButton);
             jPanel.add(controlButtonList.get(buttonNo));
             
             
         }
         
-        /*for (int rowsLoopedThrough = 0;rowsLoopedThrough < 2;rowsLoopedThrough++) {
-            for (int colsLoopedThrough = 0; colsLoopedThrough < 3; colsLoopedThrough++) {
-                JPanel jPanel = new JPanel();
-                addControlToPanel(jPanel, colsLoopedThrough, rowsLoopedThrough, 1, 1);
-                controlButtonList.add(new JButton(buttonNames[buttonNo]));
-                jPanel.add(controlButtonList.get(buttonNo));
-                buttonNo++;
-            }
-        }*/
+
     }
 
     public void addControlToPanel(Component component, int gridX, int gridY,double weightX, double weightY) {

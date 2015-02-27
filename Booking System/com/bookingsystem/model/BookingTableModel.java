@@ -5,7 +5,7 @@ import javax.swing.table.DefaultTableModel;
 /**
  * Created by Alex on 10/02/2015.
  */
-public class BookingTableModel extends DefaultTableModel {
+public final class BookingTableModel extends DefaultTableModel {
 	public BookingTableModel() {
         addColumn("Booking ID");
         addColumn("Day");

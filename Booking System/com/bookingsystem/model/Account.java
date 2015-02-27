@@ -5,7 +5,7 @@ import java.security.SecureRandom;
 
 import org.apache.commons.codec.digest.DigestUtils;
 
-public class Account {
+public final class Account {
 
 	private int userID;
 	private String userLogonName;
@@ -19,12 +19,15 @@ public class Account {
 
 	private static boolean loggedIn = false;
 
+	Logger accountLogger;
+
 	public Account(int userID, int userLevel, String userLogonName,
 			String unHashedPassword) {
 		this.userID = userID;
 		this.userLevel = userLevel;
 		this.userLogonName = userLogonName;
 		this.hashedPassword = SHA1_HASH(unHashedPassword);
+		accountLogger = new Logger("Initialised Account.",this);
 	}
 
 	public boolean validation() {
@@ -44,6 +47,7 @@ public class Account {
 	}
 
 	public void createAccount() {
+			accountLogger = new Logger("Creating Account.",this);
 			userSalt = generateSalt();
 	}
 	
@@ -62,6 +66,7 @@ public class Account {
 		//create sql command
 		//String sqlCommand = "Select Username,Password from tblUsers where" +
 		//"Username=@Username AND Password=@Password";
+		accountLogger = new Logger("Logging in.",this);
 		return true;
 		//Pass parameter's for username and password
 		//execute command
@@ -85,7 +90,7 @@ public class Account {
 		
 		}
 		String hashedString = DigestUtils.sha1Hex(unHashedString + userSalt);
-		
+		accountLogger = new Logger("Hashing Un-Hashed String.",this);
 		return hashedString;
 	}
 
@@ -97,7 +102,7 @@ public class Account {
 		} catch (NoSuchAlgorithmException e) {
 			salt = 0;
 		}
-		
+		accountLogger = new Logger("Generated Salt.",this);
 		return new String(Integer.toString(salt));
 	} 
 

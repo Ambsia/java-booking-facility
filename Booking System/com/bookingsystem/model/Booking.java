@@ -6,7 +6,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
-public class Booking  {
+public final class Booking  {
 	private int bookingID;
 	private String bookingDay;
 	private String bookingLocation;
@@ -16,6 +16,7 @@ public class Booking  {
 	private Equipment requiredEquipment;
 	private String bookingHolder;
 
+	Logger bookingLogger;
 	public int getBookingID() {
 		return bookingID;
 	}
@@ -82,6 +83,7 @@ public class Booking  {
 		this.bookingLocation = bookingLocation;
 		this.bookingHolder = bookingHolder;
 		this.requiredEquipment = requiredEquipment; // this list will be passed when the booking is made
+		bookingLogger = new Logger("Booking Instantiated", null);
 	}
 	
 	public boolean Validation() {

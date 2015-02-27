@@ -1,7 +1,7 @@
 package  com.bookingsystem.model;
 
 
-public class Equipment {
+public final class Equipment {
 	
 	
 	int equipmentUsage;

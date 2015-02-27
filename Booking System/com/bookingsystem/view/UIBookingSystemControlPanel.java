@@ -14,7 +14,7 @@ public class UIBookingSystemControlPanel extends JPanel {
 
     public UIBookingSystemControlPanel() {
         setLayout(new GridBagLayout());
-        String[] buttonNames = {"Details","Add", "Edit", "Remove", "Repeat", "", "","",""};
+        String[] buttonNames = {"Details","Add", "Edit", "Remove", "Repeat", "",};
         controlButtonList = new ArrayList<JButton>();
 
         Dimension buttonDimension = new Dimension(83,25);
@@ -25,6 +25,7 @@ public class UIBookingSystemControlPanel extends JPanel {
 
         	if (colsPassed == 3) { rowsPassed++; colsPassed = 0; }
 
+            //jPanel.setBackground(Color.RED);
         	addControlToPanel(jPanel, colsPassed++, rowsPassed, 1, 1);
 
         	controlButtonList.add(jButton);

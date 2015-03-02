@@ -24,11 +24,13 @@ public class UIBookingSystemViewPanel extends JPanel {
 
         for(int i = 0; i <= 6;i++) {
             listOfViewBoxes.add( new JLabel());
-         addControlToPanel(listOfViewBoxes.get(i),0,i,1,1,GridBagConstraints.HORIZONTAL,GridBagConstraints.EAST);
+            addControlToPanel(listOfViewBoxes.get(i),0,i,1,1,GridBagConstraints.HORIZONTAL,GridBagConstraints.EAST);
         }
         setBorder(outline);
 
     }
+
+
     public void addControlToPanel(Component component, int gridX, int gridY,int weightX, int weightY, int alignment,int anchor) {
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(2,2,2,2);

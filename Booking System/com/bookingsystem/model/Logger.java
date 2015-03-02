@@ -15,7 +15,6 @@ public final class Logger {
     Date today;
 
     public Logger(String loggedAction, Account currentAccountLoggedIn) {
-
         today = new Date();
         this.loggedAction = loggedAction;
         this.dateAndTimeOfAction = today.toString();
@@ -24,7 +23,6 @@ public final class Logger {
     }
 
     public void logEvent() {
-
         try (PrintWriter printWriter = new PrintWriter(new BufferedWriter(new FileWriter("logfile.txt",true)))) {
             printWriter.println(this.dateAndTimeOfAction + " " + currentAccountLoggedIn.toString() + " Action = { " + loggedAction.toString() + " }");
         } catch (Exception e) {

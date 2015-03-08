@@ -74,7 +74,7 @@ public class BookingHandler implements ActionListener {
 										row.getCell((short) 2).toString(),
 										row.getCell((short) 3).toString(),
 										row.getCell((short) 4).toString(),
-										new Equipment(row.getCell((short) 5).toString()));
+		 								new Equipment(row.getCell((short) 5).toString()));
 
 								bookingSystemPanel
 										.addBookingToList(importedBooking,c);

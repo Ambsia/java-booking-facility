@@ -17,7 +17,7 @@ public class UIBookingSystemControlPanel extends JPanel {
         String[] buttonNames = {"Search","Add", "Edit", "Remove", "Repeat", "", "Twat", "Nob Head"};
         controlButtonList = new ArrayList<JButton>();
 
-        Dimension buttonDimension = new Dimension(90,25);
+        Dimension buttonDimension = new Dimension(83,25);
         for ( int buttonNo = 0, colsPassed = 0, rowsPassed = 0; buttonNo<buttonNames.length;buttonNo++) {
         	JPanel jPanel = new JPanel();
         	JButton jButton = new JButton(buttonNames[buttonNo]);

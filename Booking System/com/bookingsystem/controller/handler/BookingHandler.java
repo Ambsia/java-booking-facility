@@ -86,7 +86,7 @@ public class BookingHandler implements ActionListener {
 				} catch (Exception e) {
 					System.out.println("Exception was thrown; " + e.toString());
 				} break;
-			case "Details":
+			case "Search":
 				System.out.println("details clicked"); break;
 			case "Export":
 				System.out.println("export clicked"); break;

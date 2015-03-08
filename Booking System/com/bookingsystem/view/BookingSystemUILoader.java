@@ -14,12 +14,17 @@ public class BookingSystemUILoader extends JFrame {
 	public BookingSystemUILoader() {
 		this.setDimension(500, 250);
 
-		setBackground(Color.DARK_GRAY);
 		loginPanel = new UILoginPanel();
 		menuBarLoader = new UIBookingSystemMenuBarLoader();
 		bookingSystemTabbedPane = new UIBookingSystemTabbedPane();
 		setLayout(new BorderLayout());
 		this.setTitle("LGS Booking System");
+
+		try {
+			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	public void parse(String s) {
@@ -40,14 +45,12 @@ public class BookingSystemUILoader extends JFrame {
 	public void showBookingSystemPanel() {
 		setLayout(new GridBagLayout());
 		GridBagConstraints gridBagConstraints = new GridBagConstraints();
-		menuBarLoader.setBackground(Color.DARK_GRAY);
 		this.setJMenuBar(menuBarLoader);
 
 		gridBagConstraints.weightx = 1;
 		gridBagConstraints.weighty = 1;
 		gridBagConstraints.anchor = GridBagConstraints.FIRST_LINE_START;
 		gridBagConstraints.fill = GridBagConstraints.BOTH;
-		bookingSystemTabbedPane.setBackground(Color.DARK_GRAY);
 		this.add(bookingSystemTabbedPane, gridBagConstraints);
 
 		this.setPreferredSize(new Dimension(1148,550));

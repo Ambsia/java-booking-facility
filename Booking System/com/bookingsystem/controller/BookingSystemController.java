@@ -41,7 +41,25 @@ public class BookingSystemController {
 
     }
 
+    public class LoginHandler implements ActionListener {
 
+        @Override
+        public void actionPerformed(ActionEvent arg0) {
+            String username, unHashedPassword;
+            username = loginPanel.GetLoginUsernameText();
+            unHashedPassword = loginPanel.GetLoginPasswordText();
+
+            accountModel = new Account(0, 0, username, unHashedPassword);
+            loggedInSuccessful = accountModel.login();
+            System.out.println(accountModel.toString() + loggedInSuccessful);
+
+            if (loggedInSuccessful) {
+                view.removeLoginPanel();
+                view.showBookingSystemPanel();
+                view.setVisible(true);
+            }
+        }
+    }
 
     public class ClearHandler implements ActionListener {
         @Override

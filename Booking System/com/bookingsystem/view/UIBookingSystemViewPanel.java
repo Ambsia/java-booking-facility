@@ -26,7 +26,6 @@ public class UIBookingSystemViewPanel extends JPanel {
             listOfViewBoxes.add( new JLabel());
             addControlToPanel(listOfViewBoxes.get(i),0,i,1,1,GridBagConstraints.HORIZONTAL,GridBagConstraints.EAST);
         }
-        setBorder(outline);
 
     }
 

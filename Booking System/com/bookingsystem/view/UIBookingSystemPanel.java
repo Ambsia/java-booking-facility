@@ -23,7 +23,6 @@ public class UIBookingSystemPanel extends JPanel {
 
 	BookingTableModel model;
 	public UIBookingSystemPanel() {
-		this.setBackground(Color.DARK_GRAY);
 		setLayout(new GridBagLayout());
 		GridBagConstraints gbc = new GridBagConstraints();
 		bookingSystemViewPanel = new UIBookingSystemViewPanel();
@@ -70,7 +69,7 @@ public class UIBookingSystemPanel extends JPanel {
 		gbc.gridy = 0;
 		gbc.gridx = 1;
 		gbc.weightx = .4;
-		gbc.weighty = .7;
+		gbc.weighty = .9;
 		gbc.anchor = GridBagConstraints.PAGE_START;
 		gbc.fill = GridBagConstraints.BOTH;
 		jScrollPane1.setMinimumSize(new Dimension(100,100));
@@ -81,7 +80,7 @@ public class UIBookingSystemPanel extends JPanel {
 		gbc.gridy = 1;
 		gbc.gridx = 1;
 		gbc.weightx = .4;
-		gbc.weighty = .3;
+		gbc.weighty = .1;
 		gbc.anchor = GridBagConstraints.LAST_LINE_END;
 		gbc.fill = GridBagConstraints.BOTH;
 		bookingSystemControlPanel.setMinimumSize(new Dimension(100,100));

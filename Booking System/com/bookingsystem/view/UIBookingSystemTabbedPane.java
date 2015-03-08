@@ -10,9 +10,7 @@ public class UIBookingSystemTabbedPane extends JTabbedPane{
 
 	
 	public UIBookingSystemTabbedPane() {
-		this.setBackground(Color.DARK_GRAY);
 		bookingSystemPanel = new UIBookingSystemPanel();
-		bookingSystemPanel.setBackground(Color.DARK_GRAY);
 		this.add(bookingSystemPanel, "View Bookings");
 	}
 	

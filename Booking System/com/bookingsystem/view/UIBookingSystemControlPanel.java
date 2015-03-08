@@ -14,10 +14,10 @@ public class UIBookingSystemControlPanel extends JPanel {
 
     public UIBookingSystemControlPanel() {
         setLayout(new GridBagLayout());
-        String[] buttonNames = {"Details","Add", "Edit", "Remove", "Repeat", "",};
+        String[] buttonNames = {"Search","Add", "Edit", "Remove", "Repeat", "", "Twat", "Nob Head"};
         controlButtonList = new ArrayList<JButton>();
 
-        Dimension buttonDimension = new Dimension(83,25);
+        Dimension buttonDimension = new Dimension(90,25);
         for ( int buttonNo = 0, colsPassed = 0, rowsPassed = 0; buttonNo<buttonNames.length;buttonNo++) {
         	JPanel jPanel = new JPanel();
         	JButton jButton = new JButton(buttonNames[buttonNo]);
@@ -35,11 +35,11 @@ public class UIBookingSystemControlPanel extends JPanel {
 
     public void addControlToPanel(Component component, int gridX, int gridY, double weightX, double weightY) {
         GridBagConstraints gbc = new GridBagConstraints();
-        gbc.insets = new Insets(2,2,2,2);
+        gbc.insets = new Insets(0,0,0,0);
         gbc.gridx = gridX;
         gbc.gridy = gridY;
         gbc.fill = GridBagConstraints.BOTH;
-        gbc.anchor = GridBagConstraints.LINE_END;
+        gbc.anchor = GridBagConstraints.LAST_LINE_END;
         gbc.weightx = weightX;
         gbc.weighty = weightY;
         add(component, gbc);

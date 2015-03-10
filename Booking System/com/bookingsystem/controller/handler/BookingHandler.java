@@ -6,10 +6,12 @@ import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.PushbackInputStream;
+import java.util.Date;
 
 import javax.swing.JFileChooser;
 
 import com.bookingsystem.view.BookingSystemUILoader;
+import com.bookingsystem.view.UIBookingSystemAddPanel;
 import com.bookingsystem.view.UIBookingSystemControlPanel;
 import com.bookingsystem.view.UIBookingSystemPanel;
 
@@ -25,10 +27,12 @@ public class BookingHandler implements ActionListener {
 	private BookingSystemUILoader view;
 	private UIBookingSystemPanel bookingSystemPanel;
 	private UIBookingSystemControlPanel bookingSystemControlPanel;
+	private UIBookingSystemAddPanel bookingSystemAddPanel;
 
 	public BookingHandler(UIBookingSystemPanel bookingSystemPanel) {
 		this.bookingSystemPanel = bookingSystemPanel;
 		bookingSystemControlPanel = this.bookingSystemPanel.getBookingSystemControlPanel();
+		bookingSystemAddPanel = bookingSystemControlPanel.getUiBookingSystemAddPanel();
 	}
 	@Override
 	public void actionPerformed(ActionEvent eventOccurred) {
@@ -91,6 +95,14 @@ public class BookingHandler implements ActionListener {
 			case "Export":
 				System.out.println("export clicked"); break;
 			case "Add":
+				int result = bookingSystemAddPanel.showDialog();
+				if (result == 0) {
+					String[] bookingStrings = bookingSystemAddPanel.getBookingStringArray();
+					int id = 1; //need to work out next id..get the value when completing sql query.
+
+					Booking booking = new Booking(id, bookingStrings[0],bookingStrings[1],bookingStrings[2],bookingStrings[3],bookingStrings[4],new Equipment(bookingStrings[5]));
+					bookingSystemPanel.addBookingToList(booking,Color.cyan);
+				}
 				System.out.println("add clicked"); break;
 			case "Remove":
 				System.out.println("remove clicked");break;

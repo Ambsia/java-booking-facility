@@ -23,6 +23,8 @@ public class UIBookingSystemPanel extends JPanel {
 
 	BookingTableModel model;
 	public UIBookingSystemPanel() {
+
+
 		setLayout(new GridBagLayout());
 		GridBagConstraints gbc = new GridBagConstraints();
 		bookingSystemViewPanel = new UIBookingSystemViewPanel();
@@ -87,6 +89,7 @@ public class UIBookingSystemPanel extends JPanel {
 		bookingSystemControlPanel.setPreferredSize(new Dimension(100,100));
 
 		this.add(bookingSystemControlPanel,gbc);
+
 	}
 
 

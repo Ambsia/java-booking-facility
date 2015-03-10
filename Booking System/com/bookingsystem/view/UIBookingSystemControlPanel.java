@@ -10,12 +10,14 @@ import java.util.ArrayList;
  */
 public class UIBookingSystemControlPanel extends JPanel {
 
-    public ArrayList<JButton> controlButtonList;
+    private ArrayList<JButton> controlButtonList;
+    private UIBookingSystemAddPanel uiBookingSystemAddPanel;
 
     public UIBookingSystemControlPanel() {
         setLayout(new GridBagLayout());
         String[] buttonNames = {"Search","Add", "Edit", "Remove", "Repeat", "", "Twat", "Nob Head"};
         controlButtonList = new ArrayList<JButton>();
+        uiBookingSystemAddPanel = new UIBookingSystemAddPanel();
 
         Dimension buttonDimension = new Dimension(83,25);
         for ( int buttonNo = 0, colsPassed = 0, rowsPassed = 0; buttonNo<buttonNames.length;buttonNo++) {
@@ -23,8 +25,7 @@ public class UIBookingSystemControlPanel extends JPanel {
         	JButton jButton = new JButton(buttonNames[buttonNo]);
         	jButton.setPreferredSize(buttonDimension);
 
-        	if (colsPassed == 3) { rowsPassed++; colsPassed = 0; }
-
+                if (colsPassed == 3) { rowsPassed++; colsPassed = 0; }
             //jPanel.setBackground(Color.RED);
         	addControlToPanel(jPanel, colsPassed++, rowsPassed, 1, 1);
 
@@ -43,6 +44,10 @@ public class UIBookingSystemControlPanel extends JPanel {
         gbc.weightx = weightX;
         gbc.weighty = weightY;
         add(component, gbc);
+    }
+
+    public UIBookingSystemAddPanel getUiBookingSystemAddPanel() {
+        return uiBookingSystemAddPanel;
     }
 
     public void addListeners(ActionListener al) {

@@ -1,7 +1,5 @@
 package com.bookingsystem.view;
 
-import java.awt.*;
-
 import javax.swing.JTabbedPane;
 
 public class UIBookingSystemTabbedPane extends JTabbedPane{

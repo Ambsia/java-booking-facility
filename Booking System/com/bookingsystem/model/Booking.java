@@ -1,10 +1,5 @@
 package  com.bookingsystem.model;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
 
 public final class Booking  {
 	private int bookingID;
@@ -15,6 +10,8 @@ public final class Booking  {
 	
 	private Equipment requiredEquipment;
 	private String bookingHolder;
+	
+	
 
 	Logger bookingLogger;
 	public int getBookingID() {
@@ -94,11 +91,15 @@ public final class Booking  {
 		} catch (Exception e) {
 
 		}
-		return (this.bookingDay.isEmpty() || this.bookingLocation.isEmpty() ||
-			    this.bookingTime.isEmpty() || this.bookingDate.isEmpty() || 
-				this.bookingHolder.isEmpty());
+	;
 	}
 
+	
+	public boolean isValid() {
+		return (this.bookingDay.isEmpty() || this.bookingLocation.isEmpty() ||
+			    this.bookingTime.isEmpty() || this.bookingDate.isEmpty() || 
+				this.bookingHolder.isEmpty()) ;
+	}
 	@Override
 	public String toString() {
 		return "Booking{" +

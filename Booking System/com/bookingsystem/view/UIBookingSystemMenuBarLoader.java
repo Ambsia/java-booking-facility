@@ -1,7 +1,10 @@
 package com.bookingsystem.view;
 
-import javax.swing.*;
 import java.awt.event.ActionListener;
+
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 
 /**
  * Created by Alex on 08/02/2015.

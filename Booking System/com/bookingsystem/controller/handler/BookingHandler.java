@@ -6,14 +6,8 @@ import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.PushbackInputStream;
-import java.util.Date;
 
 import javax.swing.JFileChooser;
-
-import com.bookingsystem.view.BookingSystemUILoader;
-import com.bookingsystem.view.UIBookingSystemAddPanel;
-import com.bookingsystem.view.UIBookingSystemControlPanel;
-import com.bookingsystem.view.UIBookingSystemPanel;
 
 import org.apache.poi.ss.usermodel.WorkbookFactory;
 import org.apache.poi.xssf.usermodel.XSSFRow;
@@ -22,6 +16,10 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import com.bookingsystem.model.Booking;
 import com.bookingsystem.model.Equipment;
+import com.bookingsystem.view.BookingSystemUILoader;
+import com.bookingsystem.view.UIBookingSystemAddPanel;
+import com.bookingsystem.view.UIBookingSystemControlPanel;
+import com.bookingsystem.view.UIBookingSystemPanel;
 
 public class BookingHandler implements ActionListener {
 	private BookingSystemUILoader view;

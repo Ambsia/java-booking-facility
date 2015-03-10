@@ -1,6 +1,8 @@
 package com.bookingsystem.model;
 
-import java.io.*;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.PrintWriter;
 import java.util.Date;
 
 /**

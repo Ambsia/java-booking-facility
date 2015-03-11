@@ -7,6 +7,10 @@ import javax.swing.JOptionPane;
  * */
 public final class MessageBox {
 	
+	
+	public static void warningMessageBox(String message) {
+		show(message, "Warning", JOptionPane.WARNING_MESSAGE);
+	}
 	/** static void, infoMessageBox takes a string and passes it to another method which shows the message dialog,
 	 * also this method will set the title of the message dialog to "Information",
      * the constant integer will be set to INFORMATION_MESSAGE (used to set icon).

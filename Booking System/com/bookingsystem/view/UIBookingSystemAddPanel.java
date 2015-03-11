@@ -110,7 +110,7 @@ public class UIBookingSystemAddPanel extends JPanel {
     }
 
     public String getTxtBookingDayText() {
-        return txtBookingDay.toString();
+        return txtBookingDay.getText();
     }
 
     public String getTxtBookingTimeText() {

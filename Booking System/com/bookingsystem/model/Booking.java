@@ -1,19 +1,26 @@
 package  com.bookingsystem.model;
 
+import java.util.Date;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Locale;
+
 
 public final class Booking  {
 	private int bookingID;
 	private String bookingDay;
 	private String bookingLocation;
 	private String bookingTime;
-	private String bookingDate;
+	private Date bookingDate;
 	
 	private Equipment requiredEquipment;
 	private String bookingHolder;
 	
-	
-
 	Logger bookingLogger;
+	
+	
+	
 	public int getBookingID() {
 		return bookingID;
 	}
@@ -46,11 +53,11 @@ public final class Booking  {
 		this.bookingTime = bookingTime;
 	}
 
-	public String getBookingDate() {
+	public Date getBookingDate() {
 		return bookingDate;
 	}
 
-	public void setBookingDate(String bookingDate) {
+	public void setBookingDate(Date bookingDate) {
 		this.bookingDate = bookingDate;
 	}
 
@@ -70,7 +77,7 @@ public final class Booking  {
 		this.bookingHolder = bookingHolder;
 	}
 
-	public Booking(int bookingID, String bookingDay, String bookingDate, String bookingTime,
+	public Booking(int bookingID, String bookingDay, Date bookingDate, String bookingTime,
 				   String bookingLocation, String bookingHolder, Equipment requiredEquipment
 				   ) {
 		this.bookingID = bookingID;
@@ -83,23 +90,19 @@ public final class Booking  {
 		bookingLogger = new Logger("Booking Instantiated", null);
 	}
 	
-	public boolean Validation() {
-		try {
-			//DateFormat format = new SimpleDateFormat("d MMMM, yyyy", Locale.ENGLISH);
-			//Date dateConvert = format.parse(this.bookingDate);
-
-		} catch (Exception e) {
-
-		}
-	;
-	}
 
 	
 	public boolean isValid() {
 		return (this.bookingDay.isEmpty() || this.bookingLocation.isEmpty() ||
-			    this.bookingTime.isEmpty() || this.bookingDate.isEmpty() || 
-				this.bookingHolder.isEmpty()) ;
+			    this.bookingTime.isEmpty() || this.bookingHolder.isEmpty()) ;
 	}
+	
+	public boolean checkForBookingConflicts(Date dateOfBooking) {
+		//check all bookings on said date against each other
+		return false;
+		
+	}
+	
 	@Override
 	public String toString() {
 		return "Booking{" +

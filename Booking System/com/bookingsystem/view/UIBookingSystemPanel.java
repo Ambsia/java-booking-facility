@@ -131,6 +131,12 @@ public class UIBookingSystemPanel extends JPanel {
 					booking.getRequiredEquipment().GetEquipmentName()});
 		}
 	}
+	
+	public Booking getBookingFromList(int bookingId) {
+		
+		if (bookingId >= 0 && bookingId != (int) model.getValueAt(0, bookingId)) {
+			return new Booking((int) model.getValueAt(0, bookingId),   
+	}
 
 
 

@@ -6,6 +6,13 @@ import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.PushbackInputStream;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Locale;
 
 import javax.swing.JFileChooser;
 
@@ -14,6 +21,7 @@ import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
+import com.bookingsystem.helpers.MessageBox;
 import com.bookingsystem.model.Booking;
 import com.bookingsystem.model.Equipment;
 import com.bookingsystem.view.BookingSystemUILoader;
@@ -26,11 +34,15 @@ public class BookingHandler implements ActionListener {
 	private UIBookingSystemPanel bookingSystemPanel;
 	private UIBookingSystemControlPanel bookingSystemControlPanel;
 	private UIBookingSystemAddPanel bookingSystemAddPanel;
+	private DateFormat BOOKING_DATE_FORMAT = new SimpleDateFormat("dd.mm.yy", Locale.ENGLISH);
+	
+	private ArrayList<Booking> listOfBadBookings;
 
 	public BookingHandler(UIBookingSystemPanel bookingSystemPanel) {
 		this.bookingSystemPanel = bookingSystemPanel;
 		bookingSystemControlPanel = this.bookingSystemPanel.getBookingSystemControlPanel();
 		bookingSystemAddPanel = bookingSystemControlPanel.getUiBookingSystemAddPanel();
+		listOfBadBookings = new ArrayList<Booking>();
 	}
 	@Override
 	public void actionPerformed(ActionEvent eventOccurred) {
@@ -66,13 +78,16 @@ public class BookingHandler implements ActionListener {
 					}
 
 					Color c = Color.white;
-					for (int r = 0; r < rows; r++) {
+					for (int r = 1; r < rows; r++) {
 						row = sheet.getRow(r);
 						if (row.toString() != "") {
 							if (row.getCell((short) 0).toString() != "") {
+								
+								
+
 								importedBooking = new Booking(r,
 										row.getCell((short) 0).toString(),
-										row.getCell((short) 1).toString(),
+										stringToDate(r,row.getCell((short) 1).toString()),
 										row.getCell((short) 2).toString(),
 										row.getCell((short) 3).toString(),
 										row.getCell((short) 4).toString(),
@@ -87,19 +102,26 @@ public class BookingHandler implements ActionListener {
 					}
 				} catch (Exception e) {
 					System.out.println("Exception was thrown; " + e.toString());
+					MessageBox.errorMessageBox(e.toString());
 				} break;
 			case "Search":
 				System.out.println("details clicked"); break;
 			case "Export":
 				System.out.println("export clicked"); break;
 			case "Add":
-				int result = bookingSystemAddPanel.showDialog();
-				if (result == 0) {
-					String[] bookingStrings = bookingSystemAddPanel.getBookingStringArray();
-					int id = 1; //need to work out next id..get the value when completing sql query.
-
-					Booking booking = new Booking(id, bookingStrings[0],bookingStrings[1],bookingStrings[2],bookingStrings[3],bookingStrings[4],new Equipment(bookingStrings[5]));
-					bookingSystemPanel.addBookingToList(booking,Color.cyan);
+				try {
+					int result = bookingSystemAddPanel.showDialog();
+					if (result == 0) {
+						String[] bookingStrings = bookingSystemAddPanel.getBookingStringArray();
+						int id = 1; //need to work out next id..get the value when completing sql query.
+						
+						
+						Booking booking = new Booking(id, bookingStrings[0],stringToDate(id,bookingStrings[1]),bookingStrings[2],bookingStrings[3],bookingStrings[4],new Equipment(bookingStrings[5]));
+						
+						bookingSystemPanel.addBookingToList(booking,Color.cyan);
+					}
+				} catch (Exception e) {
+					MessageBox.errorMessageBox(e.toString());
 				}
 				System.out.println("add clicked"); break;
 			case "Remove":
@@ -111,8 +133,20 @@ public class BookingHandler implements ActionListener {
 
 		}
 	}
+	
+	public Date stringToDate(int bookingId, String stringToConvert) {
+		Booking incorreclyFormattedBooking;
+		try {
+			return (Date) BOOKING_DATE_FORMAT.parse(stringToConvert);
+		} catch (ParseException e) {
+			MessageBox.warningMessageBox("Unreadable Date" + ": " + stringToConvert +". Edit this date manually.");
+			return new Date();
+		}
+	}
 
 }
+
+
 
 //
 

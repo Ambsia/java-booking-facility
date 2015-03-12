@@ -36,7 +36,7 @@ public class BookingHandler implements ActionListener {
 	private UIBookingSystemPanel bookingSystemPanel;
 	private UIBookingSystemControlPanel bookingSystemControlPanel;
 	private UIBookingSystemAddPanel bookingSystemAddPanel;
-	private DateFormat BOOKING_DATE_FORMAT = new SimpleDateFormat("dd.mm.yy", Locale.ENGLISH);
+	private DateFormat BOOKING_DATE_FORMAT = new SimpleDateFormat("dd.MM.yy", Locale.ENGLISH);
 
 	private BookingBusinessLayer bookingBusinessLayer;
 

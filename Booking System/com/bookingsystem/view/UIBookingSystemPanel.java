@@ -33,7 +33,7 @@ public class UIBookingSystemPanel extends JPanel {
 
 	private JTable jTable;
 
-	private DateFormat BOOKING_DATE_FORMAT = new SimpleDateFormat("dd-mm-yy", Locale.ENGLISH);
+	private DateFormat BOOKING_DATE_FORMAT = new SimpleDateFormat("dd.MM.yy", Locale.ENGLISH);
 
 	private BookingTableModel model;
 	public UIBookingSystemPanel() {

@@ -12,7 +12,8 @@ public final class Booking  {
 	private int bookingID;
 	private String bookingDay;
 	private String bookingLocation;
-	private String bookingTime;
+	private Date bookingStartTime;
+	private Date bookingCollectionTime;
 	private Date bookingDate;
 	
 	private Equipment requiredEquipment;
@@ -44,12 +45,20 @@ public final class Booking  {
 		this.bookingLocation = bookingLocation;
 	}
 
-	public String getBookingTime() {
-		return bookingTime;
+	public Date bookingCollectionTime() {
+		return bookingStartTime;
 	}
 
-	public void setBookingTime(String bookingTime) {
-		this.bookingTime = bookingTime;
+	public void setBookingCollectionTime(Date bookingCollectionTime) {
+		this.bookingCollectionTime = bookingCollectionTime;
+	}
+	
+	public Date bookingStartTime() {
+		return bookingStartTime;
+	}
+
+	public void setBookingStartTime(Date bookingStartTime) {
+		this.bookingStartTime = bookingStartTime;
 	}
 
 	public Date getBookingDate() {
@@ -76,13 +85,15 @@ public final class Booking  {
 		this.bookingHolder = bookingHolder;
 	}
 
-	public Booking(int bookingID, String bookingDay, Date bookingDate, String bookingTime,
-				   String bookingLocation, String bookingHolder, Equipment requiredEquipment
+	public Booking(int bookingID, String bookingDay, Date bookingDate, Date bookingStartTime,
+				Date bookingCollectionTime, String bookingLocation, String bookingHolder,
+				Equipment requiredEquipment
 				   ) {
 		this.bookingID = bookingID;
 		this.bookingDay = bookingDay;
 		this.bookingDate = bookingDate;
-		this.bookingTime = bookingTime;
+		this.bookingStartTime = bookingStartTime;
+		this.bookingCollectionTime = bookingCollectionTime;
 		this.bookingLocation = bookingLocation;
 		this.bookingHolder = bookingHolder;
 		this.requiredEquipment = requiredEquipment; // this list will be passed when the booking is made

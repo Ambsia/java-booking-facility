@@ -1,5 +1,7 @@
 package com.bookingsystem.view;
 
+import com.bookingsystem.model.Booking;
+
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
@@ -16,6 +18,7 @@ import javax.swing.JPanel;
  */
 public class UIBookingSystemControlPanel extends JPanel {
 
+    private ArrayList<Booking> listOfBookings;
     private ArrayList<JButton> controlButtonList;
     private UIBookingSystemAddPanel uiBookingSystemAddPanel;
 
@@ -24,6 +27,9 @@ public class UIBookingSystemControlPanel extends JPanel {
         String[] buttonNames = {"Search","Add", "Edit", "Remove", "Repeat", "", "Twat", "Nob Head"};
         controlButtonList = new ArrayList<JButton>();
         uiBookingSystemAddPanel = new UIBookingSystemAddPanel();
+
+        listOfBookings = new ArrayList<Booking>();
+
 
         Dimension buttonDimension = new Dimension(83,25);
         for ( int buttonNo = 0, colsPassed = 0, rowsPassed = 0; buttonNo<buttonNames.length;buttonNo++) {

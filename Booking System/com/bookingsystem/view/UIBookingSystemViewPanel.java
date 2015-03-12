@@ -19,12 +19,12 @@ import javax.swing.border.Border;
  * int bookingID, String bookingDay, String bookingDate, String bookingTime,
  String bookingLocation, String bookingHolder, Equipment requiredEquipment
  */
+
 public class UIBookingSystemViewPanel extends JPanel {
 
-
-    Border outline = BorderFactory.createLineBorder(Color.black);
-
+    private Border outline = BorderFactory.createLineBorder(Color.black);
     public static ArrayList<JLabel> listOfViewBoxes;
+
     public UIBookingSystemViewPanel() {
         setLayout(new GridBagLayout());
         listOfViewBoxes = new ArrayList<JLabel>();
@@ -33,7 +33,6 @@ public class UIBookingSystemViewPanel extends JPanel {
             listOfViewBoxes.add( new JLabel());
             addControlToPanel(listOfViewBoxes.get(i),0,i,1,1,GridBagConstraints.HORIZONTAL,GridBagConstraints.EAST);
         }
-
     }
 
 

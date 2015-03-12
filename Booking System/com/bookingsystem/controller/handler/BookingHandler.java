@@ -16,6 +16,7 @@ import java.util.Locale;
 
 import javax.swing.JFileChooser;
 
+import com.bookingsystem.model.BookingBusinessLayer;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -28,6 +29,7 @@ import com.bookingsystem.view.BookingSystemUILoader;
 import com.bookingsystem.view.UIBookingSystemAddPanel;
 import com.bookingsystem.view.UIBookingSystemControlPanel;
 import com.bookingsystem.view.UIBookingSystemPanel;
+import org.apache.commons.collections.IteratorUtils;
 
 public class BookingHandler implements ActionListener {
 	private BookingSystemUILoader view;
@@ -35,14 +37,22 @@ public class BookingHandler implements ActionListener {
 	private UIBookingSystemControlPanel bookingSystemControlPanel;
 	private UIBookingSystemAddPanel bookingSystemAddPanel;
 	private DateFormat BOOKING_DATE_FORMAT = new SimpleDateFormat("dd.mm.yy", Locale.ENGLISH);
-	
-	private ArrayList<Booking> listOfBadBookings;
+
+	private BookingBusinessLayer bookingBusinessLayer;
+
+	private List<Booking> bookingArrayList;
+ 	private List<Integer> listOfBadBookingIDs;
 
 	public BookingHandler(UIBookingSystemPanel bookingSystemPanel) {
 		this.bookingSystemPanel = bookingSystemPanel;
 		bookingSystemControlPanel = this.bookingSystemPanel.getBookingSystemControlPanel();
 		bookingSystemAddPanel = bookingSystemControlPanel.getUiBookingSystemAddPanel();
-		listOfBadBookings = new ArrayList<Booking>();
+
+		listOfBadBookingIDs = new ArrayList<Integer>();
+
+		bookingBusinessLayer = new BookingBusinessLayer();
+
+		bookingArrayList = IteratorUtils.toList(bookingBusinessLayer.bookings().iterator());
 	}
 	@Override
 	public void actionPerformed(ActionEvent eventOccurred) {
@@ -74,36 +84,39 @@ public class BookingHandler implements ActionListener {
 							sheet = workBook.getSheetAt(1);
 							rows = sheet.getPhysicalNumberOfRows();
 							System.out.println(rows);
-						}
-					}
 
-					Color c = Color.white;
-					for (int r = 1; r < rows; r++) {
-						row = sheet.getRow(r);
-						if (row.toString() != "") {
-							if (row.getCell((short) 0).toString() != "") {
-								
-								
 
-								importedBooking = new Booking(r,
-										row.getCell((short) 0).toString(),
-										stringToDate(r,row.getCell((short) 1).toString()),
-										row.getCell((short) 2).toString(),
-										row.getCell((short) 3).toString(),
-										row.getCell((short) 4).toString(),
-		 								new Equipment(row.getCell((short) 5).toString()));
+							Color c = Color.white;
+							for (int r = 1; r < rows; r++) {
+								row = sheet.getRow(r);
+								if (row.toString() != "") {
+									if (row.getCell((short) 0).toString() != "") {
+										importedBooking = new Booking(r,
+												row.getCell((short) 0).toString(),
+												stringToDate(r, row.getCell((short) 1).toString()),
+												row.getCell((short) 2).toString(),
+												row.getCell((short) 3).toString(),
+												row.getCell((short) 4).toString(),
+												new Equipment(row.getCell((short) 5).toString()));
 
-								bookingSystemPanel
-										.addBookingToList(importedBooking,c);
-								System.out.println(importedBooking.toString());
+										bookingArrayList.add(
+												importedBooking);
+										bookingSystemPanel
+												.addBookingToList(importedBooking, c);
+										System.out.println(importedBooking.toString());
 
+									}
+								}
 							}
 						}
-					}
+						else { MessageBox.errorMessageBox(".xlsx spreadsheets are only accepted."); break; }
+					} else { break; }
+
 				} catch (Exception e) {
 					System.out.println("Exception was thrown; " + e.toString());
 					MessageBox.errorMessageBox(e.toString());
-				} break;
+				}
+				break;
 			case "Search":
 				System.out.println("details clicked"); break;
 			case "Export":
@@ -114,11 +127,14 @@ public class BookingHandler implements ActionListener {
 					if (result == 0) {
 						String[] bookingStrings = bookingSystemAddPanel.getBookingStringArray();
 						int id = 1; //need to work out next id..get the value when completing sql query.
-						
-						
-						Booking booking = new Booking(id, bookingStrings[0],stringToDate(id,bookingStrings[1]),bookingStrings[2],bookingStrings[3],bookingStrings[4],new Equipment(bookingStrings[5]));
-						
-						bookingSystemPanel.addBookingToList(booking,Color.cyan);
+						Booking newBooking = new Booking(id, bookingStrings[0],
+								stringToDate(id,bookingStrings[1]),
+								bookingStrings[2],
+								bookingStrings[3],
+								bookingStrings[4],
+								new Equipment(bookingStrings[5]));
+						bookingArrayList.add(newBooking);
+						bookingSystemPanel.addBookingToList(newBooking, Color.BLACK);
 					}
 				} catch (Exception e) {
 					MessageBox.errorMessageBox(e.toString());
@@ -130,17 +146,29 @@ public class BookingHandler implements ActionListener {
 				System.out.println("edit clicked");break;
 			default:
 				System.out.println("control handler not found");
-
 		}
+		populateBadBookingMessageBox();
 	}
 	
-	public Date stringToDate(int bookingId, String stringToConvert) {
-		Booking incorreclyFormattedBooking;
+	public Date stringToDate(int bookingId, String stringToConvert) throws Exception{
 		try {
+			System.out.println(stringToConvert);
 			return (Date) BOOKING_DATE_FORMAT.parse(stringToConvert);
 		} catch (ParseException e) {
-			MessageBox.warningMessageBox("Unreadable Date" + ": " + stringToConvert +". Edit this date manually.");
+			listOfBadBookingIDs.add(bookingId);
 			return new Date();
+		}
+	}
+
+	public void populateBadBookingMessageBox() {
+		String s = new String("Booking ID: " );
+		if (!listOfBadBookingIDs.isEmpty()) {
+			for (int i : listOfBadBookingIDs) {
+				s += i + ", ";
+			}
+			s+=" have/has incorrectly formatted date(s).";
+			listOfBadBookingIDs.clear();
+			MessageBox.warningMessageBox(s);
 		}
 	}
 

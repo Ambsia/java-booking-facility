@@ -6,8 +6,12 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionListener;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import javax.swing.JButton;
 import javax.swing.JPanel;
@@ -18,6 +22,7 @@ import javax.swing.event.ListSelectionListener;
 
 import com.bookingsystem.model.Booking;
 import com.bookingsystem.model.BookingTableModel;
+import com.bookingsystem.model.Equipment;
 
 
 public class UIBookingSystemPanel extends JPanel {
@@ -28,7 +33,9 @@ public class UIBookingSystemPanel extends JPanel {
 
 	private JTable jTable;
 
-	BookingTableModel model;
+	private DateFormat BOOKING_DATE_FORMAT = new SimpleDateFormat("dd-mm-yy", Locale.ENGLISH);
+
+	private BookingTableModel model;
 	public UIBookingSystemPanel() {
 
 
@@ -111,7 +118,7 @@ public class UIBookingSystemPanel extends JPanel {
 	public void addBookingToList(Booking booking, Color c) {
 		model.addRow(new Object[]{booking.getBookingID(),
 				booking.getBookingDay(),
-				booking.getBookingDate(),
+				BOOKING_DATE_FORMAT.format(booking.getBookingDate()),
 				booking.getBookingTime(),
 				booking.getBookingLocation(),
 				booking.getBookingHolder(),
@@ -120,11 +127,10 @@ public class UIBookingSystemPanel extends JPanel {
 	}
 
 	public void addBookingsToList(List<Booking> listOfBookings) {
-
 		for (Booking booking : listOfBookings) {
 			model.addRow(new Object[]{booking.getBookingID(),
 					booking.getBookingDay(),
-					booking.getBookingDate(),
+					BOOKING_DATE_FORMAT.format(booking.getBookingDate()),
 					booking.getBookingTime(),
 					booking.getBookingLocation(),
 					booking.getBookingHolder(),
@@ -133,9 +139,13 @@ public class UIBookingSystemPanel extends JPanel {
 	}
 	
 	public Booking getBookingFromList(int bookingId) {
-		
 		if (bookingId >= 0 && bookingId != (int) model.getValueAt(0, bookingId)) {
-			return new Booking((int) model.getValueAt(0, bookingId),   
+			return new Booking((int) model.getValueAt(0, bookingId), (String) model.getValueAt(1, bookingId),(Date) model.getValueAt(2, bookingId),
+					(String) model.getValueAt(3, bookingId),(String) model.getValueAt(4, bookingId),(String) model.getValueAt(5, bookingId),
+					(Equipment) model.getValueAt(6, bookingId) );
+
+		}
+		else return null;
 	}
 
 

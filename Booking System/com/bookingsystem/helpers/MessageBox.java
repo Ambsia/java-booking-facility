@@ -6,8 +6,12 @@ import javax.swing.JOptionPane;
  * These methods are static so they are able to be called upon within the view, controller or model package. 
  * */
 public final class MessageBox {
-	
-	
+
+    /** static void, warningMessageBox takes a string and passes it to another method which shows the message dialog,
+     * also this method will set the title of the message dialog to "Information",
+     * the constant integer will be set to INFORMATION_MESSAGE (used to set icon).
+     * @param message, the message that needs to be output within the message box dialog.
+     * */
 	public static void warningMessageBox(String message) {
 		show(message, "Warning", JOptionPane.WARNING_MESSAGE);
 	}

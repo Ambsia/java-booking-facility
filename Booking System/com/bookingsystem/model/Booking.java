@@ -45,15 +45,15 @@ public final class Booking  {
 		this.bookingLocation = bookingLocation;
 	}
 
-	public Date bookingCollectionTime() {
-		return bookingStartTime;
+	public Date getBookingCollectionTime() {
+		return bookingCollectionTime;
 	}
 
 	public void setBookingCollectionTime(Date bookingCollectionTime) {
 		this.bookingCollectionTime = bookingCollectionTime;
 	}
 	
-	public Date bookingStartTime() {
+	public Date getBookingStartTime() {
 		return bookingStartTime;
 	}
 
@@ -100,11 +100,13 @@ public final class Booking  {
 		bookingLogger = new Logger("Booking Instantiated", null);
 	}
 
-
 	
 	public boolean isValid() {
+		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm");
 		return (this.bookingDay.isEmpty() || this.bookingLocation.isEmpty() ||
-			    this.bookingTime.isEmpty() || this.bookingHolder.isEmpty()) ;
+			    simpleDateFormat.format(this.bookingStartTime).isEmpty() ||
+				simpleDateFormat.format(this.bookingCollectionTime).isEmpty() ||
+				this.bookingHolder.isEmpty()) ;
 	}
 
 	@Override
@@ -113,7 +115,8 @@ public final class Booking  {
 				"bookingID=" + bookingID +
 				", bookingDay='" + bookingDay + '\'' +
 				", bookingLocation='" + bookingLocation + '\'' +
-				", bookingTime='" + bookingTime + '\'' +
+				", bookingStartTime='" + bookingStartTime + '\'' +
+				", bookingCollectionTime='" + bookingCollectionTime + '\'' +
 				", bookingDate='" + bookingDate + '\'' +
 				", requiredEquipment=" + requiredEquipment +
 				", bookingHolder='" + bookingHolder + '\'' +
@@ -136,10 +139,10 @@ public final class Booking  {
 			return false;
 		if (bookingLogger != null ? !bookingLogger.equals(booking.bookingLogger) : booking.bookingLogger != null)
 			return false;
-		if (bookingTime != null ? !bookingTime.equals(booking.bookingTime) : booking.bookingTime != null) return false;
+		if (bookingStartTime != null ? !bookingStartTime.equals(booking.bookingStartTime) : booking.bookingStartTime != null) return false;
+		if (bookingCollectionTime != null ? !bookingCollectionTime.equals(booking.bookingCollectionTime) : booking.bookingCollectionTime != null) return false;
 		if (requiredEquipment != null ? !requiredEquipment.equals(booking.requiredEquipment) : booking.requiredEquipment != null)
 			return false;
-
 		return true;
 	}
 
@@ -148,7 +151,7 @@ public final class Booking  {
 		int result = bookingID;
 		result = 31 * result + (bookingDay != null ? bookingDay.hashCode() : 0);
 		result = 31 * result + (bookingLocation != null ? bookingLocation.hashCode() : 0);
-		result = 31 * result + (bookingTime != null ? bookingTime.hashCode() : 0);
+		result = 31 * result + (bookingStartTime != null ? bookingStartTime.hashCode() : 0);
 		result = 31 * result + (bookingDate != null ? bookingDate.hashCode() : 0);
 		result = 31 * result + (requiredEquipment != null ? requiredEquipment.hashCode() : 0);
 		result = 31 * result + (bookingHolder != null ? bookingHolder.hashCode() : 0);

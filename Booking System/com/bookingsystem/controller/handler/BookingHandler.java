@@ -30,13 +30,15 @@ import com.bookingsystem.view.UIBookingSystemAddPanel;
 import com.bookingsystem.view.UIBookingSystemControlPanel;
 import com.bookingsystem.view.UIBookingSystemPanel;
 import org.apache.commons.collections.IteratorUtils;
+import org.apache.xmlbeans.impl.regex.RegularExpression;
 
 public class BookingHandler implements ActionListener {
 	private BookingSystemUILoader view;
 	private UIBookingSystemPanel bookingSystemPanel;
 	private UIBookingSystemControlPanel bookingSystemControlPanel;
 	private UIBookingSystemAddPanel bookingSystemAddPanel;
-	private DateFormat BOOKING_DATE_FORMAT = new SimpleDateFormat("dd.MM.yy", Locale.ENGLISH);
+	private static DateFormat BOOKING_DATE_FORMAT = new SimpleDateFormat("dd.MM.yy", Locale.ENGLISH);
+	private static DateFormat BOOKING_TIME_FORMAT = new SimpleDateFormat("HH:mm", Locale.ENGLISH);
 
 	private BookingBusinessLayer bookingBusinessLayer;
 
@@ -47,6 +49,7 @@ public class BookingHandler implements ActionListener {
 		this.bookingSystemPanel = bookingSystemPanel;
 		bookingSystemControlPanel = this.bookingSystemPanel.getBookingSystemControlPanel();
 		bookingSystemAddPanel = bookingSystemControlPanel.getUiBookingSystemAddPanel();
+
 
 		listOfBadBookingIDs = new ArrayList<Integer>();
 
@@ -81,7 +84,7 @@ public class BookingHandler implements ActionListener {
 							workBook = (XSSFWorkbook) WorkbookFactory
 									.create(new PushbackInputStream(fileInputStream));
 
-							sheet = workBook.getSheetAt(1);
+							sheet = workBook.getSheetAt(0);
 							rows = sheet.getPhysicalNumberOfRows();
 							System.out.println(rows);
 
@@ -91,19 +94,26 @@ public class BookingHandler implements ActionListener {
 								row = sheet.getRow(r);
 								if (row.toString() != "") {
 									if (row.getCell((short) 0).toString() != "") {
+										//(int bookingID, String bookingDay, Date bookingDate, Date bookingStartTime,
+										//		Date bookingCollectionTime, String bookingLocation, String bookingHolder,
+										//		Equipment requiredEquipment
+
+
 										importedBooking = new Booking(r,
 												row.getCell((short) 0).toString(),
 												stringToDate(r, row.getCell((short) 1).toString()),
-												row.getCell((short) 2).toString(),
+												stringToTime(r,row.getCell((short) 2).toString(),false),
+												stringToTime(r,row.getCell((short) 2).toString(),true),
 												row.getCell((short) 3).toString(),
 												row.getCell((short) 4).toString(),
 												new Equipment(row.getCell((short) 5).toString()));
 
+										System.out.println(importedBooking);
 										bookingArrayList.add(
 												importedBooking);
 										bookingSystemPanel
 												.addBookingToList(importedBooking, c);
-										System.out.println(importedBooking.toString());
+										//System.out.println(importedBooking.toString());
 
 									}
 								}
@@ -127,9 +137,11 @@ public class BookingHandler implements ActionListener {
 					if (result == 0) {
 						String[] bookingStrings = bookingSystemAddPanel.getBookingStringArray();
 						int id = 1; //need to work out next id..get the value when completing sql query.
-						Booking newBooking = new Booking(id, bookingStrings[0],
+						Booking newBooking = new Booking(id,
+								bookingStrings[0],
 								stringToDate(id,bookingStrings[1]),
-								bookingStrings[2],
+								stringToTime(id,bookingStrings[2],false),
+								stringToTime(id,bookingStrings[2],true),
 								bookingStrings[3],
 								bookingStrings[4],
 								new Equipment(bookingStrings[5]));
@@ -154,6 +166,30 @@ public class BookingHandler implements ActionListener {
 		try {
 			System.out.println(stringToConvert);
 			return (Date) BOOKING_DATE_FORMAT.parse(stringToConvert);
+		} catch (ParseException e) {
+			listOfBadBookingIDs.add(bookingId);
+			return new Date();
+		}
+	}
+
+	public Date stringToTime(int bookingId, String unVerifiedStringToConvert, boolean collectionTime) throws Exception {
+		String verifiedStringToConvert = "";
+		String strippedUnverifiedStringToConvert = unVerifiedStringToConvert.replaceAll("[a-zA-z ]", "");
+		if (!strippedUnverifiedStringToConvert.contains("-")){
+				verifiedStringToConvert = strippedUnverifiedStringToConvert;
+		} else {
+			if (!collectionTime) {
+				//System.out.println("start time: " + strippedUnverifiedStringToConvert.substring(0,strippedUnverifiedStringToConvert.indexOf('-')));
+				verifiedStringToConvert = strippedUnverifiedStringToConvert.substring(0,strippedUnverifiedStringToConvert.indexOf('-'));
+
+			} else {
+				//System.out.println("end time: " + strippedUnverifiedStringToConvert.substring(strippedUnverifiedStringToConvert.indexOf('-') +1,strippedUnverifiedStringToConvert.length()));
+				verifiedStringToConvert = strippedUnverifiedStringToConvert.substring(strippedUnverifiedStringToConvert.indexOf('-') +1,strippedUnverifiedStringToConvert.length());
+			}
+		}
+		try {
+			System.out.println("returned date: " +verifiedStringToConvert + "collection = " + collectionTime);
+			return (Date) BOOKING_TIME_FORMAT.parse(verifiedStringToConvert);
 		} catch (ParseException e) {
 			listOfBadBookingIDs.add(bookingId);
 			return new Date();

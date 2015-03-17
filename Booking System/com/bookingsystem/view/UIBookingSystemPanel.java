@@ -34,7 +34,7 @@ public class UIBookingSystemPanel extends JPanel {
 	private JTable jTable;
 
 	private DateFormat BOOKING_DATE_FORMAT = new SimpleDateFormat("dd.MM.yy", Locale.ENGLISH);
-
+	private static DateFormat BOOKING_TIME_FORMAT = new SimpleDateFormat("HH:mm", Locale.ENGLISH);
 	private BookingTableModel model;
 	public UIBookingSystemPanel() {
 
@@ -119,7 +119,7 @@ public class UIBookingSystemPanel extends JPanel {
 		model.addRow(new Object[]{booking.getBookingID(),
 				booking.getBookingDay(),
 				BOOKING_DATE_FORMAT.format(booking.getBookingDate()),
-				booking.getBookingTime(),
+				BOOKING_TIME_FORMAT.format(booking.getBookingStartTime()) + "-" + BOOKING_TIME_FORMAT.format(booking.getBookingCollectionTime()),
 				booking.getBookingLocation(),
 				booking.getBookingHolder(),
 				booking.getRequiredEquipment().GetEquipmentName()});
@@ -131,7 +131,7 @@ public class UIBookingSystemPanel extends JPanel {
 			model.addRow(new Object[]{booking.getBookingID(),
 					booking.getBookingDay(),
 					BOOKING_DATE_FORMAT.format(booking.getBookingDate()),
-					booking.getBookingTime(),
+					BOOKING_TIME_FORMAT.format(booking.getBookingStartTime()) + "-" + BOOKING_TIME_FORMAT.format(booking.getBookingCollectionTime()),
 					booking.getBookingLocation(),
 					booking.getBookingHolder(),
 					booking.getRequiredEquipment().GetEquipmentName()});
@@ -140,8 +140,13 @@ public class UIBookingSystemPanel extends JPanel {
 	
 	public Booking getBookingFromList(int bookingId) {
 		if (bookingId >= 0 && bookingId != (int) model.getValueAt(0, bookingId)) {
-			return new Booking((int) model.getValueAt(0, bookingId), (String) model.getValueAt(1, bookingId),(Date) model.getValueAt(2, bookingId),
-					(String) model.getValueAt(3, bookingId),(String) model.getValueAt(4, bookingId),(String) model.getValueAt(5, bookingId),
+			return new Booking((int) model.getValueAt(0, bookingId),
+					(String) model.getValueAt(1, bookingId),
+					(Date) model.getValueAt(2, bookingId),
+					(Date) model.getValueAt(3, bookingId),
+					(Date) model.getValueAt(3, bookingId),
+					(String) model.getValueAt(4, bookingId),
+					(String) model.getValueAt(5, bookingId),
 					(Equipment) model.getValueAt(6, bookingId) );
 
 		}

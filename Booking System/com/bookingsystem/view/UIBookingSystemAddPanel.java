@@ -31,11 +31,12 @@ import com.bookingsystem.helpers.DateLabelFormatter;
 public class UIBookingSystemAddPanel extends JPanel {
 
     private final static String[] days = { "" ,"Sunday", "Monday" ,"Tuesday" ,"Wednesday","Thursday", "Friday", "Saturday" };
-    private final static String[] labels = {"Booking Day: ", "Booking Date: ", "Booking Time: ", "Booking Location: ", "Booking Holder: ", "Equipment: "};
+    private final static String[] labels = {"Booking Day: ", "Booking Date: ", "Booking Start Time: ", "Booking Collection Time: ", "Booking Location: ", "Booking Holder: ", "Equipment: "};
     private Component[] components;
 
     private JTextField txtBookingDay;
-    private JTextField txtBookingTime;
+    private JTextField txtBookingStartTime;
+    private JTextField txtBookingCollectionTime;
     private JTextField txtBookingLocation;
     private JTextField txtBookingHolder;
     private JTextArea txtAreaEquipment;
@@ -45,7 +46,8 @@ public class UIBookingSystemAddPanel extends JPanel {
 
     public UIBookingSystemAddPanel() {
         txtBookingDay = new JTextField(5);
-        txtBookingTime = new JTextField(5);
+        txtBookingStartTime = new JTextField(5);
+        txtBookingCollectionTime = new JTextField(5);
         txtBookingLocation = new JTextField(5);
         txtBookingHolder = new JTextField(5);
         txtAreaEquipment = new JTextArea(5,15);
@@ -62,7 +64,7 @@ public class UIBookingSystemAddPanel extends JPanel {
         final JDatePanelImpl datePanel = new JDatePanelImpl(model, p);
         datePicker = new JDatePickerImpl(datePanel, new DateLabelFormatter());
 
-        components = new Component[] { txtBookingDay, datePicker, txtBookingTime,txtBookingLocation,txtBookingHolder, jScrollPane };
+        components = new Component[] { txtBookingDay, datePicker, txtBookingStartTime,txtBookingCollectionTime,txtBookingLocation,txtBookingHolder, jScrollPane };
 
         for (int i = 0;i<labels.length;i++) {
             addControlToPanel(new JLabel(labels[i]), 0, i, 0, 0);
@@ -113,8 +115,12 @@ public class UIBookingSystemAddPanel extends JPanel {
         return txtBookingDay.getText();
     }
 
-    public String getTxtBookingTimeText() {
-        return txtBookingTime.getText();
+    public String getTxtBookingStartTimeText() {
+        return txtBookingStartTime.getText();
+    }
+
+    public String getTxtBookingCollectionTimeText() {
+        return txtBookingCollectionTime.getText();
     }
 
     public String getTxtBookingLocationText() {
@@ -133,7 +139,7 @@ public class UIBookingSystemAddPanel extends JPanel {
     }
 
     public String[] getBookingStringArray () {
-        return new String[]{ getTxtBookingDayText(),  getFormattedDate(), getTxtBookingTimeText(),
+        return new String[]{ getTxtBookingDayText(),  getFormattedDate(), getTxtBookingStartTimeText(),getTxtBookingCollectionTimeText(),
                 getTxtBookingLocationText(), getTxtBookingHolderText(), getTxtAreaEquipmentText()
         };
     }

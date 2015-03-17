@@ -141,7 +141,7 @@ public class BookingHandler implements ActionListener {
 								bookingStrings[0],
 								stringToDate(id,bookingStrings[1]),
 								stringToTime(id,bookingStrings[2],false),
-								stringToTime(id,bookingStrings[2],true),
+								stringToTime(id,bookingStrings[3],true),
 								bookingStrings[3],
 								bookingStrings[4],
 								new Equipment(bookingStrings[5]));

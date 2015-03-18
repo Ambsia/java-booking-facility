@@ -31,7 +31,7 @@ public class BookingSystemController {
         view.showLoginPanel();
         
         loginPanel = view.getLoginPanel();
-        bookingSystemTabbedPane = view.getbookingSystemTabbedPane();
+        bookingSystemTabbedPane = view.getBookingSystemTabbedPane();
         bookingSystemPanel = bookingSystemTabbedPane.getBookingSystemPanel();
         bookingSystemViewPanel = bookingSystemPanel.getBookingSystemViewPanel();
         bookingSystemControlPanel = bookingSystemPanel.getBookingSystemControlPanel();

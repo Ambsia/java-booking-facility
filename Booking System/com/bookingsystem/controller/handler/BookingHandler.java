@@ -30,7 +30,6 @@ import com.bookingsystem.view.UIBookingSystemAddPanel;
 import com.bookingsystem.view.UIBookingSystemControlPanel;
 import com.bookingsystem.view.UIBookingSystemPanel;
 import org.apache.commons.collections.IteratorUtils;
-import org.apache.xmlbeans.impl.regex.RegularExpression;
 
 public class BookingHandler implements ActionListener {
 	private BookingSystemUILoader view;
@@ -137,14 +136,17 @@ public class BookingHandler implements ActionListener {
 					if (result == 0) {
 						String[] bookingStrings = bookingSystemAddPanel.getBookingStringArray();
 						int id = 1; //need to work out next id..get the value when completing sql query.
+						for (String s : bookingStrings) {
+							System.out.println(s);
+						}
 						Booking newBooking = new Booking(id,
 								bookingStrings[0],
 								stringToDate(id,bookingStrings[1]),
 								stringToTime(id,bookingStrings[2],false),
 								stringToTime(id,bookingStrings[3],true),
-								bookingStrings[3],
 								bookingStrings[4],
-								new Equipment(bookingStrings[5]));
+								bookingStrings[5],
+								new Equipment(bookingStrings[6]));
 						bookingArrayList.add(newBooking);
 						bookingSystemPanel.addBookingToList(newBooking, Color.BLACK);
 					}
@@ -188,7 +190,6 @@ public class BookingHandler implements ActionListener {
 			}
 		}
 		try {
-			System.out.println("returned date: " +verifiedStringToConvert + "collection = " + collectionTime);
 			return (Date) BOOKING_TIME_FORMAT.parse(verifiedStringToConvert);
 		} catch (ParseException e) {
 			listOfBadBookingIDs.add(bookingId);

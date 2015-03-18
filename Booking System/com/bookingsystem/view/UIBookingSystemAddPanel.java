@@ -7,23 +7,18 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Time;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Properties;
+import java.util.*;
 
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
-import javax.swing.JTextField;
+import javax.swing.*;
 
 import org.jdatepicker.impl.JDatePanelImpl;
 import org.jdatepicker.impl.JDatePickerImpl;
 import org.jdatepicker.impl.UtilDateModel;
 
 import com.bookingsystem.helpers.DateLabelFormatter;
+
 
 /**
  * Created by Alex on 20/02/2015.
@@ -32,6 +27,7 @@ public class UIBookingSystemAddPanel extends JPanel {
 
     private final static String[] days = { "" ,"Sunday", "Monday" ,"Tuesday" ,"Wednesday","Thursday", "Friday", "Saturday" };
     private final static String[] labels = {"Booking Day: ", "Booking Date: ", "Booking Start Time: ", "Booking Collection Time: ", "Booking Location: ", "Booking Holder: ", "Equipment: "};
+
     private Component[] components;
 
     private JTextField txtBookingDay;
@@ -42,7 +38,12 @@ public class UIBookingSystemAddPanel extends JPanel {
     private JTextArea txtAreaEquipment;
     private JScrollPane jScrollPane;
     private JDatePickerImpl datePicker;
+    private Date date = new Date();
+    private SpinnerDateModel spinnerStartDateTimeModel;
+    private SpinnerDateModel spinnerCollectionDateTimeModel;
 
+    private JSpinner jSpinnerStartTime;
+    private JSpinner jSpinnerCollectionTime;
 
     public UIBookingSystemAddPanel() {
         txtBookingDay = new JTextField(5);
@@ -53,6 +54,22 @@ public class UIBookingSystemAddPanel extends JPanel {
         txtAreaEquipment = new JTextArea(5,15);
         jScrollPane = new JScrollPane(txtAreaEquipment);
         txtBookingDay.setEditable(false);
+        Time time = Time.valueOf("12:00:00");
+
+        date.setTime(time.getTime());
+        spinnerStartDateTimeModel = new SpinnerDateModel(date, null, null, Calendar.HOUR_OF_DAY);
+        spinnerCollectionDateTimeModel = new SpinnerDateModel(date, null, null, Calendar.HOUR_OF_DAY);
+
+        jSpinnerStartTime = new JSpinner(spinnerStartDateTimeModel);
+        jSpinnerCollectionTime = new JSpinner(spinnerCollectionDateTimeModel);
+
+        JSpinner.DateEditor dateEditorCollectionTime = new JSpinner.DateEditor(jSpinnerCollectionTime, "HH:mm aa");
+        jSpinnerCollectionTime.setEditor(dateEditorCollectionTime);
+
+        JSpinner.DateEditor dateEditorStartTime = new JSpinner.DateEditor(jSpinnerStartTime, "HH:mm aa");
+        jSpinnerStartTime.setEditor(dateEditorStartTime);
+
+
 
         setLayout(new GridBagLayout());
         UtilDateModel model = new UtilDateModel();
@@ -64,7 +81,7 @@ public class UIBookingSystemAddPanel extends JPanel {
         final JDatePanelImpl datePanel = new JDatePanelImpl(model, p);
         datePicker = new JDatePickerImpl(datePanel, new DateLabelFormatter());
 
-        components = new Component[] { txtBookingDay, datePicker, txtBookingStartTime,txtBookingCollectionTime,txtBookingLocation,txtBookingHolder, jScrollPane };
+        components = new Component[] { txtBookingDay, datePicker, jSpinnerStartTime,jSpinnerCollectionTime,txtBookingLocation,txtBookingHolder, jScrollPane };
 
         for (int i = 0;i<labels.length;i++) {
             addControlToPanel(new JLabel(labels[i]), 0, i, 0, 0);
@@ -77,7 +94,7 @@ public class UIBookingSystemAddPanel extends JPanel {
                     Calendar c = Calendar.getInstance();
                     Date d = null;
                     try {
-                        d = new SimpleDateFormat("dd-MM-yyyy").parse(getFormattedDate());
+                        d = new SimpleDateFormat("dd.MM.yy").parse(getFormattedDate());
                     } catch (Exception ex) {
                         System.out.println(ex.toString());
                     }
@@ -116,11 +133,11 @@ public class UIBookingSystemAddPanel extends JPanel {
     }
 
     public String getTxtBookingStartTimeText() {
-        return txtBookingStartTime.getText();
+        return jSpinnerStartTime.getModel().getValue().toString();
     }
 
     public String getTxtBookingCollectionTimeText() {
-        return txtBookingCollectionTime.getText();
+        return jSpinnerCollectionTime.getModel().getValue().toString();
     }
 
     public String getTxtBookingLocationText() {
@@ -132,7 +149,7 @@ public class UIBookingSystemAddPanel extends JPanel {
     }
 
     public String getFormattedDate() {
-        String datePattern = "dd-MM-yyyy";
+        String datePattern = "dd.MM.yy";
         SimpleDateFormat dateFormatter = new SimpleDateFormat(datePattern);
 
         return dateFormatter.format((Date) datePicker.getModel().getValue());

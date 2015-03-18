@@ -1,9 +1,6 @@
 package  com.bookingsystem.view;
 
-import java.awt.BorderLayout;
-import java.awt.Dimension;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
+import java.awt.*;
 
 import javax.swing.JFrame;
 import javax.swing.UIManager;
@@ -30,10 +27,6 @@ public class BookingSystemUILoader extends JFrame {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-	}
-
-	public void parse(String s) {
-
 	}
 
 	public UIBookingSystemMenuBarLoader getMenuBarLoader() {
@@ -72,7 +65,7 @@ public class BookingSystemUILoader extends JFrame {
 		this.setMinimumSize(d);
 	}
 
-	public UIBookingSystemTabbedPane getbookingSystemTabbedPane() {
+	public UIBookingSystemTabbedPane getBookingSystemTabbedPane() {
 		return bookingSystemTabbedPane;
 	}
 	

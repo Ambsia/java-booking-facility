@@ -8,6 +8,7 @@ import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Time;
+import java.text.Format;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -57,16 +58,19 @@ public class UIBookingSystemAddPanel extends JPanel {
         Time time = Time.valueOf("12:00:00");
 
         date.setTime(time.getTime());
+
+
         spinnerStartDateTimeModel = new SpinnerDateModel(date, null, null, Calendar.HOUR_OF_DAY);
+
         spinnerCollectionDateTimeModel = new SpinnerDateModel(date, null, null, Calendar.HOUR_OF_DAY);
 
         jSpinnerStartTime = new JSpinner(spinnerStartDateTimeModel);
         jSpinnerCollectionTime = new JSpinner(spinnerCollectionDateTimeModel);
 
-        JSpinner.DateEditor dateEditorCollectionTime = new JSpinner.DateEditor(jSpinnerCollectionTime, "HH:mm aa");
+        JSpinner.DateEditor dateEditorCollectionTime = new JSpinner.DateEditor(jSpinnerCollectionTime, "HH:mm");
         jSpinnerCollectionTime.setEditor(dateEditorCollectionTime);
 
-        JSpinner.DateEditor dateEditorStartTime = new JSpinner.DateEditor(jSpinnerStartTime, "HH:mm aa");
+        JSpinner.DateEditor dateEditorStartTime = new JSpinner.DateEditor(jSpinnerStartTime, "HH:mm");
         jSpinnerStartTime.setEditor(dateEditorStartTime);
 
 
@@ -133,11 +137,27 @@ public class UIBookingSystemAddPanel extends JPanel {
     }
 
     public String getTxtBookingStartTimeText() {
-        return jSpinnerStartTime.getModel().getValue().toString();
+        Format timeFormat =  new SimpleDateFormat("HH:mm", Locale.ENGLISH);
+        Date d = null;
+        try {
+            d = (Date) jSpinnerStartTime.getModel().getValue();
+        } catch (Exception e) {
+
+        }
+        String s = "" + d.getTime();
+        return s;
     }
 
     public String getTxtBookingCollectionTimeText() {
-        return jSpinnerCollectionTime.getModel().getValue().toString();
+        Format timeFormat =  new SimpleDateFormat("HH:mm", Locale.ENGLISH);
+        Date d = null;
+        try {
+            d = (Date) jSpinnerCollectionTime.getModel().getValue();
+        } catch (Exception e) {
+
+        }
+        String s = "" + d.getTime();
+        return s;
     }
 
     public String getTxtBookingLocationText() {

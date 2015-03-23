@@ -17,10 +17,7 @@ import java.util.Locale;
 import javax.swing.JFileChooser;
 
 import com.bookingsystem.model.BookingBusinessLayer;
-import org.apache.poi.ss.usermodel.WorkbookFactory;
-import org.apache.poi.xssf.usermodel.XSSFRow;
-import org.apache.poi.xssf.usermodel.XSSFSheet;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+
 
 import com.bookingsystem.helpers.MessageBox;
 import com.bookingsystem.model.Booking;
@@ -30,6 +27,10 @@ import com.bookingsystem.view.UIBookingSystemAddPanel;
 import com.bookingsystem.view.UIBookingSystemControlPanel;
 import com.bookingsystem.view.UIBookingSystemPanel;
 import org.apache.commons.collections.IteratorUtils;
+import org.apache.poi.ss.usermodel.WorkbookFactory;
+import org.apache.poi.xssf.usermodel.XSSFRow;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 public class BookingHandler implements ActionListener {
 	private BookingSystemUILoader view;
@@ -87,16 +88,14 @@ public class BookingHandler implements ActionListener {
 							rows = sheet.getPhysicalNumberOfRows();
 							System.out.println(rows);
 
-
 							Color c = Color.white;
 							for (int r = 1; r < rows; r++) {
 								row = sheet.getRow(r);
 								if (row.toString() != "") {
 									if (row.getCell((short) 0).toString() != "") {
 										//(int bookingID, String bookingDay, Date bookingDate, Date bookingStartTime,
-										//		Date bookingCollectionTime, String bookingLocation, String bookingHolder,
-										//		Equipment requiredEquipment
-
+										//Date bookingCollectionTime, String bookingLocation, String bookingHolder,
+										//Equipment requiredEquipment
 
 										importedBooking = new Booking(r,
 												row.getCell((short) 0).toString(),
@@ -113,7 +112,6 @@ public class BookingHandler implements ActionListener {
 										bookingSystemPanel
 												.addBookingToList(importedBooking, c);
 										//System.out.println(importedBooking.toString());
-
 									}
 								}
 							}
@@ -135,10 +133,9 @@ public class BookingHandler implements ActionListener {
 					int result = bookingSystemAddPanel.showDialog();
 					if (result == 0) {
 						String[] bookingStrings = bookingSystemAddPanel.getBookingStringArray();
+
 						int id = 1; //need to work out next id..get the value when completing sql query.
-						for (String s : bookingStrings) {
-							System.out.println(s);
-						}
+
 						Booking newBooking = new Booking(id,
 								bookingStrings[0],
 								stringToDate(id,bookingStrings[1]),
@@ -166,7 +163,6 @@ public class BookingHandler implements ActionListener {
 	
 	public Date stringToDate(int bookingId, String stringToConvert) throws Exception{
 		try {
-			System.out.println(stringToConvert);
 			return (Date) BOOKING_DATE_FORMAT.parse(stringToConvert);
 		} catch (ParseException e) {
 			listOfBadBookingIDs.add(bookingId);
@@ -175,23 +171,25 @@ public class BookingHandler implements ActionListener {
 	}
 
 	public Date stringToTime(int bookingId, String unVerifiedStringToConvert, boolean collectionTime) throws Exception {
-		String verifiedStringToConvert = "";
+
 		String strippedUnverifiedStringToConvert = unVerifiedStringToConvert.replaceAll("[a-zA-z ]", "");
+		String verifiedStringToConvert;
 		if (!strippedUnverifiedStringToConvert.contains("-")){
 				verifiedStringToConvert = strippedUnverifiedStringToConvert;
 		} else {
 			if (!collectionTime) {
-				//System.out.println("start time: " + strippedUnverifiedStringToConvert.substring(0,strippedUnverifiedStringToConvert.indexOf('-')));
+				System.out.println("start time: " + strippedUnverifiedStringToConvert.substring(0,strippedUnverifiedStringToConvert.indexOf('-')));
 				verifiedStringToConvert = strippedUnverifiedStringToConvert.substring(0,strippedUnverifiedStringToConvert.indexOf('-'));
 
 			} else {
-				//System.out.println("end time: " + strippedUnverifiedStringToConvert.substring(strippedUnverifiedStringToConvert.indexOf('-') +1,strippedUnverifiedStringToConvert.length()));
+				System.out.println("end time: " + strippedUnverifiedStringToConvert.substring(strippedUnverifiedStringToConvert.indexOf('-') +1,strippedUnverifiedStringToConvert.length()));
 				verifiedStringToConvert = strippedUnverifiedStringToConvert.substring(strippedUnverifiedStringToConvert.indexOf('-') +1,strippedUnverifiedStringToConvert.length());
 			}
 		}
 		try {
-			return (Date) BOOKING_TIME_FORMAT.parse(verifiedStringToConvert);
-		} catch (ParseException e) {
+			long dayMs = Long.parseLong(unVerifiedStringToConvert);
+			return new Date(dayMs);
+		} catch (Exception e) {
 			listOfBadBookingIDs.add(bookingId);
 			return new Date();
 		}

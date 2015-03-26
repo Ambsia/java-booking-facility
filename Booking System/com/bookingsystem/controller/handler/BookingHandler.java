@@ -171,25 +171,37 @@ public class BookingHandler implements ActionListener {
 	}
 
 	public Date stringToTime(int bookingId, String unVerifiedStringToConvert, boolean collectionTime) throws Exception {
+		String verificationSteps ="";
+		verificationSteps += "current state: unverified string= " +unVerifiedStringToConvert+"\n";
 
 		String strippedUnverifiedStringToConvert = unVerifiedStringToConvert.replaceAll("[a-zA-z ]", "");
-		String verifiedStringToConvert;
+
+		verificationSteps += "current state: unverified stripped string= " +strippedUnverifiedStringToConvert+"\n";
+		String verifiedStringToConvert = "unused";
+
 		if (!strippedUnverifiedStringToConvert.contains("-")){
 				verifiedStringToConvert = strippedUnverifiedStringToConvert;
+
 		} else {
 			if (!collectionTime) {
-				System.out.println("start time: " + strippedUnverifiedStringToConvert.substring(0,strippedUnverifiedStringToConvert.indexOf('-')));
+				//System.out.println("start time: " + strippedUnverifiedStringToConvert.substring(0,strippedUnverifiedStringToConvert.indexOf('-')));
 				verifiedStringToConvert = strippedUnverifiedStringToConvert.substring(0,strippedUnverifiedStringToConvert.indexOf('-'));
 
 			} else {
-				System.out.println("end time: " + strippedUnverifiedStringToConvert.substring(strippedUnverifiedStringToConvert.indexOf('-') +1,strippedUnverifiedStringToConvert.length()));
+				//System.out.println("end time: " + strippedUnverifiedStringToConvert.substring(strippedUnverifiedStringToConvert.indexOf('-') +1,strippedUnverifiedStringToConvert.length()));
 				verifiedStringToConvert = strippedUnverifiedStringToConvert.substring(strippedUnverifiedStringToConvert.indexOf('-') +1,strippedUnverifiedStringToConvert.length());
 			}
 		}
-		try {
+
+		verificationSteps +="current state: verified string= " +verifiedStringToConvert+"\n";
+
+		System.out.println(verificationSteps);
+		try { //check if i can parse to long, if not work another way of converting the unverified string into a usable date format..
 			long dayMs = Long.parseLong(unVerifiedStringToConvert);
 			return new Date(dayMs);
-		} catch (Exception e) {
+		} catch (NumberFormatException ep){
+			return (Date) BOOKING_TIME_FORMAT.parse(verifiedStringToConvert);
+		} catch (Exception e) { //last choice - notify user that the date was in the incorrect format and add a new date
 			listOfBadBookingIDs.add(bookingId);
 			return new Date();
 		}

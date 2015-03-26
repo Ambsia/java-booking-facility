@@ -9,24 +9,11 @@ Desktop.ini
 $RECYCLE.BIN/
 
 # Windows Installer files
-*.cab
-*.msi
-*.msm
-*.msp
 
 # Windows shortcuts
 *.lnk
 
 # Folders/files to ignore
-.metadata
-.recommenders
-.idea
-bin
-.settings
-.classpath
-.project
-#*.xlsx
-*.iml
 
 # =========================
 # Operating System Files
@@ -47,9 +34,3 @@ bin
 .Trashes
 
 # Directories potentially created on remote AFP share
-.AppleDB
-.AppleDesktop
-Network Trash Folder
-Temporary Items
-.apdisk
-logfile.txt

@@ -5,6 +5,8 @@ import java.security.SecureRandom;
 
 import org.apache.commons.codec.digest.DigestUtils;
 
+import java.sql.*;
+
 public final class Account {
 
 	private int userID;
@@ -13,8 +15,9 @@ public final class Account {
 	private int userLevel;
 	private String userSalt;
 
+
 	public static String validationMsg = "";
-	
+
 	private boolean accountCreation = false;
 
 	private static boolean loggedIn = false;
@@ -50,29 +53,7 @@ public final class Account {
 			accountLogger = new Logger("Creating Account.",this);
 			userSalt = generateSalt();
 	}
-	
-	public boolean login() {
-		
-		
-		//sql connection string
-		
-		//try connect
-		//try {
-		//
-		//} catch (SQLException e) {
-		//
-		//}
 
-		//create sql command
-		//String sqlCommand = "Select Username,Password from tblUsers where" +
-		//"Username=@Username AND Password=@Password";
-		accountLogger = new Logger("Logging in.",this);
-		return true;
-		//Pass parameter's for username and password
-		//execute command
-		//Logged in = true or false
-		
-	}
 
 	public String SHA1_HASH(String unHashedString) {
 

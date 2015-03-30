@@ -16,7 +16,7 @@ import java.util.Locale;
 
 import javax.swing.JFileChooser;
 
-import com.bookingsystem.model.BookingBusinessLayer;
+import com.bookingsystem.model.businessmodel.BookingBusinessLayer;
 
 
 import com.bookingsystem.helpers.MessageBox;

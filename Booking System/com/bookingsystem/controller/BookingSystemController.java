@@ -2,9 +2,12 @@ package com.bookingsystem.controller;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
+import java.sql.SQLException;
 
 import com.bookingsystem.controller.handler.BookingHandler;
 import com.bookingsystem.model.Account;
+import com.bookingsystem.model.businessmodel.AccountBusinessLayer;
 import com.bookingsystem.view.BookingSystemUILoader;
 import com.bookingsystem.view.UIBookingSystemControlPanel;
 import com.bookingsystem.view.UIBookingSystemPanel;
@@ -55,8 +58,18 @@ public class BookingSystemController {
             username = loginPanel.GetLoginUsernameText();
             unHashedPassword = loginPanel.GetLoginPasswordText();
 
+
             accountModel = new Account(0, 0, username, unHashedPassword);
-            loggedInSuccessful = accountModel.login();
+            try {
+                AccountBusinessLayer accountBusinessLayer = new AccountBusinessLayer();
+                loggedInSuccessful = accountBusinessLayer.getAccount(accountModel);
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
             System.out.println(accountModel.toString() + loggedInSuccessful);
 
             if (loggedInSuccessful) {

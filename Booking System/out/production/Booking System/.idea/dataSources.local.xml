@@ -3,8 +3,7 @@
   <component name="dataSourceStorageLocal">
     <data-source name="BookingSystem" uuid="7795f299-335b-4305-92b1-b3fe310c00f4">
       <secret-storage>master_key</secret-storage>
-      <domain-auth>true</domain-auth>
-      <user-name>AlexPC</user-name>
+      <user-name>Alex</user-name>
       <schema-pattern>BookingSystem.*</schema-pattern>
       <default-schemas>BookingSystem.*</default-schemas>
     </data-source>

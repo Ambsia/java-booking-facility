@@ -1,8 +1,11 @@
 package com.bookingsystem.model;
 
+import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 
+import com.bookingsystem.helpers.MessageBox;
+import com.bookingsystem.helpers.ReturnSpecifiedPropertyValues;
 import org.apache.commons.codec.digest.DigestUtils;
 
 import java.sql.*;
@@ -15,14 +18,32 @@ public final class Account {
 	private int userLevel;
 	private String userSalt;
 
-
-	public static String validationMsg = "";
-
-	private boolean accountCreation = false;
-
-	private static boolean loggedIn = false;
-
 	Logger accountLogger;
+
+	public void setUserLevel(int userLevel) {
+		this.userLevel = userLevel;
+	}
+
+	public void setUserSalt(String userSalt) {
+		this.userSalt = userSalt;
+	}
+
+	public void setUserID(int userID) {
+		this.userID = userID;
+	}
+
+	public boolean validation() {
+		return !this.userLogonName.isEmpty() || !this.hashedPassword.isEmpty();
+	}
+
+
+	public String getUsername() {
+		return this.userLogonName;
+	}
+
+	public String getHashedPassword() {
+		return this.hashedPassword;
+	}
 
 	public Account(int userID, int userLevel, String userLogonName,
 			String unHashedPassword) {
@@ -33,42 +54,24 @@ public final class Account {
 		accountLogger = new Logger("Initialised Account.",this);
 	}
 
-	public boolean validation() {
-		return !this.userLogonName.isEmpty() || !this.hashedPassword.isEmpty();
-	}
-
-	public static boolean isLoggedIn() {
-		return loggedIn;
-	}
-
-	public String getUsername() {
-		return this.userLogonName;
-	}
-
-	public String getHashedPassword() {
-		return this.hashedPassword;
-	}
-
-	public void createAccount() {
-			accountLogger = new Logger("Creating Account.",this);
-			userSalt = generateSalt();
-	}
 
 
-	public String SHA1_HASH(String unHashedString) {
-
-		if (!accountCreation) {
-		//sql connection string
-		//try connect to database
-				
-		//create sql command
-		//String sqlCommand = "Select UserID from tblUsers"
-		// + " where Username=@Username" + "VALUES (@Username)";
-		//sql datareader
-		//userID = sqlreader
-		//userSalt = sqlreader
-		
-		
+	private String SHA1_HASH(String unHashedString) {
+		Connection con;
+		try {
+			accountLogger = new Logger("Attempting to retrieve salt of account", this);
+			ReturnSpecifiedPropertyValues returnSpecifiedPropertyValues = new ReturnSpecifiedPropertyValues();
+			con = DriverManager.getConnection(returnSpecifiedPropertyValues.getDatabaseConnectionString());
+			Statement stmt = con.createStatement();
+			ResultSet rs = stmt.executeQuery("EXECUTE spGetSalt '" + this.getUsername() + "'");
+			while(rs.next())  {
+				userSalt = rs.getString(1);
+			}
+			accountLogger = new Logger("Salt Retrieval Successful", this);
+		} catch (SQLException e) {
+			MessageBox.errorMessageBox(e.toString());
+		} catch (IOException e) {
+			MessageBox.errorMessageBox(e.toString());
 		}
 		String hashedString = DigestUtils.sha1Hex(unHashedString + userSalt);
 		accountLogger = new Logger("Hashing Un-Hashed String.",this);
@@ -76,20 +79,16 @@ public final class Account {
 	}
 
 	public String generateSalt() {
-		int salt = 0;
+		int salt;
 		try {
+			accountLogger = new Logger("Attempting to generate salt.", this);
 			SecureRandom random = SecureRandom.getInstance("SHA1PRNG");
 			salt = random.nextInt(random.nextInt(1000000) + (Integer.MAX_VALUE - 1000000));
+			accountLogger = new Logger("Generated Salt.",this);
 		} catch (NoSuchAlgorithmException e) {
 			salt = 0;
 		}
-		accountLogger = new Logger("Generated Salt.",this);
-		return new String(Integer.toString(salt));
-	} 
-
-	public Account returnAccount() {
-
-		return null;
+		return "" +salt;
 	}
 
 	@Override
@@ -100,7 +99,7 @@ public final class Account {
 				", hashedPassword='" + hashedPassword + '\'' +
 				", userLevel=" + userLevel +
 				", userSalt='" + userSalt + '\'' +
-				", accountCreation=" + accountCreation +
+				", accountCreation=" +
 				'}';
 	}
 

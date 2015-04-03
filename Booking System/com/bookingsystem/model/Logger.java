@@ -6,7 +6,7 @@ import java.io.PrintWriter;
 import java.util.Date;
 
 /**
- * Created by Alex on 26/02/2015.
+ * Author: [Alex] on [$Date]
  */
 public final class Logger {
 
@@ -26,8 +26,8 @@ public final class Logger {
 
     public void logEvent() {
         try (PrintWriter printWriter = new PrintWriter(new BufferedWriter(new FileWriter("logfile.txt",true)))) {
-            printWriter.println(this.dateAndTimeOfAction + " " + currentAccountLoggedIn.toString() + " Action = { " + loggedAction.toString() + " }");
-        } catch (Exception e) {
+            printWriter.println(this.dateAndTimeOfAction + " " + currentAccountLoggedIn.toString() + " Action = { " + loggedAction + " }");
+        } catch (Exception ignored) {
         }
     }
 

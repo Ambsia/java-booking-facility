@@ -6,7 +6,7 @@ import java.io.InputStream;
 import java.io.FileNotFoundException;
 
 /**
- * Created by Alex on 30/03/2015.
+ * Author: [Alex] on [$Date]
  */
 public class ReturnSpecifiedPropertyValues {
 
@@ -25,8 +25,7 @@ public class ReturnSpecifiedPropertyValues {
         }
     }
 
-    public String[] getPropertyValues() throws IOException {
-
-        return new String[] { properties.getProperty("server"), properties.getProperty("port"), properties.getProperty("user"), properties.getProperty("password"), properties.getProperty("database")};
+    public String getDatabaseConnectionString() throws IOException {
+        return "jdbc:sqlserver://" + properties.getProperty("server") + ":" + properties.getProperty("port") + ";user=" + properties.getProperty("user") + ";password=" + properties.getProperty("password") + ";databaseName=" +  properties.getProperty("database") + "";
     }
 }

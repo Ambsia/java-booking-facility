@@ -3,16 +3,14 @@ package com.bookingsystem.model.businessmodel;
 import com.bookingsystem.model.Booking;
 
 import java.util.ArrayList;
-import java.util.Enumeration;
-import java.util.Iterator;
 
 /**
- * Created by Alex on 12/03/2015.
+ * Author: [Alex] on [$Date]
  */
 public class BookingBusinessLayer {
 
 	public Iterable<Booking> bookings() {
-		ArrayList<Booking> bookings = new ArrayList<Booking>();
+		ArrayList<Booking> bookings = new ArrayList<>();
 		return bookings;
 	}
 

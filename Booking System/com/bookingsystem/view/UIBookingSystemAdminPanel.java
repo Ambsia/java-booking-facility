@@ -4,7 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 
 /**
- * Created by Alex on 22/03/2015.
+ * Author: [Alex] on [$Date]
  */
 public class UIBookingSystemAdminPanel extends JPanel {
 

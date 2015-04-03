@@ -216,3 +216,122 @@ Tue Mar 31 00:55:08 BST 2015 Account{userID=0, userLogonName='', hashedPassword=
 Tue Mar 31 00:55:08 BST 2015 Account{userID=0, userLogonName='', hashedPassword='2be88ca4242c76e8253ac62474851065032d6833', userLevel=0, userSalt='null', accountCreation=false} Action = { Initialised Account. }
 Tue Mar 31 00:56:41 BST 2015 Account{userID=0, userLogonName='', hashedPassword='null', userLevel=0, userSalt='null', accountCreation=false} Action = { Hashing Un-Hashed String. }
 Tue Mar 31 00:56:41 BST 2015 Account{userID=0, userLogonName='', hashedPassword='2be88ca4242c76e8253ac62474851065032d6833', userLevel=0, userSalt='null', accountCreation=false} Action = { Initialised Account. }
+Thu Apr 02 23:55:20 BST 2015 Account{userID=0, userLogonName='', hashedPassword='null', userLevel=0, userSalt='null', accountCreation=false} Action = { Hashing Un-Hashed String. }
+Thu Apr 02 23:55:20 BST 2015 Account{userID=0, userLogonName='', hashedPassword='2be88ca4242c76e8253ac62474851065032d6833', userLevel=0, userSalt='null', accountCreation=false} Action = { Initialised Account. }
+Thu Apr 02 23:55:47 BST 2015 Account{userID=0, userLogonName='', hashedPassword='null', userLevel=0, userSalt='null', accountCreation=false} Action = { Hashing Un-Hashed String. }
+Thu Apr 02 23:55:47 BST 2015 Account{userID=0, userLogonName='', hashedPassword='2be88ca4242c76e8253ac62474851065032d6833', userLevel=0, userSalt='null', accountCreation=false} Action = { Initialised Account. }
+Thu Apr 02 23:55:47 BST 2015 Account{userID=0, userLogonName='', hashedPassword='2be88ca4242c76e8253ac62474851065032d6833', userLevel=0, userSalt='null', accountCreation=false} Action = { Logging in. }
+Thu Apr 02 23:59:35 BST 2015 Account{userID=0, userLogonName='', hashedPassword='null', userLevel=0, userSalt='null', accountCreation=false} Action = { Hashing Un-Hashed String. }
+Thu Apr 02 23:59:35 BST 2015 Account{userID=0, userLogonName='', hashedPassword='2be88ca4242c76e8253ac62474851065032d6833', userLevel=0, userSalt='null', accountCreation=false} Action = { Initialised Account. }
+Fri Apr 03 00:00:09 BST 2015 Account{userID=0, userLogonName='', hashedPassword='null', userLevel=0, userSalt='null', accountCreation=false} Action = { Hashing Un-Hashed String. }
+Fri Apr 03 00:00:09 BST 2015 Account{userID=0, userLogonName='', hashedPassword='2be88ca4242c76e8253ac62474851065032d6833', userLevel=0, userSalt='null', accountCreation=false} Action = { Initialised Account. }
+Fri Apr 03 17:46:56 BST 2015 Account{userID=0, userLogonName='', hashedPassword='null', userLevel=0, userSalt='null', accountCreation=false} Action = { Hashing Un-Hashed String. }
+Fri Apr 03 17:46:56 BST 2015 Account{userID=0, userLogonName='', hashedPassword='2be88ca4242c76e8253ac62474851065032d6833', userLevel=0, userSalt='null', accountCreation=false} Action = { Initialised Account. }
+Fri Apr 03 17:47:31 BST 2015 Account{userID=0, userLogonName='', hashedPassword='null', userLevel=0, userSalt='null', accountCreation=false} Action = { Hashing Un-Hashed String. }
+Fri Apr 03 17:47:31 BST 2015 Account{userID=0, userLogonName='', hashedPassword='2be88ca4242c76e8253ac62474851065032d6833', userLevel=0, userSalt='null', accountCreation=false} Action = { Initialised Account. }
+Fri Apr 03 17:49:35 BST 2015 Account{userID=0, userLogonName='', hashedPassword='null', userLevel=0, userSalt='null', accountCreation=false} Action = { Hashing Un-Hashed String. }
+Fri Apr 03 17:49:35 BST 2015 Account{userID=0, userLogonName='', hashedPassword='2be88ca4242c76e8253ac62474851065032d6833', userLevel=0, userSalt='null', accountCreation=false} Action = { Initialised Account. }
+Fri Apr 03 17:49:47 BST 2015 Account{userID=0, userLogonName='Alex', hashedPassword='null', userLevel=0, userSalt='null', accountCreation=false} Action = { Hashing Un-Hashed String. }
+Fri Apr 03 17:49:47 BST 2015 Account{userID=0, userLogonName='Alex', hashedPassword='116ad0e79714c93f895e7c6b5026d7b99c0a5958', userLevel=0, userSalt='null', accountCreation=false} Action = { Initialised Account. }
+Fri Apr 03 17:50:15 BST 2015 Account{userID=0, userLogonName='', hashedPassword='null', userLevel=0, userSalt='null', accountCreation=false} Action = { Hashing Un-Hashed String. }
+Fri Apr 03 17:50:15 BST 2015 Account{userID=0, userLogonName='', hashedPassword='472b07b9fcf2c2451e8781e944bf5f77cd8457c8', userLevel=0, userSalt='null', accountCreation=false} Action = { Initialised Account. }
+Fri Apr 03 17:50:42 BST 2015 Account{userID=0, userLogonName='', hashedPassword='null', userLevel=0, userSalt='null', accountCreation=false} Action = { Hashing Un-Hashed String. }
+Fri Apr 03 17:50:42 BST 2015 Account{userID=0, userLogonName='', hashedPassword='472b07b9fcf2c2451e8781e944bf5f77cd8457c8', userLevel=0, userSalt='null', accountCreation=false} Action = { Initialised Account. }
+Fri Apr 03 17:51:13 BST 2015 Account{userID=0, userLogonName='', hashedPassword='null', userLevel=0, userSalt='null', accountCreation=false} Action = { Hashing Un-Hashed String. }
+Fri Apr 03 17:51:13 BST 2015 Account{userID=0, userLogonName='', hashedPassword='472b07b9fcf2c2451e8781e944bf5f77cd8457c8', userLevel=0, userSalt='null', accountCreation=false} Action = { Initialised Account. }
+Fri Apr 03 17:51:25 BST 2015 Account{userID=0, userLogonName='Alex', hashedPassword='null', userLevel=0, userSalt='null', accountCreation=false} Action = { Hashing Un-Hashed String. }
+Fri Apr 03 17:51:25 BST 2015 Account{userID=0, userLogonName='Alex', hashedPassword='e59dc23d49b237c5d0aca0ea9ed9ae715ece9edc', userLevel=0, userSalt='null', accountCreation=false} Action = { Initialised Account. }
+Fri Apr 03 17:55:10 BST 2015 Account{userID=0, userLogonName='alex', hashedPassword='null', userLevel=0, userSalt='21', accountCreation=false} Action = { Hashing Un-Hashed String. }
+Fri Apr 03 17:55:10 BST 2015 Account{userID=0, userLogonName='alex', hashedPassword='e99aa5648685780351fecb6593ed921f5fee9b23', userLevel=0, userSalt='21', accountCreation=false} Action = { Initialised Account. }
+Fri Apr 03 19:32:36 BST 2015 Account{userID=0, userLogonName='Alex', hashedPassword='null', userLevel=0, userSalt='null', accountCreation=false} Action = { Hashing Un-Hashed String. }
+Fri Apr 03 19:32:36 BST 2015 Account{userID=0, userLogonName='Alex', hashedPassword='116ad0e79714c93f895e7c6b5026d7b99c0a5958', userLevel=0, userSalt='null', accountCreation=false} Action = { Initialised Account. }
+Fri Apr 03 19:33:47 BST 2015 Account{userID=0, userLogonName='', hashedPassword='null', userLevel=0, userSalt='null', accountCreation=false} Action = { Hashing Un-Hashed String. }
+Fri Apr 03 19:33:48 BST 2015 Account{userID=0, userLogonName='', hashedPassword='2be88ca4242c76e8253ac62474851065032d6833', userLevel=0, userSalt='null', accountCreation=false} Action = { Initialised Account. }
+Fri Apr 03 19:33:56 BST 2015 Account{userID=0, userLogonName='Alex', hashedPassword='null', userLevel=0, userSalt='null', accountCreation=false} Action = { Hashing Un-Hashed String. }
+Fri Apr 03 19:33:56 BST 2015 Account{userID=0, userLogonName='Alex', hashedPassword='398be310cc888042d6f30dc288bebd58fd1f73ab', userLevel=0, userSalt='null', accountCreation=false} Action = { Initialised Account. }
+Fri Apr 03 19:34:55 BST 2015 Account{userID=0, userLogonName='alex', hashedPassword='null', userLevel=0, userSalt='null', accountCreation=false} Action = { Hashing Un-Hashed String. }
+Fri Apr 03 19:34:55 BST 2015 Account{userID=0, userLogonName='alex', hashedPassword='398be310cc888042d6f30dc288bebd58fd1f73ab', userLevel=0, userSalt='null', accountCreation=false} Action = { Initialised Account. }
+Fri Apr 03 19:37:17 BST 2015 Account{userID=0, userLogonName='', hashedPassword='null', userLevel=0, userSalt='null', accountCreation=false} Action = { Hashing Un-Hashed String. }
+Fri Apr 03 19:37:17 BST 2015 Account{userID=0, userLogonName='', hashedPassword='2be88ca4242c76e8253ac62474851065032d6833', userLevel=0, userSalt='null', accountCreation=false} Action = { Initialised Account. }
+Fri Apr 03 20:10:28 BST 2015 Account{userID=0, userLogonName='alex', hashedPassword='null', userLevel=0, userSalt='null', accountCreation=false} Action = { Hashing Un-Hashed String. }
+Fri Apr 03 20:10:28 BST 2015 Account{userID=0, userLogonName='alex', hashedPassword='398be310cc888042d6f30dc288bebd58fd1f73ab', userLevel=0, userSalt='null', accountCreation=false} Action = { Initialised Account. }
+Fri Apr 03 20:10:43 BST 2015 Account{userID=0, userLogonName='alex', hashedPassword='null', userLevel=0, userSalt='21', accountCreation=false} Action = { Hashing Un-Hashed String. }
+Fri Apr 03 20:10:43 BST 2015 Account{userID=0, userLogonName='alex', hashedPassword='e99aa5648685780351fecb6593ed921f5fee9b23', userLevel=0, userSalt='21', accountCreation=false} Action = { Initialised Account. }
+Fri Apr 03 20:19:20 BST 2015 Account{userID=0, userLogonName='', hashedPassword='null', userLevel=0, userSalt='null', accountCreation=false} Action = { Hashing Un-Hashed String. }
+Fri Apr 03 20:19:20 BST 2015 Account{userID=0, userLogonName='', hashedPassword='2be88ca4242c76e8253ac62474851065032d6833', userLevel=0, userSalt='null', accountCreation=false} Action = { Initialised Account. }
+Fri Apr 03 20:21:17 BST 2015 Account{userID=0, userLogonName='', hashedPassword='null', userLevel=0, userSalt='null', accountCreation=false} Action = { Hashing Un-Hashed String. }
+Fri Apr 03 20:21:17 BST 2015 Account{userID=0, userLogonName='', hashedPassword='2be88ca4242c76e8253ac62474851065032d6833', userLevel=0, userSalt='null', accountCreation=false} Action = { Initialised Account. }
+Fri Apr 03 20:21:18 BST 2015 Account{userID=0, userLogonName='', hashedPassword='null', userLevel=0, userSalt='null', accountCreation=false} Action = { Hashing Un-Hashed String. }
+Fri Apr 03 20:21:18 BST 2015 Account{userID=0, userLogonName='', hashedPassword='2be88ca4242c76e8253ac62474851065032d6833', userLevel=0, userSalt='null', accountCreation=false} Action = { Initialised Account. }
+Fri Apr 03 20:21:19 BST 2015 Account{userID=0, userLogonName='', hashedPassword='null', userLevel=0, userSalt='null', accountCreation=false} Action = { Hashing Un-Hashed String. }
+Fri Apr 03 20:21:19 BST 2015 Account{userID=0, userLogonName='', hashedPassword='2be88ca4242c76e8253ac62474851065032d6833', userLevel=0, userSalt='null', accountCreation=false} Action = { Initialised Account. }
+Fri Apr 03 20:21:20 BST 2015 Account{userID=0, userLogonName='', hashedPassword='null', userLevel=0, userSalt='null', accountCreation=false} Action = { Hashing Un-Hashed String. }
+Fri Apr 03 20:21:20 BST 2015 Account{userID=0, userLogonName='', hashedPassword='2be88ca4242c76e8253ac62474851065032d6833', userLevel=0, userSalt='null', accountCreation=false} Action = { Initialised Account. }
+Fri Apr 03 20:21:24 BST 2015 Account{userID=0, userLogonName='', hashedPassword='null', userLevel=0, userSalt='null', accountCreation=false} Action = { Hashing Un-Hashed String. }
+Fri Apr 03 20:21:24 BST 2015 Account{userID=0, userLogonName='', hashedPassword='2be88ca4242c76e8253ac62474851065032d6833', userLevel=0, userSalt='null', accountCreation=false} Action = { Initialised Account. }
+Fri Apr 03 20:21:24 BST 2015 Account{userID=0, userLogonName='', hashedPassword='null', userLevel=0, userSalt='null', accountCreation=false} Action = { Hashing Un-Hashed String. }
+Fri Apr 03 20:21:24 BST 2015 Account{userID=0, userLogonName='', hashedPassword='2be88ca4242c76e8253ac62474851065032d6833', userLevel=0, userSalt='null', accountCreation=false} Action = { Initialised Account. }
+Fri Apr 03 20:21:28 BST 2015 Account{userID=0, userLogonName='alex', hashedPassword='null', userLevel=0, userSalt='21', accountCreation=false} Action = { Hashing Un-Hashed String. }
+Fri Apr 03 20:21:28 BST 2015 Account{userID=0, userLogonName='alex', hashedPassword='bb3ce70f105551f278d6d6ba5bd5338464caef39', userLevel=0, userSalt='21', accountCreation=false} Action = { Initialised Account. }
+Fri Apr 03 20:21:30 BST 2015 Account{userID=0, userLogonName='alex', hashedPassword='null', userLevel=0, userSalt='21', accountCreation=false} Action = { Hashing Un-Hashed String. }
+Fri Apr 03 20:21:30 BST 2015 Account{userID=0, userLogonName='alex', hashedPassword='e99aa5648685780351fecb6593ed921f5fee9b23', userLevel=0, userSalt='21', accountCreation=false} Action = { Initialised Account. }
+Fri Apr 03 20:22:05 BST 2015 Account{userID=0, userLogonName='', hashedPassword='null', userLevel=0, userSalt='null', accountCreation=false} Action = { Hashing Un-Hashed String. }
+Fri Apr 03 20:22:05 BST 2015 Account{userID=0, userLogonName='', hashedPassword='2be88ca4242c76e8253ac62474851065032d6833', userLevel=0, userSalt='null', accountCreation=false} Action = { Initialised Account. }
+Fri Apr 03 20:22:05 BST 2015 Account{userID=0, userLogonName='', hashedPassword='null', userLevel=0, userSalt='null', accountCreation=false} Action = { Hashing Un-Hashed String. }
+Fri Apr 03 20:22:05 BST 2015 Account{userID=0, userLogonName='', hashedPassword='2be88ca4242c76e8253ac62474851065032d6833', userLevel=0, userSalt='null', accountCreation=false} Action = { Initialised Account. }
+Fri Apr 03 20:22:05 BST 2015 Account{userID=0, userLogonName='', hashedPassword='null', userLevel=0, userSalt='null', accountCreation=false} Action = { Hashing Un-Hashed String. }
+Fri Apr 03 20:22:05 BST 2015 Account{userID=0, userLogonName='', hashedPassword='2be88ca4242c76e8253ac62474851065032d6833', userLevel=0, userSalt='null', accountCreation=false} Action = { Initialised Account. }
+Fri Apr 03 20:22:05 BST 2015 Account{userID=0, userLogonName='', hashedPassword='null', userLevel=0, userSalt='null', accountCreation=false} Action = { Hashing Un-Hashed String. }
+Fri Apr 03 20:22:05 BST 2015 Account{userID=0, userLogonName='', hashedPassword='2be88ca4242c76e8253ac62474851065032d6833', userLevel=0, userSalt='null', accountCreation=false} Action = { Initialised Account. }
+Fri Apr 03 20:22:05 BST 2015 Account{userID=0, userLogonName='', hashedPassword='null', userLevel=0, userSalt='null', accountCreation=false} Action = { Hashing Un-Hashed String. }
+Fri Apr 03 20:22:05 BST 2015 Account{userID=0, userLogonName='', hashedPassword='2be88ca4242c76e8253ac62474851065032d6833', userLevel=0, userSalt='null', accountCreation=false} Action = { Initialised Account. }
+Fri Apr 03 20:22:05 BST 2015 Account{userID=0, userLogonName='', hashedPassword='null', userLevel=0, userSalt='null', accountCreation=false} Action = { Hashing Un-Hashed String. }
+Fri Apr 03 20:22:05 BST 2015 Account{userID=0, userLogonName='', hashedPassword='2be88ca4242c76e8253ac62474851065032d6833', userLevel=0, userSalt='null', accountCreation=false} Action = { Initialised Account. }
+Fri Apr 03 20:22:05 BST 2015 Account{userID=0, userLogonName='', hashedPassword='null', userLevel=0, userSalt='null', accountCreation=false} Action = { Hashing Un-Hashed String. }
+Fri Apr 03 20:22:05 BST 2015 Account{userID=0, userLogonName='', hashedPassword='2be88ca4242c76e8253ac62474851065032d6833', userLevel=0, userSalt='null', accountCreation=false} Action = { Initialised Account. }
+Fri Apr 03 20:22:06 BST 2015 Account{userID=0, userLogonName='', hashedPassword='null', userLevel=0, userSalt='null', accountCreation=false} Action = { Hashing Un-Hashed String. }
+Fri Apr 03 20:22:06 BST 2015 Account{userID=0, userLogonName='', hashedPassword='2be88ca4242c76e8253ac62474851065032d6833', userLevel=0, userSalt='null', accountCreation=false} Action = { Initialised Account. }
+Fri Apr 03 20:22:06 BST 2015 Account{userID=0, userLogonName='', hashedPassword='null', userLevel=0, userSalt='null', accountCreation=false} Action = { Hashing Un-Hashed String. }
+Fri Apr 03 20:22:06 BST 2015 Account{userID=0, userLogonName='', hashedPassword='2be88ca4242c76e8253ac62474851065032d6833', userLevel=0, userSalt='null', accountCreation=false} Action = { Initialised Account. }
+Fri Apr 03 20:22:06 BST 2015 Account{userID=0, userLogonName='', hashedPassword='null', userLevel=0, userSalt='null', accountCreation=false} Action = { Hashing Un-Hashed String. }
+Fri Apr 03 20:22:06 BST 2015 Account{userID=0, userLogonName='', hashedPassword='2be88ca4242c76e8253ac62474851065032d6833', userLevel=0, userSalt='null', accountCreation=false} Action = { Initialised Account. }
+Fri Apr 03 20:22:06 BST 2015 Account{userID=0, userLogonName='', hashedPassword='null', userLevel=0, userSalt='null', accountCreation=false} Action = { Hashing Un-Hashed String. }
+Fri Apr 03 20:22:06 BST 2015 Account{userID=0, userLogonName='', hashedPassword='2be88ca4242c76e8253ac62474851065032d6833', userLevel=0, userSalt='null', accountCreation=false} Action = { Initialised Account. }
+Fri Apr 03 20:22:06 BST 2015 Account{userID=0, userLogonName='', hashedPassword='null', userLevel=0, userSalt='null', accountCreation=false} Action = { Hashing Un-Hashed String. }
+Fri Apr 03 20:22:06 BST 2015 Account{userID=0, userLogonName='', hashedPassword='2be88ca4242c76e8253ac62474851065032d6833', userLevel=0, userSalt='null', accountCreation=false} Action = { Initialised Account. }
+Fri Apr 03 20:22:07 BST 2015 Account{userID=0, userLogonName='', hashedPassword='null', userLevel=0, userSalt='null', accountCreation=false} Action = { Hashing Un-Hashed String. }
+Fri Apr 03 20:22:07 BST 2015 Account{userID=0, userLogonName='', hashedPassword='2be88ca4242c76e8253ac62474851065032d6833', userLevel=0, userSalt='null', accountCreation=false} Action = { Initialised Account. }
+Fri Apr 03 20:22:07 BST 2015 Account{userID=0, userLogonName='', hashedPassword='null', userLevel=0, userSalt='null', accountCreation=false} Action = { Hashing Un-Hashed String. }
+Fri Apr 03 20:22:07 BST 2015 Account{userID=0, userLogonName='', hashedPassword='2be88ca4242c76e8253ac62474851065032d6833', userLevel=0, userSalt='null', accountCreation=false} Action = { Initialised Account. }
+Fri Apr 03 20:27:46 BST 2015 Account{userID=0, userLogonName='alex', hashedPassword='null', userLevel=0, userSalt='null', accountCreation=false} Action = { Attempting to retrieve salt of account }
+Fri Apr 03 20:27:46 BST 2015 Account{userID=0, userLogonName='alex', hashedPassword='null', userLevel=0, userSalt='21', accountCreation=false} Action = { Salt Retrieval Successful }
+Fri Apr 03 20:27:46 BST 2015 Account{userID=0, userLogonName='alex', hashedPassword='null', userLevel=0, userSalt='21', accountCreation=false} Action = { Hashing Un-Hashed String. }
+Fri Apr 03 20:27:46 BST 2015 Account{userID=0, userLogonName='alex', hashedPassword='173b418470cb1a18181ed67fb083defee6ea2ba0', userLevel=0, userSalt='21', accountCreation=false} Action = { Initialised Account. }
+Fri Apr 03 20:27:52 BST 2015 Account{userID=0, userLogonName='alex', hashedPassword='null', userLevel=0, userSalt='null', accountCreation=false} Action = { Attempting to retrieve salt of account }
+Fri Apr 03 20:27:52 BST 2015 Account{userID=0, userLogonName='alex', hashedPassword='null', userLevel=0, userSalt='21', accountCreation=false} Action = { Salt Retrieval Successful }
+Fri Apr 03 20:27:52 BST 2015 Account{userID=0, userLogonName='alex', hashedPassword='null', userLevel=0, userSalt='21', accountCreation=false} Action = { Hashing Un-Hashed String. }
+Fri Apr 03 20:27:52 BST 2015 Account{userID=0, userLogonName='alex', hashedPassword='e59dc23d49b237c5d0aca0ea9ed9ae715ece9edc', userLevel=0, userSalt='21', accountCreation=false} Action = { Initialised Account. }
+Fri Apr 03 20:27:54 BST 2015 Account{userID=0, userLogonName='alex', hashedPassword='null', userLevel=0, userSalt='null', accountCreation=false} Action = { Attempting to retrieve salt of account }
+Fri Apr 03 20:27:54 BST 2015 Account{userID=0, userLogonName='alex', hashedPassword='null', userLevel=0, userSalt='21', accountCreation=false} Action = { Salt Retrieval Successful }
+Fri Apr 03 20:27:54 BST 2015 Account{userID=0, userLogonName='alex', hashedPassword='null', userLevel=0, userSalt='21', accountCreation=false} Action = { Hashing Un-Hashed String. }
+Fri Apr 03 20:27:54 BST 2015 Account{userID=0, userLogonName='alex', hashedPassword='e99aa5648685780351fecb6593ed921f5fee9b23', userLevel=0, userSalt='21', accountCreation=false} Action = { Initialised Account. }
+Fri Apr 03 20:42:20 BST 2015 Account{userID=0, userLogonName='', hashedPassword='null', userLevel=0, userSalt='null', accountCreation=false} Action = { Attempting to retrieve salt of account }
+Fri Apr 03 20:42:21 BST 2015 Account{userID=0, userLogonName='', hashedPassword='null', userLevel=0, userSalt='null', accountCreation=false} Action = { Salt Retrieval Successful }
+Fri Apr 03 20:42:21 BST 2015 Account{userID=0, userLogonName='', hashedPassword='null', userLevel=0, userSalt='null', accountCreation=false} Action = { Hashing Un-Hashed String. }
+Fri Apr 03 20:42:21 BST 2015 Account{userID=0, userLogonName='', hashedPassword='2be88ca4242c76e8253ac62474851065032d6833', userLevel=0, userSalt='null', accountCreation=false} Action = { Initialised Account. }
+Fri Apr 03 20:42:21 BST 2015 Account{userID=0, userLogonName='', hashedPassword='null', userLevel=0, userSalt='null', accountCreation=false} Action = { Attempting to retrieve salt of account }
+Fri Apr 03 20:42:21 BST 2015 Account{userID=0, userLogonName='', hashedPassword='null', userLevel=0, userSalt='null', accountCreation=false} Action = { Salt Retrieval Successful }
+Fri Apr 03 20:42:21 BST 2015 Account{userID=0, userLogonName='', hashedPassword='null', userLevel=0, userSalt='null', accountCreation=false} Action = { Hashing Un-Hashed String. }
+Fri Apr 03 20:42:21 BST 2015 Account{userID=0, userLogonName='', hashedPassword='2be88ca4242c76e8253ac62474851065032d6833', userLevel=0, userSalt='null', accountCreation=false} Action = { Initialised Account. }
+Fri Apr 03 20:42:29 BST 2015 Account{userID=0, userLogonName='alex', hashedPassword='null', userLevel=0, userSalt='null', accountCreation=false} Action = { Attempting to retrieve salt of account }
+Fri Apr 03 20:42:29 BST 2015 Account{userID=0, userLogonName='alex', hashedPassword='null', userLevel=0, userSalt='21', accountCreation=false} Action = { Salt Retrieval Successful }
+Fri Apr 03 20:42:29 BST 2015 Account{userID=0, userLogonName='alex', hashedPassword='null', userLevel=0, userSalt='21', accountCreation=false} Action = { Hashing Un-Hashed String. }
+Fri Apr 03 20:42:29 BST 2015 Account{userID=0, userLogonName='alex', hashedPassword='e99aa5648685780351fecb6593ed921f5fee9b23', userLevel=0, userSalt='21', accountCreation=false} Action = { Initialised Account. }
+Fri Apr 03 21:08:54 BST 2015 Account{userID=0, userLogonName='', hashedPassword='null', userLevel=0, userSalt='null', accountCreation=} Action = { Attempting to retrieve salt of account }
+Fri Apr 03 21:08:54 BST 2015 Account{userID=0, userLogonName='', hashedPassword='null', userLevel=0, userSalt='null', accountCreation=} Action = { Salt Retrieval Successful }
+Fri Apr 03 21:08:54 BST 2015 Account{userID=0, userLogonName='', hashedPassword='null', userLevel=0, userSalt='null', accountCreation=} Action = { Hashing Un-Hashed String. }
+Fri Apr 03 21:08:54 BST 2015 Account{userID=0, userLogonName='', hashedPassword='2be88ca4242c76e8253ac62474851065032d6833', userLevel=0, userSalt='null', accountCreation=} Action = { Initialised Account. }
+Fri Apr 03 21:08:58 BST 2015 Account{userID=0, userLogonName='alex', hashedPassword='null', userLevel=0, userSalt='null', accountCreation=} Action = { Attempting to retrieve salt of account }
+Fri Apr 03 21:08:58 BST 2015 Account{userID=0, userLogonName='alex', hashedPassword='null', userLevel=0, userSalt='21', accountCreation=} Action = { Salt Retrieval Successful }
+Fri Apr 03 21:08:58 BST 2015 Account{userID=0, userLogonName='alex', hashedPassword='null', userLevel=0, userSalt='21', accountCreation=} Action = { Hashing Un-Hashed String. }
+Fri Apr 03 21:08:58 BST 2015 Account{userID=0, userLogonName='alex', hashedPassword='e99aa5648685780351fecb6593ed921f5fee9b23', userLevel=0, userSalt='21', accountCreation=} Action = { Initialised Account. }

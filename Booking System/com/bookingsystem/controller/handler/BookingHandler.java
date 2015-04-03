@@ -1,6 +1,5 @@
 package com.bookingsystem.controller.handler;
 
-import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -51,7 +50,7 @@ public class BookingHandler implements ActionListener {
 		bookingSystemAddPanel = bookingSystemControlPanel.getUiBookingSystemAddPanel();
 
 
-		listOfBadBookingIDs = new ArrayList<Integer>();
+		listOfBadBookingIDs = new ArrayList<>();
 
 		bookingBusinessLayer = new BookingBusinessLayer();
 
@@ -59,19 +58,17 @@ public class BookingHandler implements ActionListener {
 	}
 	@Override
 	public void actionPerformed(ActionEvent eventOccurred) {
-		String event = eventOccurred.getActionCommand().replace(" ", "");
-		System.out.println(event);
 		switch (eventOccurred.getActionCommand()) {
 			case "Import":
 				JFileChooser jFileChooser = new JFileChooser();
 
 				File file;
 				FileInputStream fileInputStream;
-				XSSFWorkbook workBook = null;
-				XSSFSheet sheet = null;
+				XSSFWorkbook workBook;
+				XSSFSheet sheet;
 				XSSFRow row;
-				int rows = 0;
-				Booking importedBooking = null;
+				int rows;
+				Booking importedBooking;
 				try {
 					int returnVal = jFileChooser.showOpenDialog(view);
 					if (returnVal == JFileChooser.APPROVE_OPTION) {
@@ -87,12 +84,10 @@ public class BookingHandler implements ActionListener {
 							sheet = workBook.getSheetAt(0);
 							rows = sheet.getPhysicalNumberOfRows();
 							System.out.println(rows);
-
-							Color c = Color.white;
 							for (int r = 1; r < rows; r++) {
 								row = sheet.getRow(r);
-								if (row.toString() != "") {
-									if (row.getCell((short) 0).toString() != "") {
+								if (row.toString().equals("")) {
+									if (row.getCell((short) 0).toString().equals("")) {
 										//(int bookingID, String bookingDay, Date bookingDate, Date bookingStartTime,
 										//Date bookingCollectionTime, String bookingLocation, String bookingHolder,
 										//Equipment requiredEquipment
@@ -110,7 +105,7 @@ public class BookingHandler implements ActionListener {
 										bookingArrayList.add(
 												importedBooking);
 										bookingSystemPanel
-												.addBookingToList(importedBooking, c);
+												.addBookingToList(importedBooking);
 										//System.out.println(importedBooking.toString());
 									}
 								}
@@ -145,7 +140,7 @@ public class BookingHandler implements ActionListener {
 								bookingStrings[5],
 								new Equipment(bookingStrings[6]));
 						bookingArrayList.add(newBooking);
-						bookingSystemPanel.addBookingToList(newBooking, Color.BLACK);
+						bookingSystemPanel.addBookingToList(newBooking);
 					}
 				} catch (Exception e) {
 					MessageBox.errorMessageBox(e.toString());
@@ -163,7 +158,7 @@ public class BookingHandler implements ActionListener {
 	
 	public Date stringToDate(int bookingId, String stringToConvert) throws Exception{
 		try {
-			return (Date) BOOKING_DATE_FORMAT.parse(stringToConvert);
+			return BOOKING_DATE_FORMAT.parse(stringToConvert);
 		} catch (ParseException e) {
 			listOfBadBookingIDs.add(bookingId);
 			return new Date();
@@ -171,12 +166,9 @@ public class BookingHandler implements ActionListener {
 	}
 
 	public Date stringToTime(int bookingId, String unVerifiedStringToConvert, boolean collectionTime) throws Exception {
-		String verificationSteps ="";
-		verificationSteps += "current state: unverified string= " +unVerifiedStringToConvert+"\n";
 
 		String strippedUnverifiedStringToConvert = unVerifiedStringToConvert.replaceAll("[a-zA-z ]", "");
 
-		verificationSteps += "current state: unverified stripped string= " +strippedUnverifiedStringToConvert+"\n";
 		String verifiedStringToConvert = "unused";
 
 		if (!strippedUnverifiedStringToConvert.contains("-")){
@@ -193,14 +185,12 @@ public class BookingHandler implements ActionListener {
 			}
 		}
 
-		verificationSteps +="current state: verified string= " +verifiedStringToConvert+"\n";
 
-		System.out.println(verificationSteps);
 		try { //check if i can parse to long, if not work another way of converting the unverified string into a usable date format..
 			long dayMs = Long.parseLong(unVerifiedStringToConvert);
 			return new Date(dayMs);
 		} catch (NumberFormatException ep){
-			return (Date) BOOKING_TIME_FORMAT.parse(verifiedStringToConvert);
+			return BOOKING_TIME_FORMAT.parse(verifiedStringToConvert);
 		} catch (Exception e) { //last choice - notify user that the date was in the incorrect format and add a new date
 			listOfBadBookingIDs.add(bookingId);
 			return new Date();
@@ -208,7 +198,7 @@ public class BookingHandler implements ActionListener {
 	}
 
 	public void populateBadBookingMessageBox() {
-		String s = new String("Booking ID: " );
+		String s = "Booking ID: ";
 		if (!listOfBadBookingIDs.isEmpty()) {
 			for (int i : listOfBadBookingIDs) {
 				s += i + ", ";

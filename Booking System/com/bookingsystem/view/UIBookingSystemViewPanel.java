@@ -2,17 +2,14 @@ package com.bookingsystem.view;
 
 
 
-import java.awt.Color;
 import java.awt.Component;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.util.ArrayList;
 
-import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.border.Border;
 
 /**
  * Created by Alex on 10/02/2015.
@@ -22,29 +19,28 @@ import javax.swing.border.Border;
 
 public class UIBookingSystemViewPanel extends JPanel {
 
-    private Border outline = BorderFactory.createLineBorder(Color.black);
     public static ArrayList<JLabel> listOfViewBoxes;
 
     public UIBookingSystemViewPanel() {
         setLayout(new GridBagLayout());
-        listOfViewBoxes = new ArrayList<JLabel>();
+        listOfViewBoxes = new ArrayList<>();
 
         for(int i = 0; i <= 6;i++) {
             listOfViewBoxes.add( new JLabel());
-            addControlToPanel(listOfViewBoxes.get(i),0,i,1,1,GridBagConstraints.HORIZONTAL,GridBagConstraints.EAST);
+            addControlToPanel(listOfViewBoxes.get(i),i);
         }
     }
 
 
-    public void addControlToPanel(Component component, int gridX, int gridY,int weightX, int weightY, int alignment,int anchor) {
+    public void addControlToPanel(Component component, int gridY) {
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(2,2,2,2);
-        gbc.gridx = gridX;
+        gbc.gridx = 0;
         gbc.gridy = gridY;
-        gbc.anchor = anchor;
-        gbc.fill = alignment;
-        gbc.weightx = weightX;
-        gbc.weighty = weightY;
+        gbc.anchor = GridBagConstraints.EAST;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.weightx = 1;
+        gbc.weighty = 1;
 
         add(component, gbc);
     }

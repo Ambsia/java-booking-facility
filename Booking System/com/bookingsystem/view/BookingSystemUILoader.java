@@ -5,8 +5,6 @@ import java.awt.*;
 import javax.swing.JFrame;
 import javax.swing.UIManager;
 
-;
-
 public class BookingSystemUILoader extends JFrame {
 
 	private UILoginPanel loginPanel;
@@ -14,8 +12,9 @@ public class BookingSystemUILoader extends JFrame {
 	private UIBookingSystemTabbedPane bookingSystemTabbedPane;
 
 	public BookingSystemUILoader() {
-		this.setDimension(500, 250);
-
+		Dimension d = new Dimension(500,250);
+		this.setSize(d);
+		this.setMinimumSize(d);
 		loginPanel = new UILoginPanel();
 		menuBarLoader = new UIBookingSystemMenuBarLoader();
 		bookingSystemTabbedPane = new UIBookingSystemTabbedPane();
@@ -57,12 +56,6 @@ public class BookingSystemUILoader extends JFrame {
 		this.pack();
 		this.setLocationRelativeTo(null);
 		this.setVisible(true);
-	}
-
-	public void setDimension(int x, int y) {
-		Dimension d = new Dimension(x,y);
-		this.setSize(d);
-		this.setMinimumSize(d);
 	}
 
 	public UIBookingSystemTabbedPane getBookingSystemTabbedPane() {

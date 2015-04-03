@@ -7,7 +7,7 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 
 /**
- * Created by Alex on 08/02/2015.
+ * Author: [Alex] on [$Date]
  */
 public class UIBookingSystemMenuBarLoader extends JMenuBar {
 

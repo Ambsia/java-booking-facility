@@ -8,7 +8,6 @@ import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Time;
-import java.text.Format;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -22,7 +21,7 @@ import com.bookingsystem.helpers.DateLabelFormatter;
 
 
 /**
- * Created by Alex on 20/02/2015.
+ * Author: [Alex] on [$Date]
  */
 public class UIBookingSystemAddPanel extends JPanel {
 
@@ -32,8 +31,6 @@ public class UIBookingSystemAddPanel extends JPanel {
     private Component[] components;
 
     private JTextField txtBookingDay;
-    private JTextField txtBookingStartTime;
-    private JTextField txtBookingCollectionTime;
     private JTextField txtBookingLocation;
     private JTextField txtBookingHolder;
     private JTextArea txtAreaEquipment;
@@ -48,8 +45,7 @@ public class UIBookingSystemAddPanel extends JPanel {
 
     public UIBookingSystemAddPanel() {
         txtBookingDay = new JTextField(5);
-        txtBookingStartTime = new JTextField(5);
-        txtBookingCollectionTime = new JTextField(5);
+
         txtBookingLocation = new JTextField(5);
         txtBookingHolder = new JTextField(5);
         txtAreaEquipment = new JTextArea(5,15);
@@ -88,37 +84,37 @@ public class UIBookingSystemAddPanel extends JPanel {
         components = new Component[] { txtBookingDay, datePicker, jSpinnerStartTime,jSpinnerCollectionTime,txtBookingLocation,txtBookingHolder, jScrollPane };
 
         for (int i = 0;i<labels.length;i++) {
-            addControlToPanel(new JLabel(labels[i]), 0, i, 0, 0);
-            addControlToPanel(components[i], 1, i, 0, 0);
+            addControlToPanel(new JLabel(labels[i]), 0, i);
+            addControlToPanel(components[i], 1, i);
         }
 
         datePicker.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                     Calendar c = Calendar.getInstance();
-                    Date d = null;
                     try {
-                        d = new SimpleDateFormat("dd.MM.yy").parse(getFormattedDate());
+                        Date date = new SimpleDateFormat("dd.MM.yy").parse(getFormattedDate());
+                        c.setTime(date);
                     } catch (Exception ex) {
                         System.out.println(ex.toString());
                     }
-                    c.setTime(d);
+
                     int dayOfWeek = c.get(Calendar.DAY_OF_WEEK);
-                    System.out.println(dayOfWeek);
+
                     txtBookingDay.setText(days[dayOfWeek]);
                 }
         });
     }
 
-    public void addControlToPanel(Component component, int gridX, int gridY, double weightX, double weightY) {
+    public void addControlToPanel(Component component, int gridX, int gridY) {
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(2,2,2,2);
         gbc.gridx = gridX;
         gbc.gridy = gridY;
         gbc.fill = GridBagConstraints.BOTH;
         gbc.anchor = GridBagConstraints.LAST_LINE_END;
-        gbc.weightx = weightX;
-        gbc.weighty = weightY;
+        gbc.weightx = 0;
+        gbc.weighty = 0;
         add(component, gbc);
     }
 
@@ -137,27 +133,26 @@ public class UIBookingSystemAddPanel extends JPanel {
     }
 
     public String getTxtBookingStartTimeText() {
-        Format timeFormat =  new SimpleDateFormat("HH:mm", Locale.ENGLISH);
-        Date d = null;
+       String bookingStartTime = "";
         try {
-            d = (Date) jSpinnerStartTime.getModel().getValue();
+            Date d = (Date) jSpinnerStartTime.getModel().getValue();
+            bookingStartTime = "" + d.getTime();
         } catch (Exception e) {
-
+            e.printStackTrace();
         }
-        String s = "" + d.getTime();
-        return s;
+        return bookingStartTime;
     }
 
     public String getTxtBookingCollectionTimeText() {
-        Format timeFormat =  new SimpleDateFormat("HH:mm", Locale.ENGLISH);
-        Date d = null;
+        String bookingCollectionTime = "";
         try {
-            d = (Date) jSpinnerCollectionTime.getModel().getValue();
-        } catch (Exception e) {
+            Date date = (Date) jSpinnerCollectionTime.getModel().getValue();
+            bookingCollectionTime = "" + date.getTime();
+        } catch (Exception ignored) {
 
         }
-        String s = "" + d.getTime();
-        return s;
+
+        return bookingCollectionTime;
     }
 
     public String getTxtBookingLocationText() {

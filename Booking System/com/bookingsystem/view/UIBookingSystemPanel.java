@@ -1,6 +1,5 @@
 package  com.bookingsystem.view;
 
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -52,12 +51,11 @@ public class UIBookingSystemPanel extends JPanel {
 		gbc.anchor = GridBagConstraints.FIRST_LINE_START;
 		gbc.fill = GridBagConstraints.BOTH;
 		jTable = new JTable(new BookingTableModel()) {
-			private static final long serialVersionUID = 1L;
 
 			@Override
 			public boolean isCellEditable(int row, int column) {
 				return false;
-			};
+			}
 
 		};
 		jTable.getTableHeader().setReorderingAllowed(false);
@@ -65,7 +63,7 @@ public class UIBookingSystemPanel extends JPanel {
 		jTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
 			@Override
 			public void valueChanged(ListSelectionEvent e) {
-				ArrayList<String> bookingData = new ArrayList<String>();
+				ArrayList<String> bookingData = new ArrayList<>();
 				for(int i = 0; i<=6;i++) {
 					bookingData.add(jTable.getValueAt(jTable.getSelectedRow(),i).toString());
 				}
@@ -115,7 +113,7 @@ public class UIBookingSystemPanel extends JPanel {
 		btnAddBooking.addActionListener(ai);
 	}
 	
-	public void addBookingToList(Booking booking, Color c) {
+	public void addBookingToList(Booking booking) {
 		model.addRow(new Object[]{booking.getBookingID(),
 				booking.getBookingDay(),
 				BOOKING_DATE_FORMAT.format(booking.getBookingDate()),

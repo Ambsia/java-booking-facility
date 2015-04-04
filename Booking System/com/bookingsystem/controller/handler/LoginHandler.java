@@ -39,24 +39,26 @@ public class LoginHandler implements ActionListener {
 
         switch (arg0.getActionCommand()) {
             case "Login":
-                String username, unHashedPassword;
-                username = loginPanel.GetLoginUsernameText();
-                unHashedPassword = loginPanel.GetLoginPasswordText();
 
-                accountModel = new Account(0, 0, username, unHashedPassword);
                 try {
-                    if (accountBusinessLayer.getAccount(accountModel)) {
-                        view.removeLoginPanel();
-                        view.showBookingSystemPanel();
-                        view.setVisible(true);
-                    }
+                    accountModel = accountBusinessLayer.retrieveAccount(loginPanel.GetLoginUsernameText(),loginPanel.GetLoginPasswordText() );
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
+                if(accountBusinessLayer.isAccountFound()) {
+                    view.removeLoginPanel();
+                    view.showBookingSystemPanel();
+                    view.setVisible(true);
+                }
                 break;
 
-            case "Clear":
+            /*case "Clear":
                 loginPanel.ClearTextBoxes();
+                break;*/
+
+            case "Clear":
+                Account account = new Account(0,0,"do" , "donkey");
+                accountBusinessLayer.insertAccount(account);
                 break;
         }
     }

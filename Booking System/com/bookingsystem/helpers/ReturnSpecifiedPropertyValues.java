@@ -19,7 +19,7 @@ public class ReturnSpecifiedPropertyValues {
         properties = new Properties();
 
         InputStream inputStream = getClass().getResourceAsStream("config.properties");
-        System.out.println(inputStream);
+
         if (inputStream != null) { properties.load(inputStream); } else {
             throw new FileNotFoundException("Property file '" + propertyFileName + "' not found.");
         }

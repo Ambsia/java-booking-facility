@@ -13,7 +13,7 @@ public class AccountBusinessLayer {
 
     private Logger accountLogger;
     private ReturnSpecifiedPropertyValues returnSpecifiedPropertyValues;
-
+    private boolean accountFound;
     private String databaseConnectionString;
 
     public AccountBusinessLayer() throws IOException, ClassNotFoundException {
@@ -25,7 +25,21 @@ public class AccountBusinessLayer {
     }
 
 
-    public void addAccount() {
+    public void insertAccount(Account account) {
+        Statement stmt;
+        try {
+            Connection con = DriverManager.getConnection(databaseConnectionString);
+            stmt = con.createStatement();
+            account.generateSalt();
+            stmt.execute("EXECUTE spInsertAccount '" + account.getUserLevel() + "','" + account.getUsername() + "'," +
+                    "'" + account.getHashedPassword() + "','" + account.getUserSalt() + "'");
+
+            con.close();
+            stmt.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
 
     }
 
@@ -34,23 +48,33 @@ public class AccountBusinessLayer {
     }
 
 
-    public boolean getAccount(Account account) throws SQLException {
+    public Account retrieveAccount(String username, String password) throws SQLException {
         Statement stmt;
+        Account account;
         try {
             Connection con = DriverManager.getConnection(databaseConnectionString);
             stmt = con.createStatement();
+            account = new Account(0,0,username,password);
             ResultSet rs = stmt.executeQuery("EXECUTE spGetAccount '" + account.getUsername() + "'"+ ", '" + account.getHashedPassword() +"'");
             if (rs.next())  {
                 account.setUserID(rs.getInt(1));
                 account.setUserID(rs.getInt(2));
-                return true;
+                accountFound = true;
+                con.close();
+                stmt.close();
+                rs.close();
+                return account;
             }
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return false;
+        accountFound = false;
+        return null;
+    }
 
+    public boolean isAccountFound() {
+        return accountFound;
     }
 }
 

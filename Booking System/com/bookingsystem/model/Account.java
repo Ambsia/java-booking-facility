@@ -15,11 +15,17 @@ public final class Account {
 	private int userID;
 	private String userLogonName;
 	private String hashedPassword;
+
+
+
 	private int userLevel;
 	private String userSalt;
 
 	Logger accountLogger;
 
+	public int getUserLevel() {
+		return userLevel;
+	}
 	public void setUserLevel(int userLevel) {
 		this.userLevel = userLevel;
 	}
@@ -44,6 +50,8 @@ public final class Account {
 	public String getHashedPassword() {
 		return this.hashedPassword;
 	}
+
+	public String getUserSalt() {return this.userSalt;}
 
 	public Account(int userID, int userLevel, String userLogonName,
 			String unHashedPassword) {
@@ -78,7 +86,7 @@ public final class Account {
 		return hashedString;
 	}
 
-	public String generateSalt() {
+	public void generateSalt() {
 		int salt;
 		try {
 			accountLogger = new Logger("Attempting to generate salt.", this);
@@ -88,7 +96,7 @@ public final class Account {
 		} catch (NoSuchAlgorithmException e) {
 			salt = 0;
 		}
-		return "" +salt;
+		this.userSalt = ""+salt;
 	}
 
 	@Override
@@ -102,6 +110,7 @@ public final class Account {
 				", accountCreation=" +
 				'}';
 	}
+
 
 
 

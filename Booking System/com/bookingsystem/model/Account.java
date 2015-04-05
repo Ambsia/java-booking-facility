@@ -15,17 +15,14 @@ public final class Account {
 	private int userID;
 	private String userLogonName;
 	private String hashedPassword;
-
-
-
 	private int userLevel;
 	private String userSalt;
-
 	Logger accountLogger;
 
 	public int getUserLevel() {
 		return userLevel;
 	}
+
 	public void setUserLevel(int userLevel) {
 		this.userLevel = userLevel;
 	}
@@ -59,10 +56,8 @@ public final class Account {
 		this.userLevel = userLevel;
 		this.userLogonName = userLogonName;
 		this.hashedPassword = SHA1_HASH(unHashedPassword);
-		accountLogger = new Logger("Initialised Account.",this);
+		accountLogger = new Logger("Initialised Account.", this);
 	}
-
-
 
 	private String SHA1_HASH(String unHashedString) {
 		Connection con;
@@ -77,9 +72,7 @@ public final class Account {
 			}
 			accountLogger = new Logger("Salt Retrieval Successful", this);
 		} catch (SQLException e) {
-			MessageBox.errorMessageBox(e.toString());
-		} catch (IOException e) {
-			MessageBox.errorMessageBox(e.toString());
+			MessageBox.errorMessageBox("There was an issue while we were trying to hash something..!\n" + "Does this make sense you to.." + e.toString() + "?");
 		}
 		String hashedString = DigestUtils.sha1Hex(unHashedString + userSalt);
 		accountLogger = new Logger("Hashing Un-Hashed String.",this);
@@ -110,9 +103,4 @@ public final class Account {
 				", accountCreation=" +
 				'}';
 	}
-
-
-
-
-
 }

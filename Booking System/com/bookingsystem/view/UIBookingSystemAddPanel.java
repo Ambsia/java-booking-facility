@@ -30,6 +30,10 @@ public class UIBookingSystemAddPanel extends JPanel {
 
     private Component[] components;
 
+    public JTextField getTxtBookingDay() {
+        return txtBookingDay;
+    }
+
     private JTextField txtBookingDay;
     private JTextField txtBookingLocation;
     private JTextField txtBookingHolder;
@@ -39,22 +43,18 @@ public class UIBookingSystemAddPanel extends JPanel {
     private Date date = new Date();
     private SpinnerDateModel spinnerStartDateTimeModel;
     private SpinnerDateModel spinnerCollectionDateTimeModel;
-
     private JSpinner jSpinnerStartTime;
     private JSpinner jSpinnerCollectionTime;
 
     public UIBookingSystemAddPanel() {
         txtBookingDay = new JTextField(5);
-
         txtBookingLocation = new JTextField(5);
         txtBookingHolder = new JTextField(5);
         txtAreaEquipment = new JTextArea(5,15);
         jScrollPane = new JScrollPane(txtAreaEquipment);
         txtBookingDay.setEditable(false);
         Time time = Time.valueOf("12:00:00");
-
         date.setTime(time.getTime());
-
 
         spinnerStartDateTimeModel = new SpinnerDateModel(date, null, null, Calendar.HOUR_OF_DAY);
 
@@ -68,8 +68,6 @@ public class UIBookingSystemAddPanel extends JPanel {
 
         JSpinner.DateEditor dateEditorStartTime = new JSpinner.DateEditor(jSpinnerStartTime, "HH:mm");
         jSpinnerStartTime.setEditor(dateEditorStartTime);
-
-
 
         setLayout(new GridBagLayout());
         UtilDateModel model = new UtilDateModel();
@@ -151,7 +149,6 @@ public class UIBookingSystemAddPanel extends JPanel {
         } catch (Exception ignored) {
 
         }
-
         return bookingCollectionTime;
     }
 
@@ -166,7 +163,7 @@ public class UIBookingSystemAddPanel extends JPanel {
     public String getFormattedDate() {
         String datePattern = "dd.MM.yy";
         SimpleDateFormat dateFormatter = new SimpleDateFormat(datePattern);
-
+        if (datePicker.getModel().getValue() == null) return "";
         return dateFormatter.format((Date) datePicker.getModel().getValue());
     }
 

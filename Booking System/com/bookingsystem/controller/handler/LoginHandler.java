@@ -25,13 +25,8 @@ public class LoginHandler implements ActionListener {
     public LoginHandler(BookingSystemUILoader view)  {
         this.view = view;
         loginPanel = view.getLoginPanel();
-        try {
-            accountBusinessLayer = new AccountBusinessLayer();
-        } catch (IOException e) {
-            MessageBox.errorMessageBox(e.toString());
-        } catch (ClassNotFoundException e) {
-            MessageBox.errorMessageBox(e.toString());
-        }
+        accountBusinessLayer = new AccountBusinessLayer();
+
     }
 
     @Override
@@ -52,14 +47,14 @@ public class LoginHandler implements ActionListener {
                 }
                 break;
 
-            /*case "Clear":
-                loginPanel.ClearTextBoxes();
-                break;*/
-
             case "Clear":
-                Account account = new Account(0,0,"do" , "donkey");
-                accountBusinessLayer.insertAccount(account);
+                loginPanel.ClearTextBoxes();
                 break;
+
+          //  case "Clear":
+           //     Account account = new Account(0,0,"do" , "donkey");
+           //     accountBusinessLayer.insertAccount(account);
+           //     break;
         }
     }
 }

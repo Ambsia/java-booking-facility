@@ -13,9 +13,7 @@ import javax.swing.JPanel;
 
 /**
  * Created by Alex on 10/02/2015.
- * int bookingID, String bookingDay, String bookingDate, String bookingTime,
- String bookingLocation, String bookingHolder, Equipment requiredEquipment
- */
+*/
 
 public class UIBookingSystemViewPanel extends JPanel {
 
@@ -30,7 +28,6 @@ public class UIBookingSystemViewPanel extends JPanel {
             addControlToPanel(listOfViewBoxes.get(i),i);
         }
     }
-
 
     public void addControlToPanel(Component component, int gridY) {
         GridBagConstraints gbc = new GridBagConstraints();

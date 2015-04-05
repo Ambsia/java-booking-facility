@@ -5,6 +5,7 @@ import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.PushbackInputStream;
+import java.sql.PreparedStatement;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -21,10 +22,7 @@ import com.bookingsystem.model.businessmodel.BookingBusinessLayer;
 import com.bookingsystem.helpers.MessageBox;
 import com.bookingsystem.model.Booking;
 import com.bookingsystem.model.Equipment;
-import com.bookingsystem.view.BookingSystemUILoader;
-import com.bookingsystem.view.UIBookingSystemAddPanel;
-import com.bookingsystem.view.UIBookingSystemControlPanel;
-import com.bookingsystem.view.UIBookingSystemPanel;
+import com.bookingsystem.view.*;
 import org.apache.commons.collections.IteratorUtils;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
 import org.apache.poi.xssf.usermodel.XSSFRow;
@@ -36,38 +34,40 @@ public class BookingHandler implements ActionListener {
 	private UIBookingSystemPanel bookingSystemPanel;
 	private UIBookingSystemControlPanel bookingSystemControlPanel;
 	private UIBookingSystemAddPanel bookingSystemAddPanel;
+	private UIBookingSystemFindPanel bookingSystemFindPanel;
 	private static DateFormat BOOKING_DATE_FORMAT = new SimpleDateFormat("dd.MM.yy", Locale.ENGLISH);
 	private static DateFormat BOOKING_TIME_FORMAT = new SimpleDateFormat("HH:mm", Locale.ENGLISH);
 
 	private BookingBusinessLayer bookingBusinessLayer;
 
 	private List<Booking> bookingArrayList;
- 	private List<Integer> listOfBadBookingIDs;
+	private List<Integer> listOfBadBookingIDs;
 
 	public BookingHandler(UIBookingSystemPanel bookingSystemPanel) {
 		this.bookingSystemPanel = bookingSystemPanel;
 		bookingSystemControlPanel = this.bookingSystemPanel.getBookingSystemControlPanel();
-		bookingSystemAddPanel = bookingSystemControlPanel.getUiBookingSystemAddPanel();
-
+		bookingSystemAddPanel = bookingSystemControlPanel.getUIBookingSystemAddPanel();
+		bookingSystemFindPanel = bookingSystemPanel.getBookingSystemControlPanel().getUIBookingSystemFindPanel();
 
 		listOfBadBookingIDs = new ArrayList<>();
 
 		bookingBusinessLayer = new BookingBusinessLayer();
 
-		bookingArrayList = IteratorUtils.toList(bookingBusinessLayer.bookings().iterator());
+		bookingArrayList = IteratorUtils.toList(bookingBusinessLayer.iterator());
 	}
+
 	@Override
 	public void actionPerformed(ActionEvent eventOccurred) {
 		switch (eventOccurred.getActionCommand()) {
 			case "Import":
 				JFileChooser jFileChooser = new JFileChooser();
 
-				File file;
-				FileInputStream fileInputStream;
-				XSSFWorkbook workBook;
-				XSSFSheet sheet;
-				XSSFRow row;
-				int rows;
+				File file = null;
+				FileInputStream fileInputStream = null;
+				XSSFWorkbook workBook = null;
+				XSSFSheet sheet = null;
+				XSSFRow row = null;
+				int rows = 0;
 				Booking importedBooking;
 				try {
 					int returnVal = jFileChooser.showOpenDialog(view);
@@ -83,46 +83,67 @@ public class BookingHandler implements ActionListener {
 
 							sheet = workBook.getSheetAt(0);
 							rows = sheet.getPhysicalNumberOfRows();
-							System.out.println(rows);
+
 							for (int r = 1; r < rows; r++) {
 								row = sheet.getRow(r);
-								if (row.toString().equals("")) {
-									if (row.getCell((short) 0).toString().equals("")) {
-										//(int bookingID, String bookingDay, Date bookingDate, Date bookingStartTime,
-										//Date bookingCollectionTime, String bookingLocation, String bookingHolder,
-										//Equipment requiredEquipment
+								if (row.toString() != "") {
+									if (row.getCell((short) 0).toString() != "") {
 
 										importedBooking = new Booking(r,
 												row.getCell((short) 0).toString(),
 												stringToDate(r, row.getCell((short) 1).toString()),
-												stringToTime(r,row.getCell((short) 2).toString(),false),
-												stringToTime(r,row.getCell((short) 2).toString(),true),
+												stringToTime(r, row.getCell((short) 2).toString(), false),
+												stringToTime(r, row.getCell((short) 2).toString(), true),
 												row.getCell((short) 3).toString(),
 												row.getCell((short) 4).toString(),
 												new Equipment(row.getCell((short) 5).toString()));
 
-										System.out.println(importedBooking);
-										bookingArrayList.add(
-												importedBooking);
+										bookingBusinessLayer.insertBooking(importedBooking);
 										bookingSystemPanel
 												.addBookingToList(importedBooking);
-										//System.out.println(importedBooking.toString());
+
 									}
 								}
 							}
+						} else {
+							MessageBox.errorMessageBox(".xlsx spreadsheets are only accepted.");
+							break;
 						}
-						else { MessageBox.errorMessageBox(".xlsx spreadsheets are only accepted."); break; }
-					} else { break; }
+					} else {
+						break;
+					}
 
 				} catch (Exception e) {
 					System.out.println("Exception was thrown; " + e.toString());
 					MessageBox.errorMessageBox(e.toString());
 				}
+				populateBadBookingMessageBox();
 				break;
 			case "Search":
-				System.out.println("details clicked"); break;
+				try {
+					int result = bookingSystemFindPanel.showDialog();
+
+					if (result == 0) {
+						String[] bookingStrings = bookingSystemFindPanel.getBookingStringArray();
+						int id = 1;
+						Booking newBooking = new Booking(id,
+								bookingStrings[0],
+								stringToDate(id, bookingStrings[1]),
+								stringToTime(id, bookingStrings[2], false),
+								stringToTime(id, bookingStrings[3], true),
+								bookingStrings[4],
+								bookingStrings[5],
+								new Equipment(bookingStrings[6]));
+
+						bookingSystemPanel.addBookingsToList(bookingBusinessLayer.findBookings(newBooking));
+					}
+				} catch (Exception e) {
+					MessageBox.errorMessageBox(e.toString());
+				}
+				break;
 			case "Export":
-				System.out.println("export clicked"); break;
+				System.out.println("export clicked");
+				break;
 			case "Add":
 				try {
 					int result = bookingSystemAddPanel.showDialog();
@@ -133,35 +154,41 @@ public class BookingHandler implements ActionListener {
 
 						Booking newBooking = new Booking(id,
 								bookingStrings[0],
-								stringToDate(id,bookingStrings[1]),
-								stringToTime(id,bookingStrings[2],false),
-								stringToTime(id,bookingStrings[3],true),
+								stringToDate(id, bookingStrings[1]),
+								stringToTime(id, bookingStrings[2], false),
+								stringToTime(id, bookingStrings[3], true),
 								bookingStrings[4],
 								bookingStrings[5],
 								new Equipment(bookingStrings[6]));
-						bookingArrayList.add(newBooking);
+						bookingBusinessLayer.insertBooking(newBooking);
 						bookingSystemPanel.addBookingToList(newBooking);
 					}
 				} catch (Exception e) {
 					MessageBox.errorMessageBox(e.toString());
 				}
-				System.out.println("add clicked"); break;
+				populateBadBookingMessageBox();
+				break;
 			case "Remove":
-				System.out.println("remove clicked");break;
+				System.out.println("remove clicked");
+				break;
 			case "Edit":
-				System.out.println("edit clicked");break;
+				System.out.println("edit clicked");
+				break;
 			default:
 				System.out.println("control handler not found");
 		}
-		populateBadBookingMessageBox();
+
 	}
-	
-	public Date stringToDate(int bookingId, String stringToConvert) throws Exception{
+
+	public Date stringToDate(int bookingId, String stringToConvert) {
+		System.out.println( "string to convert" +stringToConvert);
 		try {
-			return BOOKING_DATE_FORMAT.parse(stringToConvert);
+			return (Date) BOOKING_DATE_FORMAT.parse(stringToConvert);
 		} catch (ParseException e) {
 			listOfBadBookingIDs.add(bookingId);
 			return new Date();
+		} catch (Exception e) {
+			return null;
 		}
 	}
 
@@ -171,31 +198,27 @@ public class BookingHandler implements ActionListener {
 
 		String verifiedStringToConvert = "unused";
 
-		if (!strippedUnverifiedStringToConvert.contains("-")){
-				verifiedStringToConvert = strippedUnverifiedStringToConvert;
-
+		if (!strippedUnverifiedStringToConvert.contains("-")) {
+			verifiedStringToConvert = strippedUnverifiedStringToConvert;
 		} else {
 			if (!collectionTime) {
-				//System.out.println("start time: " + strippedUnverifiedStringToConvert.substring(0,strippedUnverifiedStringToConvert.indexOf('-')));
-				verifiedStringToConvert = strippedUnverifiedStringToConvert.substring(0,strippedUnverifiedStringToConvert.indexOf('-'));
-
+				verifiedStringToConvert = strippedUnverifiedStringToConvert.substring(0, strippedUnverifiedStringToConvert.indexOf('-'));
 			} else {
-				//System.out.println("end time: " + strippedUnverifiedStringToConvert.substring(strippedUnverifiedStringToConvert.indexOf('-') +1,strippedUnverifiedStringToConvert.length()));
-				verifiedStringToConvert = strippedUnverifiedStringToConvert.substring(strippedUnverifiedStringToConvert.indexOf('-') +1,strippedUnverifiedStringToConvert.length());
+				verifiedStringToConvert = strippedUnverifiedStringToConvert.substring(strippedUnverifiedStringToConvert.indexOf('-') + 1, strippedUnverifiedStringToConvert.length());
 			}
 		}
-
 
 		try { //check if i can parse to long, if not work another way of converting the unverified string into a usable date format..
 			long dayMs = Long.parseLong(unVerifiedStringToConvert);
 			return new Date(dayMs);
-		} catch (NumberFormatException ep){
-			return BOOKING_TIME_FORMAT.parse(verifiedStringToConvert);
+		} catch (NumberFormatException ep) {
+			return (Date) BOOKING_TIME_FORMAT.parse(verifiedStringToConvert);
 		} catch (Exception e) { //last choice - notify user that the date was in the incorrect format and add a new date
 			listOfBadBookingIDs.add(bookingId);
 			return new Date();
 		}
 	}
+
 
 	public void populateBadBookingMessageBox() {
 		String s = "Booking ID: ";

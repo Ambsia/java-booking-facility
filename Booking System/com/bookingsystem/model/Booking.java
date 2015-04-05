@@ -1,5 +1,8 @@
 package  com.bookingsystem.model;
 
+import java.security.Timestamp;
+import java.text.ParseException;
+import java.util.Calendar;
 import java.util.Date;
 import java.text.SimpleDateFormat;
 
@@ -16,6 +19,7 @@ public final class Booking  {
 	private String bookingHolder;
 	
 	Logger bookingLogger;
+	private Equipment bookingEquipment;
 
 	public int getBookingID() {
 		return bookingID;
@@ -81,6 +85,22 @@ public final class Booking  {
 		this.bookingHolder = bookingHolder;
 	}
 
+	public java.sql.Time getBookingStartTimeInSQLFormat()  {
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(this.getBookingStartTime());
+
+		java.sql.Time sqlTime=new java.sql.Time(calendar.getTime().getTime());
+		return sqlTime;
+	}
+
+	public java.sql.Time getBookingCollectionTimeInSQLFormat()  {
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(this.getBookingCollectionTime());
+
+		java.sql.Time sqlTime=new java.sql.Time(calendar.getTime().getTime());
+		return sqlTime;
+	}
+
 	public Booking(int bookingID, String bookingDay, Date bookingDate, Date bookingStartTime,
 				Date bookingCollectionTime, String bookingLocation, String bookingHolder,
 				Equipment requiredEquipment
@@ -117,5 +137,9 @@ public final class Booking  {
 				", requiredEquipment=" + requiredEquipment +
 				", bookingHolder='" + bookingHolder + '\'' +
 				'}';
+	}
+
+	public void setBookingEquipment(Equipment bookingEquipment) {
+		this.requiredEquipment = bookingEquipment;
 	}
 }

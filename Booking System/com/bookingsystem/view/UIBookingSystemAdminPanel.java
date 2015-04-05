@@ -11,8 +11,6 @@ public class UIBookingSystemAdminPanel extends JPanel {
     public UIBookingSystemAdminPanel() {
         this.setLayout(new GridBagLayout());
         JLabel jLabel = new JLabel("ACP");
-
-
         this.add(jLabel);
     }
 

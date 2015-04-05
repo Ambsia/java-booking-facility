@@ -1,5 +1,6 @@
 package com.bookingsystem.model.businessmodel;
 
+import com.bookingsystem.helpers.MessageBox;
 import com.bookingsystem.helpers.ReturnSpecifiedPropertyValues;
 import com.bookingsystem.model.Account;
 import com.bookingsystem.model.Logger;
@@ -16,14 +17,10 @@ public class AccountBusinessLayer {
     private boolean accountFound;
     private String databaseConnectionString;
 
-    public AccountBusinessLayer() throws IOException, ClassNotFoundException {
-        Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+    public AccountBusinessLayer() {
         returnSpecifiedPropertyValues = new ReturnSpecifiedPropertyValues();
         databaseConnectionString = returnSpecifiedPropertyValues.getDatabaseConnectionString();
-
-
     }
-
 
     public void insertAccount(Account account) {
         Statement stmt;
@@ -37,16 +34,13 @@ public class AccountBusinessLayer {
             con.close();
             stmt.close();
         } catch (SQLException e) {
-            e.printStackTrace();
+            MessageBox.errorMessageBox("There was an issue while we were trying to create that account!\n" + "Does this make any sense you to.." + e.toString() + "?");
         }
-
-
     }
 
     public void removeAccount() {
 
     }
-
 
     public Account retrieveAccount(String username, String password) throws SQLException {
         Statement stmt;
@@ -65,11 +59,10 @@ public class AccountBusinessLayer {
                 rs.close();
                 return account;
             }
-
         } catch (SQLException e) {
-            e.printStackTrace();
+            MessageBox.errorMessageBox("There was an issue while we were trying to retrieve that account!\n" + "Does this make any sense you to.." + e.toString() + "?");
         }
-        accountFound = false;
+        accountFound = true;
         return null;
     }
 

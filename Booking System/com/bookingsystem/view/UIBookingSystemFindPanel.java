@@ -18,7 +18,7 @@ public class UIBookingSystemFindPanel extends UIBookingSystemAddPanel {
 	public String getFormattedDate() {
 		return super.getFormattedDate();
 	}
-
+	@Override
 	public int showDialog() {
 		return JOptionPane.showOptionDialog(null, this, "Find Booking",
 				JOptionPane.OK_OPTION, JOptionPane.CANCEL_OPTION,null,

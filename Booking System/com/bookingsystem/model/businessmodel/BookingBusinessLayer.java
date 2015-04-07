@@ -68,20 +68,9 @@ public class BookingBusinessLayer implements Iterable<Booking> {
 			Connection con = DriverManager.getConnection(databaseConnectionString);
 			stmt = con.createStatement();
 
-
-			SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-mm-dd hh:mm", Locale.ENGLISH);
-
-			java.util.Date bookingDate = bookingInformationKnown.getBookingDate();
-			java.util.Date todayDate = Calendar.getInstance().getTime();
-
-			String bookingDateString = simpleDateFormat.format(bookingDate);
-			String todayDateString = simpleDateFormat.format(todayDate);
-
 			ResultSet rs;
 
-			String dateSqlStatement = bookingDateString.equals(todayDateString) ? "" : convertFromJAVADateToSQLDate(bookingInformationKnown.getBookingDate()).toString() ;
-
-			rs = stmt.executeQuery("EXECUTE spFindBooking '" + bookingInformationKnown.getBookingDay() + "','" + dateSqlStatement + "'," +
+			rs = stmt.executeQuery("EXECUTE spFindBooking '" + bookingInformationKnown.getBookingDay() + "','" + getDateSqlStatement(bookingInformationKnown) + "'," +
 					"'" + bookingInformationKnown.getBookingStartTimeInSQLFormat() + "','" + bookingInformationKnown.getBookingCollectionTimeInSQLFormat() + "'," +
 					"'" + bookingInformationKnown.getBookingLocation() + "'," + "'" + bookingInformationKnown.getBookingHolder() + "'," +
 					"'" + bookingInformationKnown.getRequiredEquipment().GetEquipmentName() + "'");
@@ -100,8 +89,35 @@ public class BookingBusinessLayer implements Iterable<Booking> {
 		return null;
 	}
 
-	public void editBooking(Booking booking) {
+	public void modifyBooking(Booking newBooking) {
+		Statement stmt;
+		try {
+			Connection con = DriverManager.getConnection(databaseConnectionString);
+			stmt = con.createStatement();
 
+			int h = stmt.executeUpdate("EXECUTE spFindBooking '" + newBooking.getBookingDay() + "','" + getDateSqlStatement(newBooking) + "'," +
+					"'" + newBooking.getBookingStartTimeInSQLFormat() + "','" + newBooking.getBookingCollectionTimeInSQLFormat() + "'," +
+					"'" + newBooking.getBookingLocation() + "'," + "'" + newBooking.getBookingHolder() + "'," +
+					"'" + newBooking.getRequiredEquipment().GetEquipmentName() + "'");
+
+
+		} catch (SQLException e) {
+			MessageBox.errorMessageBox("There was an issue while we were trying to modify that booking!\n" + "Does this make any sense you to.." + e.toString() + "?");
+		}
+
+	}
+	public String getDateSqlStatement(Booking bookingInformationKnown) {
+		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-mm-dd hh:mm", Locale.ENGLISH);
+
+		java.util.Date bookingDate = bookingInformationKnown.getBookingDate();
+		java.util.Date todayDate = Calendar.getInstance().getTime();
+
+		String bookingDateString = simpleDateFormat.format(bookingDate);
+		String todayDateString = simpleDateFormat.format(todayDate);
+
+		ResultSet rs;
+
+		String dateSqlStatement = bookingDateString.equals(todayDateString) ? "" : convertFromJAVADateToSQLDate(bookingInformationKnown.getBookingDate()).toString();
 	}
 
 	public void removeBooking(Booking booking) {
@@ -122,4 +138,6 @@ public class BookingBusinessLayer implements Iterable<Booking> {
 		}
 		return sqlDate;
 	}
+
+
 }

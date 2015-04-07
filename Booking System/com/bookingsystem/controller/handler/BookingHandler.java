@@ -35,25 +35,22 @@ public class BookingHandler implements ActionListener {
 	private UIBookingSystemControlPanel bookingSystemControlPanel;
 	private UIBookingSystemAddPanel bookingSystemAddPanel;
 	private UIBookingSystemFindPanel bookingSystemFindPanel;
+	private UIBookingSystemEditPanel bookingSystemEditPanel;
 	private static DateFormat BOOKING_DATE_FORMAT = new SimpleDateFormat("dd.MM.yy", Locale.ENGLISH);
 	private static DateFormat BOOKING_TIME_FORMAT = new SimpleDateFormat("HH:mm", Locale.ENGLISH);
 
 	private BookingBusinessLayer bookingBusinessLayer;
-
-	private List<Booking> bookingArrayList;
 	private List<Integer> listOfBadBookingIDs;
 
-	public BookingHandler(UIBookingSystemPanel bookingSystemPanel) {
+	public BookingHandler(BookingBusinessLayer model,UIBookingSystemPanel bookingSystemPanel) {
 		this.bookingSystemPanel = bookingSystemPanel;
 		bookingSystemControlPanel = this.bookingSystemPanel.getBookingSystemControlPanel();
 		bookingSystemAddPanel = bookingSystemControlPanel.getUIBookingSystemAddPanel();
-		bookingSystemFindPanel = bookingSystemPanel.getBookingSystemControlPanel().getUIBookingSystemFindPanel();
-
+		bookingSystemFindPanel = bookingSystemControlPanel.getUIBookingSystemFindPanel();
+		bookingSystemEditPanel = bookingSystemControlPanel.getUIBookingSystemEditPanel();
 		listOfBadBookingIDs = new ArrayList<>();
 
-		bookingBusinessLayer = new BookingBusinessLayer();
-
-		bookingArrayList = IteratorUtils.toList(bookingBusinessLayer.iterator());
+		bookingBusinessLayer = model;
 	}
 
 	@Override
@@ -122,7 +119,6 @@ public class BookingHandler implements ActionListener {
 			case "Search":
 				try {
 					int result = bookingSystemFindPanel.showDialog();
-
 					if (result == 0) {
 						String[] bookingStrings = bookingSystemFindPanel.getBookingStringArray();
 						int id = 1;
@@ -137,6 +133,7 @@ public class BookingHandler implements ActionListener {
 
 						bookingSystemPanel.addBookingsToList(bookingBusinessLayer.findBookings(newBooking));
 					}
+
 				} catch (Exception e) {
 					MessageBox.errorMessageBox(e.toString());
 				}
@@ -172,7 +169,27 @@ public class BookingHandler implements ActionListener {
 				System.out.println("remove clicked");
 				break;
 			case "Edit":
-				System.out.println("edit clicked");
+				try {
+					int result = bookingSystemEditPanel.showDialog();
+					if (result == 0) {
+						String[] bookingStrings = bookingSystemAddPanel.getBookingStringArray();
+
+						int id = 1; //need to work out next id..get the value when completing sql query.
+
+						Booking newBooking = new Booking(id,
+								bookingStrings[0],
+								stringToDate(id, bookingStrings[1]),
+								stringToTime(id, bookingStrings[2], false),
+								stringToTime(id, bookingStrings[3], true),
+								bookingStrings[4],
+								bookingStrings[5],
+								new Equipment(bookingStrings[6]));
+						bookingBusinessLayer.modifyBooking(newBooking);
+						bookingSystemPanel.replaceBooking(newBooking); //pass id of booking too replace
+					}
+				} catch (Exception e) {
+					MessageBox.errorMessageBox(e.toString());
+				}
 				break;
 			default:
 				System.out.println("control handler not found");
@@ -182,11 +199,15 @@ public class BookingHandler implements ActionListener {
 
 	public Date stringToDate(int bookingId, String stringToConvert) {
 		System.out.println( "string to convert" +stringToConvert);
+		System.out.println(stringToConvert);
+		String s = stringToConvert.replaceAll("-",".");
+		System.out.println(s);
 		try {
-			return (Date) BOOKING_DATE_FORMAT.parse(stringToConvert);
+			return BOOKING_DATE_FORMAT.parse(s);
 		} catch (ParseException e) {
 			listOfBadBookingIDs.add(bookingId);
 			return new Date();
+
 		} catch (Exception e) {
 			return null;
 		}
@@ -223,7 +244,7 @@ public class BookingHandler implements ActionListener {
 	public void populateBadBookingMessageBox() {
 		String s = "Booking ID: ";
 		if (!listOfBadBookingIDs.isEmpty()) {
-			for (int i : listOfBadBookingIDs) {
+				for (int i : listOfBadBookingIDs) {
 				s += i + ", ";
 			}
 			s+=" have/has incorrectly formatted date(s).";

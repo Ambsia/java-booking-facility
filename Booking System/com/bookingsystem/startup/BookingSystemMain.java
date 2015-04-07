@@ -1,6 +1,7 @@
 package  com.bookingsystem.startup;
 
 import com.bookingsystem.controller.BookingSystemController;
+import com.bookingsystem.model.businessmodel.BookingBusinessLayer;
 import com.bookingsystem.view.BookingSystemUILoader;
 
 public final class BookingSystemMain {
@@ -9,6 +10,8 @@ public final class BookingSystemMain {
 
 	private final BookingSystemController controller;
 
+	private final BookingBusinessLayer model;
+
 	public static void main(String[] args) {
 		new BookingSystemMain();
 	}
@@ -16,14 +19,18 @@ public final class BookingSystemMain {
 	private BookingSystemMain() {
 		this.view = new BookingSystemUILoader();
 
-		this.controller = new BookingSystemController(view);
+		this.model = new BookingBusinessLayer();
+
+		this.controller = new BookingSystemController(view, model);
 	}
 
-	public BookingSystemUILoader GetView() {
+	public BookingSystemUILoader getView() {
 		return view;
 	}
 
-	public BookingSystemController GetController() {
+	public BookingSystemController getController() {
 		return controller;
 	}
+
+	public BookingBusinessLayer getModel() { return model; }
 }

@@ -19,6 +19,7 @@ public class UIBookingSystemControlPanel extends JPanel {
     private ArrayList<JButton> controlButtonList;
     private UIBookingSystemAddPanel uiBookingSystemAddPanel;
     private UIBookingSystemFindPanel uiBookingSystemFindPanel;
+    private UIBookingSystemEditPanel uiBookingSystemEditPanel;
 
     public UIBookingSystemControlPanel() {
         setLayout(new GridBagLayout());
@@ -26,6 +27,7 @@ public class UIBookingSystemControlPanel extends JPanel {
         controlButtonList = new ArrayList<>();
         uiBookingSystemAddPanel = new UIBookingSystemAddPanel();
         uiBookingSystemFindPanel = new UIBookingSystemFindPanel();
+        uiBookingSystemEditPanel = new UIBookingSystemEditPanel();
         Dimension buttonDimension = new Dimension(83,25);
         for ( int buttonNo = 0, colsPassed = 0, rowsPassed = 0; buttonNo<buttonNames.length;buttonNo++) {
         	JPanel jPanel = new JPanel();
@@ -51,18 +53,22 @@ public class UIBookingSystemControlPanel extends JPanel {
         gbc.weighty = 1;
         add(component, gbc);
     }
-
-    public UIBookingSystemAddPanel getUIBookingSystemAddPanel() {
-        return uiBookingSystemAddPanel;
-    }
-
     public void addListeners(ActionListener al) {
         for (JButton button : controlButtonList) {
             button.addActionListener(al);
         }
     }
+    public UIBookingSystemEditPanel getUIBookingSystemEditPanel() {
+        return uiBookingSystemEditPanel;
+    }
+
+    public UIBookingSystemAddPanel getUIBookingSystemAddPanel() {
+        return uiBookingSystemAddPanel;
+    }
 
     public UIBookingSystemFindPanel getUIBookingSystemFindPanel() {
         return uiBookingSystemFindPanel;
     }
+
+
 }

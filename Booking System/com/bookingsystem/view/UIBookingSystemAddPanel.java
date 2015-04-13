@@ -12,6 +12,7 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 import javax.swing.*;
+import javax.swing.text.JTextComponent;
 
 import org.jdatepicker.impl.JDatePanelImpl;
 import org.jdatepicker.impl.JDatePickerImpl;
@@ -45,6 +46,7 @@ public class UIBookingSystemAddPanel extends JPanel {
     private SpinnerDateModel spinnerCollectionDateTimeModel;
     private JSpinner jSpinnerStartTime;
     private JSpinner jSpinnerCollectionTime;
+    private UtilDateModel model;
 
     public UIBookingSystemAddPanel() {
         txtBookingDay = new JTextField(5);
@@ -70,7 +72,7 @@ public class UIBookingSystemAddPanel extends JPanel {
         jSpinnerStartTime.setEditor(dateEditorStartTime);
 
         setLayout(new GridBagLayout());
-        UtilDateModel model = new UtilDateModel();
+        model = new UtilDateModel();
 
         Properties p = new Properties();
         p.put("text.today", "Today");
@@ -172,4 +174,18 @@ public class UIBookingSystemAddPanel extends JPanel {
                 getTxtBookingLocationText(), getTxtBookingHolderText(), getTxtAreaEquipmentText()
         };
     }
+    //txtBookingDay, datePicker, jSpinnerStartTime,jSpinnerCollectionTime,txtBookingLocation,txtBookingHolder, jScrollPane
+    public void setTextOfComponents(Object[] list) {
+        System.out.println("got here");
+        txtBookingDay.setText((String)list[0]);
+        model.setValue((Date)list[1]);
+        spinnerStartDateTimeModel.setValue(list[2]);
+        spinnerCollectionDateTimeModel.setValue(list[3]);
+        txtBookingLocation.setText((String)list[4]);
+        txtBookingHolder.setText((String)list[5]);
+        txtAreaEquipment.setText((String)list[6]);
+    }
+
+
+
 }

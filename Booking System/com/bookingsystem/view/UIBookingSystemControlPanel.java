@@ -23,7 +23,7 @@ public class UIBookingSystemControlPanel extends JPanel {
 
     public UIBookingSystemControlPanel() {
         setLayout(new GridBagLayout());
-        String[] buttonNames = {"Search","Add", "Edit", "Remove", "Repeat", "", "Twat", "Nob Head"};
+        String[] buttonNames = {"Search","Add", "Edit", "Remove", "Repeat", "", "", ""};
         controlButtonList = new ArrayList<>();
         uiBookingSystemAddPanel = new UIBookingSystemAddPanel();
         uiBookingSystemFindPanel = new UIBookingSystemFindPanel();

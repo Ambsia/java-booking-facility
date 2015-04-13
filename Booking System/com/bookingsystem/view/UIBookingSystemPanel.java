@@ -57,11 +57,7 @@ public class UIBookingSystemPanel extends JPanel {
 		jTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
 			@Override
 			public void valueChanged(ListSelectionEvent e) {
-				ArrayList<String> bookingData = new ArrayList<>();
-				for (int i = 0; i <= 6; i++) {
-					bookingData.add(jTable.getValueAt(jTable.getSelectedRow(), i).toString());
-				}
-				UIBookingSystemViewPanel.setTextToField(bookingData);
+				UIBookingSystemViewPanel.setTextToField(getCurrentlySelectedRowAsStringArrayList());
 			}
 		});
 
@@ -91,8 +87,21 @@ public class UIBookingSystemPanel extends JPanel {
 		bookingSystemControlPanel.setMinimumSize(new Dimension(100, 100));
 		bookingSystemControlPanel.setPreferredSize(new Dimension(100, 100));
 		this.add(bookingSystemControlPanel, gbc);
+
+
 	}
 
+	public ArrayList<String> getCurrentlySelectedRowAsStringArrayList() {
+		if (getIDOfSelectedRow() != -1) {
+			ArrayList<String> bookingData = new ArrayList<>();
+			for (int i = 0; i <= 6; i++) {
+				bookingData.add(jTable.getValueAt(jTable.getSelectedRow(), i).toString());
+			}
+			return bookingData;
+		} else {
+			return new ArrayList<String>();
+		}
+	}
 
 	public UIBookingSystemViewPanel getBookingSystemViewPanel() { return bookingSystemViewPanel; }
 
@@ -141,5 +150,18 @@ public class UIBookingSystemPanel extends JPanel {
 	}
 
 
+	public int getIDOfSelectedRow() {
+		if (jTable.getSelectedRow() != -1) {
+			return jTable.getValueAt(jTable.getSelectedRow(), 0) != null ? (int) jTable.getValueAt(jTable.getSelectedRow(), 0) : -1;
+		} else {
+			return -1;
+		}
+	}
 
+	public int getRowCountOfTable() {
+		return jTable.getRowCount();
+	}
+
+	public void replaceBookingInList(Booking newBooking) {
+	}
 }

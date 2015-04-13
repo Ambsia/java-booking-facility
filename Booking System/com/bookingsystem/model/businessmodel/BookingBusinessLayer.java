@@ -37,7 +37,7 @@ public class BookingBusinessLayer implements Iterable<Booking> {
 			con.close();
 			stmt.close();
 		} catch (SQLException e) {
-			MessageBox.errorMessageBox("There was an issue while we were trying to insert that booking!\n" + "Does this make any sense you to.." + e.toString() + "?");
+			MessageBox.errorMessageBox("There was an issue while we were trying to insert that booking into the database!\n" + "Does this make any sense to you.." + e.toString() + "?");
 		}
 	}
 
@@ -58,7 +58,7 @@ public class BookingBusinessLayer implements Iterable<Booking> {
 			con.close();
 			stmt.close();
 		} catch (SQLException e) {
-			MessageBox.errorMessageBox("There was an issue while we were trying to insert that booking!\n" + "Does this make any sense you to.." + e.toString() + "?");
+			MessageBox.errorMessageBox("There was an issue while we were trying to insert that booking into the database!\n" + "Does this make any sense to you.." + e.toString() + "?");
 		}
 	}
 
@@ -84,25 +84,27 @@ public class BookingBusinessLayer implements Iterable<Booking> {
 			stmt.close();
 			return foundBookings;
 		} catch (SQLException e) {
-			MessageBox.errorMessageBox("There was an issue while we were trying to find that booking!\n" + "Does this make any sense you to.." + e.toString() + "?");
+			MessageBox.errorMessageBox("There was an issue while we were trying to find that booking in the database!\n" + "Does this make any sense to you.." + e.toString() + "?");
 		}
 		return null;
 	}
 
-	public void modifyBooking(Booking newBooking) {
+	public void modifyBooking(int id,Booking newBooking) {
 		Statement stmt;
 		try {
 			Connection con = DriverManager.getConnection(databaseConnectionString);
 			stmt = con.createStatement();
 
-			int h = stmt.executeUpdate("EXECUTE spFindBooking '" + newBooking.getBookingDay() + "','" + getDateSqlStatement(newBooking) + "'," +
+			 stmt.execute("EXECUTE spModifyBooking '" + id + "','" + newBooking.getBookingDay() + "','" + getDateSqlStatement(newBooking) + "'," +
 					"'" + newBooking.getBookingStartTimeInSQLFormat() + "','" + newBooking.getBookingCollectionTimeInSQLFormat() + "'," +
 					"'" + newBooking.getBookingLocation() + "'," + "'" + newBooking.getBookingHolder() + "'," +
 					"'" + newBooking.getRequiredEquipment().GetEquipmentName() + "'");
 
 
+
+
 		} catch (SQLException e) {
-			MessageBox.errorMessageBox("There was an issue while we were trying to modify that booking!\n" + "Does this make any sense you to.." + e.toString() + "?");
+			MessageBox.errorMessageBox("There was an issue while we were trying to modify that booking in the database!\n" + "Does this make any sense to you.." + e.toString() + "?");
 		}
 
 	}
@@ -118,6 +120,8 @@ public class BookingBusinessLayer implements Iterable<Booking> {
 		ResultSet rs;
 
 		String dateSqlStatement = bookingDateString.equals(todayDateString) ? "" : convertFromJAVADateToSQLDate(bookingInformationKnown.getBookingDate()).toString();
+
+		return dateSqlStatement;
 	}
 
 	public void removeBooking(Booking booking) {

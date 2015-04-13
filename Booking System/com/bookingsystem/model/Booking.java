@@ -118,10 +118,11 @@ public final class Booking  {
 
 	
 	public boolean isValid() {
-		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm");
-		return (this.bookingDay.isEmpty() || this.bookingLocation.isEmpty() ||
-			    simpleDateFormat.format(this.bookingStartTime).isEmpty() ||
-				simpleDateFormat.format(this.bookingCollectionTime).isEmpty() ||
+		System.out.println(this.toString());
+		return (this.bookingDay.isEmpty() ||
+				this.bookingLocation.isEmpty() ||
+			    this.bookingStartTime.toString().isEmpty()||
+				this.bookingCollectionTime.toString().isEmpty() ||
 				this.bookingHolder.isEmpty()) ;
 	}
 

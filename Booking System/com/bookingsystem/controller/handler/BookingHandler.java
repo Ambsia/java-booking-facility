@@ -111,7 +111,6 @@ public class BookingHandler implements ActionListener {
 					}
 
 				} catch (Exception e) {
-					System.out.println("Exception was thrown; " + e.toString());
 					MessageBox.errorMessageBox(e.toString());
 				}
 				populateBadBookingMessageBox();
@@ -131,11 +130,12 @@ public class BookingHandler implements ActionListener {
 								bookingStrings[5],
 								new Equipment(bookingStrings[6]));
 
+						MessageBox.infoMessageBox("A search will be performed based on the given details.");
+
 						bookingSystemPanel.addBookingsToList(bookingBusinessLayer.findBookings(newBooking));
 					}
-
 				} catch (Exception e) {
-					MessageBox.errorMessageBox(e.toString());
+					MessageBox.errorMessageBox("There was an issue while trying to execute a search\n" + "Does this make any sense to you.." + e.toString() + "?");
 				}
 				break;
 			case "Export":
@@ -147,7 +147,7 @@ public class BookingHandler implements ActionListener {
 					if (result == 0) {
 						String[] bookingStrings = bookingSystemAddPanel.getBookingStringArray();
 
-						int id = 1; //need to work out next id..get the value when completing sql query.
+						int id = bookingSystemPanel.getRowCountOfTable();
 
 						Booking newBooking = new Booking(id,
 								bookingStrings[0],
@@ -157,35 +157,59 @@ public class BookingHandler implements ActionListener {
 								bookingStrings[4],
 								bookingStrings[5],
 								new Equipment(bookingStrings[6]));
-						bookingBusinessLayer.insertBooking(newBooking);
-						bookingSystemPanel.addBookingToList(newBooking);
+						if (!newBooking.isValid()) {
+							bookingBusinessLayer.insertBooking(newBooking);
+							bookingSystemPanel.addBookingToList(newBooking);
+
+						} else {
+							MessageBox.errorMessageBox("Please enter all of the required details for booking");
+						}
 					}
 				} catch (Exception e) {
-					MessageBox.errorMessageBox(e.toString());
+					MessageBox.errorMessageBox("There was an issue while trying to add a booking.\n" + "Does this make any sense to you.." + e.toString() + "?");
 				}
-				populateBadBookingMessageBox();
+
 				break;
 			case "Remove":
 				System.out.println("remove clicked");
 				break;
 			case "Edit":
 				try {
-					int result = bookingSystemEditPanel.showDialog();
-					if (result == 0) {
-						String[] bookingStrings = bookingSystemAddPanel.getBookingStringArray();
 
-						int id = 1; //need to work out next id..get the value when completing sql query.
+					int id = bookingSystemPanel.getIDOfSelectedRow();
+					if (id >= 0) {
+						ArrayList<String> arrayOfStrings = bookingSystemPanel.getCurrentlySelectedRowAsStringArrayList();
 
-						Booking newBooking = new Booking(id,
-								bookingStrings[0],
-								stringToDate(id, bookingStrings[1]),
-								stringToTime(id, bookingStrings[2], false),
-								stringToTime(id, bookingStrings[3], true),
-								bookingStrings[4],
-								bookingStrings[5],
-								new Equipment(bookingStrings[6]));
-						bookingBusinessLayer.modifyBooking(newBooking);
-						bookingSystemPanel.replaceBooking(newBooking); //pass id of booking too replace
+						Object[] bookingObjects = { arrayOfStrings.get(1),
+								stringToDate(0, arrayOfStrings.get(2)),
+								stringToTime(0, arrayOfStrings.get(3), false),
+								stringToTime(0, arrayOfStrings.get(3),true),
+								arrayOfStrings.get(4),
+								arrayOfStrings.get(5),
+								arrayOfStrings.get(6) };
+
+						bookingSystemEditPanel.setTextOfComponents(bookingObjects);
+
+						int result = bookingSystemEditPanel.showDialog();
+						if (result == 0) {
+							String[] bookingStrings = bookingSystemEditPanel.getBookingStringArray();
+							Booking newBooking = new Booking(id,
+									bookingStrings[0],
+									stringToDate(id, bookingStrings[1]),
+									stringToTime(id, bookingStrings[2], false),
+									stringToTime(id, bookingStrings[3], true),
+									bookingStrings[4],
+									bookingStrings[5],
+									new Equipment(bookingStrings[6]));
+							if (!newBooking.isValid()) {
+								bookingBusinessLayer.modifyBooking(id,newBooking);
+								bookingSystemPanel.replaceBookingInList(newBooking); //pass id of booking too replace
+							} else {
+								MessageBox.errorMessageBox("Please enter all of the required details for booking");
+							}
+						}
+					} else {
+						MessageBox.warningMessageBox("Please select a booking to modify");
 					}
 				} catch (Exception e) {
 					MessageBox.errorMessageBox(e.toString());
@@ -198,10 +222,7 @@ public class BookingHandler implements ActionListener {
 	}
 
 	public Date stringToDate(int bookingId, String stringToConvert) {
-		System.out.println( "string to convert" +stringToConvert);
-		System.out.println(stringToConvert);
 		String s = stringToConvert.replaceAll("-",".");
-		System.out.println(s);
 		try {
 			return BOOKING_DATE_FORMAT.parse(s);
 		} catch (ParseException e) {

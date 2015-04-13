@@ -7,12 +7,15 @@ import javax.swing.*;
  */
 public class UIBookingSystemEditPanel extends UIBookingSystemAddPanel {
 
+	public void populateTextBoxes() {
+
+	}
 
 	@Override
 	public int showDialog() {
-		return JOptionPane.showOptionDialog(null, this, "Find Booking",
+		return JOptionPane.showOptionDialog(null, this, "Edit Booking",
 				JOptionPane.OK_OPTION, JOptionPane.CANCEL_OPTION, null,
-				new String[]{"Find", "Cancel"}, "Add");
+				new String[]{"Edit", "Cancel"}, "Add");
 	}
 }
 

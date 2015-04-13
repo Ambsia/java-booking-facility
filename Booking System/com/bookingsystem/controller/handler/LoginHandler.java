@@ -36,7 +36,7 @@ public class LoginHandler implements ActionListener {
             case "Login":
 
                 try {
-                    accountModel = accountBusinessLayer.retrieveAccount(loginPanel.GetLoginUsernameText(),loginPanel.GetLoginPasswordText() );
+                    accountModel = accountBusinessLayer.retrieveAccount(loginPanel.getLoginUsernameText(),loginPanel.getLoginPasswordText() );
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
@@ -44,11 +44,13 @@ public class LoginHandler implements ActionListener {
                     view.removeLoginPanel();
                     view.showBookingSystemPanel();
                     view.setVisible(true);
+                } else {
+                    MessageBox.errorMessageBox("Incorrect password or login.");
                 }
                 break;
 
             case "Clear":
-                loginPanel.ClearTextBoxes();
+                loginPanel.clearTextBoxes();
                 break;
 
           //  case "Clear":

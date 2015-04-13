@@ -55,15 +55,15 @@ public class UILoginPanel extends JPanel {
 		btnClear.addActionListener(al);
 	}
 
-	public String GetLoginUsernameText() {
+	public String getLoginUsernameText() {
 		return txtLoginUsername.getText();
 	}
 
-	public String GetLoginPasswordText() {
+	public String getLoginPasswordText() {
 		return txtLoginPassword.getText();
 	}
 	
-	public void ClearTextBoxes() {
+	public void clearTextBoxes() {
 		this.txtLoginPassword.setText("");
 		this.txtLoginUsername.setText("");
 	}

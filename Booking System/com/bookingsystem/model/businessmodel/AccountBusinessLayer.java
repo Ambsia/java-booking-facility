@@ -34,7 +34,7 @@ public class AccountBusinessLayer {
             con.close();
             stmt.close();
         } catch (SQLException e) {
-            MessageBox.errorMessageBox("There was an issue while we were trying to create that account!\n" + "Does this make any sense you to.." + e.toString() + "?");
+            MessageBox.errorMessageBox("There was an issue while we were trying to insert that account in the database!\n" + "Does this make any sense to you.." + e.toString() + "?");
         }
     }
 
@@ -60,7 +60,7 @@ public class AccountBusinessLayer {
                 return account;
             }
         } catch (SQLException e) {
-            MessageBox.errorMessageBox("There was an issue while we were trying to retrieve that account!\n" + "Does this make any sense you to.." + e.toString() + "?");
+            MessageBox.errorMessageBox("There was an issue while we were trying to retrieve that account from the database!\n" + "Does this make any sense to you.." + e.toString() + "?");
         }
         accountFound = true;
         return null;

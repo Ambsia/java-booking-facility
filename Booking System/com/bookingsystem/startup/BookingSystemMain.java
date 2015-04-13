@@ -12,7 +12,7 @@ public final class BookingSystemMain {
 
 	private final BookingBusinessLayer model;
 
-	public static void main(String[] args) {
+	public final static void main(String[] args) {
 		new BookingSystemMain();
 	}
 

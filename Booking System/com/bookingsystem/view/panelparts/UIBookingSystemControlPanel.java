@@ -1,4 +1,9 @@
-package com.bookingsystem.view;
+package com.bookingsystem.view.panelparts;
+
+import com.bookingsystem.view.dialogpanels.UIBookingSystemAddPanel;
+import com.bookingsystem.view.dialogpanels.UIBookingSystemEditPanel;
+import com.bookingsystem.view.dialogpanels.UIBookingSystemFindPanel;
+import com.bookingsystem.view.dialogpanels.UIBookingSystemRemovePanel;
 
 import java.awt.Component;
 import java.awt.Dimension;
@@ -20,14 +25,16 @@ public class UIBookingSystemControlPanel extends JPanel {
     private UIBookingSystemAddPanel uiBookingSystemAddPanel;
     private UIBookingSystemFindPanel uiBookingSystemFindPanel;
     private UIBookingSystemEditPanel uiBookingSystemEditPanel;
+    private UIBookingSystemRemovePanel uiBookingSystemRemovePanel;
 
     public UIBookingSystemControlPanel() {
         setLayout(new GridBagLayout());
-        String[] buttonNames = {"Search","Add", "Edit", "Remove", "Repeat", "", "", ""};
+        String[] buttonNames = {"Load","Search","Filter","Add", "Edit", "Remove", "Repeat", "", ""};
         controlButtonList = new ArrayList<>();
         uiBookingSystemAddPanel = new UIBookingSystemAddPanel();
         uiBookingSystemFindPanel = new UIBookingSystemFindPanel();
         uiBookingSystemEditPanel = new UIBookingSystemEditPanel();
+        uiBookingSystemRemovePanel = new UIBookingSystemRemovePanel();
         Dimension buttonDimension = new Dimension(83,25);
         for ( int buttonNo = 0, colsPassed = 0, rowsPassed = 0; buttonNo<buttonNames.length;buttonNo++) {
         	JPanel jPanel = new JPanel();
@@ -71,4 +78,7 @@ public class UIBookingSystemControlPanel extends JPanel {
     }
 
 
+    public UIBookingSystemRemovePanel getUIBookingSystemRemovePanel() {
+        return uiBookingSystemRemovePanel;
+    }
 }

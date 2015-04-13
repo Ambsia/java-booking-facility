@@ -5,7 +5,6 @@ import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.PushbackInputStream;
-import java.sql.PreparedStatement;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -22,25 +21,31 @@ import com.bookingsystem.model.businessmodel.BookingBusinessLayer;
 import com.bookingsystem.helpers.MessageBox;
 import com.bookingsystem.model.Booking;
 import com.bookingsystem.model.Equipment;
-import com.bookingsystem.view.*;
+import com.bookingsystem.view.dialogpanels.UIBookingSystemAddPanel;
+import com.bookingsystem.view.dialogpanels.UIBookingSystemEditPanel;
+import com.bookingsystem.view.dialogpanels.UIBookingSystemFindPanel;
+import com.bookingsystem.view.dialogpanels.UIBookingSystemRemovePanel;
+import com.bookingsystem.view.panelparts.UIBookingSystemControlPanel;
+import com.bookingsystem.view.panes.UIBookingSystemPanel;
 import org.apache.commons.collections.IteratorUtils;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
-public class BookingHandler implements ActionListener {
-	private BookingSystemUILoader view;
-	private UIBookingSystemPanel bookingSystemPanel;
-	private UIBookingSystemControlPanel bookingSystemControlPanel;
+public final class BookingHandler implements ActionListener {
+
+	private final UIBookingSystemPanel bookingSystemPanel;
+	private final UIBookingSystemControlPanel bookingSystemControlPanel;
 	private UIBookingSystemAddPanel bookingSystemAddPanel;
 	private UIBookingSystemFindPanel bookingSystemFindPanel;
 	private UIBookingSystemEditPanel bookingSystemEditPanel;
+	private UIBookingSystemRemovePanel bookingSystemRemovePanel;
 	private static DateFormat BOOKING_DATE_FORMAT = new SimpleDateFormat("dd.MM.yy", Locale.ENGLISH);
 	private static DateFormat BOOKING_TIME_FORMAT = new SimpleDateFormat("HH:mm", Locale.ENGLISH);
-
 	private BookingBusinessLayer bookingBusinessLayer;
 	private List<Integer> listOfBadBookingIDs;
+	private int bookingIDCurrentlyBeingProcessed;
 
 	public BookingHandler(BookingBusinessLayer model,UIBookingSystemPanel bookingSystemPanel) {
 		this.bookingSystemPanel = bookingSystemPanel;
@@ -48,17 +53,19 @@ public class BookingHandler implements ActionListener {
 		bookingSystemAddPanel = bookingSystemControlPanel.getUIBookingSystemAddPanel();
 		bookingSystemFindPanel = bookingSystemControlPanel.getUIBookingSystemFindPanel();
 		bookingSystemEditPanel = bookingSystemControlPanel.getUIBookingSystemEditPanel();
+		bookingSystemRemovePanel = bookingSystemControlPanel.getUIBookingSystemRemovePanel();
 		listOfBadBookingIDs = new ArrayList<>();
-
 		bookingBusinessLayer = model;
+		bookingIDCurrentlyBeingProcessed = 1;
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent eventOccurred) {
+	//	int result=0;
 		switch (eventOccurred.getActionCommand()) {
+
 			case "Import":
 				JFileChooser jFileChooser = new JFileChooser();
-
 				File file = null;
 				FileInputStream fileInputStream = null;
 				XSSFWorkbook workBook = null;
@@ -67,7 +74,7 @@ public class BookingHandler implements ActionListener {
 				int rows = 0;
 				Booking importedBooking;
 				try {
-					int returnVal = jFileChooser.showOpenDialog(view);
+					int returnVal = jFileChooser.showOpenDialog(bookingSystemPanel);
 					if (returnVal == JFileChooser.APPROVE_OPTION) {
 						if (jFileChooser.getSelectedFile().getName()
 								.endsWith(".xlsx")) {
@@ -80,17 +87,16 @@ public class BookingHandler implements ActionListener {
 
 							sheet = workBook.getSheetAt(0);
 							rows = sheet.getPhysicalNumberOfRows();
-
 							for (int r = 1; r < rows; r++) {
 								row = sheet.getRow(r);
 								if (row.toString() != "") {
 									if (row.getCell((short) 0).toString() != "") {
-
-										importedBooking = new Booking(r,
+										this.bookingIDCurrentlyBeingProcessed = r;
+										importedBooking = new Booking(this.bookingIDCurrentlyBeingProcessed,
 												row.getCell((short) 0).toString(),
-												stringToDate(r, row.getCell((short) 1).toString()),
-												stringToTime(r, row.getCell((short) 2).toString(), false),
-												stringToTime(r, row.getCell((short) 2).toString(), true),
+												stringToDate(row.getCell((short) 1).toString()),
+												stringToTime(row.getCell((short) 2).toString(), false),
+												stringToTime(row.getCell((short) 2).toString(), true),
 												row.getCell((short) 3).toString(),
 												row.getCell((short) 4).toString(),
 												new Equipment(row.getCell((short) 5).toString()));
@@ -98,7 +104,6 @@ public class BookingHandler implements ActionListener {
 										bookingBusinessLayer.insertBooking(importedBooking);
 										bookingSystemPanel
 												.addBookingToList(importedBooking);
-
 									}
 								}
 							}
@@ -109,7 +114,6 @@ public class BookingHandler implements ActionListener {
 					} else {
 						break;
 					}
-
 				} catch (Exception e) {
 					MessageBox.errorMessageBox(e.toString());
 				}
@@ -117,18 +121,9 @@ public class BookingHandler implements ActionListener {
 				break;
 			case "Search":
 				try {
-					int result = bookingSystemFindPanel.showDialog();
-					if (result == 0) {
-						String[] bookingStrings = bookingSystemFindPanel.getBookingStringArray();
-						int id = 1;
-						Booking newBooking = new Booking(id,
-								bookingStrings[0],
-								stringToDate(id, bookingStrings[1]),
-								stringToTime(id, bookingStrings[2], false),
-								stringToTime(id, bookingStrings[3], true),
-								bookingStrings[4],
-								bookingStrings[5],
-								new Equipment(bookingStrings[6]));
+					if (bookingSystemFindPanel.showDialog() == 0) {
+						this.bookingIDCurrentlyBeingProcessed = 1;
+						Booking newBooking = convertStringArrayToBooking(bookingSystemFindPanel.getBookingStringArray());
 
 						MessageBox.infoMessageBox("A search will be performed based on the given details.");
 
@@ -143,24 +138,11 @@ public class BookingHandler implements ActionListener {
 				break;
 			case "Add":
 				try {
-					int result = bookingSystemAddPanel.showDialog();
-					if (result == 0) {
-						String[] bookingStrings = bookingSystemAddPanel.getBookingStringArray();
-
-						int id = bookingSystemPanel.getRowCountOfTable();
-
-						Booking newBooking = new Booking(id,
-								bookingStrings[0],
-								stringToDate(id, bookingStrings[1]),
-								stringToTime(id, bookingStrings[2], false),
-								stringToTime(id, bookingStrings[3], true),
-								bookingStrings[4],
-								bookingStrings[5],
-								new Equipment(bookingStrings[6]));
+					if (bookingSystemAddPanel.showDialog() == 0) {
+						Booking newBooking = convertStringArrayToBooking(bookingSystemAddPanel.getBookingStringArray());
 						if (!newBooking.isValid()) {
 							bookingBusinessLayer.insertBooking(newBooking);
 							bookingSystemPanel.addBookingToList(newBooking);
-
 						} else {
 							MessageBox.errorMessageBox("Please enter all of the required details for booking");
 						}
@@ -171,39 +153,32 @@ public class BookingHandler implements ActionListener {
 
 				break;
 			case "Remove":
-				System.out.println("remove clicked");
+				try {
+					this.bookingIDCurrentlyBeingProcessed = bookingSystemPanel.getIDOfSelectedRow();
+					if (this.bookingIDCurrentlyBeingProcessed >= 0) {
+						bookingSystemRemovePanel.setTextOfComponents(convertStringArrayListToObjectList(bookingSystemPanel.getCurrentlySelectedRowAsStringArrayList()));
+						if (bookingSystemRemovePanel.showDialog() == 0) {
+							bookingBusinessLayer.setCurrentIndexOfBookingInList(bookingSystemPanel.getIndexOfSelectedRow());
+							bookingBusinessLayer.removeBooking(this.bookingIDCurrentlyBeingProcessed);
+						}
+					} else {
+						MessageBox.warningMessageBox("Please select a booking to remove");
+					}
+				} catch (Exception e) {
+					MessageBox.errorMessageBox("There was an issue while trying to remove a booking.\n" + "Does this make any sense to you.." + e.toString() + "?");
+				}
 				break;
 			case "Edit":
 				try {
-
-					int id = bookingSystemPanel.getIDOfSelectedRow();
-					if (id >= 0) {
-						ArrayList<String> arrayOfStrings = bookingSystemPanel.getCurrentlySelectedRowAsStringArrayList();
-
-						Object[] bookingObjects = { arrayOfStrings.get(1),
-								stringToDate(0, arrayOfStrings.get(2)),
-								stringToTime(0, arrayOfStrings.get(3), false),
-								stringToTime(0, arrayOfStrings.get(3),true),
-								arrayOfStrings.get(4),
-								arrayOfStrings.get(5),
-								arrayOfStrings.get(6) };
-
-						bookingSystemEditPanel.setTextOfComponents(bookingObjects);
-
-						int result = bookingSystemEditPanel.showDialog();
-						if (result == 0) {
-							String[] bookingStrings = bookingSystemEditPanel.getBookingStringArray();
-							Booking newBooking = new Booking(id,
-									bookingStrings[0],
-									stringToDate(id, bookingStrings[1]),
-									stringToTime(id, bookingStrings[2], false),
-									stringToTime(id, bookingStrings[3], true),
-									bookingStrings[4],
-									bookingStrings[5],
-									new Equipment(bookingStrings[6]));
-							if (!newBooking.isValid()) {
-								bookingBusinessLayer.modifyBooking(id,newBooking);
-								bookingSystemPanel.replaceBookingInList(newBooking); //pass id of booking too replace
+					this.bookingIDCurrentlyBeingProcessed = bookingSystemPanel.getIDOfSelectedRow();
+					if (this.bookingIDCurrentlyBeingProcessed >= 0) {
+						bookingSystemEditPanel.setTextOfComponents(convertStringArrayListToObjectList(bookingSystemPanel.getCurrentlySelectedRowAsStringArrayList()));
+						if (bookingSystemEditPanel.showDialog() == 0) {
+							Booking newBooking = convertStringArrayToBooking(bookingSystemEditPanel.getBookingStringArray());
+							if (newBooking.isValid() == true) {
+								bookingBusinessLayer.setCurrentIndexOfBookingInList(bookingSystemPanel.getIndexOfSelectedRow());
+								bookingBusinessLayer.modifyBooking(this.bookingIDCurrentlyBeingProcessed,newBooking);
+								bookingSystemPanel.replaceBookingInList(newBooking); //already knows the id
 							} else {
 								MessageBox.errorMessageBox("Please enter all of the required details for booking");
 							}
@@ -212,34 +187,58 @@ public class BookingHandler implements ActionListener {
 						MessageBox.warningMessageBox("Please select a booking to modify");
 					}
 				} catch (Exception e) {
-					MessageBox.errorMessageBox(e.toString());
+					MessageBox.errorMessageBox("There was an issue while trying to edit a booking.\n" + "Does this make any sense to you.." + e.toString() + "?");
+				}
+				break;
+			case "Load":
+				try {
+					bookingBusinessLayer.populateBookingListOnLoad();
+					bookingSystemPanel.addBookingsToList(IteratorUtils.toList(bookingBusinessLayer.iterator()));
+				} catch (Exception e) {
+					MessageBox.errorMessageBox("There was an issue while trying to load bookings.\n" + "Does this make any sense to you.." + e.toString() + "?");
 				}
 				break;
 			default:
 				System.out.println("control handler not found");
 		}
-
 	}
 
-	public Date stringToDate(int bookingId, String stringToConvert) {
+	private final Date stringToDate(String stringToConvert) {
 		String s = stringToConvert.replaceAll("-",".");
 		try {
 			return BOOKING_DATE_FORMAT.parse(s);
 		} catch (ParseException e) {
-			listOfBadBookingIDs.add(bookingId);
+			listOfBadBookingIDs.add(this.bookingIDCurrentlyBeingProcessed);
 			return new Date();
-
 		} catch (Exception e) {
 			return null;
 		}
 	}
 
-	public Date stringToTime(int bookingId, String unVerifiedStringToConvert, boolean collectionTime) throws Exception {
+	private final Object[] convertStringArrayListToObjectList(ArrayList<String> arrayOfStrings) {
+		return new Object[] { arrayOfStrings.get(1),
+				stringToDate(arrayOfStrings.get(2)),
+				stringToTime(arrayOfStrings.get(3), false),
+				stringToTime(arrayOfStrings.get(3),true),
+				arrayOfStrings.get(4),
+				arrayOfStrings.get(5),
+				arrayOfStrings.get(6) };
+	}
 
+	private final Booking convertStringArrayToBooking(String[] bookingStrings) {
+		return  new Booking(this.bookingIDCurrentlyBeingProcessed,
+				bookingStrings[0],
+				stringToDate(bookingStrings[1]),
+				stringToTime(bookingStrings[2], false),
+				stringToTime(bookingStrings[3], true),
+				bookingStrings[4],
+				bookingStrings[5],
+				new Equipment(bookingStrings[6]));
+	}
+
+	private final Date stringToTime(String unVerifiedStringToConvert, boolean collectionTime) {
 		String strippedUnverifiedStringToConvert = unVerifiedStringToConvert.replaceAll("[a-zA-z ]", "");
-
-		String verifiedStringToConvert = "unused";
-
+		String verifiedStringToConvert = "";
 		if (!strippedUnverifiedStringToConvert.contains("-")) {
 			verifiedStringToConvert = strippedUnverifiedStringToConvert;
 		} else {
@@ -249,20 +248,20 @@ public class BookingHandler implements ActionListener {
 				verifiedStringToConvert = strippedUnverifiedStringToConvert.substring(strippedUnverifiedStringToConvert.indexOf('-') + 1, strippedUnverifiedStringToConvert.length());
 			}
 		}
-
 		try { //check if i can parse to long, if not work another way of converting the unverified string into a usable date format..
 			long dayMs = Long.parseLong(unVerifiedStringToConvert);
 			return new Date(dayMs);
-		} catch (NumberFormatException ep) {
-			return (Date) BOOKING_TIME_FORMAT.parse(verifiedStringToConvert);
-		} catch (Exception e) { //last choice - notify user that the date was in the incorrect format and add a new date
-			listOfBadBookingIDs.add(bookingId);
-			return new Date();
+		} catch (NumberFormatException nfe) {
+			try {
+				return (Date) BOOKING_TIME_FORMAT.parse(verifiedStringToConvert);
+			} catch (ParseException pe) {
+				listOfBadBookingIDs.add(this.bookingIDCurrentlyBeingProcessed);
+				return new Date();
+			}
 		}
 	}
 
-
-	public void populateBadBookingMessageBox() {
+	private final void populateBadBookingMessageBox() {
 		String s = "Booking ID: ";
 		if (!listOfBadBookingIDs.isEmpty()) {
 				for (int i : listOfBadBookingIDs) {
@@ -273,7 +272,6 @@ public class BookingHandler implements ActionListener {
 			MessageBox.warningMessageBox(s);
 		}
 	}
-
 }
 
 

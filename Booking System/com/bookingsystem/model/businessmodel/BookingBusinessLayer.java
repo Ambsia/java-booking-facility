@@ -5,6 +5,7 @@ import com.bookingsystem.helpers.ReturnSpecifiedPropertyValues;
 import com.bookingsystem.model.Booking;
 import com.bookingsystem.model.Equipment;
 
+import javax.swing.plaf.nimbus.State;
 import java.sql.*;
 import java.sql.Date;
 import java.text.SimpleDateFormat;
@@ -18,14 +19,16 @@ public class BookingBusinessLayer implements Iterable<Booking> {
 	private ReturnSpecifiedPropertyValues returnSpecifiedPropertyValues;
 	ArrayList<Booking> bookings;
 	private String databaseConnectionString;
-
+	private int currentIndexOfBookingInList;
 	public BookingBusinessLayer() {
 		bookings = new ArrayList<Booking>();
 		returnSpecifiedPropertyValues = new ReturnSpecifiedPropertyValues();
 		databaseConnectionString = returnSpecifiedPropertyValues.getDatabaseConnectionString();
+		currentIndexOfBookingInList = -1;
 	}
 
 	public void populateBookingListOnLoad() {
+		bookings.clear();
 		Statement stmt;
 		try {
 			Connection con = DriverManager.getConnection(databaseConnectionString);
@@ -62,7 +65,7 @@ public class BookingBusinessLayer implements Iterable<Booking> {
 		}
 	}
 
-	public ArrayList<Booking> findBookings(Booking bookingInformationKnown) {
+	public ArrayList<Booking> findBookings(Booking bookingInformationKnown) { //show in a separate dialog, all users to save them to file
 		Statement stmt;
 		try {
 			Connection con = DriverManager.getConnection(databaseConnectionString);
@@ -89,25 +92,78 @@ public class BookingBusinessLayer implements Iterable<Booking> {
 		return null;
 	}
 
-	public void modifyBooking(int id,Booking newBooking) {
+	public void modifyBooking(int bookingID,Booking newBooking) {
 		Statement stmt;
 		try {
 			Connection con = DriverManager.getConnection(databaseConnectionString);
 			stmt = con.createStatement();
-
-			 stmt.execute("EXECUTE spModifyBooking '" + id + "','" + newBooking.getBookingDay() + "','" + getDateSqlStatement(newBooking) + "'," +
+			System.out.println(newBooking.toString());
+			int j = stmt.executeUpdate("EXECUTE spModifyBooking '" + bookingID + "','" + newBooking.getBookingDay() + "','" + getDateSqlStatement(newBooking) + "'," +
 					"'" + newBooking.getBookingStartTimeInSQLFormat() + "','" + newBooking.getBookingCollectionTimeInSQLFormat() + "'," +
 					"'" + newBooking.getBookingLocation() + "'," + "'" + newBooking.getBookingHolder() + "'," +
 					"'" + newBooking.getRequiredEquipment().GetEquipmentName() + "'");
-
-
-
-
+			removeBookingFromList();
+			addBookingToListAtAGivenPosition(newBooking);
+			con.close();
+			stmt.close();
 		} catch (SQLException e) {
 			MessageBox.errorMessageBox("There was an issue while we were trying to modify that booking in the database!\n" + "Does this make any sense to you.." + e.toString() + "?");
 		}
-
 	}
+
+	public void removeBooking(int bookingID) {
+		Statement stmt;
+		try {
+			Connection con = DriverManager.getConnection(databaseConnectionString);
+			stmt = con.createStatement();
+			stmt.execute("EXECUTE spRemoveBooking'" + bookingID + "'");
+			removeBookingFromList();
+			con.close();
+			stmt.close();
+		} catch (SQLException e) {
+			MessageBox.errorMessageBox("There was an issue while we were trying to remove that booking from the database!\n" + "Does this make any sense to you.." + e.toString() + "?");
+		}
+	}
+	public void removeBookingFromList() {
+		if (this.currentIndexOfBookingInList >= 0 && bookings.size() > 0) {
+			this.bookings.remove(this.currentIndexOfBookingInList);
+		} else {
+			MessageBox.errorMessageBox("Nothing selected, or there is nothing to delete.");
+		}
+	}
+
+	public void addBookingToListAtAGivenPosition(Booking newBooking){
+		if (currentIndexOfBookingInList >= 0 && currentIndexOfBookingInList < bookings.size()) {
+			this.bookings.add(currentIndexOfBookingInList, newBooking);
+		}
+	}
+
+	public void setCurrentIndexOfBookingInList(int indexOfBookingInList) {
+		try {
+			if (indexOfBookingInList >= 0 && indexOfBookingInList < bookings.size()) {
+				this.currentIndexOfBookingInList = indexOfBookingInList;
+			}
+		} catch (IndexOutOfBoundsException e) {
+			MessageBox.errorMessageBox("Big problems......");
+		}
+	}
+
+	@Override
+	public Iterator<Booking> iterator() {
+		return bookings.iterator();
+	}
+
+
+
+	public static java.sql.Date convertFromJAVADateToSQLDate(
+			java.util.Date javaDate) {
+		java.sql.Date sqlDate = null;
+		if (javaDate != null) {
+			sqlDate = new Date(javaDate.getTime());
+		}
+		return sqlDate;
+	}
+
 	public String getDateSqlStatement(Booking bookingInformationKnown) {
 		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-mm-dd hh:mm", Locale.ENGLISH);
 
@@ -123,25 +179,5 @@ public class BookingBusinessLayer implements Iterable<Booking> {
 
 		return dateSqlStatement;
 	}
-
-	public void removeBooking(Booking booking) {
-
-	}
-
-	@Override
-	public Iterator<Booking> iterator() {
-		return bookings.iterator();
-	}
-
-
-	public static java.sql.Date convertFromJAVADateToSQLDate(
-			java.util.Date javaDate) {
-		java.sql.Date sqlDate = null;
-		if (javaDate != null) {
-			sqlDate = new Date(javaDate.getTime());
-		}
-		return sqlDate;
-	}
-
 
 }

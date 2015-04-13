@@ -1,4 +1,4 @@
-package  com.bookingsystem.view;
+package com.bookingsystem.view.panes;
 
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
@@ -22,6 +22,8 @@ import javax.swing.event.ListSelectionListener;
 import com.bookingsystem.model.Booking;
 import com.bookingsystem.model.BookingTableModel;
 import com.bookingsystem.model.Equipment;
+import com.bookingsystem.view.panelparts.UIBookingSystemControlPanel;
+import com.bookingsystem.view.panelparts.UIBookingSystemViewPanel;
 
 
 public class UIBookingSystemPanel extends JPanel {
@@ -124,13 +126,7 @@ public class UIBookingSystemPanel extends JPanel {
 
 	public void addBookingsToList(List<Booking> listOfBookings) {
 		for (Booking booking : listOfBookings) {
-			model.addRow(new Object[]{booking.getBookingID(),
-					booking.getBookingDay(),
-					BOOKING_DATE_FORMAT.format(booking.getBookingDate()),
-					BOOKING_TIME_FORMAT.format(booking.getBookingStartTime()) + "-" + BOOKING_TIME_FORMAT.format(booking.getBookingCollectionTime()),
-					booking.getBookingLocation(),
-					booking.getBookingHolder(),
-					booking.getRequiredEquipment().GetEquipmentName()});
+			addBookingToList(booking);
 		}
 	}
 	
@@ -149,6 +145,9 @@ public class UIBookingSystemPanel extends JPanel {
 		else return null;
 	}
 
+	public int getIndexOfSelectedRow() {
+		return jTable.getSelectedRow();
+	}
 
 	public int getIDOfSelectedRow() {
 		if (jTable.getSelectedRow() != -1) {

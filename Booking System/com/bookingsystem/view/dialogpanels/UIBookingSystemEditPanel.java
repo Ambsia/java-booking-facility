@@ -1,4 +1,6 @@
-package com.bookingsystem.view;
+package com.bookingsystem.view.dialogpanels;
+
+import com.bookingsystem.view.dialogpanels.UIBookingSystemAddPanel;
 
 import javax.swing.*;
 
@@ -6,15 +8,14 @@ import javax.swing.*;
  * Author: [Alex]
  */
 public class UIBookingSystemEditPanel extends UIBookingSystemAddPanel {
-
-	public void populateTextBoxes() {
-
+	public UIBookingSystemEditPanel() {
+		super();
+		addDefaultComponentsToPanel();
 	}
-
 	@Override
 	public int showDialog() {
 		return JOptionPane.showOptionDialog(null, this, "Edit Booking",
-				JOptionPane.OK_OPTION, JOptionPane.CANCEL_OPTION, null,
+				JOptionPane.PLAIN_MESSAGE, JOptionPane.PLAIN_MESSAGE, null,
 				new String[]{"Edit", "Cancel"}, "Add");
 	}
 }

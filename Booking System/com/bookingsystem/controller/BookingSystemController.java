@@ -4,10 +4,10 @@ import com.bookingsystem.controller.handler.BookingHandler;
 import com.bookingsystem.controller.handler.LoginHandler;
 import com.bookingsystem.model.businessmodel.BookingBusinessLayer;
 import com.bookingsystem.view.BookingSystemUILoader;
-import com.bookingsystem.view.UIBookingSystemControlPanel;
-import com.bookingsystem.view.UIBookingSystemPanel;
-import com.bookingsystem.view.UIBookingSystemTabbedPane;
-import com.bookingsystem.view.UIBookingSystemViewPanel;
+import com.bookingsystem.view.panelparts.UIBookingSystemControlPanel;
+import com.bookingsystem.view.panes.UIBookingSystemPanel;
+import com.bookingsystem.view.panes.UIBookingSystemTabbedPane;
+import com.bookingsystem.view.panelparts.UIBookingSystemViewPanel;
 import com.bookingsystem.view.UILoginPanel;
 
 public class BookingSystemController {

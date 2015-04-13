@@ -1,4 +1,4 @@
-package com.bookingsystem.view;
+package com.bookingsystem.view.panes;
 
 import javax.swing.*;
 import java.awt.*;

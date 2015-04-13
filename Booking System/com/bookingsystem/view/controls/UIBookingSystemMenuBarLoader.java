@@ -1,4 +1,4 @@
-package com.bookingsystem.view;
+package com.bookingsystem.view.controls;
 
 import java.awt.event.ActionListener;
 

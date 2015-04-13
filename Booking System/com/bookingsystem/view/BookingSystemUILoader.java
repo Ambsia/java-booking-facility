@@ -1,5 +1,8 @@
 package  com.bookingsystem.view;
 
+import com.bookingsystem.view.controls.UIBookingSystemMenuBarLoader;
+import com.bookingsystem.view.panes.UIBookingSystemTabbedPane;
+
 import java.awt.*;
 
 import javax.swing.JFrame;

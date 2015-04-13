@@ -61,9 +61,7 @@ public final class BookingHandler implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent eventOccurred) {
-	//	int result=0;
 		switch (eventOccurred.getActionCommand()) {
-
 			case "Import":
 				JFileChooser jFileChooser = new JFileChooser();
 				File file = null;

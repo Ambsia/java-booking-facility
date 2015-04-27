@@ -1,30 +1,12 @@
 package com.bookingsystem.controller.handler;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.PushbackInputStream;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Locale;
-
-import javax.swing.JFileChooser;
-
-import com.bookingsystem.model.businessmodel.BookingBusinessLayer;
-
-
 import com.bookingsystem.helpers.MessageBox;
 import com.bookingsystem.model.Booking;
 import com.bookingsystem.model.Equipment;
-import com.bookingsystem.view.dialogpanels.UIBookingSystemAddPanel;
-import com.bookingsystem.view.dialogpanels.UIBookingSystemEditPanel;
-import com.bookingsystem.view.dialogpanels.UIBookingSystemFindPanel;
-import com.bookingsystem.view.dialogpanels.UIBookingSystemRemovePanel;
+import com.bookingsystem.model.Log;
+import com.bookingsystem.model.businessmodel.BookingBusinessLayer;
+import com.bookingsystem.model.businessmodel.LoggerBusinessLayer;
+import com.bookingsystem.view.dialogpanels.bookingdialog.*;
 import com.bookingsystem.view.panelparts.UIBookingSystemControlPanel;
 import com.bookingsystem.view.panes.UIBookingSystemPanel;
 import org.apache.commons.collections.IteratorUtils;
@@ -32,6 +14,20 @@ import org.apache.poi.ss.usermodel.WorkbookFactory;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+
+import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.PushbackInputStream;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
 
 public final class BookingHandler implements ActionListener {
 
@@ -41,28 +37,37 @@ public final class BookingHandler implements ActionListener {
 	private UIBookingSystemFindPanel bookingSystemFindPanel;
 	private UIBookingSystemEditPanel bookingSystemEditPanel;
 	private UIBookingSystemRemovePanel bookingSystemRemovePanel;
+	private UIBookingSystemShowBookingsFound bookingSystemShowBookingsFound;
+
 	private static DateFormat BOOKING_DATE_FORMAT = new SimpleDateFormat("dd.MM.yy", Locale.ENGLISH);
+	private static DateFormat BOOKING_DATE_FORMAT_2 = new SimpleDateFormat("dd.MMM.yy", Locale.ENGLISH);
 	private static DateFormat BOOKING_TIME_FORMAT = new SimpleDateFormat("HH:mm", Locale.ENGLISH);
 	private BookingBusinessLayer bookingBusinessLayer;
 	private List<Integer> listOfBadBookingIDs;
 	private int bookingIDCurrentlyBeingProcessed;
 
-	public BookingHandler(BookingBusinessLayer model,UIBookingSystemPanel bookingSystemPanel) {
+	private LoggerBusinessLayer loggerBusinessLayer;
+
+	public BookingHandler(BookingBusinessLayer model, UIBookingSystemPanel bookingSystemPanel, LoggerBusinessLayer loggerBusinessLayer) {
+		this.bookingBusinessLayer = model;
 		this.bookingSystemPanel = bookingSystemPanel;
-		bookingSystemControlPanel = this.bookingSystemPanel.getBookingSystemControlPanel();
-		bookingSystemAddPanel = bookingSystemControlPanel.getUIBookingSystemAddPanel();
-		bookingSystemFindPanel = bookingSystemControlPanel.getUIBookingSystemFindPanel();
-		bookingSystemEditPanel = bookingSystemControlPanel.getUIBookingSystemEditPanel();
-		bookingSystemRemovePanel = bookingSystemControlPanel.getUIBookingSystemRemovePanel();
+		this.loggerBusinessLayer = loggerBusinessLayer;
+		this.bookingSystemControlPanel = this.bookingSystemPanel.getBookingSystemControlPanel();
+		this.bookingSystemAddPanel = this.bookingSystemControlPanel.getUIBookingSystemAddPanel();
+		this.bookingSystemFindPanel = this.bookingSystemControlPanel.getUIBookingSystemFindPanel();
+		this.bookingSystemEditPanel = this.bookingSystemControlPanel.getUIBookingSystemEditPanel();
+		this.bookingSystemRemovePanel = this.bookingSystemControlPanel.getUIBookingSystemRemovePanel();
+		this.bookingSystemShowBookingsFound = this.bookingSystemControlPanel.getUIBookingSystemShowBookingsFound();
 		listOfBadBookingIDs = new ArrayList<>();
-		bookingBusinessLayer = model;
 		bookingIDCurrentlyBeingProcessed = 1;
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent eventOccurred) {
+		Log log = new Log(eventOccurred.getActionCommand(),this.getClass().toString(),new Date());
 		switch (eventOccurred.getActionCommand()) {
 			case "Import":
+
 				JFileChooser jFileChooser = new JFileChooser();
 				File file = null;
 				FileInputStream fileInputStream = null;
@@ -83,13 +88,15 @@ public final class BookingHandler implements ActionListener {
 							workBook = (XSSFWorkbook) WorkbookFactory
 									.create(new PushbackInputStream(fileInputStream));
 
-							sheet = workBook.getSheetAt(0);
+
+							sheet = workBook.getSheetAt(1);
 							rows = sheet.getPhysicalNumberOfRows();
 							for (int r = 1; r < rows; r++) {
 								row = sheet.getRow(r);
 								if (row.toString() != "") {
 									if (row.getCell((short) 0).toString() != "") {
 										this.bookingIDCurrentlyBeingProcessed = r;
+										System.out.println(row.getCell((short) 1).toString());
 										importedBooking = new Booking(this.bookingIDCurrentlyBeingProcessed,
 												row.getCell((short) 0).toString(),
 												stringToDate(row.getCell((short) 1).toString()),
@@ -113,6 +120,7 @@ public final class BookingHandler implements ActionListener {
 						break;
 					}
 				} catch (Exception e) {
+					loggerBusinessLayer.exceptionCaused(log, e);
 					MessageBox.errorMessageBox(e.toString());
 				}
 				populateBadBookingMessageBox();
@@ -120,14 +128,18 @@ public final class BookingHandler implements ActionListener {
 			case "Search":
 				try {
 					if (bookingSystemFindPanel.showDialog() == 0) {
+						bookingSystemShowBookingsFound.clearBookingsFromFoundList();
 						this.bookingIDCurrentlyBeingProcessed = 1;
 						Booking newBooking = convertStringArrayToBooking(bookingSystemFindPanel.getBookingStringArray());
 
 						MessageBox.infoMessageBox("A search will be performed based on the given details.");
 
-						bookingSystemPanel.addBookingsToList(bookingBusinessLayer.findBookings(newBooking));
+						bookingSystemShowBookingsFound.addBookingsToList(bookingBusinessLayer.findBookings(newBooking));
+						bookingSystemShowBookingsFound.showDialog();
+
 					}
 				} catch (Exception e) {
+					loggerBusinessLayer.exceptionCaused(log, e);
 					MessageBox.errorMessageBox("There was an issue while trying to execute a search\n" + "Does this make any sense to you.." + e.toString() + "?");
 				}
 				break;
@@ -141,11 +153,14 @@ public final class BookingHandler implements ActionListener {
 						if (!newBooking.isValid()) {
 							bookingBusinessLayer.insertBooking(newBooking);
 							bookingSystemPanel.addBookingToList(newBooking);
+							log.setBookingIDInserted(newBooking.getBookingID());
+
 						} else {
 							MessageBox.errorMessageBox("Please enter all of the required details for booking");
 						}
 					}
 				} catch (Exception e) {
+					loggerBusinessLayer.exceptionCaused(log, e);
 					MessageBox.errorMessageBox("There was an issue while trying to add a booking.\n" + "Does this make any sense to you.." + e.toString() + "?");
 				}
 
@@ -158,11 +173,14 @@ public final class BookingHandler implements ActionListener {
 						if (bookingSystemRemovePanel.showDialog() == 0) {
 							bookingBusinessLayer.setCurrentIndexOfBookingInList(bookingSystemPanel.getIndexOfSelectedRow());
 							bookingBusinessLayer.removeBooking(this.bookingIDCurrentlyBeingProcessed);
+							bookingSystemPanel.removeBookingFromTable();
+							log.setBookingIDDeleted(this.bookingIDCurrentlyBeingProcessed);
 						}
 					} else {
 						MessageBox.warningMessageBox("Please select a booking to remove");
 					}
 				} catch (Exception e) {
+					loggerBusinessLayer.exceptionCaused(log, e);
 					MessageBox.errorMessageBox("There was an issue while trying to remove a booking.\n" + "Does this make any sense to you.." + e.toString() + "?");
 				}
 				break;
@@ -173,10 +191,11 @@ public final class BookingHandler implements ActionListener {
 						bookingSystemEditPanel.setTextOfComponents(convertStringArrayListToObjectList(bookingSystemPanel.getCurrentlySelectedRowAsStringArrayList()));
 						if (bookingSystemEditPanel.showDialog() == 0) {
 							Booking newBooking = convertStringArrayToBooking(bookingSystemEditPanel.getBookingStringArray());
-							if (newBooking.isValid() == true) {
+							if (!newBooking.isValid()) {
 								bookingBusinessLayer.setCurrentIndexOfBookingInList(bookingSystemPanel.getIndexOfSelectedRow());
 								bookingBusinessLayer.modifyBooking(this.bookingIDCurrentlyBeingProcessed,newBooking);
-								bookingSystemPanel.replaceBookingInList(newBooking); //already knows the id
+								bookingSystemPanel.replaceBookingInList(newBooking);
+								log.setBookingIDEdited(this.bookingIDCurrentlyBeingProcessed);
 							} else {
 								MessageBox.errorMessageBox("Please enter all of the required details for booking");
 							}
@@ -185,32 +204,48 @@ public final class BookingHandler implements ActionListener {
 						MessageBox.warningMessageBox("Please select a booking to modify");
 					}
 				} catch (Exception e) {
+					loggerBusinessLayer.exceptionCaused(log, e);
 					MessageBox.errorMessageBox("There was an issue while trying to edit a booking.\n" + "Does this make any sense to you.." + e.toString() + "?");
 				}
 				break;
 			case "Load":
 				try {
 					bookingBusinessLayer.populateBookingListOnLoad();
-					bookingSystemPanel.addBookingsToList(IteratorUtils.toList(bookingBusinessLayer.iterator()));
+					bookingSystemPanel.removeAllBookings();
+					ArrayList<Booking> bookings = new ArrayList<Booking>();
+					for (Object object : IteratorUtils.toList(bookingBusinessLayer.iterator())) {
+						bookings.add((Booking) object);
+					}
+							bookingSystemPanel.addBookingsToList(bookings);
+
 				} catch (Exception e) {
+					loggerBusinessLayer.exceptionCaused(log, e);
 					MessageBox.errorMessageBox("There was an issue while trying to load bookings.\n" + "Does this make any sense to you.." + e.toString() + "?");
 				}
+				break;
+			case "Filter":
+
 				break;
 			default:
 				System.out.println("control handler not found");
 		}
+		loggerBusinessLayer.insertLog(log);
 	}
 
 	private final Date stringToDate(String stringToConvert) {
-		String s = stringToConvert.replaceAll("-",".");
+		String s = stringToConvert.replaceAll("[^A-Za-z0-9. ]", "."); //will replace all non-alpha characters with a period
 		try {
-			return BOOKING_DATE_FORMAT.parse(s);
-		} catch (ParseException e) {
-			listOfBadBookingIDs.add(this.bookingIDCurrentlyBeingProcessed);
-			return new Date();
+			return BOOKING_DATE_FORMAT.parse(s); //tries to match the string with the format dd.MM.yy
+		} catch (ParseException ep) {
+			try {
+				return BOOKING_DATE_FORMAT_2.parse(s); //tries to match the string with teh format dd.MMM.yy
+			} catch (Exception e) {
+				listOfBadBookingIDs.add(this.bookingIDCurrentlyBeingProcessed); //adds the id of the booking that cannot be properly processed
+			}
 		} catch (Exception e) {
-			return null;
+			listOfBadBookingIDs.add(this.bookingIDCurrentlyBeingProcessed); //again but a different catch
 		}
+		return new Date(); // always returns something we can manage
 	}
 
 	private final Object[] convertStringArrayListToObjectList(ArrayList<String> arrayOfStrings) {
@@ -251,7 +286,7 @@ public final class BookingHandler implements ActionListener {
 			return new Date(dayMs);
 		} catch (NumberFormatException nfe) {
 			try {
-				return (Date) BOOKING_TIME_FORMAT.parse(verifiedStringToConvert);
+				return BOOKING_TIME_FORMAT.parse(verifiedStringToConvert);
 			} catch (ParseException pe) {
 				listOfBadBookingIDs.add(this.bookingIDCurrentlyBeingProcessed);
 				return new Date();

@@ -3,16 +3,17 @@ package com.bookingsystem.model.businessmodel;
 import com.bookingsystem.helpers.MessageBox;
 import com.bookingsystem.helpers.ReturnSpecifiedPropertyValues;
 import com.bookingsystem.model.Account;
-import com.bookingsystem.model.Logger;
+
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.Iterator;
 
 /**
  * Author: [Alex] on [$Date]
  */
-import java.io.IOException;
-import java.sql.*;
-public class AccountBusinessLayer {
 
-    private Logger accountLogger;
+public class AccountBusinessLayer extends BusinessLayer implements Iterable<Account> {
+
     private ReturnSpecifiedPropertyValues returnSpecifiedPropertyValues;
     private boolean accountFound;
     private String databaseConnectionString;
@@ -42,7 +43,22 @@ public class AccountBusinessLayer {
 
     }
 
-    public Account retrieveAccount(String username, String password) throws SQLException {
+    public ArrayList<Account> getAllAccounts() {
+        ArrayList<Account> accountArrayList = new ArrayList<Account>();
+        try (Connection connection = DriverManager.getConnection(databaseConnectionString) ;
+             CallableStatement callableStatement = connection.prepareCall("{CALL spGetAllAccounts}")) {
+            ResultSet rs = callableStatement.executeQuery();
+            while (rs.next()) {
+                accountArrayList.add(new Account(rs.getInt(1),rs.getInt(4),rs.getString(2),rs.getString(3)));
+            }
+            return accountArrayList;
+        } catch (SQLException e) {
+            MessageBox.errorMessageBox("There was an issue while retrieving accounts.\n" + "Does this make any sense to you.." + e.toString() + "?");
+        }
+        return new ArrayList<Account>();
+    }
+
+    public Account retrieveAccount(String username, String password) {
         Statement stmt;
         Account account;
         try {
@@ -52,7 +68,7 @@ public class AccountBusinessLayer {
             ResultSet rs = stmt.executeQuery("EXECUTE spGetAccount '" + account.getUsername() + "'"+ ", '" + account.getHashedPassword() +"'");
             if (rs.next())  {
                 account.setUserID(rs.getInt(1));
-                account.setUserID(rs.getInt(2));
+                account.setUserLevel(rs.getInt(2));
                 accountFound = true;
                 con.close();
                 stmt.close();
@@ -62,12 +78,17 @@ public class AccountBusinessLayer {
         } catch (SQLException e) {
             MessageBox.errorMessageBox("There was an issue while we were trying to retrieve that account from the database!\n" + "Does this make any sense to you.." + e.toString() + "?");
         }
-        accountFound = true;
         return null;
     }
 
+
     public boolean isAccountFound() {
         return accountFound;
+    }
+
+    @Override
+    public Iterator<Account> iterator() {
+        return null;
     }
 }
 

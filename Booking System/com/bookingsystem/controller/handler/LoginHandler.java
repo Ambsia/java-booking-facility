@@ -3,14 +3,15 @@ package com.bookingsystem.controller.handler;
 
 import com.bookingsystem.helpers.MessageBox;
 import com.bookingsystem.model.Account;
+import com.bookingsystem.model.Log;
 import com.bookingsystem.model.businessmodel.AccountBusinessLayer;
+import com.bookingsystem.model.businessmodel.LoggerBusinessLayer;
 import com.bookingsystem.view.BookingSystemUILoader;
 import com.bookingsystem.view.UILoginPanel;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.IOException;
-import java.sql.SQLException;
+import java.util.Date;
 
 /**
  * Author: [Alex] on [$Date]
@@ -22,27 +23,29 @@ public class LoginHandler implements ActionListener {
     private UILoginPanel loginPanel;
     private AccountBusinessLayer accountBusinessLayer;
 
-    public LoginHandler(BookingSystemUILoader view)  {
-        this.view = view;
-        loginPanel = view.getLoginPanel();
-        accountBusinessLayer = new AccountBusinessLayer();
+    private LoggerBusinessLayer loggerBusinessLayer;
 
+    public LoginHandler(AccountBusinessLayer accountBusinessLayer, BookingSystemUILoader view, LoggerBusinessLayer loggerBusinessLayer)  {
+        this.view = view;
+        this.loggerBusinessLayer = loggerBusinessLayer;
+        loginPanel = view.getLoginPanel();
+        this.accountBusinessLayer = accountBusinessLayer;
     }
 
     @Override
     public void actionPerformed(ActionEvent arg0) {
-
+        Log log = new Log(arg0.getActionCommand(),this.getClass().toString(), new Date());
         switch (arg0.getActionCommand()) {
             case "Login":
-
-                try {
-                    accountModel = accountBusinessLayer.retrieveAccount(loginPanel.getLoginUsernameText(),loginPanel.getLoginPasswordText() );
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-                if(accountBusinessLayer.isAccountFound()) {
+                //accountModel = accountBusinessLayer.retrieveAccount(loginPanel.getLoginUsernameText(), loginPanel.getLoginPasswordText());
+                accountModel = accountBusinessLayer.retrieveAccount("alex", "donkey");
+                if (accountBusinessLayer.isAccountFound()) {
+                    loggerBusinessLayer.setAccountCurrentlyLoggedIn(accountModel);
                     view.removeLoginPanel();
                     view.showBookingSystemPanel();
+                    if (accountModel != null && accountModel.getUserLevel() == 3) {
+                        view.getBookingSystemTabbedPane().showAdminPanel();
+                    }
                     view.setVisible(true);
                 } else {
                     MessageBox.errorMessageBox("Incorrect password or login.");
@@ -52,11 +55,12 @@ public class LoginHandler implements ActionListener {
             case "Clear":
                 loginPanel.clearTextBoxes();
                 break;
-
-          //  case "Clear":
-           //     Account account = new Account(0,0,"do" , "donkey");
-           //     accountBusinessLayer.insertAccount(account);
-           //     break;
+            default:
+                System.out.println("handler not found for " + arg0.getActionCommand());
+                break;
+        }
+        if (accountModel != null) {
+            loggerBusinessLayer.insertLog(log);
         }
     }
 }

@@ -1,42 +1,27 @@
 package com.bookingsystem.view.panes;
 
-import java.awt.Dimension;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.Insets;
-import java.awt.event.ActionListener;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.sql.Date;
-import java.util.List;
-import java.util.Locale;
-
-import javax.swing.JButton;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
-
 import com.bookingsystem.model.Booking;
-import com.bookingsystem.model.BookingTableModel;
-import com.bookingsystem.model.Equipment;
+import com.bookingsystem.model.tablemodel.BookingTableModel;
+import com.bookingsystem.view.controls.UIBookingSystemJTable;
+import com.bookingsystem.view.controls.UIBookingSystemJTableBookings;
 import com.bookingsystem.view.panelparts.UIBookingSystemControlPanel;
 import com.bookingsystem.view.panelparts.UIBookingSystemViewPanel;
+
+import javax.swing.*;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+import java.awt.*;
+import java.util.ArrayList;
 
 
 public class UIBookingSystemPanel extends JPanel {
 
 	private UIBookingSystemViewPanel bookingSystemViewPanel;
 	private UIBookingSystemControlPanel bookingSystemControlPanel;
-	private JButton btnAddBooking;
-	private JTable jTable;
-	private DateFormat BOOKING_DATE_FORMAT = new SimpleDateFormat("dd.MM.yy", Locale.ENGLISH);
-	private static DateFormat BOOKING_TIME_FORMAT = new SimpleDateFormat("HH:mm", Locale.ENGLISH);
+	private UIBookingSystemJTable bookingSystemJTable;
 	private BookingTableModel model;
-
 	public UIBookingSystemPanel() {
+		bookingSystemJTable = new UIBookingSystemJTableBookings(new BookingTableModel());
 
 		setLayout(new GridBagLayout());
 		GridBagConstraints gbc = new GridBagConstraints();
@@ -48,24 +33,16 @@ public class UIBookingSystemPanel extends JPanel {
 		gbc.weighty = 1;
 		gbc.anchor = GridBagConstraints.FIRST_LINE_START;
 		gbc.fill = GridBagConstraints.BOTH;
-		jTable = new JTable(new BookingTableModel()) {
-			@Override
-			public boolean isCellEditable(int row, int column) {
-				return false;
-			}
 
-		};
-		jTable.getTableHeader().setReorderingAllowed(false);
-		jTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
-			@Override
+
+		bookingSystemJTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
 			public void valueChanged(ListSelectionEvent e) {
 				UIBookingSystemViewPanel.setTextToField(getCurrentlySelectedRowAsStringArrayList());
 			}
 		});
 
-		model = (BookingTableModel) jTable.getModel();
 
-		JScrollPane jScrollPane = new JScrollPane(jTable);
+		JScrollPane jScrollPane = new JScrollPane(bookingSystemJTable);
 		gbc.gridheight = 2;
 		this.add(jScrollPane, gbc);
 		JScrollPane jScrollPane1 = new JScrollPane(bookingSystemViewPanel);
@@ -89,78 +66,55 @@ public class UIBookingSystemPanel extends JPanel {
 		bookingSystemControlPanel.setMinimumSize(new Dimension(100, 100));
 		bookingSystemControlPanel.setPreferredSize(new Dimension(100, 100));
 		this.add(bookingSystemControlPanel, gbc);
-
-
 	}
 
 	public ArrayList<String> getCurrentlySelectedRowAsStringArrayList() {
-		if (getIDOfSelectedRow() != -1) {
-			ArrayList<String> bookingData = new ArrayList<>();
-			for (int i = 0; i <= 6; i++) {
-				bookingData.add(jTable.getValueAt(jTable.getSelectedRow(), i).toString());
-			}
-			return bookingData;
-		} else {
-			return new ArrayList<String>();
+		return bookingSystemJTable.getSelectedRowAsStringArrayList();
+	}
+	
+	public void addBookingToList(Booking booking) {
+		bookingSystemJTable.addRowToList(booking);
+	}
+
+	public void addBookingsToList(ArrayList<Booking> listOfBookings) {
+		System.out.println("trying to actually add bookings to list");
+		ArrayList<Object> objectArrayList = new ArrayList<Object>();
+		for (Booking b : listOfBookings) {
+			objectArrayList.add(b);
 		}
+		bookingSystemJTable.addArrayOfRowsToList(objectArrayList);
+	}
+	
+	public Booking getBookingFromList(int bookingId) {
+		return (Booking) bookingSystemJTable.getRowFromList(bookingId);
+	}
+
+	public int getIndexOfSelectedRow() {
+		return bookingSystemJTable.getSelectedRow();
+	}
+
+	public int getIDOfSelectedRow() {
+		return bookingSystemJTable.getIDOfSelectedRow();
+	}
+
+	public int getRowCountOfTable() {
+		return bookingSystemJTable.getRowCount();
+	}
+
+	public void replaceBookingInList(Booking newBooking) {
+		bookingSystemJTable.replaceRowInList(newBooking);
+	}
+
+	public void removeBookingFromTable() {
+		bookingSystemJTable.removeRowFromList();
+	}
+
+	public void removeAllBookings() {
+		bookingSystemJTable.removeAllRowsFromList();
 	}
 
 	public UIBookingSystemViewPanel getBookingSystemViewPanel() { return bookingSystemViewPanel; }
 
 	public UIBookingSystemControlPanel getBookingSystemControlPanel() { return bookingSystemControlPanel; }
 
-	public void addSubmitListener(ActionListener ai) {
-		btnAddBooking.addActionListener(ai);
-	}
-	
-	public void addBookingToList(Booking booking) {
-		model.addRow(new Object[]{booking.getBookingID(),
-				booking.getBookingDay(),
-				BOOKING_DATE_FORMAT.format(booking.getBookingDate()),
-				BOOKING_TIME_FORMAT.format(booking.getBookingStartTime()) + "-" + BOOKING_TIME_FORMAT.format(booking.getBookingCollectionTime()),
-				booking.getBookingLocation(),
-				booking.getBookingHolder(),
-				booking.getRequiredEquipment().GetEquipmentName()});
-
-	}
-
-	public void addBookingsToList(List<Booking> listOfBookings) {
-		for (Booking booking : listOfBookings) {
-			addBookingToList(booking);
-		}
-	}
-	
-	public Booking getBookingFromList(int bookingId) {
-		if (bookingId >= 0 && bookingId != (int) model.getValueAt(0, bookingId)) {
-			return new Booking((int) model.getValueAt(0, bookingId),
-					(String) model.getValueAt(1, bookingId),
-					(Date) model.getValueAt(2, bookingId),
-					(Date) model.getValueAt(3, bookingId),
-					(Date) model.getValueAt(3, bookingId),
-					(String) model.getValueAt(4, bookingId),
-					(String) model.getValueAt(5, bookingId),
-					(Equipment) model.getValueAt(6, bookingId) );
-
-		}
-		else return null;
-	}
-
-	public int getIndexOfSelectedRow() {
-		return jTable.getSelectedRow();
-	}
-
-	public int getIDOfSelectedRow() {
-		if (jTable.getSelectedRow() != -1) {
-			return jTable.getValueAt(jTable.getSelectedRow(), 0) != null ? (int) jTable.getValueAt(jTable.getSelectedRow(), 0) : -1;
-		} else {
-			return -1;
-		}
-	}
-
-	public int getRowCountOfTable() {
-		return jTable.getRowCount();
-	}
-
-	public void replaceBookingInList(Booking newBooking) {
-	}
 }

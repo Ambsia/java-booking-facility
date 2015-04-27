@@ -5,16 +5,17 @@ import com.bookingsystem.helpers.ReturnSpecifiedPropertyValues;
 import com.bookingsystem.model.Booking;
 import com.bookingsystem.model.Equipment;
 
-import javax.swing.plaf.nimbus.State;
 import java.sql.*;
-import java.sql.Date;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Iterator;
+import java.util.Locale;
 
 /**
  * Author: [Alex] on [$Date]
  */
-public class BookingBusinessLayer implements Iterable<Booking> {
+public class BookingBusinessLayer extends BusinessLayer implements Iterable<Booking> {
 
 	private ReturnSpecifiedPropertyValues returnSpecifiedPropertyValues;
 	ArrayList<Booking> bookings;
@@ -35,9 +36,8 @@ public class BookingBusinessLayer implements Iterable<Booking> {
 			stmt = con.createStatement();
 			ResultSet rs = stmt.executeQuery("EXECUTE  spGetAllBookings");
 			while (rs.next()) {
-				bookings.add(new Booking(rs.getInt(1), rs.getString(2), rs.getDate(3), rs.getTime(4), rs.getTime(5), rs.getString(6), rs.getString(7), new Equipment(rs.getString(8))));
-			}
-			con.close();
+				bookings.add(new Booking(rs.getInt(1), rs.getString(2).trim(), rs.getDate(3), rs.getTime(4), rs.getTime(5), rs.getString(6), rs.getString(7).trim(), new Equipment(rs.getString(8))));
+			}con.close();
 			stmt.close();
 		} catch (SQLException e) {
 			MessageBox.errorMessageBox("There was an issue while we were trying to insert that booking into the database!\n" + "Does this make any sense to you.." + e.toString() + "?");
@@ -45,21 +45,22 @@ public class BookingBusinessLayer implements Iterable<Booking> {
 	}
 
 	public void insertBooking(Booking booking) {
-		Statement stmt;
-		try {
-			Connection con = DriverManager.getConnection(databaseConnectionString);
-			stmt = con.createStatement();
-			System.out.println(booking);
-			int g = stmt.executeUpdate("EXECUTE spInsertBooking '" + booking.getBookingDay() + "','" + convertFromJAVADateToSQLDate(booking.getBookingDate()) + "'," +
-					"'" + booking.getBookingStartTimeInSQLFormat() + "','" + booking.getBookingCollectionTimeInSQLFormat() + "'," +
-					"'" + booking.getBookingLocation() + "'," + "'" + booking.getBookingHolder() + "'," +
-					"'" + booking.getRequiredEquipment().GetEquipmentName() + "'");
+		try (Connection connection = DriverManager.getConnection(databaseConnectionString);
+		     CallableStatement callableStatement = connection.prepareCall("{CALL spInsertBooking(?,?,?,?,?,?,?,?)}"))
+		{
+			callableStatement.setString(1, booking.getBookingDay());
+			callableStatement.setDate(2, convertFromJAVADateToSQLDate(booking.getBookingDate()));
+			callableStatement.setTime(3,booking.getBookingStartTimeInSQLFormat());
+			callableStatement.setTime(4,booking.getBookingCollectionTimeInSQLFormat());
+			callableStatement.setString(5,booking.getBookingLocation());
+			callableStatement.setString(6,booking.getBookingHolder());
+			callableStatement.setString(7,booking.getRequiredEquipment().GetEquipmentName());
+			callableStatement.registerOutParameter(8,Types.INTEGER);
+			callableStatement.execute();
 
+			booking.setBookingID(callableStatement.getInt(8));
 
-			System.out.println(g);
-			bookings.add(booking);
-			con.close();
-			stmt.close();
+			this.bookings.add(booking);
 		} catch (SQLException e) {
 			MessageBox.errorMessageBox("There was an issue while we were trying to insert that booking into the database!\n" + "Does this make any sense to you.." + e.toString() + "?");
 		}
@@ -124,6 +125,7 @@ public class BookingBusinessLayer implements Iterable<Booking> {
 			MessageBox.errorMessageBox("There was an issue while we were trying to remove that booking from the database!\n" + "Does this make any sense to you.." + e.toString() + "?");
 		}
 	}
+
 	public void removeBookingFromList() {
 		if (this.currentIndexOfBookingInList >= 0 && bookings.size() > 0) {
 			this.bookings.remove(this.currentIndexOfBookingInList);
@@ -133,14 +135,14 @@ public class BookingBusinessLayer implements Iterable<Booking> {
 	}
 
 	public void addBookingToListAtAGivenPosition(Booking newBooking){
-		if (currentIndexOfBookingInList >= 0 && currentIndexOfBookingInList < bookings.size()) {
+		if (currentIndexOfBookingInList >= 0 && currentIndexOfBookingInList <= bookings.size()) {
 			this.bookings.add(currentIndexOfBookingInList, newBooking);
 		}
 	}
 
 	public void setCurrentIndexOfBookingInList(int indexOfBookingInList) {
 		try {
-			if (indexOfBookingInList >= 0 && indexOfBookingInList < bookings.size()) {
+			if (indexOfBookingInList >= 0 && indexOfBookingInList <= bookings.size()) {
 				this.currentIndexOfBookingInList = indexOfBookingInList;
 			}
 		} catch (IndexOutOfBoundsException e) {
@@ -153,16 +155,6 @@ public class BookingBusinessLayer implements Iterable<Booking> {
 		return bookings.iterator();
 	}
 
-
-
-	public static java.sql.Date convertFromJAVADateToSQLDate(
-			java.util.Date javaDate) {
-		java.sql.Date sqlDate = null;
-		if (javaDate != null) {
-			sqlDate = new Date(javaDate.getTime());
-		}
-		return sqlDate;
-	}
 
 	public String getDateSqlStatement(Booking bookingInformationKnown) {
 		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-mm-dd hh:mm", Locale.ENGLISH);

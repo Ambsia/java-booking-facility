@@ -1,7 +1,9 @@
 package  com.bookingsystem.startup;
 
 import com.bookingsystem.controller.BookingSystemController;
+import com.bookingsystem.model.businessmodel.AccountBusinessLayer;
 import com.bookingsystem.model.businessmodel.BookingBusinessLayer;
+import com.bookingsystem.model.businessmodel.LoggerBusinessLayer;
 import com.bookingsystem.view.BookingSystemUILoader;
 
 public final class BookingSystemMain {
@@ -10,7 +12,12 @@ public final class BookingSystemMain {
 
 	private final BookingSystemController controller;
 
-	private final BookingBusinessLayer model;
+	private final BookingBusinessLayer bookingBusinessLayer;
+
+	private final LoggerBusinessLayer loggerBusinessLayer;
+
+	private final AccountBusinessLayer accountBusinessLayer;
+
 
 	public final static void main(String[] args) {
 		new BookingSystemMain();
@@ -19,9 +26,13 @@ public final class BookingSystemMain {
 	private BookingSystemMain() {
 		this.view = new BookingSystemUILoader();
 
-		this.model = new BookingBusinessLayer();
+		this.bookingBusinessLayer = new BookingBusinessLayer();
 
-		this.controller = new BookingSystemController(view, model);
+		this.loggerBusinessLayer = new LoggerBusinessLayer();
+
+		this.accountBusinessLayer = new AccountBusinessLayer();
+
+		this.controller = new BookingSystemController(view,bookingBusinessLayer, accountBusinessLayer,loggerBusinessLayer);
 	}
 
 	public BookingSystemUILoader getView() {
@@ -32,5 +43,5 @@ public final class BookingSystemMain {
 		return controller;
 	}
 
-	public BookingBusinessLayer getModel() { return model; }
+	public BookingBusinessLayer getModel() { return bookingBusinessLayer; }
 }

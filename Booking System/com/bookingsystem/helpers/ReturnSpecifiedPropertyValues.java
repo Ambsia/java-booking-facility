@@ -1,9 +1,9 @@
 package com.bookingsystem.helpers;
 
-import java.io.IOException;
-import java.util.Properties;
-import java.io.InputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Properties;
 
 /**
  * Author: [Alex] on [$Date]

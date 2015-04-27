@@ -1,6 +1,6 @@
 package com.bookingsystem.helpers;
 
-import javax.swing.JOptionPane;
+import javax.swing.*;
 /** This class is used to implement two static methods that take a message
  * and opens a message dialog with different icons, such as error or information. 
  * These methods are static so they are able to be called upon within the view, controller or model package. 

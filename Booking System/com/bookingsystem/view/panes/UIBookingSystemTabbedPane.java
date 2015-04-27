@@ -1,9 +1,6 @@
 package com.bookingsystem.view.panes;
 
-import com.bookingsystem.view.panes.UIBookingSystemPanel;
-import com.bookingsystem.view.panes.UIBookingSystemAdminPanel;
-
-import javax.swing.JTabbedPane;
+import javax.swing.*;
 
 public class UIBookingSystemTabbedPane extends JTabbedPane{
 
@@ -14,12 +11,14 @@ public class UIBookingSystemTabbedPane extends JTabbedPane{
 		bookingSystemPanel = new UIBookingSystemPanel();
 		this.add(bookingSystemPanel, "View Bookings");
 		bookingSystemAdminPanel = new UIBookingSystemAdminPanel();
-		this.add(bookingSystemAdminPanel,"Admin Panel");
+
 	}
 
 	public UIBookingSystemPanel getBookingSystemPanel() { return bookingSystemPanel; }
 
 	public void removeBookingSystemPanel() {this.remove(bookingSystemPanel); }
+
+	public void showAdminPanel() { 	this.add(bookingSystemAdminPanel,"Admin Panel"); }
 
 	public UIBookingSystemAdminPanel getBookingSystemAdminPanel() { return bookingSystemAdminPanel; }
 }

@@ -1,15 +1,9 @@
 package com.bookingsystem.view.panelparts;
 
 
-
-import java.awt.Component;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.Insets;
+import javax.swing.*;
+import java.awt.*;
 import java.util.ArrayList;
-
-import javax.swing.JLabel;
-import javax.swing.JPanel;
 
 /**
  * Created by Alex on 10/02/2015.
@@ -45,10 +39,19 @@ public class UIBookingSystemViewPanel extends JPanel {
     public String getTextFromField(int i) {
     	return listOfViewBoxes.get(i).getText();
     }
+
     public static void setTextToField(ArrayList<String> listOfStrings) {
-        listOfStrings.add(0,"Booking #".concat(listOfStrings.get(0)));
-        listOfStrings.remove(1);
-        for (int i =0; i<=6; i++)
-            listOfViewBoxes.get(i).setText(listOfStrings.get(i));
+        if (listOfStrings != null) {
+            listOfStrings.add(0, "Booking #".concat(listOfStrings.get(0))); // changing index 0 to contain "Booking #"
+            listOfStrings.remove(1); //Remove 1 because we have concatenated the id with 0
+            for (int i = 0; i <= 6; i++) {
+                if (listOfStrings.get(2) == "") { // check if the string at index 2 is empty, if it is then the view panel should display nothing
+                    listOfStrings.add(0, "");
+                    listOfStrings.remove(1);
+                    return;
+                }
+                listOfViewBoxes.get(i).setText(listOfStrings.get(i)); // otherwise we're good to set the text
+            }
+        }
     }
 }

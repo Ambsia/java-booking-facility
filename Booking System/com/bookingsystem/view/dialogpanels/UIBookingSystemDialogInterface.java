@@ -1,7 +1,5 @@
 package com.bookingsystem.view.dialogpanels;
 
-import javax.swing.*;
-
 /**
  * Author: [Alex]
  */

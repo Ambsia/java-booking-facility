@@ -1,20 +1,11 @@
 package com.bookingsystem.view.panelparts;
 
-import com.bookingsystem.view.dialogpanels.UIBookingSystemAddPanel;
-import com.bookingsystem.view.dialogpanels.UIBookingSystemEditPanel;
-import com.bookingsystem.view.dialogpanels.UIBookingSystemFindPanel;
-import com.bookingsystem.view.dialogpanels.UIBookingSystemRemovePanel;
+import com.bookingsystem.view.dialogpanels.bookingdialog.*;
 
-import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.Insets;
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
-
-import javax.swing.JButton;
-import javax.swing.JPanel;
 
 /**
  * Author: [Alex] on [$Date]
@@ -26,6 +17,7 @@ public class UIBookingSystemControlPanel extends JPanel {
     private UIBookingSystemFindPanel uiBookingSystemFindPanel;
     private UIBookingSystemEditPanel uiBookingSystemEditPanel;
     private UIBookingSystemRemovePanel uiBookingSystemRemovePanel;
+    private UIBookingSystemShowBookingsFound uiBookingSystemShowBookingsFound;
 
     public UIBookingSystemControlPanel() {
         setLayout(new GridBagLayout());
@@ -35,6 +27,7 @@ public class UIBookingSystemControlPanel extends JPanel {
         uiBookingSystemFindPanel = new UIBookingSystemFindPanel();
         uiBookingSystemEditPanel = new UIBookingSystemEditPanel();
         uiBookingSystemRemovePanel = new UIBookingSystemRemovePanel();
+        uiBookingSystemShowBookingsFound = new UIBookingSystemShowBookingsFound();
         Dimension buttonDimension = new Dimension(83,25);
         for ( int buttonNo = 0, colsPassed = 0, rowsPassed = 0; buttonNo<buttonNames.length;buttonNo++) {
         	JPanel jPanel = new JPanel();
@@ -77,8 +70,10 @@ public class UIBookingSystemControlPanel extends JPanel {
         return uiBookingSystemFindPanel;
     }
 
-
     public UIBookingSystemRemovePanel getUIBookingSystemRemovePanel() {
         return uiBookingSystemRemovePanel;
     }
+
+    public UIBookingSystemShowBookingsFound getUIBookingSystemShowBookingsFound() { return uiBookingSystemShowBookingsFound; }
 }
+

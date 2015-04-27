@@ -1,10 +1,7 @@
 package  com.bookingsystem.model;
 
-import java.security.Timestamp;
-import java.text.ParseException;
 import java.util.Calendar;
 import java.util.Date;
-import java.text.SimpleDateFormat;
 
 
 public final class Booking  {
@@ -18,7 +15,7 @@ public final class Booking  {
 	private Equipment requiredEquipment;
 	private String bookingHolder;
 	
-	Logger bookingLogger;
+	Log bookingLogger;
 	private Equipment bookingEquipment;
 
 	public int getBookingID() {
@@ -113,7 +110,6 @@ public final class Booking  {
 		this.bookingLocation = bookingLocation;
 		this.bookingHolder = bookingHolder;
 		this.requiredEquipment = requiredEquipment; // this list will be passed when the booking is made
-		bookingLogger = new Logger("Booking Instantiated", null);
 	}
 
 	
@@ -131,12 +127,12 @@ public final class Booking  {
 		return "Booking{" +
 				"bookingID=" + bookingID +
 				", bookingDay='" + bookingDay + '\'' +
-				", bookingLocation='" + bookingLocation + '\'' +
+				", bookingDate='" + bookingDate + '\'' +
 				", bookingStartTime='" + bookingStartTime + '\'' +
 				", bookingCollectionTime='" + bookingCollectionTime + '\'' +
-				", bookingDate='" + bookingDate + '\'' +
-				", requiredEquipment=" + requiredEquipment +
+				", bookingLocation='" + bookingLocation + '\'' +
 				", bookingHolder='" + bookingHolder + '\'' +
+				", requiredEquipment=" + requiredEquipment +
 				'}';
 	}
 

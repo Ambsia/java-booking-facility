@@ -17,13 +17,12 @@ import java.util.Locale;
  */
 public class BookingBusinessLayer extends BusinessLayer implements Iterable<Booking> {
 
-	private ReturnSpecifiedPropertyValues returnSpecifiedPropertyValues;
-	ArrayList<Booking> bookings;
-	private String databaseConnectionString;
+	private final ArrayList<Booking> bookings;
+	private final String databaseConnectionString;
 	private int currentIndexOfBookingInList;
 	public BookingBusinessLayer() {
-		bookings = new ArrayList<Booking>();
-		returnSpecifiedPropertyValues = new ReturnSpecifiedPropertyValues();
+		bookings = new ArrayList<>();
+		ReturnSpecifiedPropertyValues returnSpecifiedPropertyValues = new ReturnSpecifiedPropertyValues();
 		databaseConnectionString = returnSpecifiedPropertyValues.getDatabaseConnectionString();
 		currentIndexOfBookingInList = -1;
 	}
@@ -79,7 +78,7 @@ public class BookingBusinessLayer extends BusinessLayer implements Iterable<Book
 					"'" + bookingInformationKnown.getBookingLocation() + "'," + "'" + bookingInformationKnown.getBookingHolder() + "'," +
 					"'" + bookingInformationKnown.getRequiredEquipment().GetEquipmentName() + "'");
 
-			ArrayList<Booking> foundBookings = new ArrayList<Booking>();
+			ArrayList<Booking> foundBookings = new ArrayList<>();
 			while (rs.next()) {
 				foundBookings.add(new Booking(rs.getInt(1), rs.getString(2), rs.getDate(3), rs.getTime(4), rs.getTime(5), rs.getString(6), rs.getString(7), new Equipment(rs.getString(8))));
 			}
@@ -99,7 +98,7 @@ public class BookingBusinessLayer extends BusinessLayer implements Iterable<Book
 			Connection con = DriverManager.getConnection(databaseConnectionString);
 			stmt = con.createStatement();
 			System.out.println(newBooking.toString());
-			int j = stmt.executeUpdate("EXECUTE spModifyBooking '" + bookingID + "','" + newBooking.getBookingDay() + "','" + getDateSqlStatement(newBooking) + "'," +
+			stmt.executeUpdate("EXECUTE spModifyBooking '" + bookingID + "','" + newBooking.getBookingDay() + "','" + getDateSqlStatement(newBooking) + "'," +
 					"'" + newBooking.getBookingStartTimeInSQLFormat() + "','" + newBooking.getBookingCollectionTimeInSQLFormat() + "'," +
 					"'" + newBooking.getBookingLocation() + "'," + "'" + newBooking.getBookingHolder() + "'," +
 					"'" + newBooking.getRequiredEquipment().GetEquipmentName() + "'");
@@ -126,7 +125,7 @@ public class BookingBusinessLayer extends BusinessLayer implements Iterable<Book
 		}
 	}
 
-	public void removeBookingFromList() {
+	void removeBookingFromList() {
 		if (this.currentIndexOfBookingInList >= 0 && bookings.size() > 0) {
 			this.bookings.remove(this.currentIndexOfBookingInList);
 		} else {
@@ -134,7 +133,7 @@ public class BookingBusinessLayer extends BusinessLayer implements Iterable<Book
 		}
 	}
 
-	public void addBookingToListAtAGivenPosition(Booking newBooking){
+	void addBookingToListAtAGivenPosition(Booking newBooking){
 		if (currentIndexOfBookingInList >= 0 && currentIndexOfBookingInList <= bookings.size()) {
 			this.bookings.add(currentIndexOfBookingInList, newBooking);
 		}
@@ -156,7 +155,7 @@ public class BookingBusinessLayer extends BusinessLayer implements Iterable<Book
 	}
 
 
-	public String getDateSqlStatement(Booking bookingInformationKnown) {
+	String getDateSqlStatement(Booking bookingInformationKnown) {
 		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-mm-dd hh:mm", Locale.ENGLISH);
 
 		java.util.Date bookingDate = bookingInformationKnown.getBookingDate();
@@ -165,11 +164,7 @@ public class BookingBusinessLayer extends BusinessLayer implements Iterable<Book
 		String bookingDateString = simpleDateFormat.format(bookingDate);
 		String todayDateString = simpleDateFormat.format(todayDate);
 
-		ResultSet rs;
-
-		String dateSqlStatement = bookingDateString.equals(todayDateString) ? "" : convertFromJAVADateToSQLDate(bookingInformationKnown.getBookingDate()).toString();
-
-		return dateSqlStatement;
+		return bookingDateString.equals(todayDateString) ? "" : convertFromJAVADateToSQLDate(bookingInformationKnown.getBookingDate()).toString();
 	}
 
 }

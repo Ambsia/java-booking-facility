@@ -10,7 +10,7 @@ import java.util.ArrayList;
  */
 public class UIBookingSystemAdminControlPanel extends JPanel {
 
-	private ArrayList<JButton> controlButtonList;
+	private final ArrayList<JButton> controlButtonList;
 
 	public UIBookingSystemAdminControlPanel() {
 		setLayout(new GridBagLayout());
@@ -32,7 +32,7 @@ public class UIBookingSystemAdminControlPanel extends JPanel {
 		}
 	}
 
-	public void addControlToPanel(Component component, int gridX, int gridY) {
+	void addControlToPanel(Component component, int gridX, int gridY) {
 		GridBagConstraints gbc = new GridBagConstraints();
 		gbc.insets = new Insets(0,0,0,0);
 		gbc.gridx = gridX;

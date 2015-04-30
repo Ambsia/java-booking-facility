@@ -6,7 +6,7 @@ import com.bookingsystem.model.businessmodel.BookingBusinessLayer;
 import com.bookingsystem.model.businessmodel.LoggerBusinessLayer;
 import com.bookingsystem.view.BookingSystemUILoader;
 
-public final class BookingSystemMain {
+final class BookingSystemMain {
 
 	private final BookingSystemUILoader view;
 
@@ -14,12 +14,8 @@ public final class BookingSystemMain {
 
 	private final BookingBusinessLayer bookingBusinessLayer;
 
-	private final LoggerBusinessLayer loggerBusinessLayer;
 
-	private final AccountBusinessLayer accountBusinessLayer;
-
-
-	public final static void main(String[] args) {
+	public static void main(String[] args) {
 		new BookingSystemMain();
 	}
 
@@ -28,11 +24,11 @@ public final class BookingSystemMain {
 
 		this.bookingBusinessLayer = new BookingBusinessLayer();
 
-		this.loggerBusinessLayer = new LoggerBusinessLayer();
+		LoggerBusinessLayer loggerBusinessLayer = new LoggerBusinessLayer();
 
-		this.accountBusinessLayer = new AccountBusinessLayer();
+		AccountBusinessLayer accountBusinessLayer = new AccountBusinessLayer();
 
-		this.controller = new BookingSystemController(view,bookingBusinessLayer, accountBusinessLayer,loggerBusinessLayer);
+		this.controller = new BookingSystemController(view,bookingBusinessLayer, accountBusinessLayer, loggerBusinessLayer);
 	}
 
 	public BookingSystemUILoader getView() {

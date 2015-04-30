@@ -16,9 +16,9 @@ import java.util.ArrayList;
 
 public class UIBookingSystemPanel extends JPanel {
 
-	private UIBookingSystemViewPanel bookingSystemViewPanel;
-	private UIBookingSystemControlPanel bookingSystemControlPanel;
-	private UIBookingSystemJTable bookingSystemJTable;
+	private final UIBookingSystemViewPanel bookingSystemViewPanel;
+	private final UIBookingSystemControlPanel bookingSystemControlPanel;
+	private final UIBookingSystemJTable bookingSystemJTable;
 	private BookingTableModel model;
 	public UIBookingSystemPanel() {
 		bookingSystemJTable = new UIBookingSystemJTableBookings(new BookingTableModel());
@@ -78,7 +78,7 @@ public class UIBookingSystemPanel extends JPanel {
 
 	public void addBookingsToList(ArrayList<Booking> listOfBookings) {
 		System.out.println("trying to actually add bookings to list");
-		ArrayList<Object> objectArrayList = new ArrayList<Object>();
+		ArrayList<Object> objectArrayList = new ArrayList<>();
 		for (Booking b : listOfBookings) {
 			objectArrayList.add(b);
 		}

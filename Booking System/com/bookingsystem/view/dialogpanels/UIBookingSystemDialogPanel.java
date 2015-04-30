@@ -23,20 +23,19 @@ public abstract class UIBookingSystemDialogPanel extends JPanel implements UIBoo
 	private final static String[] DAYS = { "" ,"Sunday", "Monday" ,"Tuesday" ,"Wednesday","Thursday", "Friday", "Saturday" };
 	private final static String[] LABELS = {"Booking Day: ", "Booking Date: ", "Booking Start Time: ", "Booking Collection Time: ", "Booking Location: ", "Booking Holder: ", "Equipment: "};
 	private Component[] components;
-	private JTextField txtBookingDay;
-	private JTextField txtBookingLocation;
-	private JTextField txtBookingHolder;
-	private JTextArea txtAreaEquipment;
-	private JScrollPane jScrollPane;
-	private JDatePickerImpl datePicker;
-	private Date date = new Date();
-	private SpinnerDateModel spinnerStartDateTimeModel;
-	private SpinnerDateModel spinnerCollectionDateTimeModel;
-	private JSpinner jSpinnerStartTime;
-	private JSpinner jSpinnerCollectionTime;
-	private UtilDateModel model;
+	private final JTextField txtBookingDay;
+	private final JTextField txtBookingLocation;
+	private final JTextField txtBookingHolder;
+	private final JTextArea txtAreaEquipment;
+	private final JScrollPane jScrollPane;
+	private final JDatePickerImpl datePicker;
+	private final SpinnerDateModel spinnerStartDateTimeModel;
+	private final SpinnerDateModel spinnerCollectionDateTimeModel;
+	private final JSpinner jSpinnerStartTime;
+	private final JSpinner jSpinnerCollectionTime;
+	private final UtilDateModel model;
 
-	public UIBookingSystemDialogPanel() {
+	protected UIBookingSystemDialogPanel() {
 		txtBookingDay = new JTextField(5);
 		txtBookingLocation = new JTextField(5);
 		txtBookingHolder = new JTextField(5);
@@ -44,6 +43,7 @@ public abstract class UIBookingSystemDialogPanel extends JPanel implements UIBoo
 		jScrollPane = new JScrollPane(txtAreaEquipment);
 		txtBookingDay.setEditable(false);
 		Time time = Time.valueOf("12:00:00");
+		Date date = new Date();
 		date.setTime(time.getTime());
 
 		spinnerStartDateTimeModel = new SpinnerDateModel(date, null, null, Calendar.HOUR_OF_DAY);
@@ -79,7 +79,7 @@ public abstract class UIBookingSystemDialogPanel extends JPanel implements UIBoo
 			}
 		});
 	}
-	public void addControlToPanel(Component component, int gridX, int gridY) {
+	void addControlToPanel(Component component, int gridX, int gridY) {
 		GridBagConstraints gbc = new GridBagConstraints();
 		gbc.insets = new Insets(2,2,2,2);
 		gbc.gridx = gridX;
@@ -92,7 +92,7 @@ public abstract class UIBookingSystemDialogPanel extends JPanel implements UIBoo
 	}
 
 
-	public void addDefaultComponentsToPanel() {
+	protected void addDefaultComponentsToPanel() {
 		components = new Component[] { txtBookingDay, datePicker, jSpinnerStartTime,jSpinnerCollectionTime,txtBookingLocation,txtBookingHolder, jScrollPane };
 
 		for (int i = 0;i<LABELS.length;i++) {
@@ -101,35 +101,35 @@ public abstract class UIBookingSystemDialogPanel extends JPanel implements UIBoo
 		}
 	}
 
-	public void addTheseComponentsToPanel(Component[] components, String[] LABELS) {
+	protected void addTheseComponentsToPanel(Component[] components, String[] LABELS) {
 		for (int i = 0;i<LABELS.length;i++) {
 			addControlToPanel(new JLabel(LABELS[i]), 0, i);
 			addControlToPanel(components[i], 1, i);
 		}
 	}
-	public Component[] getComponentsAsList() {
+	protected Component[] getComponentsAsList() {
 		return components;
 	}
 	public String[] getLabels() {
 		return LABELS;
 	}
-	public String getTxtAreaEquipmentText() {
+	String getTxtAreaEquipmentText() {
 		return txtAreaEquipment.getText();
 	}
 
-	public String getTxtBookingDayText() {
+	String getTxtBookingDayText() {
 		return txtBookingDay.getText();
 	}
 
-	public String getTxtBookingLocationText() {
+	String getTxtBookingLocationText() {
 		return txtBookingLocation.getText();
 	}
 
-	public String getTxtBookingHolderText() {
+	String getTxtBookingHolderText() {
 		return txtBookingHolder.getText();
 	}
 
-	public String getTxtBookingStartTimeText() {
+	String getTxtBookingStartTimeText() {
 		String bookingStartTime = "";
 		try {
 			Date d = (Date) jSpinnerStartTime.getModel().getValue();
@@ -140,7 +140,7 @@ public abstract class UIBookingSystemDialogPanel extends JPanel implements UIBoo
 		return bookingStartTime;
 	}
 
-	public String getTxtBookingCollectionTimeText() {
+	String getTxtBookingCollectionTimeText() {
 		String bookingCollectionTime = "";
 		try {
 			Date date = (Date) jSpinnerCollectionTime.getModel().getValue();
@@ -150,7 +150,7 @@ public abstract class UIBookingSystemDialogPanel extends JPanel implements UIBoo
 		return bookingCollectionTime;
 	}
 
-	public String getFormattedDate() {
+	String getFormattedDate() {
 		String datePattern = "dd.MM.yy";
 		SimpleDateFormat dateFormatter = new SimpleDateFormat(datePattern);
 		if (datePicker.getModel().getValue() == null) return "";

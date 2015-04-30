@@ -12,13 +12,12 @@ import java.util.ArrayList;
  * Author: [Alex]
  */
 public class LoggerBusinessLayer extends BusinessLayer {
-	private ReturnSpecifiedPropertyValues returnSpecifiedPropertyValues;
 
-	private String databaseConnectionString;
+	private final String databaseConnectionString;
 	private Account accountCurrentlyLoggedIn;
 
 	public LoggerBusinessLayer() {
-		returnSpecifiedPropertyValues = new ReturnSpecifiedPropertyValues();
+		ReturnSpecifiedPropertyValues returnSpecifiedPropertyValues = new ReturnSpecifiedPropertyValues();
 		databaseConnectionString = returnSpecifiedPropertyValues.getDatabaseConnectionString();
 	}
 
@@ -43,11 +42,11 @@ public class LoggerBusinessLayer extends BusinessLayer {
 	}
 
 	public void exceptionCaused(Log log, Exception exceptionType) {
-
+		System.out.println();
 	}
 
 	public ArrayList<Log> getAccountActivity(int accountID) {
-		ArrayList<Log> logArrayList = new ArrayList<Log>();
+		ArrayList<Log> logArrayList = new ArrayList<>();
 		try (Connection connection = DriverManager.getConnection(databaseConnectionString);
 		     CallableStatement callableStatement = connection.prepareCall("{CALL spGetLogsForAccount(?)}"))
 		{

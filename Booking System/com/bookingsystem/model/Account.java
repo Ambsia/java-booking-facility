@@ -11,8 +11,8 @@ import java.sql.*;
 public final class Account {
 
 	private int userID;
-	private String userLogonName;
-	private String hashedPassword;
+	private final String userLogonName;
+	private final String hashedPassword;
 	private int userLevel;
 	private String userSalt;
 	public int getUserLevel() {
@@ -68,8 +68,7 @@ public final class Account {
 		} catch (SQLException e) {
 			MessageBox.errorMessageBox("There was an issue while we were trying to hash something..!\n" + "Does this make sense you to.." + e.toString() + "?");
 		}
-		String hashedString = DigestUtils.sha1Hex(unHashedString + userSalt);
-		return hashedString;
+		return DigestUtils.sha1Hex(unHashedString + userSalt);
 	}
 
 	public void generateSalt() {

@@ -32,49 +32,48 @@ import java.util.Locale;
 public final class BookingHandler implements ActionListener {
 
 	private final UIBookingSystemPanel bookingSystemPanel;
-	private final UIBookingSystemControlPanel bookingSystemControlPanel;
-	private UIBookingSystemAddPanel bookingSystemAddPanel;
-	private UIBookingSystemFindPanel bookingSystemFindPanel;
-	private UIBookingSystemEditPanel bookingSystemEditPanel;
-	private UIBookingSystemRemovePanel bookingSystemRemovePanel;
-	private UIBookingSystemShowBookingsFound bookingSystemShowBookingsFound;
+	private final UIBookingSystemAddPanel bookingSystemAddPanel;
+	private final UIBookingSystemFindPanel bookingSystemFindPanel;
+	private final UIBookingSystemEditPanel bookingSystemEditPanel;
+	private final UIBookingSystemRemovePanel bookingSystemRemovePanel;
+	private final UIBookingSystemShowBookingsFound bookingSystemShowBookingsFound;
 
-	private static DateFormat BOOKING_DATE_FORMAT = new SimpleDateFormat("dd.MM.yy", Locale.ENGLISH);
-	private static DateFormat BOOKING_DATE_FORMAT_2 = new SimpleDateFormat("dd.MMM.yy", Locale.ENGLISH);
-	private static DateFormat BOOKING_TIME_FORMAT = new SimpleDateFormat("HH:mm", Locale.ENGLISH);
-	private BookingBusinessLayer bookingBusinessLayer;
-	private List<Integer> listOfBadBookingIDs;
+	private static final DateFormat BOOKING_DATE_FORMAT = new SimpleDateFormat("dd.MM.yy", Locale.ENGLISH);
+	private static final DateFormat BOOKING_DATE_FORMAT_2 = new SimpleDateFormat("dd.MMM.yy", Locale.ENGLISH);
+	private static final DateFormat BOOKING_TIME_FORMAT = new SimpleDateFormat("HH:mm", Locale.ENGLISH);
+	private final BookingBusinessLayer bookingBusinessLayer;
+	private final List<Integer> listOfBadBookingIDs;
 	private int bookingIDCurrentlyBeingProcessed;
 
-	private LoggerBusinessLayer loggerBusinessLayer;
+	private final LoggerBusinessLayer loggerBusinessLayer;
 
 	public BookingHandler(BookingBusinessLayer model, UIBookingSystemPanel bookingSystemPanel, LoggerBusinessLayer loggerBusinessLayer) {
 		this.bookingBusinessLayer = model;
 		this.bookingSystemPanel = bookingSystemPanel;
 		this.loggerBusinessLayer = loggerBusinessLayer;
-		this.bookingSystemControlPanel = this.bookingSystemPanel.getBookingSystemControlPanel();
-		this.bookingSystemAddPanel = this.bookingSystemControlPanel.getUIBookingSystemAddPanel();
-		this.bookingSystemFindPanel = this.bookingSystemControlPanel.getUIBookingSystemFindPanel();
-		this.bookingSystemEditPanel = this.bookingSystemControlPanel.getUIBookingSystemEditPanel();
-		this.bookingSystemRemovePanel = this.bookingSystemControlPanel.getUIBookingSystemRemovePanel();
-		this.bookingSystemShowBookingsFound = this.bookingSystemControlPanel.getUIBookingSystemShowBookingsFound();
+		UIBookingSystemControlPanel bookingSystemControlPanel = this.bookingSystemPanel.getBookingSystemControlPanel();
+		this.bookingSystemAddPanel = bookingSystemControlPanel.getUIBookingSystemAddPanel();
+		this.bookingSystemFindPanel = bookingSystemControlPanel.getUIBookingSystemFindPanel();
+		this.bookingSystemEditPanel = bookingSystemControlPanel.getUIBookingSystemEditPanel();
+		this.bookingSystemRemovePanel = bookingSystemControlPanel.getUIBookingSystemRemovePanel();
+		this.bookingSystemShowBookingsFound = bookingSystemControlPanel.getUIBookingSystemShowBookingsFound();
 		listOfBadBookingIDs = new ArrayList<>();
 		bookingIDCurrentlyBeingProcessed = 1;
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent eventOccurred) {
-		Log log = new Log(eventOccurred.getActionCommand(),this.getClass().toString(),new Date());
+		Log log = new Log(eventOccurred.getActionCommand(), this.getClass().toString(), new Date());
 		switch (eventOccurred.getActionCommand()) {
 			case "Import":
 
 				JFileChooser jFileChooser = new JFileChooser();
-				File file = null;
-				FileInputStream fileInputStream = null;
-				XSSFWorkbook workBook = null;
-				XSSFSheet sheet = null;
-				XSSFRow row = null;
-				int rows = 0;
+				File file;
+				FileInputStream fileInputStream;
+				XSSFWorkbook workBook;
+				XSSFSheet sheet;
+				XSSFRow row;
+				int rows;
 				Booking importedBooking;
 				try {
 					int returnVal = jFileChooser.showOpenDialog(bookingSystemPanel);
@@ -89,16 +88,18 @@ public final class BookingHandler implements ActionListener {
 									.create(new PushbackInputStream(fileInputStream));
 
 
-							sheet = workBook.getSheetAt(1);
+							sheet = workBook.getSheetAt(0);
 							rows = sheet.getPhysicalNumberOfRows();
 							for (int r = 1; r < rows; r++) {
 								row = sheet.getRow(r);
 								if (row.toString() != "") {
 									if (row.getCell((short) 0).toString() != "") {
 										this.bookingIDCurrentlyBeingProcessed = r;
+
+
 										System.out.println(row.getCell((short) 1).toString());
 										importedBooking = new Booking(this.bookingIDCurrentlyBeingProcessed,
-												row.getCell((short) 0).toString(),
+												validateDayAsString(row.getCell((short)0).toString()),
 												stringToDate(row.getCell((short) 1).toString()),
 												stringToTime(row.getCell((short) 2).toString(), false),
 												stringToTime(row.getCell((short) 2).toString(), true),
@@ -150,7 +151,7 @@ public final class BookingHandler implements ActionListener {
 				try {
 					if (bookingSystemAddPanel.showDialog() == 0) {
 						Booking newBooking = convertStringArrayToBooking(bookingSystemAddPanel.getBookingStringArray());
-						if (!newBooking.isValid()) {
+						if (newBooking.isValid()) {
 							bookingBusinessLayer.insertBooking(newBooking);
 							bookingSystemPanel.addBookingToList(newBooking);
 							log.setBookingIDInserted(newBooking.getBookingID());
@@ -191,9 +192,9 @@ public final class BookingHandler implements ActionListener {
 						bookingSystemEditPanel.setTextOfComponents(convertStringArrayListToObjectList(bookingSystemPanel.getCurrentlySelectedRowAsStringArrayList()));
 						if (bookingSystemEditPanel.showDialog() == 0) {
 							Booking newBooking = convertStringArrayToBooking(bookingSystemEditPanel.getBookingStringArray());
-							if (!newBooking.isValid()) {
+							if (newBooking.isValid()) {
 								bookingBusinessLayer.setCurrentIndexOfBookingInList(bookingSystemPanel.getIndexOfSelectedRow());
-								bookingBusinessLayer.modifyBooking(this.bookingIDCurrentlyBeingProcessed,newBooking);
+								bookingBusinessLayer.modifyBooking(this.bookingIDCurrentlyBeingProcessed, newBooking);
 								bookingSystemPanel.replaceBookingInList(newBooking);
 								log.setBookingIDEdited(this.bookingIDCurrentlyBeingProcessed);
 							} else {
@@ -212,12 +213,12 @@ public final class BookingHandler implements ActionListener {
 				try {
 					bookingBusinessLayer.populateBookingListOnLoad();
 					bookingSystemPanel.removeAllBookings();
-					ArrayList<Booking> bookings = new ArrayList<Booking>();
 					for (Object object : IteratorUtils.toList(bookingBusinessLayer.iterator())) {
-						bookings.add((Booking) object);
+						bookingSystemPanel.addBookingToList((Booking) object);
 					}
-							bookingSystemPanel.addBookingsToList(bookings);
-
+					if (bookingSystemPanel.getRowCountOfTable() == 0) {
+						MessageBox.infoMessageBox("No bookings found.");
+					}
 				} catch (Exception e) {
 					loggerBusinessLayer.exceptionCaused(log, e);
 					MessageBox.errorMessageBox("There was an issue while trying to load bookings.\n" + "Does this make any sense to you.." + e.toString() + "?");
@@ -232,7 +233,7 @@ public final class BookingHandler implements ActionListener {
 		loggerBusinessLayer.insertLog(log);
 	}
 
-	private final Date stringToDate(String stringToConvert) {
+	private Date stringToDate(String stringToConvert) {
 		String s = stringToConvert.replaceAll("[^A-Za-z0-9. ]", "."); //will replace all non-alpha characters with a period
 		try {
 			return BOOKING_DATE_FORMAT.parse(s); //tries to match the string with the format dd.MM.yy
@@ -248,18 +249,18 @@ public final class BookingHandler implements ActionListener {
 		return new Date(); // always returns something we can manage
 	}
 
-	private final Object[] convertStringArrayListToObjectList(ArrayList<String> arrayOfStrings) {
-		return new Object[] { arrayOfStrings.get(1),
+	private Object[] convertStringArrayListToObjectList(ArrayList<String> arrayOfStrings) {
+		return new Object[]{arrayOfStrings.get(1),
 				stringToDate(arrayOfStrings.get(2)),
 				stringToTime(arrayOfStrings.get(3), false),
-				stringToTime(arrayOfStrings.get(3),true),
+				stringToTime(arrayOfStrings.get(3), true),
 				arrayOfStrings.get(4),
 				arrayOfStrings.get(5),
-				arrayOfStrings.get(6) };
+				arrayOfStrings.get(6)};
 	}
 
-	private final Booking convertStringArrayToBooking(String[] bookingStrings) {
-		return  new Booking(this.bookingIDCurrentlyBeingProcessed,
+	private Booking convertStringArrayToBooking(String[] bookingStrings) {
+		return new Booking(this.bookingIDCurrentlyBeingProcessed,
 				bookingStrings[0],
 				stringToDate(bookingStrings[1]),
 				stringToTime(bookingStrings[2], false),
@@ -269,9 +270,9 @@ public final class BookingHandler implements ActionListener {
 				new Equipment(bookingStrings[6]));
 	}
 
-	private final Date stringToTime(String unVerifiedStringToConvert, boolean collectionTime) {
+	private Date stringToTime(String unVerifiedStringToConvert, boolean collectionTime) {
 		String strippedUnverifiedStringToConvert = unVerifiedStringToConvert.replaceAll("[a-zA-z ]", "");
-		String verifiedStringToConvert = "";
+		String verifiedStringToConvert;
 		if (!strippedUnverifiedStringToConvert.contains("-")) {
 			verifiedStringToConvert = strippedUnverifiedStringToConvert;
 		} else {
@@ -294,15 +295,48 @@ public final class BookingHandler implements ActionListener {
 		}
 	}
 
-	private final void populateBadBookingMessageBox() {
+	private void populateBadBookingMessageBox() {
 		String s = "Booking ID: ";
 		if (!listOfBadBookingIDs.isEmpty()) {
-				for (int i : listOfBadBookingIDs) {
+			for (int i : listOfBadBookingIDs) {
 				s += i + ", ";
 			}
-			s+=" have/has incorrectly formatted date(s).";
+			s += " have/has incorrectly formatted date(s).";
 			listOfBadBookingIDs.clear();
 			MessageBox.warningMessageBox(s);
+		}
+	}
+
+	String validateDayAsString(String day) {
+		String validatedString;
+		if (day.matches("Monday|Tuesday|Wednesday|Thursday|Friday|Saturday|Sunday")) {
+			return day;
+		} else {
+			char[] chars = day.toCharArray();
+			int validatedStartIndex = 0;
+			for (int k = 0; k < chars.length; k++) {
+				if (k + 3 < chars.length) {
+					String dayShort = "";
+					dayShort += chars[k];
+					dayShort += chars[k + 1];
+					dayShort += chars[k + 2];
+					if (dayShort.matches("Mon|Tue|Wed|Thu|Fri|Sat|Sun")) {
+						validatedStartIndex = k;
+						break;
+					}
+				}
+			}
+			for (int i = 0; i < chars.length; i++) {
+				if (chars[i] == 'd') {
+					if (i + 2 < day.length() && day.substring(i, i + 3).equals("day")) {
+						validatedString = day.substring(validatedStartIndex, i + 3);
+						if(validatedString.matches("Monday|Tuesday|Wednesday|Thursday|Friday|Saturday|Sunday")) {
+							return validatedString;
+						}
+					}
+				}
+			}
+			return day;
 		}
 	}
 }

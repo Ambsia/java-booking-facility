@@ -13,14 +13,13 @@ import java.util.ArrayList;
  * Author: [Alex]
  */
 public class UIBookingSystemShowBookingsFound extends UIBookingSystemDialogPanel {
-	private UIBookingSystemJTableBookings bookingSystemJTable;
-	private JScrollPane jScrollPane;
+	private final UIBookingSystemJTableBookings bookingSystemJTable;
 
 	public UIBookingSystemShowBookingsFound() {
 		super();
 		bookingSystemJTable = new UIBookingSystemJTableBookings(new BookingTableModel());
-		jScrollPane = new JScrollPane(bookingSystemJTable);
-		addTheseComponentsToPanel(new Component[] { jScrollPane },new String[] { ""});
+		JScrollPane jScrollPane = new JScrollPane(bookingSystemJTable);
+		addTheseComponentsToPanel(new Component[] {jScrollPane},new String[] { ""});
 	}
 
 	@Override
@@ -32,7 +31,7 @@ public class UIBookingSystemShowBookingsFound extends UIBookingSystemDialogPanel
 
 	public void addBookingsToList(ArrayList<Booking> listOfBookings)
 	{
-		ArrayList<Object> objectArrayList = new ArrayList<Object>();
+		ArrayList<Object> objectArrayList = new ArrayList<>();
 		for (Booking b : listOfBookings) {
 			objectArrayList.add(b);
 		}

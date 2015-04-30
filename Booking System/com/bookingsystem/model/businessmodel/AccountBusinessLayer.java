@@ -12,14 +12,13 @@ import java.util.Iterator;
  * Author: [Alex] on [$Date]
  */
 
-public class AccountBusinessLayer extends BusinessLayer implements Iterable<Account> {
+public class AccountBusinessLayer extends BusinessLayer {
 
-    private ReturnSpecifiedPropertyValues returnSpecifiedPropertyValues;
     private boolean accountFound;
-    private String databaseConnectionString;
+    private final String databaseConnectionString;
 
     public AccountBusinessLayer() {
-        returnSpecifiedPropertyValues = new ReturnSpecifiedPropertyValues();
+        ReturnSpecifiedPropertyValues returnSpecifiedPropertyValues = new ReturnSpecifiedPropertyValues();
         databaseConnectionString = returnSpecifiedPropertyValues.getDatabaseConnectionString();
     }
 
@@ -37,25 +36,6 @@ public class AccountBusinessLayer extends BusinessLayer implements Iterable<Acco
         } catch (SQLException e) {
             MessageBox.errorMessageBox("There was an issue while we were trying to insert that account in the database!\n" + "Does this make any sense to you.." + e.toString() + "?");
         }
-    }
-
-    public void removeAccount() {
-
-    }
-
-    public ArrayList<Account> getAllAccounts() {
-        ArrayList<Account> accountArrayList = new ArrayList<Account>();
-        try (Connection connection = DriverManager.getConnection(databaseConnectionString) ;
-             CallableStatement callableStatement = connection.prepareCall("{CALL spGetAllAccounts}")) {
-            ResultSet rs = callableStatement.executeQuery();
-            while (rs.next()) {
-                accountArrayList.add(new Account(rs.getInt(1),rs.getInt(4),rs.getString(2),rs.getString(3)));
-            }
-            return accountArrayList;
-        } catch (SQLException e) {
-            MessageBox.errorMessageBox("There was an issue while retrieving accounts.\n" + "Does this make any sense to you.." + e.toString() + "?");
-        }
-        return new ArrayList<Account>();
     }
 
     public Account retrieveAccount(String username, String password) {
@@ -86,10 +66,6 @@ public class AccountBusinessLayer extends BusinessLayer implements Iterable<Acco
         return accountFound;
     }
 
-    @Override
-    public Iterator<Account> iterator() {
-        return null;
-    }
 }
 
 

@@ -11,10 +11,10 @@ import java.util.Locale;
  */
 public abstract class UIBookingSystemJTable extends JTable implements BookingSystemJTableInterface<Object> {
 
-	protected static DateFormat BOOKING_DATE_FORMAT = new SimpleDateFormat("dd.MM.yy", Locale.ENGLISH);
-	protected static DateFormat BOOKING_TIME_FORMAT = new SimpleDateFormat("HH:mm", Locale.ENGLISH);
+	static final DateFormat BOOKING_DATE_FORMAT = new SimpleDateFormat("dd.MM.yy", Locale.ENGLISH);
+	static final DateFormat BOOKING_TIME_FORMAT = new SimpleDateFormat("HH:mm", Locale.ENGLISH);
 
-	public UIBookingSystemJTable() {
+	UIBookingSystemJTable() {
 		this.getTableHeader().setReorderingAllowed(false);
 	}
 

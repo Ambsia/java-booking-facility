@@ -4,22 +4,13 @@ package  com.bookingsystem.model;
 public final class Equipment {
 	
 	
-	int equipmentUsage;
-	String equipmentName;
+	private int equipmentUsage;
+	private String equipmentName;
 	
 	public Equipment(String equipmentName) {
 		this.equipmentName = equipmentName;
 	}
 
-	public void IncreaseEquipmentUsage() {
-		//database increase usage of equipment and return current statistic
-		
-	}
-	
-	public void AddEquipment() {
-		
-	}
-	
 	public void SetEquipmentName(String equipmentName) {
 		this.equipmentName = equipmentName;
 	}

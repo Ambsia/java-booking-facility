@@ -10,7 +10,7 @@ import java.util.Properties;
  */
 public class ReturnSpecifiedPropertyValues {
 
-    private Properties properties;
+    private final Properties properties;
 
     //pass properties through if we have more property files..
     public ReturnSpecifiedPropertyValues() {

@@ -8,9 +8,9 @@ import java.awt.*;
 
 public class BookingSystemUILoader extends JFrame {
 
-	private UILoginPanel loginPanel;
-	private UIBookingSystemMenuBarLoader menuBarLoader;
-	private UIBookingSystemTabbedPane bookingSystemTabbedPane;
+	private final UILoginPanel loginPanel;
+	private final UIBookingSystemMenuBarLoader menuBarLoader;
+	private final UIBookingSystemTabbedPane bookingSystemTabbedPane;
 
 	public BookingSystemUILoader() {
 		Dimension d = new Dimension(500,250);

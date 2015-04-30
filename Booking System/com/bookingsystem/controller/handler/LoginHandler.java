@@ -19,11 +19,10 @@ import java.util.Date;
 
 public class LoginHandler implements ActionListener {
     private Account accountModel; // only need to instantiate it when used
-    private BookingSystemUILoader view;
-    private UILoginPanel loginPanel;
-    private AccountBusinessLayer accountBusinessLayer;
-
-    private LoggerBusinessLayer loggerBusinessLayer;
+    private final BookingSystemUILoader view;
+    private final UILoginPanel loginPanel;
+    private final AccountBusinessLayer accountBusinessLayer;
+    private final LoggerBusinessLayer loggerBusinessLayer;
 
     public LoginHandler(AccountBusinessLayer accountBusinessLayer, BookingSystemUILoader view, LoggerBusinessLayer loggerBusinessLayer)  {
         this.view = view;
@@ -41,6 +40,7 @@ public class LoginHandler implements ActionListener {
                 accountModel = accountBusinessLayer.retrieveAccount("alex", "donkey");
                 if (accountBusinessLayer.isAccountFound()) {
                     loggerBusinessLayer.setAccountCurrentlyLoggedIn(accountModel);
+
                     view.removeLoginPanel();
                     view.showBookingSystemPanel();
                     if (accountModel != null && accountModel.getUserLevel() == 3) {

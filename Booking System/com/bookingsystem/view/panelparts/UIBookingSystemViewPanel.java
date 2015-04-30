@@ -11,7 +11,7 @@ import java.util.ArrayList;
 
 public class UIBookingSystemViewPanel extends JPanel {
 
-    public static ArrayList<JLabel> listOfViewBoxes;
+    private static ArrayList<JLabel> listOfViewBoxes;
 
     public UIBookingSystemViewPanel() {
         setLayout(new GridBagLayout());
@@ -23,7 +23,7 @@ public class UIBookingSystemViewPanel extends JPanel {
         }
     }
 
-    public void addControlToPanel(Component component, int gridY) {
+    void addControlToPanel(Component component, int gridY) {
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(2,2,2,2);
         gbc.gridx = 0;

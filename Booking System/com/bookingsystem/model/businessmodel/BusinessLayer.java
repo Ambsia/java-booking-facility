@@ -5,8 +5,8 @@ import java.sql.Date;
 /**
  * Author: [Alex]
  */
-public class BusinessLayer {
-	public static java.sql.Date convertFromJAVADateToSQLDate(
+class BusinessLayer {
+	static java.sql.Date convertFromJAVADateToSQLDate(
 			java.util.Date javaDate) {
 		java.sql.Date sqlDate = null;
 		if (javaDate != null) {

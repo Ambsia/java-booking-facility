@@ -3,14 +3,13 @@ package com.bookingsystem.view.controls;
 import com.bookingsystem.model.Account;
 import com.bookingsystem.model.tablemodel.AccountTableModel;
 
-import javax.swing.table.TableModel;
 import java.util.ArrayList;
 
 /**
  * Author: [Alex]
  */
 public class UIBookingSystemJTableAccounts extends UIBookingSystemJTable {
-	private AccountTableModel accountTableModel;
+	private final AccountTableModel accountTableModel;
 
 	public UIBookingSystemJTableAccounts(AccountTableModel accountTableModel) {
 		super();

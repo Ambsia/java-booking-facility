@@ -11,9 +11,9 @@ import java.util.Date;
  * Author: [Alex]
  */
 public class UIBookingSystemJTableBookings extends UIBookingSystemJTable {
-	private BookingTableModel bookingTableModel;
+	private final BookingTableModel bookingTableModel;
 	public UIBookingSystemJTableBookings(BookingTableModel bookingTableModel) {
-
+		super();
 		this.bookingTableModel = bookingTableModel;
 		this.setModel(this.bookingTableModel);
 	}

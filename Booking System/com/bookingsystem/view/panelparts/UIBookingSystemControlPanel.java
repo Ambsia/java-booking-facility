@@ -12,16 +12,16 @@ import java.util.ArrayList;
  */
 public class UIBookingSystemControlPanel extends JPanel {
 
-    private ArrayList<JButton> controlButtonList;
-    private UIBookingSystemAddPanel uiBookingSystemAddPanel;
-    private UIBookingSystemFindPanel uiBookingSystemFindPanel;
-    private UIBookingSystemEditPanel uiBookingSystemEditPanel;
-    private UIBookingSystemRemovePanel uiBookingSystemRemovePanel;
-    private UIBookingSystemShowBookingsFound uiBookingSystemShowBookingsFound;
+    private final ArrayList<JButton> controlButtonList;
+    private final UIBookingSystemAddPanel uiBookingSystemAddPanel;
+    private final UIBookingSystemFindPanel uiBookingSystemFindPanel;
+    private final UIBookingSystemEditPanel uiBookingSystemEditPanel;
+    private final UIBookingSystemRemovePanel uiBookingSystemRemovePanel;
+    private final UIBookingSystemShowBookingsFound uiBookingSystemShowBookingsFound;
 
     public UIBookingSystemControlPanel() {
         setLayout(new GridBagLayout());
-        String[] buttonNames = {"Load","Search","Filter","Add", "Edit", "Remove", "Repeat", "", ""};
+        String[] buttonNames = {"Load","Search","Filter","Add", "Edit", "Remove", "Repeat", "Archive", ""};
         controlButtonList = new ArrayList<>();
         uiBookingSystemAddPanel = new UIBookingSystemAddPanel();
         uiBookingSystemFindPanel = new UIBookingSystemFindPanel();
@@ -42,7 +42,7 @@ public class UIBookingSystemControlPanel extends JPanel {
         }
     }
 
-    public void addControlToPanel(Component component, int gridX, int gridY) {
+    void addControlToPanel(Component component, int gridX, int gridY) {
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(0,0,0,0);
         gbc.gridx = gridX;

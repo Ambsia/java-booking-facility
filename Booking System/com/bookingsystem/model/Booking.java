@@ -86,16 +86,14 @@ public final class Booking  {
 		Calendar calendar = Calendar.getInstance();
 		calendar.setTime(this.getBookingStartTime());
 
-		java.sql.Time sqlTime=new java.sql.Time(calendar.getTime().getTime());
-		return sqlTime;
+		return new java.sql.Time(calendar.getTime().getTime());
 	}
 
 	public java.sql.Time getBookingCollectionTimeInSQLFormat()  {
 		Calendar calendar = Calendar.getInstance();
 		calendar.setTime(this.getBookingCollectionTime());
 
-		java.sql.Time sqlTime=new java.sql.Time(calendar.getTime().getTime());
-		return sqlTime;
+		return new java.sql.Time(calendar.getTime().getTime());
 	}
 
 	public Booking(int bookingID, String bookingDay, Date bookingDate, Date bookingStartTime,
@@ -115,11 +113,11 @@ public final class Booking  {
 	
 	public boolean isValid() {
 		System.out.println(this.toString());
-		return (this.bookingDay.isEmpty() ||
-				this.bookingLocation.isEmpty() ||
-			    this.bookingStartTime.toString().isEmpty()||
-				this.bookingCollectionTime.toString().isEmpty() ||
-				this.bookingHolder.isEmpty()) ;
+		return (!this.bookingDay.isEmpty() &&
+				!this.bookingLocation.isEmpty() &&
+				!this.bookingStartTime.toString().isEmpty() &&
+				!this.bookingCollectionTime.toString().isEmpty() &&
+				!this.bookingHolder.isEmpty());
 	}
 
 	@Override

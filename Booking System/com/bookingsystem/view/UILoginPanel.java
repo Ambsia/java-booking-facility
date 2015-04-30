@@ -6,16 +6,14 @@ import java.awt.event.ActionListener;
 
 public class UILoginPanel extends JPanel {
 
-	private JTextField txtLoginUsername;
-	private JTextField txtLoginPassword;
-	private JLabel lblLoginUsername;
-	private JLabel lblLoginPassword;
-	private JButton btnLogin;
-	private JButton btnClear;
+	private final JTextField txtLoginUsername;
+	private final JTextField txtLoginPassword;
+	private final JButton btnLogin;
+	private final JButton btnClear;
 
 	public UILoginPanel() {
-		lblLoginUsername = new JLabel("Username:");
-		lblLoginPassword = new JLabel("Password:");
+		JLabel lblLoginUsername = new JLabel("Username:");
+		JLabel lblLoginPassword = new JLabel("Password:");
 		txtLoginUsername = new JTextField(10);
 		txtLoginPassword = new JPasswordField(10);
 		btnLogin = new JButton("Login");

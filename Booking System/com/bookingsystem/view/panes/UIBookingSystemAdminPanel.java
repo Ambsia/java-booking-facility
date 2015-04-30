@@ -15,12 +15,12 @@ import java.util.ArrayList;
  * Author: [Alex] on [$Date]
  */
 public class UIBookingSystemAdminPanel extends JPanel {
-    private UIBookingSystemAdminViewPanel bookingSystemAdminViewPanel;
+    private final UIBookingSystemAdminViewPanel bookingSystemAdminViewPanel;
 
 
-    private UIBookingSystemAdminControlPanel bookingSystemAdminControlPanel;
-    private UIBookingSystemJTable accountSystemJTable;
-    private AccountTableModel model;
+    private final UIBookingSystemAdminControlPanel bookingSystemAdminControlPanel;
+    private final UIBookingSystemJTable accountSystemJTable;
+
     public UIBookingSystemAdminPanel() {
         accountSystemJTable = new UIBookingSystemJTableAccounts(new AccountTableModel());
         setLayout(new GridBagLayout());
@@ -33,9 +33,6 @@ public class UIBookingSystemAdminPanel extends JPanel {
         gbc.weighty = 0.9;
         gbc.anchor = GridBagConstraints.FIRST_LINE_START;
         gbc.fill = GridBagConstraints.BOTH;
-
-
-        model = (AccountTableModel) accountSystemJTable.getModel();
 
         JScrollPane jScrollPane = new JScrollPane(accountSystemJTable);
         gbc.gridheight = 1;
@@ -72,7 +69,7 @@ public class UIBookingSystemAdminPanel extends JPanel {
     }
 
     public void addAccountsToList(ArrayList<Account> listOfAccounts) {
-        ArrayList<Object> objectArrayList = new ArrayList<Object>();
+        ArrayList<Object> objectArrayList = new ArrayList<>();
         for (Account account : listOfAccounts) {
             objectArrayList.add(account);
         }

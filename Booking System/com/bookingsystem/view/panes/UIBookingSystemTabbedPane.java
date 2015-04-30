@@ -4,8 +4,8 @@ import javax.swing.*;
 
 public class UIBookingSystemTabbedPane extends JTabbedPane{
 
-	private UIBookingSystemPanel bookingSystemPanel;
-	private UIBookingSystemAdminPanel bookingSystemAdminPanel;
+	private final UIBookingSystemPanel bookingSystemPanel;
+	private final UIBookingSystemAdminPanel bookingSystemAdminPanel;
 
 	public UIBookingSystemTabbedPane() {
 		bookingSystemPanel = new UIBookingSystemPanel();

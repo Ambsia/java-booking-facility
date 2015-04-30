@@ -8,8 +8,8 @@ import java.awt.event.ActionListener;
  */
 public class UIBookingSystemMenuBarLoader extends JMenuBar {
 
-    JMenuItem importMenuOption = new JMenuItem();
-    JMenuItem exitMenuOption = new JMenuItem();
+    private JMenuItem importMenuOption = new JMenuItem();
+    private JMenuItem exitMenuOption = new JMenuItem();
 
     public UIBookingSystemMenuBarLoader() {
         importMenuOption = new JMenuItem("Import");

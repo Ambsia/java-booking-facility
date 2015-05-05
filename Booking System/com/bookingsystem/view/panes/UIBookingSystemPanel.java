@@ -41,6 +41,10 @@ public class UIBookingSystemPanel extends JPanel {
 			}
 		});
 
+		bookingSystemJTable.getColumn("Booking ID").setMaxWidth(80);
+		bookingSystemJTable.getColumn("Day").setMaxWidth(85);
+		bookingSystemJTable.getColumn("Date").setMaxWidth(80);
+
 
 		JScrollPane jScrollPane = new JScrollPane(bookingSystemJTable);
 		gbc.gridheight = 2;
@@ -77,7 +81,6 @@ public class UIBookingSystemPanel extends JPanel {
 	}
 
 	public void addBookingsToList(ArrayList<Booking> listOfBookings) {
-		System.out.println("trying to actually add bookings to list");
 		ArrayList<Object> objectArrayList = new ArrayList<>();
 		for (Booking b : listOfBookings) {
 			objectArrayList.add(b);

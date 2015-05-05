@@ -13,46 +13,29 @@ import java.util.Iterator;
  */
 
 public class AccountBusinessLayer extends BusinessLayer {
-
     private boolean accountFound;
-    private final String databaseConnectionString;
+    private Account accountLoggedIn;
 
     public AccountBusinessLayer() {
-        ReturnSpecifiedPropertyValues returnSpecifiedPropertyValues = new ReturnSpecifiedPropertyValues();
-        databaseConnectionString = returnSpecifiedPropertyValues.getDatabaseConnectionString();
-    }
-
-    public void insertAccount(Account account) {
-        Statement stmt;
-        try {
-            Connection con = DriverManager.getConnection(databaseConnectionString);
-            stmt = con.createStatement();
-            account.generateSalt();
-            stmt.execute("EXECUTE spInsertAccount '" + account.getUserLevel() + "','" + account.getUsername() + "'," +
-                    "'" + account.getHashedPassword() + "','" + account.getUserSalt() + "'");
-
-            con.close();
-            stmt.close();
-        } catch (SQLException e) {
-            MessageBox.errorMessageBox("There was an issue while we were trying to insert that account in the database!\n" + "Does this make any sense to you.." + e.toString() + "?");
-        }
+        this.accountLoggedIn = null;
     }
 
     public Account retrieveAccount(String username, String password) {
-        Statement stmt;
-        Account account;
+        Account account = new Account(0, 0, username, password);
         try {
-            Connection con = DriverManager.getConnection(databaseConnectionString);
-            stmt = con.createStatement();
-            account = new Account(0,0,username,password);
-            ResultSet rs = stmt.executeQuery("EXECUTE spGetAccount '" + account.getUsername() + "'"+ ", '" + account.getHashedPassword() +"'");
-            if (rs.next())  {
+            getDatabaseConnector().openConnection();
+            getDatabaseConnector().createNewCallableStatement("{ CALL spGetAccount(?,?) }");
+            CallableStatement callableStatement = getDatabaseConnector().getCallableStatement();
+            callableStatement.setString(1, account.getUsername());
+            callableStatement.setString(2, account.getHashedPassword());
+
+            ResultSet rs = getDatabaseConnector().executeQuery();
+            if (rs.next()) {
                 account.setUserID(rs.getInt(1));
                 account.setUserLevel(rs.getInt(2));
                 accountFound = true;
-                con.close();
-                stmt.close();
-                rs.close();
+                this.accountLoggedIn = account;
+                getDatabaseConnector().closeConnection();
                 return account;
             }
         } catch (SQLException e) {
@@ -61,11 +44,11 @@ public class AccountBusinessLayer extends BusinessLayer {
         return null;
     }
 
+    public Account getAccountLoggedIn() {
+       return this.accountLoggedIn;
+    }
 
     public boolean isAccountFound() {
         return accountFound;
     }
-
 }
-
-

@@ -3,8 +3,10 @@ package com.bookingsystem.model.businessmodel;
 import com.bookingsystem.helpers.MessageBox;
 import com.bookingsystem.helpers.ReturnSpecifiedPropertyValues;
 import com.bookingsystem.model.Account;
+import com.bookingsystem.model.Booking;
 import com.bookingsystem.model.Log;
 
+import java.lang.reflect.Type;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -12,11 +14,12 @@ import java.util.Iterator;
 /**
  * Author: [Alex]
  */
-public class AccountManagementBusinessLayer implements Iterable<Account>{
-	private ArrayList<Account> accounts;
+public class AccountManagementBusinessLayer extends BusinessLayer implements Iterable<Account>{
+	private final ArrayList<Account> accounts;
 
 	private final String databaseConnectionString;
 	private int currentAccountID;
+	private int currentIndexInAccountList;
 
 	public AccountManagementBusinessLayer() {
 		this.accounts = new ArrayList<>();
@@ -24,6 +27,38 @@ public class AccountManagementBusinessLayer implements Iterable<Account>{
 		this.currentAccountID = -1;
 		ReturnSpecifiedPropertyValues returnSpecifiedPropertyValues = new ReturnSpecifiedPropertyValues();
 		databaseConnectionString = returnSpecifiedPropertyValues.getDatabaseConnectionString();
+		this.currentIndexInAccountList = -1;
+	}
+
+	public void addAccount(Account account) {
+		try (Connection connection = DriverManager.getConnection(databaseConnectionString) ;
+			 CallableStatement callInsertAccount = connection.prepareCall("{CALL spInsertAccount(?,?,?,?,?)}")) {
+			callInsertAccount.setInt(1, account.getUserLevel());
+			callInsertAccount.setString(2, account.getUsername());
+			callInsertAccount.setString(3, account.getHashedPassword());
+			callInsertAccount.setString(4, account.getUserSalt());
+			callInsertAccount.registerOutParameter(5, Types.INTEGER);
+
+			callInsertAccount.execute();
+			account.setUserID(callInsertAccount.getInt(5));
+			this.accounts.add(account);
+
+		} catch (SQLException e) {
+			MessageBox.errorMessageBox("There was an issue while retrieving accounts.\n" + "Does this make any sense to you.." + e.toString() + "?");
+		}
+	}
+
+	public void removeAccount() {
+		if (this.currentAccountID != -1) {
+			try (Connection connection = DriverManager.getConnection(databaseConnectionString);
+				 CallableStatement callRemoveAccount = connection.prepareCall("{CALL spRemoveAccount(?)}")) {
+				callRemoveAccount.setInt(1, currentAccountID);
+				callRemoveAccount.execute();
+				removeAccountFromList();
+			} catch (SQLException e) {
+				MessageBox.errorMessageBox("There was an issue while retrieving accounts.\n" + "Does this make any sense to you.." + e.toString() + "?");
+			}
+		}
 	}
 
 	public void getAllAccounts() {
@@ -39,45 +74,6 @@ public class AccountManagementBusinessLayer implements Iterable<Account>{
 		}
 	}
 
-	public ArrayList<Log> getLogsForAccount() {
-		ArrayList<Log> logArrayList = new ArrayList<>();
-		ArrayList<Integer> logIDS = new ArrayList<>();
-		ArrayList<Integer> integers = new ArrayList<>();
-		if (this.currentAccountID != -1) {
-			try (Connection connection = DriverManager.getConnection(databaseConnectionString);
-			     CallableStatement csGetLogsForAccount = connection.prepareCall("{CALL spGetLogsForAccount(?)}");
-			     CallableStatement csGetIDPlayedWith = connection.prepareCall("{CALL spGetIDPlayedWith(?,?)}")) {
-
-				csGetLogsForAccount.setInt(1,1);
-
-				ResultSet rs = csGetLogsForAccount.executeQuery();
-				while (rs.next()) {
-					logArrayList.add(new Log(rs.getString(2),rs.getString(3),rs.getDate(4)));
-					logIDS.add(rs.getInt(1));
-				}
-
-				csGetIDPlayedWith.registerOutParameter(2, Types.INTEGER);
-
-				for (Integer i : logIDS) {
-					csGetIDPlayedWith.setInt(1,i);
-					csGetIDPlayedWith.execute();
-					integers.add(csGetIDPlayedWith.getInt(2));
-				}
-
-				for (int k = 0; k<logArrayList.size(); k++) {
-					logArrayList.get(k).setLogID(logIDS.get(k));
-					logArrayList.get(k).setIdPlayedWith(integers.get(k));
-				}
-
-			} catch (SQLException e) {
-				MessageBox.errorMessageBox("There was an issue while retrieving logs for an account.\n" + "Does this make any sense to you.." + e.toString() + "?");
-			}
-		}
-		else {
-			MessageBox.errorMessageBox("You must select an account to view logs.");
-		}
-		return  logArrayList;
-	}
 
 	public void editAccount(int accountID) { }
 
@@ -88,5 +84,29 @@ public class AccountManagementBusinessLayer implements Iterable<Account>{
 
 	public void setCurrentAccountID(int currentAccountID) {
 		this.currentAccountID = currentAccountID;
+	}
+
+	void removeAccountFromList() {
+		if (this.currentIndexInAccountList >= 0 && accounts.size() > 0) {
+			this.accounts.remove(this.currentIndexInAccountList);
+		} else {
+			MessageBox.errorMessageBox("Nothing selected, or there is nothing to delete.");
+		}
+	}
+
+	void addAccountToListAtAGivenPosition(Account account){
+		if (currentIndexInAccountList >= 0 && currentIndexInAccountList <= accounts.size()) {
+			this.accounts.add(currentIndexInAccountList, account);
+		}
+	}
+
+	public void setCurrentIndexOfAccountInList(int indexOfBookingInList) {
+		try {
+			if (indexOfBookingInList >= 0 && indexOfBookingInList <= accounts.size()) {
+				this.currentIndexInAccountList = indexOfBookingInList;
+			}
+		} catch (IndexOutOfBoundsException e) {
+			MessageBox.errorMessageBox("Big problems......");
+		}
 	}
 }

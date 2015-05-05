@@ -60,11 +60,15 @@ public final class Account {
 		try {
 			ReturnSpecifiedPropertyValues returnSpecifiedPropertyValues = new ReturnSpecifiedPropertyValues();
 			con = DriverManager.getConnection(returnSpecifiedPropertyValues.getDatabaseConnectionString());
+
 			Statement stmt = con.createStatement();
 			ResultSet rs = stmt.executeQuery("EXECUTE spGetSalt '" + this.getUsername() + "'");
-			while(rs.next())  {
+			if(rs.next())  {
 				userSalt = rs.getString(1);
+			} else {
+				generateSalt();
 			}
+
 		} catch (SQLException e) {
 			MessageBox.errorMessageBox("There was an issue while we were trying to hash something..!\n" + "Does this make sense you to.." + e.toString() + "?");
 		}
@@ -75,7 +79,7 @@ public final class Account {
 		int salt;
 		try {
 			SecureRandom random = SecureRandom.getInstance("SHA1PRNG");
-			salt = random.nextInt(random.nextInt(1000000) + (Integer.MAX_VALUE - 1000000));
+			salt = random.nextInt(random.nextInt(1000000) + (10));
 		} catch (NoSuchAlgorithmException e) {
 			salt = 0;
 		}

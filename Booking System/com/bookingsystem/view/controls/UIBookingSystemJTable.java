@@ -33,7 +33,6 @@ public abstract class UIBookingSystemJTable extends JTable implements BookingSys
 	public ArrayList<String> getSelectedRowAsStringArrayList() {
 		ArrayList<String> data = new ArrayList<>();
 		if (this.getSelectedRow() != -1) {
-			System.out.println(this.getColumnCount());
 			for (int i = 0; i < this.getColumnCount(); i++) {
 				data.add(this.getValueAt(this.getSelectedRow(), i).toString());
 			}

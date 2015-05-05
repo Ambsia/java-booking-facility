@@ -77,6 +77,7 @@ public class UIBookingSystemAdminPanel extends JPanel {
     }
 
     public Account getAccountFromList(int accountId) {
+        System.out.println("account id " +accountId);
         return (Account) accountSystemJTable.getRowFromList(accountId);
     }
 

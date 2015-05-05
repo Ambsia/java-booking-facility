@@ -36,15 +36,15 @@ public class UIBookingSystemJTableBookings extends UIBookingSystemJTable {
 	}
 
 	public Object getRowFromList(int identifierOfData) {
-		if (identifierOfData >= 0 && identifierOfData != (int) bookingTableModel.getValueAt(0, identifierOfData)) {
-			return new Booking((int) bookingTableModel.getValueAt(0, identifierOfData),
-					(String) bookingTableModel.getValueAt(1, identifierOfData),
-					(Date) bookingTableModel.getValueAt(2, identifierOfData),
-					(Date) bookingTableModel.getValueAt(3, identifierOfData),
-					(Date) bookingTableModel.getValueAt(3, identifierOfData),
-					(String) bookingTableModel.getValueAt(4, identifierOfData),
-					(String) bookingTableModel.getValueAt(5, identifierOfData),
-					(Equipment) bookingTableModel.getValueAt(6, identifierOfData) );
+		if (identifierOfData >= 0) {
+			return new Booking((int) bookingTableModel.getValueAt(identifierOfData,0),
+					(String) bookingTableModel.getValueAt(identifierOfData,1),
+					(Date) bookingTableModel.getValueAt(identifierOfData,2),
+					(Date) bookingTableModel.getValueAt(identifierOfData,3),
+					(Date) bookingTableModel.getValueAt(identifierOfData,4),
+					(String) bookingTableModel.getValueAt(identifierOfData,5),
+					(String) bookingTableModel.getValueAt(identifierOfData,6),
+					(Equipment) bookingTableModel.getValueAt(identifierOfData,7) );
 		}
 		else return null;
 	}

@@ -23,7 +23,7 @@ public class UIBookingSystemViewPanel extends JPanel {
         }
     }
 
-    void addControlToPanel(Component component, int gridY) {
+    private void addControlToPanel(Component component, int gridY) {
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(2,2,2,2);
         gbc.gridx = 0;

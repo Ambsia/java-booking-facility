@@ -6,7 +6,10 @@ import com.bookingsystem.model.Account;
 import com.bookingsystem.model.Log;
 
 import java.sql.*;
-import java.util.ArrayList;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
+import java.util.Date;
 
 /**
  * Author: [Alex]
@@ -27,7 +30,7 @@ public class LoggerBusinessLayer extends BusinessLayer {
 		{
 			callableStatement.setString(1, log.getEventLogged());
 			callableStatement.setString(2, log.getClassEvent());
-			callableStatement.setDate(3, convertFromJAVADateToSQLDate(log.getDateAndTimeOfEvent()));
+			callableStatement.setTimestamp(3, getTimeStamp(log.getDateAndTimeOfEvent()));
 			callableStatement.setInt(4, accountCurrentlyLoggedIn.getUserID());
 			callableStatement.setInt(5, log.getBookingIDInserted());
 			callableStatement.setInt(6, log.getBookingIDEdited());
@@ -41,26 +44,62 @@ public class LoggerBusinessLayer extends BusinessLayer {
 		}
 	}
 
-	public void exceptionCaused(Log log, Exception exceptionType) {
-		System.out.println();
+	public java.sql.Timestamp getTimeStamp(java.util.Date date) {
+		return new Timestamp(date.getTime());
 	}
 
-	public ArrayList<Log> getAccountActivity(int accountID) {
-		ArrayList<Log> logArrayList = new ArrayList<>();
-		try (Connection connection = DriverManager.getConnection(databaseConnectionString);
-		     CallableStatement callableStatement = connection.prepareCall("{CALL spGetLogsForAccount(?)}"))
-		{
-			callableStatement.setInt(1,accountID);
-			ResultSet rs = callableStatement.executeQuery();
+	public void exceptionCaused(Log log, Exception exceptionType) {
+	}
 
-			while (rs.next()) {
-				logArrayList.add(new Log(rs.getString(1),rs.getString(2),rs.getDate(3)));
-			}
+	public void removeLogsForAccount(int currentAccountID) {
+		try (Connection connection = DriverManager.getConnection(databaseConnectionString);
+			 CallableStatement csRemoveLogsForAccount = connection.prepareCall("{CALL spRemoveLogsForAccount(?)}");) {
+			csRemoveLogsForAccount.setInt(1, currentAccountID);
+			csRemoveLogsForAccount.execute();
 
 		} catch (SQLException e) {
-			MessageBox.errorMessageBox("There was an issue while we were trying to get the selected accounts activity.\n" + "Does this make any sense to you.." + e.toString() + "?");
+			MessageBox.errorMessageBox("There was an issue while removing logs.\n" + "Does this make any sense to you.." + e.toString() + "?");
 		}
-		return logArrayList;
+		}
+
+	public ArrayList<Log> getLogsForAccount(int currentAccountID) {
+		ArrayList<Log> logArrayList = new ArrayList<>();
+		ArrayList<Integer> logIDS = new ArrayList<>();
+		ArrayList<Integer> integers = new ArrayList<>();
+		if (currentAccountID != -1) {
+			try (Connection connection = DriverManager.getConnection(databaseConnectionString);
+				 CallableStatement csGetLogsForAccount = connection.prepareCall("{CALL spGetLogsForAccount(?)}");
+				 CallableStatement csGetIDPlayedWith = connection.prepareCall("{CALL spGetIDPlayedWith(?,?)}")) {
+
+				csGetLogsForAccount.setInt(1,currentAccountID);
+
+				ResultSet rs = csGetLogsForAccount.executeQuery();
+				while (rs.next()) {
+					logArrayList.add(new Log(rs.getString(2),rs.getString(3),rs.getTimestamp(4)));
+					logIDS.add(rs.getInt(1));
+				}
+
+				csGetIDPlayedWith.registerOutParameter(2, Types.INTEGER);
+
+				for (Integer i : logIDS) {
+					csGetIDPlayedWith.setInt(1,i);
+					csGetIDPlayedWith.execute();
+					integers.add(csGetIDPlayedWith.getInt(2));
+				}
+
+				for (int k = 0; k<logArrayList.size(); k++) {
+					logArrayList.get(k).setLogID(logIDS.get(k));
+					logArrayList.get(k).setIdPlayedWith(integers.get(k));
+				}
+
+			} catch (SQLException e) {
+				MessageBox.errorMessageBox("There was an issue while retrieving logs for an account.\n" + "Does this make any sense to you.." + e.toString() + "?");
+			}
+		}
+		else {
+			MessageBox.errorMessageBox("You must select an account to view logs.");
+		}
+		return  logArrayList;
 	}
 
 	public void setAccountCurrentlyLoggedIn(Account accountCurrentlyLoggedIn) {

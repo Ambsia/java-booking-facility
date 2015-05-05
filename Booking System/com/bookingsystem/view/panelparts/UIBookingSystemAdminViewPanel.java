@@ -1,6 +1,5 @@
 package com.bookingsystem.view.panelparts;
 
-import com.bookingsystem.model.Booking;
 import com.bookingsystem.model.Log;
 import com.bookingsystem.model.tablemodel.LogTableModel;
 import com.bookingsystem.view.controls.UIBookingSystemJTableLogs;
@@ -15,20 +14,25 @@ import java.util.ArrayList;
 public class UIBookingSystemAdminViewPanel extends JPanel {
 
 
-	UIBookingSystemJTableLogs bookingSystemJTableLogs;
-	JScrollPane jScrollPane;
+	private UIBookingSystemJTableLogs bookingSystemJTableLogs;
+	private JScrollPane jScrollPane;
 	public UIBookingSystemAdminViewPanel() {
 		bookingSystemJTableLogs = new UIBookingSystemJTableLogs(new LogTableModel());
 		setLayout(new GridBagLayout());
 		jScrollPane = new JScrollPane(bookingSystemJTableLogs);
-		addControlToPanel(jScrollPane, 0);
+		bookingSystemJTableLogs.getColumn("ID").setPreferredWidth(40);
+
+		bookingSystemJTableLogs.getColumn("Event").setPreferredWidth(80);
+
+		bookingSystemJTableLogs.getColumn("ID Modified").setPreferredWidth(40);
+		addControlToPanel(jScrollPane);
 	}
 
-	void addControlToPanel(Component component, int gridY) {
+	private void addControlToPanel(Component component) {
 		GridBagConstraints gbc = new GridBagConstraints();
 		gbc.insets = new Insets(0,0,0,0);
 		gbc.gridx = 0;
-		gbc.gridy = gridY;
+		gbc.gridy = 0;
 		gbc.anchor = GridBagConstraints.EAST;
 		gbc.fill = GridBagConstraints.BOTH;
 		gbc.weightx = 1;
@@ -41,7 +45,6 @@ public class UIBookingSystemAdminViewPanel extends JPanel {
 	}
 
 	public void addLogsToList(ArrayList<Log> listOfLogs) {
-		System.out.println("trying to actually add bookings to list");
 		ArrayList<Object> objectArrayList = new ArrayList<>();
 		for (Log log : listOfLogs) {
 			objectArrayList.add(log);

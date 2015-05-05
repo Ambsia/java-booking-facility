@@ -6,12 +6,12 @@ import javax.swing.tree.DefaultTreeModel;
 /**
  * Author: [Alex]
  */
-public class LogTableModel extends DefaultTableModel{
+public class LogTableModel extends DefaultTableModel {
 	public LogTableModel() {
 		addColumn("ID");
 		addColumn("Event");
 		addColumn("Class");
-		addColumn("Date");
+		addColumn("Timestamp");
 		addColumn("ID Modified");
 	}
 }

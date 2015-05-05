@@ -5,6 +5,8 @@ import com.bookingsystem.model.Log;
 import com.bookingsystem.model.tablemodel.BookingTableModel;
 import com.bookingsystem.model.tablemodel.LogTableModel;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -13,6 +15,7 @@ import java.util.Date;
  */
 public class UIBookingSystemJTableLogs extends UIBookingSystemJTable {
 	private final LogTableModel logTableModel;
+	private SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yy HH:mm:ss");
 	public UIBookingSystemJTableLogs(LogTableModel logTableModel) {
 		super();
 		this.logTableModel = logTableModel;
@@ -31,16 +34,16 @@ public class UIBookingSystemJTableLogs extends UIBookingSystemJTable {
 		Log log = (Log) data;
 		logTableModel.addRow(new Object[]{log.getLogID(),log.getEventLogged(),
 				log.getClassEvent(),
-				log.getDateAndTimeOfEvent(),
+				dateFormat.format(log.getDateAndTimeOfEvent()),
 				log.getIdPlayedWith()});
 	}
 
 	@Override
 	public Object getRowFromList(int identifierOfData) {
-		if (identifierOfData >= 0 && identifierOfData != (int) logTableModel.getValueAt(0, identifierOfData)) {
-			return new Log((String) logTableModel.getValueAt(0, identifierOfData),
-					(String) logTableModel.getValueAt(1, identifierOfData),
-					(Date) logTableModel.getValueAt(2, identifierOfData));
+		if (identifierOfData >= 0) {
+			return new Log((String) logTableModel.getValueAt(identifierOfData,0 ),
+					(String) logTableModel.getValueAt(identifierOfData, 1),
+					(Date) logTableModel.getValueAt(identifierOfData, 2));
 		}
 		else return null;
 	}

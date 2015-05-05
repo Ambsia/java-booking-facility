@@ -33,14 +33,18 @@ public class UIBookingSystemJTableAccounts extends UIBookingSystemJTable {
 	}
 
 	@Override
-	public Object getRowFromList(int identifierOfData) {
-		if (identifierOfData >= 0 && identifierOfData != (int) accountTableModel.getValueAt(0, identifierOfData)) {
-			return new Account((int) accountTableModel.getValueAt(0, identifierOfData),
-					(int) accountTableModel.getValueAt(1, identifierOfData),
-					(String) accountTableModel.getValueAt(2, identifierOfData),
+	public Object getRowFromList(int rowNumber) {
+		if (rowNumber >= 0) {
+			int userID = (Integer) accountTableModel.getValueAt(rowNumber, 0);
+			String username = accountTableModel.getValueAt(rowNumber, 1).toString().trim();
+			int userLevel = (Integer) accountTableModel.getValueAt(rowNumber, 2);
+			return new Account(userID,
+					userLevel,
+					username,
 					"*******");
+		} else {
+			return null;
 		}
-		else return null;
 	}
 
 	@Override

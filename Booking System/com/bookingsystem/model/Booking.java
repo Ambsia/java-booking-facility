@@ -112,7 +112,6 @@ public final class Booking  {
 
 	
 	public boolean isValid() {
-		System.out.println(this.toString());
 		return (!this.bookingDay.isEmpty() &&
 				!this.bookingLocation.isEmpty() &&
 				!this.bookingStartTime.toString().isEmpty() &&

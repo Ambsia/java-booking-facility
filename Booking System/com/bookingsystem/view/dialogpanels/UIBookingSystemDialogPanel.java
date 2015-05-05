@@ -72,14 +72,13 @@ public abstract class UIBookingSystemDialogPanel extends JPanel implements UIBoo
 					Date date = new SimpleDateFormat("dd.MM.yy").parse(getFormattedDate());
 					c.setTime(date);
 				} catch (Exception ex) {
-					System.out.println(ex.toString());
 				}
 				int dayOfWeek = c.get(Calendar.DAY_OF_WEEK);
 				txtBookingDay.setText(DAYS[dayOfWeek]);
 			}
 		});
 	}
-	void addControlToPanel(Component component, int gridX, int gridY) {
+	private void addControlToPanel(Component component, int gridX, int gridY) {
 		GridBagConstraints gbc = new GridBagConstraints();
 		gbc.insets = new Insets(2,2,2,2);
 		gbc.gridx = gridX;
@@ -113,23 +112,23 @@ public abstract class UIBookingSystemDialogPanel extends JPanel implements UIBoo
 	public String[] getLabels() {
 		return LABELS;
 	}
-	String getTxtAreaEquipmentText() {
+	private String getTxtAreaEquipmentText() {
 		return txtAreaEquipment.getText();
 	}
 
-	String getTxtBookingDayText() {
+	private String getTxtBookingDayText() {
 		return txtBookingDay.getText();
 	}
 
-	String getTxtBookingLocationText() {
+	private String getTxtBookingLocationText() {
 		return txtBookingLocation.getText();
 	}
 
-	String getTxtBookingHolderText() {
+	private String getTxtBookingHolderText() {
 		return txtBookingHolder.getText();
 	}
 
-	String getTxtBookingStartTimeText() {
+	private String getTxtBookingStartTimeText() {
 		String bookingStartTime = "";
 		try {
 			Date d = (Date) jSpinnerStartTime.getModel().getValue();
@@ -140,7 +139,7 @@ public abstract class UIBookingSystemDialogPanel extends JPanel implements UIBoo
 		return bookingStartTime;
 	}
 
-	String getTxtBookingCollectionTimeText() {
+	private String getTxtBookingCollectionTimeText() {
 		String bookingCollectionTime = "";
 		try {
 			Date date = (Date) jSpinnerCollectionTime.getModel().getValue();
@@ -150,7 +149,7 @@ public abstract class UIBookingSystemDialogPanel extends JPanel implements UIBoo
 		return bookingCollectionTime;
 	}
 
-	String getFormattedDate() {
+	private String getFormattedDate() {
 		String datePattern = "dd.MM.yy";
 		SimpleDateFormat dateFormatter = new SimpleDateFormat(datePattern);
 		if (datePicker.getModel().getValue() == null) return "";

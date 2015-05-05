@@ -14,5 +14,6 @@ public class BookingTableModel extends DefaultTableModel {
                 addColumn("Room Booked");
                 addColumn("Booking Holder");
                 addColumn("Equipment");
+
         }
 }

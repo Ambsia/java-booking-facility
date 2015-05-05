@@ -3,6 +3,7 @@ package com.bookingsystem.view.panelparts;
 import com.bookingsystem.view.dialogpanels.bookingdialog.*;
 
 import javax.swing.*;
+import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -21,22 +22,21 @@ public class UIBookingSystemControlPanel extends JPanel {
 
     public UIBookingSystemControlPanel() {
         setLayout(new GridBagLayout());
-        String[] buttonNames = {"Load","Search","Filter","Add", "Edit", "Remove", "Repeat", "Archive", ""};
+        String[] buttonNames = {"Load","Search","","Add","Edit", "Remove","Archive", "Today's", "Tomorrows"};
         controlButtonList = new ArrayList<>();
         uiBookingSystemAddPanel = new UIBookingSystemAddPanel();
         uiBookingSystemFindPanel = new UIBookingSystemFindPanel();
         uiBookingSystemEditPanel = new UIBookingSystemEditPanel();
         uiBookingSystemRemovePanel = new UIBookingSystemRemovePanel();
         uiBookingSystemShowBookingsFound = new UIBookingSystemShowBookingsFound();
-        Dimension buttonDimension = new Dimension(83,25);
+        Dimension buttonDimension = new Dimension(100,25);
         for ( int buttonNo = 0, colsPassed = 0, rowsPassed = 0; buttonNo<buttonNames.length;buttonNo++) {
         	JPanel jPanel = new JPanel();
         	JButton jButton = new JButton(buttonNames[buttonNo]);
         	jButton.setPreferredSize(buttonDimension);
 
-                if (colsPassed == 3) { rowsPassed++; colsPassed = 0; }
-
-        	addControlToPanel(jPanel, colsPassed++, rowsPassed);
+            if (colsPassed == 3) { rowsPassed++; colsPassed = 0; }
+            addControlToPanel(jPanel, colsPassed++, rowsPassed);
         	controlButtonList.add(jButton);
             jPanel.add(controlButtonList.get(buttonNo));
         }

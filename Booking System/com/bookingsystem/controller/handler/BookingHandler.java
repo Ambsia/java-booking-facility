@@ -84,7 +84,6 @@ public final class BookingHandler implements ActionListener {
 								if (row.toString() != "") {
 									if (row.getCell((short) 0).toString() != "") {
 										this.bookingIDCurrentlyBeingProcessed = r;
-
 										Booking importedBooking = new Booking(this.bookingIDCurrentlyBeingProcessed,
 												validateDayAsString(row.getCell((short)0).toString()),
 												stringToDate(row.getCell((short) 1).toString()),

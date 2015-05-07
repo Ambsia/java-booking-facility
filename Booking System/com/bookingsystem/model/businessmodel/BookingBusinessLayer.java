@@ -32,9 +32,10 @@ public class BookingBusinessLayer extends BusinessLayer implements Iterable<Book
 		try {
 			getDatabaseConnector().openConnection();
 			getDatabaseConnector().createNewCallableStatement("{CALL spGetAllBookings}");
-			ResultSet rs = getDatabaseConnector().executeQuery();
-			while (rs.next()) {
-				bookings.add(new Booking(rs.getInt(1), rs.getString(2).trim(), rs.getDate(3), rs.getTime(4), rs.getTime(5), rs.getString(6), rs.getString(7).trim(), new Equipment(rs.getString(8))));
+			try(ResultSet rs = getDatabaseConnector().executeQuery();){
+				while (rs.next()) {
+					bookings.add(new Booking(rs.getInt(1), rs.getString(2).trim(), rs.getDate(3), rs.getTime(4), rs.getTime(5), rs.getString(6), rs.getString(7).trim(), new Equipment(rs.getString(8))));
+				}
 			}
 			getDatabaseConnector().closeConnection();
 		} catch (SQLException e) {
@@ -68,24 +69,25 @@ public class BookingBusinessLayer extends BusinessLayer implements Iterable<Book
 	
 	public void insertBookings(ArrayList<Booking> bookingList) {
 		try {
-		getDatabaseConnector().openConnection();
-		getDatabaseConnector().createNewCallableStatement("{CALL spInsertBooking(?,?,?,?,?,?,?,?)}");
-		try (CallableStatement callableStatement = getDatabaseConnector().getCallableStatement();) 
-		{
-			for( int i =0; i<bookingList.size();i++){
-				callableStatement.setString(1, bookingList.get(i).getBookingDay());
-				callableStatement.setDate(2, convertFromJAVADateToSQLDate(bookingList.get(i).getBookingDate()));
-				callableStatement.setTime(3,bookingList.get(i).getBookingStartTimeInSQLFormat());
-				callableStatement.setTime(4,bookingList.get(i).getBookingCollectionTimeInSQLFormat());
-				callableStatement.setString(5,bookingList.get(i).getBookingLocation());
-				callableStatement.setString(6,bookingList.get(i).getBookingHolder());
-				callableStatement.setString(7,bookingList.get(i).getRequiredEquipment().GetEquipmentName());
-				callableStatement.registerOutParameter(8,Types.INTEGER);
-				getDatabaseConnector().execute();
-				bookingList.get(i).setBookingID(callableStatement.getInt(8));
-				this.bookings.add(bookingList.get(i));
+			getDatabaseConnector().openConnection();
+			getDatabaseConnector().createNewCallableStatement("{CALL spInsertBooking(?,?,?,?,?,?,?,?)}");
+			try (CallableStatement callableStatement = getDatabaseConnector().getCallableStatement();) 
+			{
+				for( int i =0; i<bookingList.size();i++){
+					callableStatement.setString(1, bookingList.get(i).getBookingDay());
+					callableStatement.setDate(2, convertFromJAVADateToSQLDate(bookingList.get(i).getBookingDate()));
+					callableStatement.setTime(3,bookingList.get(i).getBookingStartTimeInSQLFormat());
+					callableStatement.setTime(4,bookingList.get(i).getBookingCollectionTimeInSQLFormat());
+					callableStatement.setString(5,bookingList.get(i).getBookingLocation());
+					callableStatement.setString(6,bookingList.get(i).getBookingHolder());
+					callableStatement.setString(7,bookingList.get(i).getRequiredEquipment().GetEquipmentName());
+					callableStatement.registerOutParameter(8,Types.INTEGER);
+					getDatabaseConnector().execute();
+					bookingList.get(i).setBookingID(callableStatement.getInt(8));
+					this.bookings.add(bookingList.get(i));
+				}
 			}
-		}
+			getDatabaseConnector().closeConnection();
 		} catch (SQLException e) {
 			MessageBox.errorMessageBox("There was an issue while we were trying to insert that booking into the database!\n" + "Does this make any sense to you.." + e.toString() + "?");
 		}
@@ -108,9 +110,9 @@ public class BookingBusinessLayer extends BusinessLayer implements Iterable<Book
 					while (rs.next()) {
 						foundBookings.add(new Booking(rs.getInt(1), rs.getString(2), rs.getDate(3), rs.getTime(4), rs.getTime(5), rs.getString(6), rs.getString(7), new Equipment(rs.getString(8))));
 					}
-					getDatabaseConnector().closeConnection();
 				}
 			}
+			getDatabaseConnector().closeConnection();
 			return foundBookings;
 		} catch (SQLException e) {
 			MessageBox.errorMessageBox("There was an issue while we were trying to find that booking in the database!\n" + "Does this make any sense to you.." + e.toString() + "?");

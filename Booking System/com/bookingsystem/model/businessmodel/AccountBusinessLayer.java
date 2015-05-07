@@ -25,18 +25,19 @@ public class AccountBusinessLayer extends BusinessLayer {
         try {
             getDatabaseConnector().openConnection();
             getDatabaseConnector().createNewCallableStatement("{ CALL spGetAccount(?,?) }");
-            CallableStatement callableStatement = getDatabaseConnector().getCallableStatement();
-            callableStatement.setString(1, account.getUsername());
-            callableStatement.setString(2, account.getHashedPassword());
-
-            ResultSet rs = getDatabaseConnector().executeQuery();
-            if (rs.next()) {
-                account.setUserID(rs.getInt(1));
-                account.setUserLevel(rs.getInt(2));
-                accountFound = true;
-                this.accountLoggedIn = account;
-                getDatabaseConnector().closeConnection();
-                return account;
+            try(CallableStatement callableStatement = getDatabaseConnector().getCallableStatement();) {
+	            callableStatement.setString(1, account.getUsername());
+	            callableStatement.setString(2, account.getHashedPassword());
+	            try(ResultSet rs = getDatabaseConnector().executeQuery();) {
+		            if (rs.next()) {
+		                account.setUserID(rs.getInt(1));
+		                account.setUserLevel(rs.getInt(2));
+		                accountFound = true;
+		                this.accountLoggedIn = account;
+		                getDatabaseConnector().closeConnection();
+		                return account;
+		            }
+	            }
             }
         } catch (SQLException e) {
             MessageBox.errorMessageBox("There was an issue while we were trying to retrieve that account from the database!\n" + "Does this make any sense to you.." + e.toString() + "?");

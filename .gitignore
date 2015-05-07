@@ -20,6 +20,7 @@ $RECYCLE.BIN/
 # Folders/files to ignore
 .metadata
 .recommenders
+.properties
 .idea
 *.class
 bin

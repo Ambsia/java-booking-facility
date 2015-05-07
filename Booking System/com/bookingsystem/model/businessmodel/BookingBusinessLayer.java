@@ -46,22 +46,46 @@ public class BookingBusinessLayer extends BusinessLayer implements Iterable<Book
 		try {
 			getDatabaseConnector().openConnection();
 			getDatabaseConnector().createNewCallableStatement("{CALL spInsertBooking(?,?,?,?,?,?,?,?)}");
-
-			CallableStatement callableStatement = getDatabaseConnector().getCallableStatement();
-			callableStatement.setString(1, booking.getBookingDay());
-			callableStatement.setDate(2, convertFromJAVADateToSQLDate(booking.getBookingDate()));
-			callableStatement.setTime(3,booking.getBookingStartTimeInSQLFormat());
-			callableStatement.setTime(4,booking.getBookingCollectionTimeInSQLFormat());
-			callableStatement.setString(5,booking.getBookingLocation());
-			callableStatement.setString(6,booking.getBookingHolder());
-			callableStatement.setString(7,booking.getRequiredEquipment().GetEquipmentName());
-			callableStatement.registerOutParameter(8,Types.INTEGER);
-
-			getDatabaseConnector().execute();
-			booking.setBookingID(callableStatement.getInt(8));
-			this.bookings.add(booking);
-
+			try (CallableStatement callableStatement = getDatabaseConnector().getCallableStatement();) 
+			{
+				callableStatement.setString(1, booking.getBookingDay());
+				callableStatement.setDate(2, convertFromJAVADateToSQLDate(booking.getBookingDate()));
+				callableStatement.setTime(3,booking.getBookingStartTimeInSQLFormat());
+				callableStatement.setTime(4,booking.getBookingCollectionTimeInSQLFormat());
+				callableStatement.setString(5,booking.getBookingLocation());
+				callableStatement.setString(6,booking.getBookingHolder());
+				callableStatement.setString(7,booking.getRequiredEquipment().GetEquipmentName());
+				callableStatement.registerOutParameter(8,Types.INTEGER);
+				getDatabaseConnector().execute();
+				booking.setBookingID(callableStatement.getInt(8));
+				this.bookings.add(booking);
+			}
 			getDatabaseConnector().closeConnection();
+		} catch (SQLException e) {
+			MessageBox.errorMessageBox("There was an issue while we were trying to insert that booking into the database!\n" + "Does this make any sense to you.." + e.toString() + "?");
+		}
+	}
+	
+	public void insertBookings(ArrayList<Booking> bookingList) {
+		try {
+		getDatabaseConnector().openConnection();
+		getDatabaseConnector().createNewCallableStatement("{CALL spInsertBooking(?,?,?,?,?,?,?,?)}");
+		try (CallableStatement callableStatement = getDatabaseConnector().getCallableStatement();) 
+		{
+			for( int i =0; i<bookingList.size();i++){
+				callableStatement.setString(1, bookingList.get(i).getBookingDay());
+				callableStatement.setDate(2, convertFromJAVADateToSQLDate(bookingList.get(i).getBookingDate()));
+				callableStatement.setTime(3,bookingList.get(i).getBookingStartTimeInSQLFormat());
+				callableStatement.setTime(4,bookingList.get(i).getBookingCollectionTimeInSQLFormat());
+				callableStatement.setString(5,bookingList.get(i).getBookingLocation());
+				callableStatement.setString(6,bookingList.get(i).getBookingHolder());
+				callableStatement.setString(7,bookingList.get(i).getRequiredEquipment().GetEquipmentName());
+				callableStatement.registerOutParameter(8,Types.INTEGER);
+				getDatabaseConnector().execute();
+				bookingList.get(i).setBookingID(callableStatement.getInt(8));
+				this.bookings.add(bookingList.get(i));
+			}
+		}
 		} catch (SQLException e) {
 			MessageBox.errorMessageBox("There was an issue while we were trying to insert that booking into the database!\n" + "Does this make any sense to you.." + e.toString() + "?");
 		}
@@ -72,19 +96,21 @@ public class BookingBusinessLayer extends BusinessLayer implements Iterable<Book
 		try {
 			getDatabaseConnector().openConnection();
 			getDatabaseConnector().createNewCallableStatement("{CALL spFindBooking(?,?,?,?,?,?,?)}");
-			CallableStatement callableStatement = getDatabaseConnector().getCallableStatement();
-			callableStatement.setString(1, bookingInformationKnown.getBookingDay());
-			callableStatement.setDate(2, getDateSqlStatement(bookingInformationKnown));
-			callableStatement.setTime(3,bookingInformationKnown.getBookingStartTimeInSQLFormat());
-			callableStatement.setTime(4,bookingInformationKnown.getBookingCollectionTimeInSQLFormat());
-			callableStatement.setString(5,bookingInformationKnown.getBookingLocation());
-			callableStatement.setString(6, bookingInformationKnown.getBookingHolder());
-			callableStatement.setString(7,bookingInformationKnown.getRequiredEquipment().GetEquipmentName());
-			ResultSet rs = getDatabaseConnector().executeQuery();
-			while (rs.next()) {
-				foundBookings.add(new Booking(rs.getInt(1), rs.getString(2), rs.getDate(3), rs.getTime(4), rs.getTime(5), rs.getString(6), rs.getString(7), new Equipment(rs.getString(8))));
+			try(CallableStatement callableStatement = getDatabaseConnector().getCallableStatement();) {
+				callableStatement.setString(1, bookingInformationKnown.getBookingDay());
+				callableStatement.setDate(2, getDateSqlStatement(bookingInformationKnown));
+				callableStatement.setTime(3,bookingInformationKnown.getBookingStartTimeInSQLFormat());
+				callableStatement.setTime(4,bookingInformationKnown.getBookingCollectionTimeInSQLFormat());
+				callableStatement.setString(5,bookingInformationKnown.getBookingLocation());
+				callableStatement.setString(6, bookingInformationKnown.getBookingHolder());
+				callableStatement.setString(7,bookingInformationKnown.getRequiredEquipment().GetEquipmentName());
+				try (ResultSet rs = getDatabaseConnector().executeQuery();) {
+					while (rs.next()) {
+						foundBookings.add(new Booking(rs.getInt(1), rs.getString(2), rs.getDate(3), rs.getTime(4), rs.getTime(5), rs.getString(6), rs.getString(7), new Equipment(rs.getString(8))));
+					}
+					getDatabaseConnector().closeConnection();
+				}
 			}
-			getDatabaseConnector().closeConnection();
 			return foundBookings;
 		} catch (SQLException e) {
 			MessageBox.errorMessageBox("There was an issue while we were trying to find that booking in the database!\n" + "Does this make any sense to you.." + e.toString() + "?");
@@ -96,17 +122,18 @@ public class BookingBusinessLayer extends BusinessLayer implements Iterable<Book
 		try {
 			getDatabaseConnector().openConnection();
 			getDatabaseConnector().createNewCallableStatement("{CALL spModifyBooking(?,?,?,?,?,?,?,?)}");
-			CallableStatement callableStatement = getDatabaseConnector().getCallableStatement();
-			callableStatement.setInt(1, bookingID);
-			callableStatement.setString(2, newBooking.getBookingDay());
-			callableStatement.setDate(3, convertFromJAVADateToSQLDate(newBooking.getBookingDate()));
-			callableStatement.setTime(4, newBooking.getBookingStartTimeInSQLFormat());
-			callableStatement.setTime(5, newBooking.getBookingCollectionTimeInSQLFormat());
-			callableStatement.setString(6, newBooking.getBookingLocation());
-			callableStatement.setString(7, newBooking.getBookingHolder());
-			callableStatement.setString(8, newBooking.getRequiredEquipment().GetEquipmentName());
-			getDatabaseConnector().execute();
-			addBookingToListAtAGivenPosition(newBooking);
+			try (CallableStatement callableStatement = getDatabaseConnector().getCallableStatement();) {
+				callableStatement.setInt(1, bookingID);
+				callableStatement.setString(2, newBooking.getBookingDay());
+				callableStatement.setDate(3, convertFromJAVADateToSQLDate(newBooking.getBookingDate()));
+				callableStatement.setTime(4, newBooking.getBookingStartTimeInSQLFormat());
+				callableStatement.setTime(5, newBooking.getBookingCollectionTimeInSQLFormat());
+				callableStatement.setString(6, newBooking.getBookingLocation());
+				callableStatement.setString(7, newBooking.getBookingHolder());
+				callableStatement.setString(8, newBooking.getRequiredEquipment().GetEquipmentName());
+				getDatabaseConnector().execute();
+				addBookingToListAtAGivenPosition(newBooking);
+			}
 			getDatabaseConnector().closeConnection();
 		} catch (SQLException e) {
 			MessageBox.errorMessageBox("There was an issue while we were trying to modify that booking in the database!\n" + "Does this make any sense to you.." + e.toString() + "?");
@@ -116,11 +143,14 @@ public class BookingBusinessLayer extends BusinessLayer implements Iterable<Book
 	public void removeBooking(int bookingID) {
 		try {
 			getDatabaseConnector().openConnection();
+			
 			getDatabaseConnector().createNewCallableStatement("{CALL spRemoveBooking(?)}");
 			getDatabaseConnector().getCallableStatement().setInt(1,bookingID);
 			getDatabaseConnector().execute();
-			getDatabaseConnector().closeConnection();
 			removeBookingFromList();
+			
+			getDatabaseConnector().closeConnection();
+			
 		} catch (SQLException e) {
 			MessageBox.errorMessageBox("There was an issue while we were trying to remove that booking from the database!\n" + "Does this make any sense to you.." + e.toString() + "?");
 		}

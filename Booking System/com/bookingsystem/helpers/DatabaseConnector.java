@@ -9,10 +9,10 @@ import java.util.List;
 /**
  * Created by Alex on 04/05/2015.
  */
-public class DatabaseConnector  {
+public final class DatabaseConnector  {
 
-    private ReturnSpecifiedPropertyValues returnSpecifiedPropertyValues;
-    private String connectionString;
+    private final ReturnSpecifiedPropertyValues returnSpecifiedPropertyValues;
+    private final String connectionString;
     private CallableStatement callableStatement;
     private Connection connection;
 
@@ -35,6 +35,7 @@ public class DatabaseConnector  {
 
     public void closeConnection() throws SQLException {
         System.out.println("closing connection");
+        this.callableStatement.close();
         this.connection.close();
         this.callableStatement = null;
     }

@@ -2,6 +2,8 @@ package com.bookingsystem.view.dialogpanels.accountdialog;
 
 import javax.swing.*;
 import java.awt.*;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * Created by Alex on 04/05/2015.
@@ -9,10 +11,10 @@ import java.awt.*;
 public class UIBookingSystemAccountAddPanel extends JPanel {
 
     private static final String[] LABELS = {"Account Name:", "Account Password:", "Account Level:"};
+    private Component[] components;
     private final JTextField txtAccountName;
     private final JPasswordField txtAccountPassword;
     private final JTextField txtAccountLevel;
-    private Component[] components;
 
     public UIBookingSystemAccountAddPanel() {
         txtAccountName = new JTextField(5);

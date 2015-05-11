@@ -27,7 +27,7 @@ public class BookingSystemController {
         UIBookingSystemAdminPanel bookingSystemAdminPanel = bookingSystemTabbedPane.getBookingSystemAdminPanel();
         UIBookingSystemAdminControlPanel bookingSystemAdminControlPanel = bookingSystemAdminPanel.getBookingSystemAdminControlPanel();
         //
-        Handler handler = new Handler(accountBusinessLayer, accountManagementBusinessLayer, bookingBusinessLayer, loggerBusinessLayer, view);
+        Handler handler = new Handler(accountBusinessLayer,accountManagementBusinessLayer,bookingBusinessLayer,loggerBusinessLayer,view);
         LoginHandler loginHandler = new LoginHandler(handler);
         BookingHandler bookingHandler = new BookingHandler(handler);
         AccountHandler accountHandler = new AccountHandler(handler);

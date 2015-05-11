@@ -14,69 +14,67 @@ import java.util.ArrayList;
 public class UIBookingSystemAdminViewPanel extends JPanel {
 
 
-    private UIBookingSystemJTableLogs bookingSystemJTableLogs;
-    private JScrollPane jScrollPane;
+	private UIBookingSystemJTableLogs bookingSystemJTableLogs;
+	private JScrollPane jScrollPane;
+	public UIBookingSystemAdminViewPanel() {
+		bookingSystemJTableLogs = new UIBookingSystemJTableLogs(new LogTableModel());
+		setLayout(new GridBagLayout());
+		jScrollPane = new JScrollPane(bookingSystemJTableLogs);
+		bookingSystemJTableLogs.getColumn("ID").setPreferredWidth(40);
 
-    public UIBookingSystemAdminViewPanel() {
-        bookingSystemJTableLogs = new UIBookingSystemJTableLogs(new LogTableModel());
-        setLayout(new GridBagLayout());
-        jScrollPane = new JScrollPane(bookingSystemJTableLogs);
-        bookingSystemJTableLogs.getColumn("ID").setPreferredWidth(40);
+		bookingSystemJTableLogs.getColumn("Event").setPreferredWidth(80);
 
-        bookingSystemJTableLogs.getColumn("Event").setPreferredWidth(80);
+		bookingSystemJTableLogs.getColumn("ID Modified").setPreferredWidth(40);
+		addControlToPanel(jScrollPane);
+	}
 
-        bookingSystemJTableLogs.getColumn("ID Modified").setPreferredWidth(40);
-        addControlToPanel(jScrollPane);
-    }
+	private void addControlToPanel(Component component) {
+		GridBagConstraints gbc = new GridBagConstraints();
+		gbc.insets = new Insets(0,0,0,0);
+		gbc.gridx = 0;
+		gbc.gridy = 0;
+		gbc.anchor = GridBagConstraints.EAST;
+		gbc.fill = GridBagConstraints.BOTH;
+		gbc.weightx = 1;
+		gbc.weighty = 1;
 
-    private void addControlToPanel(Component component) {
-        GridBagConstraints gbc = new GridBagConstraints();
-        gbc.insets = new Insets(0, 0, 0, 0);
-        gbc.gridx = 0;
-        gbc.gridy = 0;
-        gbc.anchor = GridBagConstraints.EAST;
-        gbc.fill = GridBagConstraints.BOTH;
-        gbc.weightx = 1;
-        gbc.weighty = 1;
+		add(component, gbc);
+	}
+	public void addLogToList(Log log) {
+		bookingSystemJTableLogs.addRowToList(log);
+	}
 
-        add(component, gbc);
-    }
+	public void addLogsToList(ArrayList<Log> listOfLogs) {
+		ArrayList<Object> objectArrayList = new ArrayList<>();
+		for (Log log : listOfLogs) {
+			objectArrayList.add(log);
+		}
+		bookingSystemJTableLogs.addArrayOfRowsToList(objectArrayList);
+	}
 
-    public void addLogToList(Log log) {
-        bookingSystemJTableLogs.addRowToList(log);
-    }
+	public Log getLogFromList(int logId) {
+		return (Log) bookingSystemJTableLogs.getRowFromList(logId);
+	}
 
-    public void addLogsToList(ArrayList<Log> listOfLogs) {
-        ArrayList<Object> objectArrayList = new ArrayList<>();
-        for (Log log : listOfLogs) {
-            objectArrayList.add(log);
-        }
-        bookingSystemJTableLogs.addArrayOfRowsToList(objectArrayList);
-    }
+	public int getIndexOfSelectedRow() {
+		return bookingSystemJTableLogs.getSelectedRow();
+	}
 
-    public Log getLogFromList(int logId) {
-        return (Log) bookingSystemJTableLogs.getRowFromList(logId);
-    }
+	public int getIDOfSelectedRow() {
+		return bookingSystemJTableLogs.getIDOfSelectedRow();
+	}
 
-    public int getIndexOfSelectedRow() {
-        return bookingSystemJTableLogs.getSelectedRow();
-    }
+	public int getRowCountOfTable() {
+		return bookingSystemJTableLogs.getRowCount();
+	}
 
-    public int getIDOfSelectedRow() {
-        return bookingSystemJTableLogs.getIDOfSelectedRow();
-    }
+	public void removeLogFromTable() {
+		bookingSystemJTableLogs.removeRowFromList();
+	}
 
-    public int getRowCountOfTable() {
-        return bookingSystemJTableLogs.getRowCount();
-    }
-
-    public void removeLogFromTable() {
-        bookingSystemJTableLogs.removeRowFromList();
-    }
-
-    public void removeAllLogs() {
-        bookingSystemJTableLogs.removeAllRowsFromList();
-    }
+	public void removeAllLogs() {
+		bookingSystemJTableLogs.removeAllRowsFromList();
+	}
 }
 
 

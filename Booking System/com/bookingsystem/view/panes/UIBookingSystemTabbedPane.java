@@ -2,31 +2,23 @@ package com.bookingsystem.view.panes;
 
 import javax.swing.*;
 
-public class UIBookingSystemTabbedPane extends JTabbedPane {
+public class UIBookingSystemTabbedPane extends JTabbedPane{
 
-    private final UIBookingSystemPanel bookingSystemPanel;
-    private final UIBookingSystemAdminPanel bookingSystemAdminPanel;
+	private final UIBookingSystemPanel bookingSystemPanel;
+	private final UIBookingSystemAdminPanel bookingSystemAdminPanel;
 
-    public UIBookingSystemTabbedPane() {
-        bookingSystemPanel = new UIBookingSystemPanel();
-        this.add(bookingSystemPanel, "View Bookings");
-        bookingSystemAdminPanel = new UIBookingSystemAdminPanel();
+	public UIBookingSystemTabbedPane() {
+		bookingSystemPanel = new UIBookingSystemPanel();
+		this.add(bookingSystemPanel, "View Bookings");
+		bookingSystemAdminPanel = new UIBookingSystemAdminPanel();
 
-    }
+	}
 
-    public UIBookingSystemPanel getBookingSystemPanel() {
-        return bookingSystemPanel;
-    }
+	public UIBookingSystemPanel getBookingSystemPanel() { return bookingSystemPanel; }
 
-    public void removeBookingSystemPanel() {
-        this.remove(bookingSystemPanel);
-    }
+	public void removeBookingSystemPanel() {this.remove(bookingSystemPanel); }
 
-    public void showAdminPanel() {
-        this.add(bookingSystemAdminPanel, "Admin Panel");
-    }
+	public void showAdminPanel() { 	this.add(bookingSystemAdminPanel,"Admin Panel"); }
 
-    public UIBookingSystemAdminPanel getBookingSystemAdminPanel() {
-        return bookingSystemAdminPanel;
-    }
+	public UIBookingSystemAdminPanel getBookingSystemAdminPanel() { return bookingSystemAdminPanel; }
 }

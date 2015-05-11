@@ -77,7 +77,7 @@ public class UIBookingSystemAdminPanel extends JPanel {
     }
 
     public Account getAccountFromList(int accountId) {
-        System.out.println("account id " +accountId);
+        System.out.println("account id " + accountId);
         return (Account) accountSystemJTable.getRowFromList(accountId);
     }
 
@@ -105,9 +105,13 @@ public class UIBookingSystemAdminPanel extends JPanel {
         accountSystemJTable.removeAllRowsFromList();
     }
 
-    public UIBookingSystemAdminViewPanel getBookingSystemAdminViewPanel() { return bookingSystemAdminViewPanel; }
+    public UIBookingSystemAdminViewPanel getBookingSystemAdminViewPanel() {
+        return bookingSystemAdminViewPanel;
+    }
 
-    public UIBookingSystemAdminControlPanel getBookingSystemAdminControlPanel() { return bookingSystemAdminControlPanel; }
+    public UIBookingSystemAdminControlPanel getBookingSystemAdminControlPanel() {
+        return bookingSystemAdminControlPanel;
+    }
 
 
 }

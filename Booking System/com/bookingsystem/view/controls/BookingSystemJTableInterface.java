@@ -7,10 +7,15 @@ import java.util.ArrayList;
  */
 public interface BookingSystemJTableInterface<Object> {
 
-	public void addArrayOfRowsToList(ArrayList<Object> arrayListOfData);
-	public void addRowToList(Object data);
-	public Object getRowFromList(int identifierOfData);
-	public void replaceRowInList(Object rowData);
-	public void removeRowFromList();
-	public void removeAllRowsFromList();
+    public void addArrayOfRowsToList(ArrayList<Object> arrayListOfData);
+
+    public void addRowToList(Object data);
+
+    public Object getRowFromList(int identifierOfData);
+
+    public void replaceRowInList(Object rowData);
+
+    public void removeRowFromList();
+
+    public void removeAllRowsFromList();
 }

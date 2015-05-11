@@ -1,4 +1,4 @@
-package  com.bookingsystem.startup;
+package com.bookingsystem.startup;
 
 import com.bookingsystem.controller.BookingSystemController;
 import com.bookingsystem.model.businessmodel.*;
@@ -6,45 +6,45 @@ import com.bookingsystem.view.BookingSystemUILoader;
 
 final class BookingSystemMain {
 
-	private final BookingSystemUILoader view;
+    private final BookingSystemUILoader view;
 
-	private final BookingSystemController controller;
+    private final BookingSystemController controller;
 
-	private final BookingBusinessLayer bookingBusinessLayer;
+    private final BookingBusinessLayer bookingBusinessLayer;
 
-	private final  LoggerBusinessLayer loggerBusinessLayer;
+    private final LoggerBusinessLayer loggerBusinessLayer;
 
-	private final  AccountBusinessLayer accountBusinessLayer;
+    private final AccountBusinessLayer accountBusinessLayer;
 
-	private final AccountManagementBusinessLayer accountManagementBusinessLayer;
+    private final AccountManagementBusinessLayer accountManagementBusinessLayer;
 
-	private final BusinessLayer businessLayer;
+    private final BusinessLayer businessLayer;
 
+    private BookingSystemMain() {
+        this.view = new BookingSystemUILoader();
 
-	public static void main(String[] args) {
-		new BookingSystemMain();
-	}
+        this.businessLayer = new BusinessLayer();
+        this.bookingBusinessLayer = new BookingBusinessLayer();
+        this.loggerBusinessLayer = new LoggerBusinessLayer();
+        this.accountBusinessLayer = new AccountBusinessLayer();
+        this.accountManagementBusinessLayer = new AccountManagementBusinessLayer();
+        this.businessLayer.setLoggerBusinessLayer(loggerBusinessLayer);
+        this.controller = new BookingSystemController(view, bookingBusinessLayer, accountBusinessLayer, loggerBusinessLayer, accountManagementBusinessLayer);
+    }
 
-	private BookingSystemMain() {
-		this.view = new BookingSystemUILoader();
+    public static void main(String[] args) {
+        new BookingSystemMain();
+    }
 
+    public BookingSystemUILoader getView() {
+        return view;
+    }
 
-		this.bookingBusinessLayer = new BookingBusinessLayer();
-		this.loggerBusinessLayer = new LoggerBusinessLayer();
-		this.accountBusinessLayer = new AccountBusinessLayer();
-		this.accountManagementBusinessLayer = new AccountManagementBusinessLayer();
-		this.businessLayer = new BusinessLayer();
+    public BookingSystemController getController() {
+        return controller;
+    }
 
-		this.controller = new BookingSystemController(view,bookingBusinessLayer, accountBusinessLayer, loggerBusinessLayer,accountManagementBusinessLayer);
-	}
-
-	public BookingSystemUILoader getView() {
-		return view;
-	}
-
-	public BookingSystemController getController() {
-		return controller;
-	}
-
-	public BookingBusinessLayer getModel() { return bookingBusinessLayer; }
+    public BookingBusinessLayer getModel() {
+        return bookingBusinessLayer;
+    }
 }

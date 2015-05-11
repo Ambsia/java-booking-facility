@@ -6,17 +6,15 @@ import com.bookingsystem.model.businessmodel.BookingBusinessLayer;
 import com.bookingsystem.model.businessmodel.LoggerBusinessLayer;
 import com.bookingsystem.view.BookingSystemUILoader;
 
-import java.awt.event.ActionListener;
-
 /**
  * Created by Alex on 04/05/2015.
  */
 public class Handler {
     //we will initially call handler passing all business logic over, then we will start calling specific logic classes
     private AccountBusinessLayer accountBusinessLayer;
-    private  AccountManagementBusinessLayer accountManagementBusinessLayer;
+    private AccountManagementBusinessLayer accountManagementBusinessLayer;
     private BookingBusinessLayer bookingBusinessLayer;
-    private  LoggerBusinessLayer loggerBusinessLayer;
+    private LoggerBusinessLayer loggerBusinessLayer;
     private BookingSystemUILoader view;
 
     public Handler(AccountBusinessLayer accountBusinessLayer, AccountManagementBusinessLayer accountManagementBusinessLayer,
@@ -47,7 +45,6 @@ public class Handler {
     public LoggerBusinessLayer getLoggerBusinessLayer() {
         return loggerBusinessLayer;
     }
-
 
 
     //will be the abstract class for all handlers, implementing interfaces and generic methods here

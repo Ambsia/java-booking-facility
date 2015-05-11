@@ -1,15 +1,11 @@
 package com.bookingsystem.helpers;
 
-import com.sun.org.apache.bcel.internal.generic.RET;
-
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by Alex on 04/05/2015.
  */
-public class DatabaseConnector  {
+public class DatabaseConnector {
 
     private ReturnSpecifiedPropertyValues returnSpecifiedPropertyValues;
     private String connectionString;
@@ -19,23 +15,39 @@ public class DatabaseConnector  {
     public DatabaseConnector() {
         this.returnSpecifiedPropertyValues = new ReturnSpecifiedPropertyValues();
         this.connectionString = this.returnSpecifiedPropertyValues.getDatabaseConnectionString();
-        try {
-            System.out.println("connection made");
-            this.connection = DriverManager.getConnection(connectionString);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        this.connection = null;
         this.callableStatement = null;
     }
 
-    public void openConnection() throws SQLException {
-        System.out.println("opening connection");
-        this.connection = DriverManager.getConnection(connectionString);
+    public boolean isConnected() {
+        return this.connection != null;
     }
 
-    public void closeConnection() throws SQLException {
-        System.out.println("closing connection");
-        this.connection.close();
+    public boolean isConnectionClosed() {
+        try {
+            return this.connection.isClosed();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return true;
+    }
+
+    public void openConnection() {
+        try {
+            this.connection = DriverManager.getConnection(this.connectionString);
+        } catch (SQLException e) {
+            MessageBox.errorMessageBox("There was an issue making a connection to the database.\n" + "Does this make any sense to you.." + e.toString() + "?");
+        }
+    }
+
+    public void closeConnection() {
+        try {
+            this.callableStatement.close();
+            this.connection.close();
+
+        } catch (SQLException e) {
+            MessageBox.errorMessageBox("There was an issue closing a connection with the database.\n" + "Does this make any sense to you.." + e.toString() + "?");
+        }
         this.callableStatement = null;
     }
 
@@ -43,9 +55,8 @@ public class DatabaseConnector  {
         return this.callableStatement;
     }
 
-    public void createNewCallableStatement(String sqlString)  {
+    public void createNewCallableStatement(String sqlString) {
         try {
-            System.out.println("creating callable statement");
             this.callableStatement = connection.prepareCall(sqlString);
         } catch (SQLException e) {
             e.printStackTrace();
@@ -55,7 +66,6 @@ public class DatabaseConnector  {
     public ResultSet executeQuery() {
         ResultSet rs = null;
         try {
-            System.out.println("executing callable statement and returning a result set");
             rs = this.callableStatement.executeQuery();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -65,7 +75,6 @@ public class DatabaseConnector  {
 
     public boolean execute() {
         try {
-            System.out.println("executing callable statement returning a boolean");
             return this.callableStatement.execute();
         } catch (SQLException e) {
             e.printStackTrace();

@@ -7,7 +7,7 @@ import java.util.ArrayList;
 
 /**
  * Created by Alex on 10/02/2015.
-*/
+ */
 
 public class UIBookingSystemViewPanel extends JPanel {
 
@@ -17,27 +17,10 @@ public class UIBookingSystemViewPanel extends JPanel {
         setLayout(new GridBagLayout());
         listOfViewBoxes = new ArrayList<>();
 
-        for(int i = 0; i <= 6;i++) {
-            listOfViewBoxes.add( new JLabel());
-            addControlToPanel(listOfViewBoxes.get(i),i);
+        for (int i = 0; i <= 6; i++) {
+            listOfViewBoxes.add(new JLabel());
+            addControlToPanel(listOfViewBoxes.get(i), i);
         }
-    }
-
-    private void addControlToPanel(Component component, int gridY) {
-        GridBagConstraints gbc = new GridBagConstraints();
-        gbc.insets = new Insets(2,2,2,2);
-        gbc.gridx = 0;
-        gbc.gridy = gridY;
-        gbc.anchor = GridBagConstraints.EAST;
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        gbc.weightx = 1;
-        gbc.weighty = 1;
-
-        add(component, gbc);
-    }
-
-    public String getTextFromField(int i) {
-    	return listOfViewBoxes.get(i).getText();
     }
 
     public static void setTextToField(ArrayList<String> listOfStrings) {
@@ -53,5 +36,22 @@ public class UIBookingSystemViewPanel extends JPanel {
                 listOfViewBoxes.get(i).setText(listOfStrings.get(i)); // otherwise we're good to set the text
             }
         }
+    }
+
+    private void addControlToPanel(Component component, int gridY) {
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(2, 2, 2, 2);
+        gbc.gridx = 0;
+        gbc.gridy = gridY;
+        gbc.anchor = GridBagConstraints.EAST;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.weightx = 1;
+        gbc.weighty = 1;
+
+        add(component, gbc);
+    }
+
+    public String getTextFromField(int i) {
+        return listOfViewBoxes.get(i).getText();
     }
 }

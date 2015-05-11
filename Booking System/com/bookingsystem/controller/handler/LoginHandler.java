@@ -4,11 +4,6 @@ package com.bookingsystem.controller.handler;
 import com.bookingsystem.helpers.MessageBox;
 import com.bookingsystem.model.Account;
 import com.bookingsystem.model.Log;
-import com.bookingsystem.model.businessmodel.AccountBusinessLayer;
-import com.bookingsystem.model.businessmodel.LoggerBusinessLayer;
-import com.bookingsystem.view.BookingSystemUILoader;
-import com.bookingsystem.view.UILoginPanel;
-import com.sun.xml.internal.ws.util.HandlerAnnotationInfo;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -22,19 +17,19 @@ public class LoginHandler implements ActionListener {
     private Account accountModel;
     private Handler handler;
 
-    public LoginHandler(Handler handler)   {
+    public LoginHandler(Handler handler) {
         this.handler = handler;
         accountModel = null;
     }
 
     @Override
     public void actionPerformed(ActionEvent arg0) {
-        Log log = new Log(arg0.getActionCommand(),this.getClass().getSimpleName(), new Date());
+        Log log = new Log(arg0.getActionCommand(), this.getClass().getSimpleName(), new Date());
         switch (arg0.getActionCommand()) {
             case "Login":
-               // accountModel = accountBusinessLayer.retrieveAccount(loginPanel.getLoginUsernameText(), loginPanel.getLoginPasswordText());
-               accountModel = handler.getAccountBusinessLayer().retrieveAccount("alex", "donkey");
-                if (handler.getAccountBusinessLayer().isAccountFound()) {
+                // accountModel = accountBusinessLayer.retrieveAccount(loginPanel.getLoginUsernameText(), loginPanel.getLoginPasswordText());
+                accountModel = handler.getAccountBusinessLayer().retrieveAccount("alex", "donkey");
+                if (handler.getAccountBusinessLayer().getError_code() == 0) { //account found
                     handler.getLoggerBusinessLayer().setAccountCurrentlyLoggedIn(accountModel);
                     handler.getView().removeLoginPanel();
                     handler.getView().showBookingSystemPanel();
@@ -42,7 +37,7 @@ public class LoginHandler implements ActionListener {
                         handler.getView().getBookingSystemTabbedPane().showAdminPanel();
                     }
                     handler.getView().setVisible(true);
-                } else {
+                } else if (handler.getAccountBusinessLayer().getError_code() == 1) {
                     MessageBox.errorMessageBox("Incorrect password or login.");
                 }
                 break;

@@ -90,8 +90,6 @@ public final class BookingHandler implements ActionListener {
                                     if (row.toString() != "") {
                                         if (row.getCell((short) 0).toString() != "") {
                                             this.bookingIDCurrentlyBeingProcessed = r;
-
-<<<<<<< HEAD
                                             importedBooking = new Booking(this.bookingIDCurrentlyBeingProcessed,
                                                     validateDayAsString(row.getCell((short) 0).toString()),
                                                     stringToDate(row.getCell((short) 1).toString()),
@@ -222,67 +220,6 @@ public final class BookingHandler implements ActionListener {
         }
         return new Date(); // always returns something we can manage
     }
-=======
-	@Override
-	public void actionPerformed(ActionEvent eventOccurred) {
-		Log log = new Log(eventOccurred.getActionCommand(), this.getClass().getSimpleName(), new Date());
-		switch (eventOccurred.getActionCommand()) {
-			case "Import":
-				JFileChooser jFileChooser = new JFileChooser();
-				try {
-					int returnVal = jFileChooser.showOpenDialog(bookingSystemPanel);
-					if (returnVal == JFileChooser.APPROVE_OPTION) {
-						if (jFileChooser.getSelectedFile().getName()
-								.endsWith(".xlsx")) {
-							File file = jFileChooser.getSelectedFile();
-							try (FileInputStream fileInputStream = new FileInputStream(file);
-								 XSSFWorkbook workBook = (XSSFWorkbook) WorkbookFactory.create(new PushbackInputStream(fileInputStream));) {		
-							XSSFSheet sheet = workBook.getSheetAt(1);
-							int rows = sheet.getPhysicalNumberOfRows();
-							ArrayList<Booking> bookingList = new ArrayList<Booking>();
-							for (int r = 1; r < rows; r++) {
-								XSSFRow row = sheet.getRow(r);
-								if (row.toString() != "") {
-									if (row.getCell((short) 0).toString() != "") {
-										this.bookingIDCurrentlyBeingProcessed = r;
-										Booking importedBooking = new Booking(this.bookingIDCurrentlyBeingProcessed,
-												validateDayAsString(row.getCell((short)0).toString()),
-												stringToDate(row.getCell((short) 1).toString()),
-												stringToTime(row.getCell((short) 2).toString(), false),
-												stringToTime(row.getCell((short) 2).toString(), true),
-												row.getCell((short) 3).toString(),
-												row.getCell((short) 4).toString(),
-												new Equipment(row.getCell((short) 5).toString()));
-										bookingList.add(importedBooking);
-									}
-								}
-							}
-							bookingSystemPanel.addBookingsToList(bookingList);
-							handler.getBookingBusinessLayer().insertBookings(bookingList);
-							fileInputStream.close();
-							workBook.close();
-							sheet = null;
-							}
-						} else {
-							MessageBox.errorMessageBox(".xlsx spreadsheets are only accepted.");
-							break;
-						}
-					} else {
-						break;
-					}
-				} catch (Exception e) {
-					handler.getLoggerBusinessLayer().exceptionCaused(log, e);
-					MessageBox.errorMessageBox(e.toString());
-				}
-				populateBadBookingMessageBox();
-				break;
-			case "Search":
-				try {
-					if (bookingSystemFindPanel.showDialog() == 0) {
-						bookingSystemShowBookingsFound.clearBookingsFromFoundList();
-						this.bookingIDCurrentlyBeingProcessed = 1;
-						Booking newBooking = convertStringArrayToBooking(bookingSystemFindPanel.getBookingStringArray());
->>>>>>> origin/master
 
     private Object[] convertStringArrayListToObjectList(ArrayList<String> arrayOfStrings) {
         return new Object[]{arrayOfStrings.get(1),
@@ -411,6 +348,7 @@ public final class BookingHandler implements ActionListener {
         }
     }
 }
+
 
 
 //

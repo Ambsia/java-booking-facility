@@ -5,10 +5,14 @@ import java.sql.*;
 /**
  * Created by Alex on 04/05/2015.
  */
+<<<<<<< HEAD
 public class DatabaseConnector {
+=======
+public final class DatabaseConnector  {
+>>>>>>> origin/master
 
-    private ReturnSpecifiedPropertyValues returnSpecifiedPropertyValues;
-    private String connectionString;
+    private final ReturnSpecifiedPropertyValues returnSpecifiedPropertyValues;
+    private final String connectionString;
     private CallableStatement callableStatement;
     private Connection connection;
 
@@ -40,6 +44,7 @@ public class DatabaseConnector {
         }
     }
 
+<<<<<<< HEAD
     public void closeConnection() {
         try {
             this.callableStatement.close();
@@ -48,6 +53,12 @@ public class DatabaseConnector {
         } catch (SQLException e) {
             MessageBox.errorMessageBox("There was an issue closing a connection with the database.\n" + "Does this make any sense to you.." + e.toString() + "?");
         }
+=======
+    public void closeConnection() throws SQLException {
+        System.out.println("closing connection");
+        this.callableStatement.close();
+        this.connection.close();
+>>>>>>> origin/master
         this.callableStatement = null;
     }
 

@@ -57,13 +57,40 @@ public class BookingBusinessLayer extends BusinessLayer implements Iterable<Book
                     callableStatement.setString(6, booking.getBookingHolder());
                     callableStatement.setString(7, booking.getRequiredEquipment().GetEquipmentName());
                     callableStatement.registerOutParameter(8, Types.INTEGER);
-
                     getDatabaseConnector().execute();
                     booking.setBookingID(callableStatement.getInt(8));
                     this.bookings.add(booking);
 
                 } catch (SQLException e) {
                     MessageBox.errorMessageBox("There was an issue while we were trying to insert that booking into the database!\n" + "Does this make any sense to you.." + e.toString() + "?");
+                }
+            }
+            getDatabaseConnector().closeConnection();
+        }
+    }
+    
+    public void insertBookings(ArrayList<Booking> bookingList) {
+        getDatabaseConnector().openConnection();
+        if (getDatabaseConnector().isConnected()) {
+            if (!getDatabaseConnector().isConnectionClosed()) {
+                getDatabaseConnector().createNewCallableStatement("{CALL spInsertBooking(?,?,?,?,?,?,?,?)}");
+                try (CallableStatement callableStatement = getDatabaseConnector().getCallableStatement()) {
+                for(int i = 0;i<bookingList.size();i++) {
+	                    callableStatement.setString(1, bookingList.get(i).getBookingDay());
+	                    callableStatement.setDate(2, convertFromJAVADateToSQLDate(bookingList.get(i).getBookingDate()));
+	                    callableStatement.setTime(3, bookingList.get(i).getBookingStartTimeInSQLFormat());
+	                    callableStatement.setTime(4, bookingList.get(i).getBookingCollectionTimeInSQLFormat());
+	                    callableStatement.setString(5, bookingList.get(i).getBookingLocation());
+	                    callableStatement.setString(6, bookingList.get(i).getBookingHolder());
+	                    callableStatement.setString(7, bookingList.get(i).getRequiredEquipment().GetEquipmentName());
+	                    callableStatement.registerOutParameter(8, Types.INTEGER);
+	                    getDatabaseConnector().execute();
+	                    bookingList.get(i).setBookingID(callableStatement.getInt(8));
+	                    this.bookings.add(bookingList.get(i));
+	                
+                }
+                } catch (SQLException e) {
+                	MessageBox.errorMessageBox("There was an issue while we were trying to insert that booking into the database!\n" + "Does this make any sense to you.." + e.toString() + "?");
                 }
             }
             getDatabaseConnector().closeConnection();

@@ -22,7 +22,7 @@ public class UIBookingSystemControlPanel extends JPanel {
 
     public UIBookingSystemControlPanel() {
         setLayout(new GridBagLayout());
-        String[] buttonNames = {"Load","Search","","Add","Edit", "Remove","Archive", "Today's", "Tomorrows"};
+        String[] buttonNames = {"Load","Search","Complete","Add","Edit", "Remove","Archive", "Today's", "Tomorrows"};
         controlButtonList = new ArrayList<>();
         uiBookingSystemAddPanel = new UIBookingSystemAddPanel();
         uiBookingSystemFindPanel = new UIBookingSystemFindPanel();

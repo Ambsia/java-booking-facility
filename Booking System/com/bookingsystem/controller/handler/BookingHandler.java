@@ -179,7 +179,9 @@ public final class BookingHandler implements ActionListener {
                     break;
                 case "Today's":
                     Calendar date = Calendar.getInstance();
-                    date.set(Calendar.HOUR, 12);
+                	date.set(Calendar.AM_PM,Calendar.AM);
+                    date.set(Calendar.HOUR, 00);
+                    date.set(Calendar.HOUR, 00);
                     date.set(Calendar.MINUTE, 00);
                     date.set(Calendar.SECOND, 00);
                     date.set(Calendar.MILLISECOND, 0);
@@ -194,9 +196,10 @@ public final class BookingHandler implements ActionListener {
                 
                 	String dayOfMonth_STRING = sdf.format(d);
                 	int dayOfMonth = Integer.parseInt(dayOfMonth_STRING);
-                	System.out.println(dayOfMonth + "");
-                	date1.set(Calendar.DAY_OF_MONTH,(dayOfMonth));
-                    date1.set(Calendar.HOUR, 12);
+                	//System.out.println(dayOfMonth + "");
+                	date1.set(Calendar.AM_PM,Calendar.AM);
+                	date1.set(Calendar.DAY_OF_MONTH,(dayOfMonth+1));
+                    date1.set(Calendar.HOUR, 00);
                     date1.set(Calendar.MINUTE, 00);
                     date1.set(Calendar.SECOND, 00);
                     date1.set(Calendar.MILLISECOND, 0);
@@ -225,7 +228,16 @@ public final class BookingHandler implements ActionListener {
                 listOfBadBookingIDs.add(this.bookingIDCurrentlyBeingProcessed); //adds the id of the booking that cannot be properly processed
             }
         }
-        return new Date(); // always returns something we can manage
+        Calendar date1 = Calendar.getInstance();
+    	date1.set(Calendar.AM_PM,Calendar.AM);
+    	date1.set(Calendar.DAY_OF_MONTH,0);
+        date1.set(Calendar.HOUR, 00);
+        date1.set(Calendar.MINUTE, 00);
+        date1.set(Calendar.SECOND, 00);
+        date1.set(Calendar.MILLISECOND, 0);
+        System.out.println(date1.getTime().toString());
+        return date1.getTime();
+       // return new Date(); // always returns something we can manage
     }
 
     private Object[] convertStringArrayListToObjectList(ArrayList<String> arrayOfStrings) {
@@ -285,7 +297,7 @@ public final class BookingHandler implements ActionListener {
                     return BOOKING_TIME_FORMAT_3.parse(verifiedStringToConvert);
                 } catch (ParseException parseException_2) {
                     try {
-                    	System.out.println("|"+verifiedStringToConvert+"|");
+                    //	System.out.println("|"+verifiedStringToConvert+"|");
                         test = Integer.parseInt(verifiedStringToConvert);
                         if (test > 24 && test % 10 == 0) {
                             test = test / 10;
@@ -307,7 +319,15 @@ public final class BookingHandler implements ActionListener {
                 }
             }
         }
-        return new Date();
+    	Calendar date1 = Calendar.getInstance();
+    	date1.set(Calendar.AM_PM,Calendar.AM);
+    	date1.set(Calendar.DAY_OF_MONTH,0);
+        date1.set(Calendar.HOUR, 00);
+        date1.set(Calendar.MINUTE, 00);
+        date1.set(Calendar.SECOND, 00);
+        date1.set(Calendar.MILLISECOND, 0);
+        System.out.println(date1.getTime().toString());
+        return date1.getTime();
     }
 
     private void populateBadBookingMessageBox() {

@@ -38,11 +38,9 @@ public class AccountManagementBusinessLayer extends BusinessLayer implements Ite
 			callInsertAccount.setString(3, account.getHashedPassword());
 			callInsertAccount.setString(4, account.getUserSalt());
 			callInsertAccount.registerOutParameter(5, Types.INTEGER);
-
 			callInsertAccount.execute();
 			account.setUserID(callInsertAccount.getInt(5));
 			this.accounts.add(account);
-
 		} catch (SQLException e) {
 			MessageBox.errorMessageBox("There was an issue while retrieving accounts.\n" + "Does this make any sense to you.." + e.toString() + "?");
 		}

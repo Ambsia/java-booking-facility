@@ -4,7 +4,9 @@ import com.bookingsystem.model.Booking;
 import com.bookingsystem.model.Equipment;
 import com.bookingsystem.model.tablemodel.BookingTableModel;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 
 /**
@@ -26,13 +28,40 @@ public class UIBookingSystemJTableBookings extends UIBookingSystemJTable {
 
 	public void addRowToList(Object data) {
 		Booking booking = (Booking) data;
+    	Calendar date1 = Calendar.getInstance();
+    	date1.set(Calendar.AM_PM,Calendar.AM);
+    	date1.set(Calendar.DAY_OF_MONTH,0);
+        date1.set(Calendar.HOUR, 00);
+        date1.set(Calendar.MINUTE, 00);
+        date1.set(Calendar.SECOND, 00);
+        date1.set(Calendar.MILLISECOND, 0);
+        System.out.println("validity: " + booking.getBookingStartTime().equals(date1.getTime()) + "booking date: " + booking.getBookingDate() + "date1: " +date1.getTime());
+        System.out.println("validity: " +booking.getBookingDate().equals(date1.getTime()) + "booking time: " + booking.getBookingStartTime() + "date1: " +date1.getTime());
+		if (booking.getBookingDate() == date1.getTime()) {
+			this.bookingTableModel.addRow(new Object[]{booking.getBookingID(),
+					booking.getBookingDay(),
+					"Unknown",
+					BOOKING_TIME_FORMAT.format(booking.getBookingStartTime()) + "-" + BOOKING_TIME_FORMAT.format(booking.getBookingCollectionTime()),
+					booking.getBookingLocation(),
+					booking.getBookingHolder(),
+					booking.getRequiredEquipment().GetEquipmentName()});
+		} else if (booking.getBookingStartTime() == date1.getTime()){
 		this.bookingTableModel.addRow(new Object[]{booking.getBookingID(),
 				booking.getBookingDay(),
 				BOOKING_DATE_FORMAT.format(booking.getBookingDate()),
-				BOOKING_TIME_FORMAT.format(booking.getBookingStartTime()) + "-" + BOOKING_TIME_FORMAT.format(booking.getBookingCollectionTime()),
+				"Unknown",
 				booking.getBookingLocation(),
 				booking.getBookingHolder(),
 				booking.getRequiredEquipment().GetEquipmentName()});
+		} else {
+			this.bookingTableModel.addRow(new Object[]{booking.getBookingID(),
+					booking.getBookingDay(),
+					BOOKING_DATE_FORMAT.format(booking.getBookingDate()),
+					BOOKING_TIME_FORMAT.format(booking.getBookingStartTime()) + "-" + BOOKING_TIME_FORMAT.format(booking.getBookingCollectionTime()),
+					booking.getBookingLocation(),
+					booking.getBookingHolder(),
+					booking.getRequiredEquipment().GetEquipmentName()});
+		}
 	}
 
 	public Object getRowFromList(int identifierOfData) {

@@ -17,9 +17,11 @@ public class UIBookingSystemShowBookingsFound extends UIBookingSystemDialogPanel
 
 	public UIBookingSystemShowBookingsFound() {
 		super();
+		this.setLayout(getLayout());
 		bookingSystemJTable = new UIBookingSystemJTableBookings(new BookingTableModel());
 		JScrollPane jScrollPane = new JScrollPane(bookingSystemJTable);
-		addTheseComponentsToPanel(new Component[] {jScrollPane},new String[] { ""});
+		jScrollPane.setPreferredSize(new Dimension(800,600));
+		addTheseComponentsToPanel(new Component[]{jScrollPane}, new String[]{""});
 	}
 
 	@Override

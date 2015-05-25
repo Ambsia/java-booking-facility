@@ -5,7 +5,7 @@ import com.bookingsystem.model.Booking;
 import com.bookingsystem.model.Equipment;
 import com.bookingsystem.model.Log;
 import com.bookingsystem.view.dialogpanels.bookingdialog.*;
-import com.bookingsystem.view.panelparts.UIBookingSystemControlPanel;
+import com.bookingsystem.view.panelparts.controlpanes.UIBookingSystemBookingControlPanel;
 import com.bookingsystem.view.panes.UIBookingSystemPanel;
 import org.apache.commons.collections.IteratorUtils;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
@@ -41,11 +41,23 @@ public final class BookingHandler implements ActionListener {
     private final List<Integer> listOfBadBookingIDs;
     private final Handler handler;
     private int bookingIDCurrentlyBeingProcessed;
+    Calendar date1 = Calendar.getInstance();
 
     public BookingHandler(Handler handler) {
         this.handler = handler;
+        date1.set(Calendar.AM_PM,Calendar.AM);
+        date1.set(Calendar.DAY_OF_MONTH,25);
+        date1.set(Calendar.MONTH,11);
+        date1.set(Calendar.HOUR, 00);
+        date1.set(Calendar.MINUTE, 00);
+        date1.set(Calendar.SECOND, 00);
+        date1.set(Calendar.MILLISECOND, 0);
+        date1.set(Calendar.YEAR, 2015);
 
-        UIBookingSystemControlPanel bookingSystemControlPanel = handler.getView().getBookingSystemTabbedPane().getBookingSystemPanel().getBookingSystemControlPanel();
+        //date1's date is 25.12.01 -- never bookings on christmas!
+        //date1's time is 00:00 -- never bookings at midnight!
+
+        UIBookingSystemBookingControlPanel bookingSystemControlPanel = handler.getView().getBookingSystemTabbedPane().getBookingSystemPanel().getBookingSystemControlPanel();
         this.bookingSystemAddPanel = bookingSystemControlPanel.getUIBookingSystemAddPanel();
         this.bookingSystemFindPanel = bookingSystemControlPanel.getUIBookingSystemFindPanel();
         this.bookingSystemEditPanel = bookingSystemControlPanel.getUIBookingSystemEditPanel();
@@ -62,55 +74,59 @@ public final class BookingHandler implements ActionListener {
         Log log = new Log(eventOccurred.getActionCommand(), this.getClass().getSimpleName(), new Date());
         if (handler.getAccountBusinessLayer().isAccountFound()) {
             switch (eventOccurred.getActionCommand()) {
-			case "Import":
-				JFileChooser jFileChooser = new JFileChooser();
-				try {
-					int returnVal = jFileChooser.showOpenDialog(bookingSystemPanel);
-					if (returnVal == JFileChooser.APPROVE_OPTION) {
-						if (jFileChooser.getSelectedFile().getName()
-								.endsWith(".xlsx")) {
-							File file = jFileChooser.getSelectedFile();
-							try (FileInputStream fileInputStream = new FileInputStream(file);
-								 XSSFWorkbook workBook = (XSSFWorkbook) WorkbookFactory.create(new PushbackInputStream(fileInputStream));) {		
-							XSSFSheet sheet = workBook.getSheetAt(1);
-							int rows = sheet.getPhysicalNumberOfRows();
-							ArrayList<Booking> bookingList = new ArrayList<Booking>();
-							for (int r = 1; r < rows; r++) {
-								XSSFRow row = sheet.getRow(r);
-								if (row.toString() != "") {
-									if (row.getCell((short) 0).toString() != "") {
-										this.bookingIDCurrentlyBeingProcessed = r;
-										Booking importedBooking = new Booking(this.bookingIDCurrentlyBeingProcessed,
-												validateDayAsString(row.getCell((short)0).toString()),
-												stringToDate(row.getCell((short) 1).toString()),
-												stringToTime(row.getCell((short) 2).toString(), false),
-												stringToTime(row.getCell((short) 2).toString(), true),
-												row.getCell((short) 3).toString(),
-												row.getCell((short) 4).toString(),
-												new Equipment(row.getCell((short) 5).toString()));
-										bookingList.add(importedBooking);
-									}
-								}
-							}
-							bookingSystemPanel.addBookingsToList(bookingList);
-							handler.getBookingBusinessLayer().insertBookings(bookingList);
-							fileInputStream.close();
-							workBook.close();
-							sheet = null;
-							}
-						} else {
-							MessageBox.errorMessageBox(".xlsx spreadsheets are only accepted.");
-							break;
-						}
-					} else {
-						break;
-					}
-				} catch (Exception e) {
-					handler.getLoggerBusinessLayer().exceptionCaused(log, e);
-					MessageBox.errorMessageBox(e.toString());
-				}
-				populateBadBookingMessageBox();
-				break;
+                case "Import":
+                    JFileChooser jFileChooser = new JFileChooser();
+                    try {
+                        int returnVal = jFileChooser.showOpenDialog(bookingSystemPanel);
+                        if (returnVal == JFileChooser.APPROVE_OPTION) {
+                            if (jFileChooser.getSelectedFile().getName()
+                                    .endsWith(".xlsx")) {
+                                bookingSystemPanel.getBookingSystemViewPanel().removeAllProblems();
+                                File file = jFileChooser.getSelectedFile();
+                                try (FileInputStream fileInputStream = new FileInputStream(file);
+                                     XSSFWorkbook workBook = (XSSFWorkbook) WorkbookFactory.create(new PushbackInputStream(fileInputStream));) {
+                                    XSSFSheet sheet = workBook.getSheetAt(1);
+                                    int rows = sheet.getPhysicalNumberOfRows();
+                                    ArrayList<Booking> bookingList = new ArrayList<Booking>();
+                                    for (int r = 1; r < rows; r++) {
+                                        XSSFRow row = sheet.getRow(r);
+                                        if (row.toString() != "") {
+                                            if (row.getCell((short) 0).toString() != "") {
+                                                this.bookingIDCurrentlyBeingProcessed = r;
+                                                Booking importedBooking = new Booking(this.bookingIDCurrentlyBeingProcessed,
+                                                        validateDayAsString(row.getCell((short) 0).toString()),
+                                                        stringToDate(row.getCell((short) 1).toString()),
+                                                        stringToTime(row.getCell((short) 2).toString(), false),
+                                                        stringToTime(row.getCell((short) 2).toString(), true),
+                                                        row.getCell((short) 3).toString(),
+                                                        row.getCell((short) 4).toString(),
+                                                        new Equipment(row.getCell((short) 5).toString()));
+                                                bookingList.add(importedBooking);
+                                                checkBookingDateTimeForErrors(importedBooking);
+                                            }
+                                        }
+                                    }
+                                    bookingSystemPanel.addBookingsToList(bookingList);
+                                    handler.getBookingBusinessLayer().insertBookings(bookingList);
+                                    fileInputStream.close();
+                                    workBook.close();
+                                    sheet = null;
+                                    generateBadBookingTable();
+
+                                }
+                            } else {
+                                MessageBox.errorMessageBox(".xlsx spreadsheets are only accepted.");
+                                break;
+                            }
+                        } else {
+                            break;
+                        }
+                    } catch (Exception e) {
+                        handler.getLoggerBusinessLayer().exceptionCaused(log, e);
+                        MessageBox.errorMessageBox(e.toString());
+                    }
+
+                    break;
                 case "Search":
                     if (bookingSystemFindPanel.showDialog() == 0) {
                         bookingSystemShowBookingsFound.clearBookingsFromFoundList();
@@ -129,6 +145,8 @@ public final class BookingHandler implements ActionListener {
                         Booking newBooking = convertStringArrayToBooking(bookingSystemAddPanel.getBookingStringArray());
                         if (newBooking.isValid()) {
                             handler.getBookingBusinessLayer().insertBooking(newBooking);
+                            checkBookingDateTimeForErrors(newBooking);
+                            generateBadBookingTable();
                             bookingSystemPanel.addBookingToList(newBooking);
                             log.setBookingIDInserted(newBooking.getBookingID());
                         } else {
@@ -137,17 +155,33 @@ public final class BookingHandler implements ActionListener {
                     }
                     break;
                 case "Remove":
-                    this.bookingIDCurrentlyBeingProcessed = bookingSystemPanel.getIDOfSelectedRow();
-                    if (this.bookingIDCurrentlyBeingProcessed >= 0) {
-                        bookingSystemRemovePanel.setTextOfComponents(convertStringArrayListToObjectList(bookingSystemPanel.getCurrentlySelectedRowAsStringArrayList()));
-                        if (bookingSystemRemovePanel.showDialog() == 0) {
-                            handler.getBookingBusinessLayer().setCurrentIndexOfBookingInList(bookingSystemPanel.getIndexOfSelectedRow());
-                            handler.getBookingBusinessLayer().removeBooking(this.bookingIDCurrentlyBeingProcessed);
-                            bookingSystemPanel.removeBookingFromTable();
-                            log.setBookingIDDeleted(this.bookingIDCurrentlyBeingProcessed);
+                    if(bookingSystemPanel.selectedRowCount() > 1) {
+                        for(int rowID : bookingSystemPanel.getSelectedRows())
+                        {
+                            //get and set id of current int
+                            //set current id in the booking business layer
+                            //remove booking from business layer
+                            //check to see if the booking is in the bad booking list and delete it if so
+                            //remove from the table
+                            //set the log id removed
+                            bookingSystemPanel.removeRow(rowID);
                         }
                     } else {
-                        MessageBox.warningMessageBox("Please select a booking to remove");
+                        this.bookingIDCurrentlyBeingProcessed = bookingSystemPanel.getIDOfSelectedRow();
+                        if (this.bookingIDCurrentlyBeingProcessed >= 0) {
+                            bookingSystemRemovePanel.setTextOfComponents(convertStringArrayListToObjectList(bookingSystemPanel.getCurrentlySelectedRowAsStringArrayList()));
+                            if (bookingSystemRemovePanel.showDialog() == 0) {
+                                handler.getBookingBusinessLayer().setCurrentIndexOfBookingInList(bookingSystemPanel.getIndexOfSelectedRow());
+                                handler.getBookingBusinessLayer().removeBooking(this.bookingIDCurrentlyBeingProcessed);
+                                if (listOfBadBookingIDs.contains(this.bookingIDCurrentlyBeingProcessed)) {
+                                    listOfBadBookingIDs.remove(listOfBadBookingIDs.indexOf(this.bookingIDCurrentlyBeingProcessed));
+                                }
+                                bookingSystemPanel.removeBookingFromTable();
+                                log.setBookingIDDeleted(this.bookingIDCurrentlyBeingProcessed);
+                            }
+                        } else {
+                            MessageBox.warningMessageBox("Please select a booking to remove");
+                        }
                     }
                     break;
                 case "Edit":
@@ -156,7 +190,9 @@ public final class BookingHandler implements ActionListener {
                         bookingSystemEditPanel.setTextOfComponents(convertStringArrayListToObjectList(bookingSystemPanel.getCurrentlySelectedRowAsStringArrayList()));
                         if (bookingSystemEditPanel.showDialog() == 0) {
                             Booking newBooking = convertStringArrayToBooking(bookingSystemEditPanel.getBookingStringArray());
-                            if (newBooking.isValid()) {
+                               if (newBooking.isValid()) {
+                                checkBookingDateTimeForErrors(newBooking);
+                                   generateBadBookingTable();
                                 handler.getBookingBusinessLayer().setCurrentIndexOfBookingInList(bookingSystemPanel.getIndexOfSelectedRow());
                                 handler.getBookingBusinessLayer().modifyBooking(this.bookingIDCurrentlyBeingProcessed, newBooking);
                                 bookingSystemPanel.replaceBookingInList(newBooking);
@@ -171,16 +207,17 @@ public final class BookingHandler implements ActionListener {
                     break;
                 case "Load":
                     handler.getBookingBusinessLayer().populateBookingListOnLoad();
-	                    bookingSystemPanel.removeAllBookings();
-	                    for (Object object : IteratorUtils.toList(handler.getBookingBusinessLayer().iterator())) {
-	                        bookingSystemPanel.addBookingToList((Booking) object);
-	                    }
-                 
+                    bookingSystemPanel.removeAllBookings();
+                    bookingSystemPanel.getBookingSystemViewPanel().removeAllProblems();
+                    for (Object object : IteratorUtils.toList(handler.getBookingBusinessLayer().iterator())) {
+                        checkBookingDateTimeForErrors((Booking) object);
+                        bookingSystemPanel.addBookingToList((Booking) object);
+                    }
+                    generateBadBookingTable();
                     break;
                 case "Today's":
                     Calendar date = Calendar.getInstance();
-                	date.set(Calendar.AM_PM,Calendar.AM);
-                    date.set(Calendar.HOUR, 00);
+                    date.set(Calendar.AM_PM, Calendar.AM);
                     date.set(Calendar.HOUR, 00);
                     date.set(Calendar.MINUTE, 00);
                     date.set(Calendar.SECOND, 00);
@@ -190,32 +227,45 @@ public final class BookingHandler implements ActionListener {
                     bookingSystemPanel.addBookingsToList(handler.getBookingBusinessLayer().findBookings(b));
                     break;
                 case "Tomorrows":
-                	Calendar date1 = Calendar.getInstance();
-                	Date d = date1.getTime();
-                	SimpleDateFormat sdf = new SimpleDateFormat("d");
-                
-                	String dayOfMonth_STRING = sdf.format(d);
-                	int dayOfMonth = Integer.parseInt(dayOfMonth_STRING);
-                	//System.out.println(dayOfMonth + "");
-                	date1.set(Calendar.AM_PM,Calendar.AM);
-                	date1.set(Calendar.DAY_OF_MONTH,(dayOfMonth+1));
-                    date1.set(Calendar.HOUR, 00);
-                    date1.set(Calendar.MINUTE, 00);
-                    date1.set(Calendar.SECOND, 00);
-                    date1.set(Calendar.MILLISECOND, 0);
-                    Booking b1 = new Booking(0, "", date1.getTime(), date1.getTime(), date1.getTime(), "", "", new Equipment(""));
+                    Calendar date2 = Calendar.getInstance();
+                    Date d = date2.getTime();
+                    SimpleDateFormat sdf = new SimpleDateFormat("d");
+                    String dayOfMonth_STRING = sdf.format(d);
+                    int dayOfMonth = Integer.parseInt(dayOfMonth_STRING);
+                    date2.set(Calendar.DAY_OF_MONTH, (dayOfMonth + 1));
+                    date2.set(Calendar.AM_PM,Calendar.AM);
+                    date2.set(Calendar.HOUR, 00);
+                    date2.set(Calendar.MINUTE, 00);
+                    date2.set(Calendar.SECOND, 00);
+                    date2.set(Calendar.MILLISECOND, 0);
+                    Booking b1 = new Booking(0, "", date2.getTime(), date2.getTime(), date2.getTime(), "", "", new Equipment(""));
                     bookingSystemPanel.removeAllBookings();
                     bookingSystemPanel.addBookingsToList(handler.getBookingBusinessLayer().findBookings(b1));
                     break;
-                case "Complete" :
+                case "Complete":
                     System.out.println("control handler found");
-                	break;
+                    break;
                 default:
                     System.out.println("control handler not found");
             }
             handler.getLoggerBusinessLayer().insertLog(log);
         }
     }
+
+    private void checkBookingDateTimeForErrors(Booking booking) {
+        if (BOOKING_TIME_FORMAT.format(booking.getBookingStartTime()).equals("00:00")
+                || BOOKING_TIME_FORMAT.format(booking.getBookingCollectionTime()).equals("00:00")
+                || BOOKING_DATE_FORMAT.format(booking.getBookingDate()).equals("25.12.15")) {
+            if (!listOfBadBookingIDs.contains(booking.getBookingID())) {
+                listOfBadBookingIDs.add(booking.getBookingID());
+            }
+        } else {
+            if (listOfBadBookingIDs.contains(booking.getBookingID())) {
+                listOfBadBookingIDs.remove(listOfBadBookingIDs.indexOf(booking.getBookingID()));
+            }
+        }
+    }
+
 
     private Date stringToDate(String stringToConvert) {
         String s = stringToConvert.replaceAll("[^A-Za-z0-9. ]", "."); //will replace all non-alpha characters with a period
@@ -225,19 +275,12 @@ public final class BookingHandler implements ActionListener {
             try {
                 return BOOKING_DATE_FORMAT_2.parse(s); //tries to match the string with teh format dd.MMM.yy
             } catch (ParseException parseException_2) {
-                listOfBadBookingIDs.add(this.bookingIDCurrentlyBeingProcessed); //adds the id of the booking that cannot be properly processed
+                if (!listOfBadBookingIDs.contains(this.bookingIDCurrentlyBeingProcessed)) {
+                    listOfBadBookingIDs.add(this.bookingIDCurrentlyBeingProcessed);
+                }
             }
         }
-        Calendar date1 = Calendar.getInstance();
-    	date1.set(Calendar.AM_PM,Calendar.AM);
-    	date1.set(Calendar.DAY_OF_MONTH,0);
-        date1.set(Calendar.HOUR, 00);
-        date1.set(Calendar.MINUTE, 00);
-        date1.set(Calendar.SECOND, 00);
-        date1.set(Calendar.MILLISECOND, 0);
-        System.out.println(date1.getTime().toString());
         return date1.getTime();
-       // return new Date(); // always returns something we can manage
     }
 
     private Object[] convertStringArrayListToObjectList(ArrayList<String> arrayOfStrings) {
@@ -307,9 +350,7 @@ public final class BookingHandler implements ActionListener {
                                 test = test + 12;
                             }
                         }
-
                         verifiedStringToConvert = Integer.toString(test);
-                        
                         return BOOKING_TIME_FORMAT_2.parse(verifiedStringToConvert);
                     } catch (Exception parseException_3) {
                         if (!listOfBadBookingIDs.contains(this.bookingIDCurrentlyBeingProcessed)) {
@@ -319,26 +360,18 @@ public final class BookingHandler implements ActionListener {
                 }
             }
         }
-    	Calendar date1 = Calendar.getInstance();
-    	date1.set(Calendar.AM_PM,Calendar.AM);
-    	date1.set(Calendar.DAY_OF_MONTH,0);
-        date1.set(Calendar.HOUR, 00);
-        date1.set(Calendar.MINUTE, 00);
-        date1.set(Calendar.SECOND, 00);
-        date1.set(Calendar.MILLISECOND, 0);
-        System.out.println(date1.getTime().toString());
         return date1.getTime();
     }
 
-    private void populateBadBookingMessageBox() {
-        String s = "The following bookings with the ids: ";
-        if (!listOfBadBookingIDs.isEmpty()) {
-            for (int i : listOfBadBookingIDs) {
-                s += i + ", ";
+    private void generateBadBookingTable() {
+        bookingSystemPanel.getBookingSystemViewPanel().removeAllProblems();
+        for (int i = 0; i<listOfBadBookingIDs.size();i++) {
+            for (Object object : IteratorUtils.toList(handler.getBookingBusinessLayer().iterator())){
+                if (((Booking) object).getBookingID() == listOfBadBookingIDs.get(i) //checks for the booking id in the list of bad ids
+                        && !bookingSystemPanel.getBookingSystemViewPanel().isRowInTable(((Booking) object).getBookingID())) { //checks if the booking id is already in the table of problems
+                    bookingSystemPanel.getBookingSystemViewPanel().addProblemToList(((Booking) object));
+                }
             }
-            s += " have a incorrectly formatted date or time.";
-            listOfBadBookingIDs.clear();
-            MessageBox.warningMessageBox(s);
         }
     }
 

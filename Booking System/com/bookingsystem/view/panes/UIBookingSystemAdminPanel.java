@@ -4,7 +4,7 @@ import com.bookingsystem.model.Account;
 import com.bookingsystem.model.tablemodel.AccountTableModel;
 import com.bookingsystem.view.controls.UIBookingSystemJTable;
 import com.bookingsystem.view.controls.UIBookingSystemJTableAccounts;
-import com.bookingsystem.view.panelparts.UIBookingSystemAdminControlPanel;
+import com.bookingsystem.view.panelparts.controlpanes.UIBookingSystemAdminControlPanel;
 import com.bookingsystem.view.panelparts.UIBookingSystemAdminViewPanel;
 
 import javax.swing.*;

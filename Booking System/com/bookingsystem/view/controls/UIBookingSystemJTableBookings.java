@@ -3,7 +3,9 @@ package com.bookingsystem.view.controls;
 import com.bookingsystem.model.Booking;
 import com.bookingsystem.model.Equipment;
 import com.bookingsystem.model.tablemodel.BookingTableModel;
+import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
 
+import java.awt.*;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -13,7 +15,9 @@ import java.util.Date;
  * Author: [Alex]
  */
 public class UIBookingSystemJTableBookings extends UIBookingSystemJTable {
+
 	private final BookingTableModel bookingTableModel;
+
 	public UIBookingSystemJTableBookings(BookingTableModel bookingTableModel) {
 		super();
 		this.bookingTableModel = bookingTableModel;
@@ -28,40 +32,41 @@ public class UIBookingSystemJTableBookings extends UIBookingSystemJTable {
 
 	public void addRowToList(Object data) {
 		Booking booking = (Booking) data;
-    	Calendar date1 = Calendar.getInstance();
-    	date1.set(Calendar.AM_PM,Calendar.AM);
-    	date1.set(Calendar.DAY_OF_MONTH,0);
-        date1.set(Calendar.HOUR, 00);
-        date1.set(Calendar.MINUTE, 00);
-        date1.set(Calendar.SECOND, 00);
-        date1.set(Calendar.MILLISECOND, 0);
-        System.out.println("validity: " + booking.getBookingStartTime().equals(date1.getTime()) + "booking date: " + booking.getBookingDate() + "date1: " +date1.getTime());
-        System.out.println("validity: " +booking.getBookingDate().equals(date1.getTime()) + "booking time: " + booking.getBookingStartTime() + "date1: " +date1.getTime());
-		if (booking.getBookingDate() == date1.getTime()) {
-			this.bookingTableModel.addRow(new Object[]{booking.getBookingID(),
-					booking.getBookingDay(),
-					"Unknown",
-					BOOKING_TIME_FORMAT.format(booking.getBookingStartTime()) + "-" + BOOKING_TIME_FORMAT.format(booking.getBookingCollectionTime()),
-					booking.getBookingLocation(),
-					booking.getBookingHolder(),
-					booking.getRequiredEquipment().GetEquipmentName()});
-		} else if (booking.getBookingStartTime() == date1.getTime()){
+		Calendar date1 = Calendar.getInstance();
+		date1.set(Calendar.AM_PM, Calendar.AM);
+		date1.set(Calendar.DAY_OF_MONTH, 25);
+		date1.set(Calendar.MONTH, 11);
+		date1.set(Calendar.HOUR, 00);
+		date1.set(Calendar.MINUTE, 00);
+		date1.set(Calendar.SECOND, 00);
+		date1.set(Calendar.MILLISECOND, 0);
+		String date = "";
+		String time = "";
+		if (BOOKING_DATE_FORMAT.format(booking.getBookingDate()).equals(BOOKING_DATE_FORMAT.format(date1.getTime()))
+				&& BOOKING_TIME_FORMAT.format(booking.getBookingStartTime()).equals(BOOKING_TIME_FORMAT.format(date1.getTime()))) {
+			date = "Unknown";
+			time= "Unknown";
+		} else if (BOOKING_DATE_FORMAT.format(booking.getBookingDate()).equals(BOOKING_DATE_FORMAT.format(date1.getTime()))) {
+			date = "Unknown";
+			time= BOOKING_TIME_FORMAT.format(booking.getBookingStartTime()) + "-" + BOOKING_TIME_FORMAT.format(booking.getBookingCollectionTime());
+		} else if(BOOKING_TIME_FORMAT.format(booking.getBookingStartTime()).equals(BOOKING_TIME_FORMAT.format(date1.getTime()))) {
+			time = "Unknown";
+			date = BOOKING_DATE_FORMAT.format(booking.getBookingDate());
+		} else if (BOOKING_TIME_FORMAT.format(booking.getBookingStartTime()).equals(BOOKING_TIME_FORMAT.format(date1.getTime())) || BOOKING_TIME_FORMAT.format(booking.getBookingStartTime()).equals("00:00") || BOOKING_TIME_FORMAT.format(booking.getBookingCollectionTime()).equals("00:00")) {
+			date = BOOKING_DATE_FORMAT.format(booking.getBookingDate());
+			time= "Unknown";
+		} else {
+			date = BOOKING_DATE_FORMAT.format(booking.getBookingDate());
+			time= BOOKING_TIME_FORMAT.format(booking.getBookingStartTime()) + "-" + BOOKING_TIME_FORMAT.format(booking.getBookingCollectionTime());
+		}
 		this.bookingTableModel.addRow(new Object[]{booking.getBookingID(),
 				booking.getBookingDay(),
-				BOOKING_DATE_FORMAT.format(booking.getBookingDate()),
-				"Unknown",
+				date,
+				time,
 				booking.getBookingLocation(),
 				booking.getBookingHolder(),
 				booking.getRequiredEquipment().GetEquipmentName()});
-		} else {
-			this.bookingTableModel.addRow(new Object[]{booking.getBookingID(),
-					booking.getBookingDay(),
-					BOOKING_DATE_FORMAT.format(booking.getBookingDate()),
-					BOOKING_TIME_FORMAT.format(booking.getBookingStartTime()) + "-" + BOOKING_TIME_FORMAT.format(booking.getBookingCollectionTime()),
-					booking.getBookingLocation(),
-					booking.getBookingHolder(),
-					booking.getRequiredEquipment().GetEquipmentName()});
-		}
+
 	}
 
 	public Object getRowFromList(int identifierOfData) {
@@ -79,15 +84,43 @@ public class UIBookingSystemJTableBookings extends UIBookingSystemJTable {
 	}
 
 	public void replaceRowInList(Object rowData) {
-		Booking newBooking = (Booking) rowData;
-		bookingTableModel.setValueAt(newBooking.getBookingID(),this.getSelectedRow(),0);
-		bookingTableModel.setValueAt(newBooking.getBookingDay(),this.getSelectedRow(),1);
-		bookingTableModel.setValueAt(BOOKING_DATE_FORMAT.format(newBooking.getBookingDate()), this.getSelectedRow(),2);
-		bookingTableModel.setValueAt(BOOKING_TIME_FORMAT.format(newBooking.getBookingStartTime()) + "-" + BOOKING_TIME_FORMAT.format(newBooking.getBookingCollectionTime()),this.getSelectedRow(),3);
-		bookingTableModel.setValueAt(newBooking.getBookingLocation(),this.getSelectedRow(),4);
-		bookingTableModel.setValueAt(newBooking.getBookingHolder(),this.getSelectedRow(),5);
-		bookingTableModel.setValueAt(newBooking.getRequiredEquipment().GetEquipmentName(),this.getSelectedRow(),6);
+		Booking booking = (Booking) rowData;
+		Calendar date1 = Calendar.getInstance();
+		date1.set(Calendar.AM_PM,Calendar.AM);
+		date1.set(Calendar.DAY_OF_MONTH,25);
+		date1.set(Calendar.MONTH,11);
+		date1.set(Calendar.HOUR, 00);
+		date1.set(Calendar.MINUTE, 00);
+		date1.set(Calendar.SECOND, 00);
+		date1.set(Calendar.MILLISECOND, 0);
+		String date = "";
+		String time = "";
+		if (BOOKING_DATE_FORMAT.format(booking.getBookingDate()).equals(BOOKING_DATE_FORMAT.format(date1.getTime()))
+				&& BOOKING_TIME_FORMAT.format(booking.getBookingStartTime()).equals(BOOKING_TIME_FORMAT.format(date1.getTime()))) {
+			date = "Unknown";
+			time= "Unknown";
+		} else if (BOOKING_DATE_FORMAT.format(booking.getBookingDate()).equals(BOOKING_DATE_FORMAT.format(date1.getTime()))) {
+			date = "Unknown";
+			time= BOOKING_TIME_FORMAT.format(booking.getBookingStartTime()) + "-" + BOOKING_TIME_FORMAT.format(booking.getBookingCollectionTime());
+		} else if(BOOKING_TIME_FORMAT.format(booking.getBookingStartTime()).equals(BOOKING_TIME_FORMAT.format(date1.getTime()))) {
+			time = "Unknown";
+			date = BOOKING_DATE_FORMAT.format(booking.getBookingDate());
+		} else if (BOOKING_TIME_FORMAT.format(booking.getBookingStartTime()).equals(BOOKING_TIME_FORMAT.format(date1.getTime())) || BOOKING_TIME_FORMAT.format(booking.getBookingStartTime()).equals("00:00") || BOOKING_TIME_FORMAT.format(booking.getBookingCollectionTime()).equals("00:00")) {
+			date = BOOKING_DATE_FORMAT.format(booking.getBookingDate());
+			time= "Unknown";
+		} else {
+			date = BOOKING_DATE_FORMAT.format(booking.getBookingDate());
+			time= BOOKING_TIME_FORMAT.format(booking.getBookingStartTime()) + "-" + BOOKING_TIME_FORMAT.format(booking.getBookingCollectionTime());
+		}
+		bookingTableModel.setValueAt(booking.getBookingID(),this.getSelectedRow(),0);
+		bookingTableModel.setValueAt(booking.getBookingDay(),this.getSelectedRow(),1);
+		bookingTableModel.setValueAt(date, this.getSelectedRow(),2);
+		bookingTableModel.setValueAt(time,this.getSelectedRow(),3);
+		bookingTableModel.setValueAt(booking.getBookingLocation(),this.getSelectedRow(),4);
+		bookingTableModel.setValueAt(booking.getBookingHolder(),this.getSelectedRow(),5);
+		bookingTableModel.setValueAt(booking.getRequiredEquipment().GetEquipmentName(),this.getSelectedRow(),6);
 	}
+
 	public void removeRowFromList() {
 		if (this.getSelectedRow() < bookingTableModel.getRowCount() && this.getSelectedRow() >= 0) {
 			bookingTableModel.removeRow(this.getSelectedRow());
@@ -96,10 +129,27 @@ public class UIBookingSystemJTableBookings extends UIBookingSystemJTable {
 		}
 	}
 
+	public void removeSelectedRowsFromList() {
+		for (int i = 0; i<this.getSelectedRows().length;i++) {
+			bookingTableModel.removeRow(this.getSelectedRows()[i]);
+		}
+	}
 	public void removeAllRowsFromList() {
 		int rowCount = bookingTableModel.getRowCount();
 		for (int i = rowCount-1;i>=0;i--) {
 			bookingTableModel.removeRow(i);
 		}
+	}
+
+	public void removeRow(int row) {
+		bookingTableModel.removeRow(row);
+	}
+
+	public int selectedRowCount() {
+		return super.getRowCount();
+	}
+
+	public int[] getSelectedRows() {
+		return super.getSelectedRows();
 	}
 }

@@ -74,7 +74,7 @@ public class AccountHandler implements ActionListener {
 				if ( currentAccountIDBeingProcessed != -1) {
 					if (handler.getAccountBusinessLayer().getAccountLoggedIn().getUserLevel() >= 3) {
 						Account account = bookingSystemAdminPanel.getAccountFromList(bookingSystemAdminPanel.getIndexOfSelectedRow());
-						if (account.getUserLevel() < 3) {
+						if (account.getUserLevel() < handler.getAccountBusinessLayer().getAccountLoggedIn().getUserLevel()) {
 							log.setAccountIDDeleted(bookingSystemAdminPanel.getIDOfSelectedRow());
 							handler.getAccountManagementBusinessLayer().setCurrentAccountID(bookingSystemAdminPanel.getIDOfSelectedRow());
 							handler.getAccountManagementBusinessLayer().setCurrentIndexOfAccountInList(bookingSystemAdminPanel.getIndexOfSelectedRow());

@@ -4,7 +4,7 @@ import com.bookingsystem.model.Booking;
 import com.bookingsystem.model.tablemodel.BookingTableModel;
 import com.bookingsystem.view.controls.UIBookingSystemJTable;
 import com.bookingsystem.view.controls.UIBookingSystemJTableBookings;
-import com.bookingsystem.view.panelparts.UIBookingSystemControlPanel;
+import com.bookingsystem.view.panelparts.controlpanes.UIBookingSystemBookingControlPanel;
 import com.bookingsystem.view.panelparts.UIBookingSystemViewPanel;
 
 import javax.swing.*;
@@ -16,8 +16,9 @@ import java.util.ArrayList;
 
 public class UIBookingSystemPanel extends JPanel {
 
+
 	private final UIBookingSystemViewPanel bookingSystemViewPanel;
-	private final UIBookingSystemControlPanel bookingSystemControlPanel;
+	private final UIBookingSystemBookingControlPanel bookingSystemControlPanel;
 	private final UIBookingSystemJTable bookingSystemJTable;
 	private BookingTableModel model;
 	public UIBookingSystemPanel() {
@@ -35,13 +36,15 @@ public class UIBookingSystemPanel extends JPanel {
 		gbc.fill = GridBagConstraints.BOTH;
 
 
-		bookingSystemJTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
-			public void valueChanged(ListSelectionEvent e) {
-				UIBookingSystemViewPanel.setTextToField(getCurrentlySelectedRowAsStringArrayList());
-			}
-		});
+//		bookingSystemJTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+//			public void valueChanged(ListSelectionEvent e) {
+//				UIBookingSystemViewPanel.setTextToField(getCurrentlySelectedRowAsStringArrayList());
+//			}
+//		});
 
-		bookingSystemJTable.getColumn("Booking ID").setMaxWidth(80);
+//		bookingSystemJTable.getColumn("Booking ID").setMinWidth(0);
+//		bookingSystemJTable.getColumn("Booking ID").setMaxWidth(0);
+//		bookingSystemJTable.getColumn("Booking ID").setPreferredWidth(0);
 		bookingSystemJTable.getColumn("Day").setMaxWidth(85);
 		bookingSystemJTable.getColumn("Date").setMaxWidth(80);
 
@@ -60,7 +63,7 @@ public class UIBookingSystemPanel extends JPanel {
 		jScrollPane1.setMinimumSize(new Dimension(100, 100));
 		jScrollPane1.setPreferredSize(new Dimension(100, 100));
 		this.add(jScrollPane1, gbc);
-		bookingSystemControlPanel = new UIBookingSystemControlPanel();
+		bookingSystemControlPanel = new UIBookingSystemBookingControlPanel();
 		gbc.gridy = 1;
 		gbc.gridx = 1;
 		gbc.weightx = .4;
@@ -118,6 +121,18 @@ public class UIBookingSystemPanel extends JPanel {
 
 	public UIBookingSystemViewPanel getBookingSystemViewPanel() { return bookingSystemViewPanel; }
 
-	public UIBookingSystemControlPanel getBookingSystemControlPanel() { return bookingSystemControlPanel; }
+	public UIBookingSystemBookingControlPanel getBookingSystemControlPanel() { return bookingSystemControlPanel; }
+
+	public int selectedRowCount() {
+		return bookingSystemJTable.getSelectedRowCount();
+	}
+
+	public void removeRow(int row) {
+		bookingSystemJTable.removeRowFromList();
+	}
+
+	public int[] getSelectedRows() {
+		return bookingSystemJTable.getSelectedRows();
+	}
 
 }

@@ -76,7 +76,8 @@ public class BookingBusinessLayer extends BusinessLayer implements Iterable<Book
                 getDatabaseConnector().createNewCallableStatement("{CALL spInsertBooking(?,?,?,?,?,?,?,?)}");
                 try (CallableStatement callableStatement = getDatabaseConnector().getCallableStatement()) {
                 for(int i = 0;i<bookingList.size();i++) {
-	                    callableStatement.setString(1, bookingList.get(i).getBookingDay());
+                    System.out.println(bookingList.get(i).getBookingDate());
+                    callableStatement.setString(1, bookingList.get(i).getBookingDay());
 	                    callableStatement.setDate(2, convertFromJAVADateToSQLDate(bookingList.get(i).getBookingDate()));
 	                    callableStatement.setTime(3, bookingList.get(i).getBookingStartTimeInSQLFormat());
 	                    callableStatement.setTime(4, bookingList.get(i).getBookingCollectionTimeInSQLFormat());

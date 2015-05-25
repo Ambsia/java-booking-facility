@@ -12,8 +12,6 @@ import java.util.ArrayList;
  * Author: [Alex]
  */
 public class UIBookingSystemAdminViewPanel extends JPanel {
-
-
 	private UIBookingSystemJTableLogs bookingSystemJTableLogs;
 	private JScrollPane jScrollPane;
 	public UIBookingSystemAdminViewPanel() {

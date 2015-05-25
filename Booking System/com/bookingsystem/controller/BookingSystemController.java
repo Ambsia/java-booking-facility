@@ -10,8 +10,8 @@ import com.bookingsystem.model.businessmodel.BookingBusinessLayer;
 import com.bookingsystem.model.businessmodel.LoggerBusinessLayer;
 import com.bookingsystem.view.BookingSystemUILoader;
 import com.bookingsystem.view.UILoginPanel;
-import com.bookingsystem.view.panelparts.UIBookingSystemAdminControlPanel;
-import com.bookingsystem.view.panelparts.UIBookingSystemControlPanel;
+import com.bookingsystem.view.panelparts.controlpanes.UIBookingSystemAdminControlPanel;
+import com.bookingsystem.view.panelparts.controlpanes.UIBookingSystemBookingControlPanel;
 import com.bookingsystem.view.panes.UIBookingSystemAdminPanel;
 import com.bookingsystem.view.panes.UIBookingSystemPanel;
 import com.bookingsystem.view.panes.UIBookingSystemTabbedPane;
@@ -35,7 +35,7 @@ public class BookingSystemController {
         loginPanel.addSubmitListener(loginHandler);
         loginPanel.addClearListener(loginHandler);
         ///
-        UIBookingSystemControlPanel bookingSystemControlPanel = bookingSystemTabbedPane.getBookingSystemPanel().getBookingSystemControlPanel();
+        UIBookingSystemBookingControlPanel bookingSystemControlPanel = bookingSystemTabbedPane.getBookingSystemPanel().getBookingSystemControlPanel();
         bookingSystemControlPanel.addListeners(bookingHandler);
         //
         view.getMenuBarLoader().addImportOptionListener(bookingHandler);

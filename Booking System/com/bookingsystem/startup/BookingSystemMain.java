@@ -27,14 +27,11 @@ final class BookingSystemMain {
 
 	private BookingSystemMain() {
 		this.view = new BookingSystemUILoader();
-
-
 		this.bookingBusinessLayer = new BookingBusinessLayer();
 		this.loggerBusinessLayer = new LoggerBusinessLayer();
 		this.accountBusinessLayer = new AccountBusinessLayer();
 		this.accountManagementBusinessLayer = new AccountManagementBusinessLayer();
 		this.businessLayer = new BusinessLayer();
-
 		this.controller = new BookingSystemController(view,bookingBusinessLayer, accountBusinessLayer, loggerBusinessLayer,accountManagementBusinessLayer);
 	}
 

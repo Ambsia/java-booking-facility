@@ -36,6 +36,8 @@ public abstract class UIBookingSystemDialogPanel extends JPanel implements UIBoo
 	private final UtilDateModel model;
 
 	protected UIBookingSystemDialogPanel() {
+		setLayout(new GridBagLayout());
+
 		txtBookingDay = new JTextField(5);
 		txtBookingLocation = new JTextField(5);
 		txtBookingHolder = new JTextField(5);
@@ -54,8 +56,6 @@ public abstract class UIBookingSystemDialogPanel extends JPanel implements UIBoo
 		jSpinnerCollectionTime.setEditor(dateEditorCollectionTime);
 		JSpinner.DateEditor dateEditorStartTime = new JSpinner.DateEditor(jSpinnerStartTime, "HH:mm");
 		jSpinnerStartTime.setEditor(dateEditorStartTime);
-
-		setLayout(new GridBagLayout());
 		model = new UtilDateModel();
 		Properties p = new Properties();
 		p.put("text.today", "Today");
@@ -98,6 +98,7 @@ public abstract class UIBookingSystemDialogPanel extends JPanel implements UIBoo
 			addControlToPanel(new JLabel(LABELS[i]), 0, i);
 			addControlToPanel(components[i], 1, i);
 		}
+		setVisible(true);
 	}
 
 	protected void addTheseComponentsToPanel(Component[] components, String[] LABELS) {
@@ -105,6 +106,7 @@ public abstract class UIBookingSystemDialogPanel extends JPanel implements UIBoo
 			addControlToPanel(new JLabel(LABELS[i]), 0, i);
 			addControlToPanel(components[i], 1, i);
 		}
+
 	}
 	protected Component[] getComponentsAsList() {
 		return components;

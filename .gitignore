@@ -23,6 +23,7 @@ $RECYCLE.BIN/
 *.properties
 .idea
 *.class
+*.log
 bin
 .settings
 .classpath

@@ -104,8 +104,6 @@ public class UIBookingSystemViewPanel extends JPanel {
 
     public boolean isRowInTable(int identifier) { return bookingSystemJTableBookingProblems.isRowInTable(identifier); }
 
-
-
     public void removeAllProblems() {
         bookingSystemJTableBookingProblems.removeAllRowsFromList();
     }

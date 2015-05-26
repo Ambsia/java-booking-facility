@@ -22,12 +22,19 @@ public abstract class UIBookingSystemJTable extends JTable implements BookingSys
 		return false;
 	}
 
+	public int getIDWithIndex(int index) {
+		System.out.println("index " + index);
+		if (index >= 0) {
+			return this.getValueAt((index), 0) != null ? (int) this.getValueAt((index), 0) : -1;
+		}
+		return  -1;
+	}
+
 	public int getIDOfSelectedRow() {
 		if (this.getSelectedRow() != -1) {
 			return this.getValueAt(this.getSelectedRow(), 0) != null ? (int) this.getValueAt(this.getSelectedRow(), 0) : -1;
-		} else {
-			return -1;
 		}
+		return -1;
 	}
 
 	public ArrayList<String> getSelectedRowAsStringArrayList() {

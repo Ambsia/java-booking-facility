@@ -130,8 +130,9 @@ public class UIBookingSystemJTableBookings extends UIBookingSystemJTable {
 	}
 
 	public void removeSelectedRowsFromList() {
-		for (int i = 0; i<this.getSelectedRows().length;i++) {
-			bookingTableModel.removeRow(this.getSelectedRows()[i]);
+		int[] rows = this.getSelectedRows();
+		for(int i=0;i<rows.length;i++){
+			bookingTableModel.removeRow(rows[i]-i);
 		}
 	}
 	public void removeAllRowsFromList() {
@@ -140,7 +141,6 @@ public class UIBookingSystemJTableBookings extends UIBookingSystemJTable {
 			bookingTableModel.removeRow(i);
 		}
 	}
-
 	public void removeRow(int row) {
 		bookingTableModel.removeRow(row);
 	}

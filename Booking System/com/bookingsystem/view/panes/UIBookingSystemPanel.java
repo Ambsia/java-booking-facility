@@ -19,7 +19,7 @@ public class UIBookingSystemPanel extends JPanel {
 
 	private final UIBookingSystemViewPanel bookingSystemViewPanel;
 	private final UIBookingSystemBookingControlPanel bookingSystemControlPanel;
-	private final UIBookingSystemJTable bookingSystemJTable;
+	private final UIBookingSystemJTableBookings bookingSystemJTable;
 	private BookingTableModel model;
 	public UIBookingSystemPanel() {
 		bookingSystemJTable = new UIBookingSystemJTableBookings(new BookingTableModel());
@@ -130,6 +130,12 @@ public class UIBookingSystemPanel extends JPanel {
 	public void removeRow(int row) {
 		bookingSystemJTable.removeRowFromList();
 	}
+
+	public void removeSelectedRowsFromList() {
+		bookingSystemJTable.removeSelectedRowsFromList();
+	}
+
+	public int getIDWithIndex(int index) { return bookingSystemJTable.getIDWithIndex(index); }
 
 	public int[] getSelectedRows() {
 		return bookingSystemJTable.getSelectedRows();

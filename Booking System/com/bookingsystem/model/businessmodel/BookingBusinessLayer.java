@@ -76,7 +76,6 @@ public class BookingBusinessLayer extends BusinessLayer implements Iterable<Book
                 getDatabaseConnector().createNewCallableStatement("{CALL spInsertBooking(?,?,?,?,?,?,?,?)}");
                 try (CallableStatement callableStatement = getDatabaseConnector().getCallableStatement()) {
                 for(int i = 0;i<bookingList.size();i++) {
-                    System.out.println(bookingList.get(i).getBookingDate());
                     callableStatement.setString(1, bookingList.get(i).getBookingDay());
 	                    callableStatement.setDate(2, convertFromJAVADateToSQLDate(bookingList.get(i).getBookingDate()));
 	                    callableStatement.setTime(3, bookingList.get(i).getBookingStartTimeInSQLFormat());
@@ -103,7 +102,6 @@ public class BookingBusinessLayer extends BusinessLayer implements Iterable<Book
         if (getDatabaseConnector().isConnected()) {
             if (!getDatabaseConnector().isConnectionClosed()) {
                 getDatabaseConnector().createNewCallableStatement("{CALL spFindBooking(?,?,?,?,?,?,?)}");
-                System.out.println(bookingInformationKnown.toString());
                 try (CallableStatement callableStatement = getDatabaseConnector().getCallableStatement()) {
                     ArrayList<Booking> foundBookings = new ArrayList<>();
                     callableStatement.setString(1, bookingInformationKnown.getBookingDay());

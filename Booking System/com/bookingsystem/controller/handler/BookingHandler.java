@@ -10,6 +10,8 @@ import com.bookingsystem.view.panes.UIBookingSystemPanel;
 
 import org.apache.commons.collections.IteratorUtils;
 import org.apache.poi.openxml4j.opc.OPCPackage;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -22,6 +24,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.PushbackInputStream;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -135,6 +139,28 @@ public final class BookingHandler implements ActionListener {
                     }
                     handler.getLoggerBusinessLayer().insertLog(log);
                     break;
+                case "Export":
+                	FileOutputStream fos;
+				try {
+					fos = new FileOutputStream("export.xlsx");
+
+                XSSFWorkbook workbook = new XSSFWorkbook();
+                XSSFSheet sheet = workbook.createSheet("Exported Bookings");
+                int i = 0;
+                for (Object object : IteratorUtils.toList(handler.getBookingBusinessLayer().iterator())) {   
+                	Row row = sheet.createRow(i++);
+                	Cell cell1 = row.createCell(i);
+                	cell1.setCellValue(((Booking)object).getBookingDay());
+                   
+                }
+                workbook.write(fos);
+                fos.flush();
+                fos.close();
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+                break;
                 case "Search":
                     if (bookingSystemFindPanel.showDialog() == 0) {
                         bookingSystemShowBookingsFound.clearBookingsFromFoundList();
@@ -145,9 +171,6 @@ public final class BookingHandler implements ActionListener {
                         bookingSystemShowBookingsFound.showDialog();
                     }
                     handler.getLoggerBusinessLayer().insertLog(log);
-                    break;
-                case "Export":
-                    System.out.println("export clicked");
                     break;
                 case "Add":
                     if (bookingSystemAddPanel.showDialog() == 0) {
@@ -281,7 +304,7 @@ public final class BookingHandler implements ActionListener {
                     if(bookingSystemPanel.selectedRowCount() > 0) { //handles multiple removals - cahnge 1 to 0 for a
                         if (JOptionPane.showOptionDialog(null, "Are you sure you wish to complete the selected " + bookingSystemPanel.getSelectedRows().length + " bookings?", "Remove Booking",
                                 JOptionPane.PLAIN_MESSAGE, JOptionPane.PLAIN_MESSAGE, null,
-                                new String[]{"Remove", "Cancel"}, "Add") == 0) {
+                                new String[]{"Complete", "Cancel"}, "Add") == 0) {
                             for (int rowID : bookingSystemPanel.getSelectedRows()) {
                                 this.bookingIDCurrentlyBeingProcessed = bookingSystemPanel.getIDWithIndex(rowID);
                                 handler.getBookingBusinessLayer().setCurrentIndexOfBookingInList(bookingSystemPanel.getIndexOfSelectedRow());

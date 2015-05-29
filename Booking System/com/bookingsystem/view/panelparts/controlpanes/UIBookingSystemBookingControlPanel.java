@@ -18,7 +18,7 @@ public class UIBookingSystemBookingControlPanel extends UIBookingSystemControlPa
     public UIBookingSystemBookingControlPanel() {
         super();
         setLayout(new GridBagLayout());
-        setButtonNames(new String[] {"Load","Search","Complete","Add","Edit", "Remove","Archive", "Today's", "Tomorrows"});
+        setButtonNames(new String[] {"Load","Search","Complete","Add","Edit", "Remove","Export", "Today's", "Tomorrows"});
         setButtonDimension(new Dimension(100,25));
         createControlPanel();
 

@@ -42,9 +42,9 @@ public class UIBookingSystemPanel extends JPanel {
 //			}
 //		});
 
-		bookingSystemJTable.getColumn("Booking ID").setMinWidth(0);
-		bookingSystemJTable.getColumn("Booking ID").setMaxWidth(0);
-		bookingSystemJTable.getColumn("Booking ID").setPreferredWidth(0);
+		bookingSystemJTable.getColumn("Booking ID").setMinWidth(50);
+		bookingSystemJTable.getColumn("Booking ID").setMaxWidth(50);
+		bookingSystemJTable.getColumn("Booking ID").setPreferredWidth(50);
 		bookingSystemJTable.getColumn("Day").setMaxWidth(85);
 		bookingSystemJTable.getColumn("Date").setMaxWidth(80);
 

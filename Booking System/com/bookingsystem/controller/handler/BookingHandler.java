@@ -104,8 +104,11 @@ public final class BookingHandler implements ActionListener {
                                                         row.getCell((short) 3).toString(),
                                                         row.getCell((short) 4).toString(),
                                                         new Equipment(row.getCell((short) 5).toString()));
-                                               bookingList.add(importedBooking);//not the correct id, will only add the problem bookings to the list if the id is correct...need to retrieve the id or add bookings different when importing
-                                            
+                                                if (importedBooking.isBeforeToday() && !BOOKING_DATE_FORMAT.format(importedBooking.getBookingDate()).equals("25.12.15")) {
+                                                    importedBooking.setBookingCompleted(true); //booking is before today's date therefore doesn't need to be shown
+                                                } else {
+                                                    bookingList.add(importedBooking);//not the correct id, will only add the problem bookings to the list if the id is correct...need to retrieve the id or add bookings different when importing
+                                                }
                                             }
                                         }
                                     }
@@ -113,13 +116,8 @@ public final class BookingHandler implements ActionListener {
                                     bookingSystemPanel.addBookingsToList(bookingList);                              
                                     for (Booking b : bookingList) { 
                                     	checkBookingDateTimeForErrors(b);
-                                   
                                     }
-                                    file = null;
-                                    jFileChooser = null;
                                     bookingList.clear();
-                                    bookingList = null;
-                                    sheet = null;
                                     generateBadBookingTable();
                                 }
                              
@@ -128,7 +126,6 @@ public final class BookingHandler implements ActionListener {
                                 break;
                             }
                         } else {
-                        	jFileChooser = null;
                             break;
                         }
                     } catch (Exception e) {
@@ -156,13 +153,15 @@ public final class BookingHandler implements ActionListener {
                     if (bookingSystemAddPanel.showDialog() == 0) {
                         Booking newBooking = convertStringArrayToBooking(bookingSystemAddPanel.getBookingStringArray());
                         if (newBooking.isValid()) {
-                            handler.getBookingBusinessLayer().insertBooking(newBooking);
-                            //checkBookingDateTimeForErrors(newBooking);
-                            
-                            bookingSystemPanel.addBookingToList(newBooking);
-                            checkBookingDateTimeForErrors(newBooking);
-                            generateBadBookingTable();
-                            log.setBookingIDInserted(newBooking.getBookingID());
+                            if(!newBooking.isBeforeToday()) {
+                                handler.getBookingBusinessLayer().insertBooking(newBooking);
+                                bookingSystemPanel.addBookingToList(newBooking);
+                                checkBookingDateTimeForErrors(newBooking);
+                                generateBadBookingTable();
+                                log.setBookingIDInserted(newBooking.getBookingID());
+                            } else {
+                                MessageBox.errorMessageBox("The booking entered has a date before today's.");
+                            }
                         } else {
                             MessageBox.errorMessageBox("Please enter all of the required details for booking");
                         }
@@ -170,19 +169,18 @@ public final class BookingHandler implements ActionListener {
                     handler.getLoggerBusinessLayer().insertLog(log);
                     break;
                 case "Remove":
-                    if(bookingSystemPanel.selectedRowCount() > 1) { //handles multiple removals
+                    if(bookingSystemPanel.selectedRowCount() > 1) { //handles multiple removals - cahnge 1 to 0 for a
                         if(JOptionPane.showOptionDialog(null, "Are you sure you wish to remove the selected " + bookingSystemPanel.getSelectedRows().length +" bookings?", "Remove Booking",
                                 JOptionPane.PLAIN_MESSAGE, JOptionPane.PLAIN_MESSAGE, null,
                                 new String[]{"Remove", "Cancel"}, "Add") == 0) {
                             for (int rowID : bookingSystemPanel.getSelectedRows()) {
                                 this.bookingIDCurrentlyBeingProcessed = bookingSystemPanel.getIDWithIndex(rowID);
                                 if (this.bookingIDCurrentlyBeingProcessed >= 0) {
-                                    handler.getBookingBusinessLayer().setCurrentIndexOfBookingInList(bookingSystemPanel.getIndexOfSelectedRow());
+                                //  handler.getBookingBusinessLayer().setCurrentIndexOfBookingInList(bookingSystemPanel.getIndexOfSelectedRow()); not needed really..
                                     handler.getBookingBusinessLayer().removeBooking(this.bookingIDCurrentlyBeingProcessed);
                                     if (listOfBadBookingIDs.contains(this.bookingIDCurrentlyBeingProcessed)) {
                                         listOfBadBookingIDs.remove(listOfBadBookingIDs.indexOf(this.bookingIDCurrentlyBeingProcessed));
                                     }
-                                    
                                     log.setBookingIDDeleted(this.bookingIDCurrentlyBeingProcessed);
                                     handler.getLoggerBusinessLayer().insertLog(log);
                                 }
@@ -217,12 +215,14 @@ public final class BookingHandler implements ActionListener {
                         if (bookingSystemEditPanel.showDialog() == 0) {
                             Booking newBooking = convertStringArrayToBooking(bookingSystemEditPanel.getBookingStringArray());
                                if (newBooking.isValid()) {
-                                   checkBookingDateTimeForErrors(newBooking);
-                                   generateBadBookingTable();
-                                   handler.getBookingBusinessLayer().setCurrentIndexOfBookingInList(bookingSystemPanel.getIndexOfSelectedRow());
-                                   handler.getBookingBusinessLayer().modifyBooking(this.bookingIDCurrentlyBeingProcessed, newBooking);
-                                   bookingSystemPanel.replaceBookingInList(newBooking);
-                                   log.setBookingIDEdited(this.bookingIDCurrentlyBeingProcessed);
+                                   if(!newBooking.isBeforeToday()) {
+                                       checkBookingDateTimeForErrors(newBooking);
+                                       generateBadBookingTable();
+                                       handler.getBookingBusinessLayer().setCurrentIndexOfBookingInList(bookingSystemPanel.getIndexOfSelectedRow());
+                                       handler.getBookingBusinessLayer().modifyBooking(this.bookingIDCurrentlyBeingProcessed, newBooking);
+                                       bookingSystemPanel.replaceBookingInList(newBooking);
+                                       log.setBookingIDEdited(this.bookingIDCurrentlyBeingProcessed);
+                                   }
                             } else {
                                 MessageBox.errorMessageBox("Please enter all of the required details for booking");
                             }
@@ -237,8 +237,13 @@ public final class BookingHandler implements ActionListener {
                     bookingSystemPanel.removeAllBookings();
                     bookingSystemPanel.getBookingSystemViewPanel().removeAllProblems();
                     for (Object object : IteratorUtils.toList(handler.getBookingBusinessLayer().iterator())) {
-                        checkBookingDateTimeForErrors((Booking) object);
-                        bookingSystemPanel.addBookingToList((Booking) object);
+                        if(!((Booking) object).getBookingCompleted()) {
+                            checkBookingDateTimeForErrors((Booking) object);
+                            bookingSystemPanel.addBookingToList((Booking) object);
+
+                        } else {
+                            //add to archived bookings
+                        }
                     }
                     generateBadBookingTable();
                     handler.getLoggerBusinessLayer().insertLog(log);
@@ -273,7 +278,21 @@ public final class BookingHandler implements ActionListener {
                     handler.getLoggerBusinessLayer().insertLog(log);
                     break;
                 case "Complete":
-                    System.out.println("control handler found");
+                    if(bookingSystemPanel.selectedRowCount() > 0) { //handles multiple removals - cahnge 1 to 0 for a
+                        if (JOptionPane.showOptionDialog(null, "Are you sure you wish to complete the selected " + bookingSystemPanel.getSelectedRows().length + " bookings?", "Remove Booking",
+                                JOptionPane.PLAIN_MESSAGE, JOptionPane.PLAIN_MESSAGE, null,
+                                new String[]{"Remove", "Cancel"}, "Add") == 0) {
+                            for (int rowID : bookingSystemPanel.getSelectedRows()) {
+                                this.bookingIDCurrentlyBeingProcessed = bookingSystemPanel.getIDWithIndex(rowID);
+                                handler.getBookingBusinessLayer().setCurrentIndexOfBookingInList(bookingSystemPanel.getIndexOfSelectedRow());
+                                handler.getBookingBusinessLayer().completeBooking(this.bookingIDCurrentlyBeingProcessed);
+                                log.setBookingIDEdited(this.bookingIDCurrentlyBeingProcessed);
+                                handler.getLoggerBusinessLayer().insertLog(log);
+                            }
+                            bookingSystemPanel.removeSelectedRowsFromList();
+                        }
+                        generateBadBookingTable();
+                    }
                     break;
                 default:
                     System.out.println("control handler not found");
@@ -395,10 +414,12 @@ public final class BookingHandler implements ActionListener {
     private void generateBadBookingTable() {
         bookingSystemPanel.getBookingSystemViewPanel().removeAllProblems();
         for (Object object : IteratorUtils.toList(handler.getBookingBusinessLayer().iterator())) {
-            for (int i = 0; i < listOfBadBookingIDs.size(); i++) {
-                if (((Booking) object).getBookingID() == listOfBadBookingIDs.get(i)
-                        && !bookingSystemPanel.getBookingSystemViewPanel().isRowInTable(((Booking) object).getBookingID())) { //checks if the booking id is already in the table of problems
-                    bookingSystemPanel.getBookingSystemViewPanel().addProblemToList(((Booking) object));
+            if(!((Booking) object).getBookingCompleted()) {
+                for (int i = 0; i < listOfBadBookingIDs.size(); i++) {
+                    if (((Booking) object).getBookingID() == listOfBadBookingIDs.get(i)
+                            && !bookingSystemPanel.getBookingSystemViewPanel().isRowInTable(((Booking) object).getBookingID())) { //checks if the booking id is already in the table of problems
+                        bookingSystemPanel.getBookingSystemViewPanel().addProblemToList(((Booking) object));
+                    }
                 }
             }
         }

@@ -1,7 +1,11 @@
 package  com.bookingsystem.model;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
 
 public final class Booking  {
@@ -14,9 +18,13 @@ public final class Booking  {
 	
 	private Equipment requiredEquipment;
 	private String bookingHolder;
-	
+	private static final DateFormat BOOKING_TIME_FORMAT = new SimpleDateFormat("HH:mm", Locale.ENGLISH);
+	private static final DateFormat BOOKING_DATE_FORMAT = new SimpleDateFormat("dd.MM.yy", Locale.ENGLISH);
+
 	Log bookingLogger;
 	private Equipment bookingEquipment;
+
+	private boolean bookingCompleted;
 
 	public int getBookingID() {
 		return bookingID;
@@ -78,6 +86,10 @@ public final class Booking  {
 		return bookingHolder;
 	}
 
+	public boolean getBookingCompleted() { return bookingCompleted; }
+
+	public void setBookingCompleted(boolean bookingCompleted) { this.bookingCompleted = bookingCompleted; }
+
 	public void setBookingHolder(String bookingHolder) {
 		this.bookingHolder = bookingHolder;
 	}
@@ -98,8 +110,7 @@ public final class Booking  {
 
 	public Booking(int bookingID, String bookingDay, Date bookingDate, Date bookingStartTime,
 				Date bookingCollectionTime, String bookingLocation, String bookingHolder,
-				Equipment requiredEquipment
-				   ) {
+				Equipment requiredEquipment) {
 		this.bookingID = bookingID;
 		this.bookingDay = bookingDay;
 		this.bookingDate = bookingDate;
@@ -108,6 +119,7 @@ public final class Booking  {
 		this.bookingLocation = bookingLocation;
 		this.bookingHolder = bookingHolder;
 		this.requiredEquipment = requiredEquipment; // this list will be passed when the booking is made
+		this.bookingCompleted = false;
 	}
 
 	
@@ -129,11 +141,31 @@ public final class Booking  {
 				", bookingCollectionTime='" + bookingCollectionTime + '\'' +
 				", bookingLocation='" + bookingLocation + '\'' +
 				", bookingHolder='" + bookingHolder + '\'' +
-				", requiredEquipment=" + requiredEquipment +
+				", requiredEquipment=" + requiredEquipment + '\'' +
+				", bookingCompleted=" + bookingCompleted +
 				'}';
 	}
 
 	public void setBookingEquipment(Equipment bookingEquipment) {
 		this.requiredEquipment = bookingEquipment;
 	}
+
+	public boolean isBeforeToday() {
+		Calendar calendar = Calendar.getInstance();
+		Date rightNow = calendar.getTime();
+		if (bookingDate != null) {
+			if (BOOKING_DATE_FORMAT.format(bookingDate).equals(BOOKING_DATE_FORMAT.format(rightNow))) {
+				try {
+					return BOOKING_TIME_FORMAT.parse(BOOKING_TIME_FORMAT.format(rightNow)).after(BOOKING_TIME_FORMAT.parse(BOOKING_TIME_FORMAT.format(bookingStartTime)));
+				} catch (ParseException e) {
+					return false;
+				}
+			} else {
+				return bookingDate.before(new Date());
+			}
+		} else {
+			return false;
+		}
+	}
+
 }

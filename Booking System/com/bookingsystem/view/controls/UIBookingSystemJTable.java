@@ -23,7 +23,6 @@ public abstract class UIBookingSystemJTable extends JTable implements BookingSys
 	}
 
 	public int getIDWithIndex(int index) {
-		System.out.println("index " + index);
 		if (index >= 0) {
 			return this.getValueAt((index), 0) != null ? (int) this.getValueAt((index), 0) : -1;
 		}

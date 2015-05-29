@@ -18,10 +18,12 @@ public class BookingBusinessLayer extends BusinessLayer implements Iterable<Book
 
 
     private final ArrayList<Booking> bookings;
+    private final ArrayList<Booking> archivedBookings;
     private int currentIndexOfBookingInList;
 
     public BookingBusinessLayer() {
         bookings = new ArrayList<>();
+        archivedBookings = new ArrayList<>();
         currentIndexOfBookingInList = -1;
     }
 
@@ -33,7 +35,9 @@ public class BookingBusinessLayer extends BusinessLayer implements Iterable<Book
                 getDatabaseConnector().createNewCallableStatement("{CALL spGetAllBookings}");
                 try (ResultSet rs = getDatabaseConnector().executeQuery()) {
                     while (rs.next()) {
-                        bookings.add(new Booking(rs.getInt(1), rs.getString(2).trim(), rs.getDate(3), rs.getTime(4), rs.getTime(5), rs.getString(6), rs.getString(7).trim(), new Equipment(rs.getString(8))));
+                        Booking booking;
+                        bookings.add(booking = new Booking(rs.getInt(1), rs.getString(2).trim(), rs.getDate(3), rs.getTime(4), rs.getTime(5), rs.getString(6), rs.getString(7).trim(), new Equipment(rs.getString(8))));
+                        booking.setBookingCompleted(rs.getBoolean(9));
                     }
                 } catch (SQLException e) {
                     MessageBox.errorMessageBox("There was an issue while we were trying to insert that booking into the database!\n" + "Does this make any sense to you.." + e.toString() + "?");
@@ -47,7 +51,7 @@ public class BookingBusinessLayer extends BusinessLayer implements Iterable<Book
         getDatabaseConnector().openConnection();
         if (getDatabaseConnector().isConnected()) {
             if (!getDatabaseConnector().isConnectionClosed()) {
-                getDatabaseConnector().createNewCallableStatement("{CALL spInsertBooking(?,?,?,?,?,?,?,?)}");
+                getDatabaseConnector().createNewCallableStatement("{CALL spInsertBooking(?,?,?,?,?,?,?,?,?)}");
                 try (CallableStatement callableStatement = getDatabaseConnector().getCallableStatement()) {
                     callableStatement.setString(1, booking.getBookingDay());
                     callableStatement.setDate(2, convertFromJAVADateToSQLDate(booking.getBookingDate()));
@@ -56,9 +60,10 @@ public class BookingBusinessLayer extends BusinessLayer implements Iterable<Book
                     callableStatement.setString(5, booking.getBookingLocation());
                     callableStatement.setString(6, booking.getBookingHolder());
                     callableStatement.setString(7, booking.getRequiredEquipment().GetEquipmentName());
-                    callableStatement.registerOutParameter(8, Types.INTEGER);
+                    callableStatement.setBoolean(8,booking.getBookingCompleted());
+                    callableStatement.registerOutParameter(9, Types.INTEGER);
                     getDatabaseConnector().execute();
-                    booking.setBookingID(callableStatement.getInt(8));
+                    booking.setBookingID(callableStatement.getInt(9));
                     this.bookings.add(booking);
 
                 } catch (SQLException e) {
@@ -73,7 +78,7 @@ public class BookingBusinessLayer extends BusinessLayer implements Iterable<Book
         getDatabaseConnector().openConnection();
         if (getDatabaseConnector().isConnected()) {
             if (!getDatabaseConnector().isConnectionClosed()) {
-                getDatabaseConnector().createNewCallableStatement("{CALL spInsertBooking(?,?,?,?,?,?,?,?)}");
+                getDatabaseConnector().createNewCallableStatement("{CALL spInsertBooking(?,?,?,?,?,?,?,?,?)}");
                 try (CallableStatement callableStatement = getDatabaseConnector().getCallableStatement()) {
                 for(int i = 0;i<bookingList.size();i++) {
                     callableStatement.setString(1, bookingList.get(i).getBookingDay());
@@ -83,9 +88,10 @@ public class BookingBusinessLayer extends BusinessLayer implements Iterable<Book
 	                    callableStatement.setString(5, bookingList.get(i).getBookingLocation());
 	                    callableStatement.setString(6, bookingList.get(i).getBookingHolder());
 	                    callableStatement.setString(7, bookingList.get(i).getRequiredEquipment().GetEquipmentName());
-	                    callableStatement.registerOutParameter(8, Types.INTEGER);
+                        callableStatement.setBoolean(8,bookingList.get(i).getBookingCompleted());
+                        callableStatement.registerOutParameter(9, Types.INTEGER);
 	                    getDatabaseConnector().execute();
-	                    bookingList.get(i).setBookingID(callableStatement.getInt(8));
+	                    bookingList.get(i).setBookingID(callableStatement.getInt(9));
 	                    this.bookings.add(bookingList.get(i));
 	                
                 }
@@ -133,6 +139,7 @@ public class BookingBusinessLayer extends BusinessLayer implements Iterable<Book
             if (!getDatabaseConnector().isConnectionClosed()) {
                 getDatabaseConnector().createNewCallableStatement("{CALL spModifyBooking(?,?,?,?,?,?,?,?)}");
                 try (CallableStatement callableStatement = getDatabaseConnector().getCallableStatement()) {
+                    correctCurrentIndexWithID(bookingID);
                     callableStatement.setInt(1, bookingID);
                     callableStatement.setString(2, newBooking.getBookingDay());
                     callableStatement.setDate(3, convertFromJAVADateToSQLDate(newBooking.getBookingDate()));
@@ -151,6 +158,32 @@ public class BookingBusinessLayer extends BusinessLayer implements Iterable<Book
         }
     }
 
+    public void completeBooking(int bookingIDCurrentlyBeingProcessed) {
+        getDatabaseConnector().openConnection();
+        if(getDatabaseConnector().isConnected()) {
+            if(!getDatabaseConnector().isConnectionClosed()) {
+                getDatabaseConnector().createNewCallableStatement("{CALL spCompleteBooking(?)}");
+                try (CallableStatement callableStatement = getDatabaseConnector().getCallableStatement()) {
+                    correctCurrentIndexWithID(bookingIDCurrentlyBeingProcessed);
+                    callableStatement.setInt(1, bookings.get(this.currentIndexOfBookingInList).getBookingID());
+                    getDatabaseConnector().execute();
+                    //might be best to place completed booking into archive table here
+                    removeBookingFromList();
+                } catch (SQLException e) {
+                    MessageBox.errorMessageBox("There was an issue while we were trying to complete that booking in the database!\n" + "Does this make any sense to you.." + e.toString() + "?");
+                }
+            }
+        }
+    }
+
+    private void correctCurrentIndexWithID(int idToFind) {
+        for (int i = 0; i<bookings.size();i++) {
+            if (bookings.get(i).getBookingID() == idToFind) {
+                this.currentIndexOfBookingInList = i;
+            }
+        }
+    }
+
     public void removeBooking(int bookingID) {
         getDatabaseConnector().openConnection();
         if (getDatabaseConnector().isConnected()) {
@@ -159,6 +192,7 @@ public class BookingBusinessLayer extends BusinessLayer implements Iterable<Book
                 try {
                     getDatabaseConnector().getCallableStatement().setInt(1, bookingID);
                     getDatabaseConnector().execute();
+                    correctCurrentIndexWithID(bookingID);
                     removeBookingFromList();
                 } catch (SQLException e) {
                     MessageBox.errorMessageBox("There was an issue while we were trying to remove that booking from the database!\n" + "Does this make any sense to you.." + e.toString() + "?");

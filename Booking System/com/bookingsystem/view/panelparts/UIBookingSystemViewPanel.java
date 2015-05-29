@@ -19,10 +19,13 @@ public class UIBookingSystemViewPanel extends JPanel {
     private static ArrayList<JLabel> listOfViewBoxes;
     private UIBookingSystemJTableBookingProblems bookingSystemJTableBookingProblems;
     private JScrollPane jScrollPane;
+    private JLabel jLabel;
 
     public UIBookingSystemViewPanel() {
         setLayout(new GridBagLayout());
 
+        jLabel = new JLabel("Booking Problems (Unknown dates, conflicts..)");
+        addControlToPanel(jLabel,0);
         bookingSystemJTableBookingProblems = new UIBookingSystemJTableBookingProblems(new BookingProblemModel());
         setLayout(new GridBagLayout());
         jScrollPane = new JScrollPane(bookingSystemJTableBookingProblems);
@@ -32,7 +35,7 @@ public class UIBookingSystemViewPanel extends JPanel {
         bookingSystemJTableBookingProblems.getColumn("Location").setPreferredWidth(60);
         bookingSystemJTableBookingProblems.getColumn("Equipment").setPreferredWidth(60);
         jScrollPane.setPreferredSize(new Dimension(300,200));
-        addControlToPanel(jScrollPane, 0);
+        addControlToPanel(jScrollPane, 1);
 //        listOfViewBoxes = new ArrayList<>();
 //
 //        for(int i = 0; i <= 6;i++) {

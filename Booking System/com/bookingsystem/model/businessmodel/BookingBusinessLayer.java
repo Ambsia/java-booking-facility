@@ -32,12 +32,18 @@ public class BookingBusinessLayer extends BusinessLayer implements Iterable<Book
         if (getDatabaseConnector().isConnected()) {
             if (!getDatabaseConnector().isConnectionClosed()) {
                 bookings.clear();
+                archivedBookings.clear();
                 getDatabaseConnector().createNewCallableStatement("{CALL spGetAllBookings}");
                 try (ResultSet rs = getDatabaseConnector().executeQuery()) {
                     while (rs.next()) {
                         Booking booking;
-                        bookings.add(booking = new Booking(rs.getInt(1), rs.getString(2).trim(), rs.getDate(3), rs.getTime(4), rs.getTime(5), rs.getString(6), rs.getString(7).trim(), new Equipment(rs.getString(8))));
+                        booking = new Booking(rs.getInt(1), rs.getString(2).trim(), rs.getDate(3), rs.getTime(4), rs.getTime(5), rs.getString(6), rs.getString(7).trim(), new Equipment(rs.getString(8)));
                         booking.setBookingCompleted(rs.getBoolean(9));
+                        if(booking.isBeforeToday() || booking.getBookingCompleted()) {
+                            this.archivedBookings.add(booking);
+                        } else {
+                            this.bookings.add(booking);
+                        }
                     }
                 } catch (SQLException e) {
                     MessageBox.errorMessageBox("There was an issue while we were trying to insert that booking into the database!\n" + "Does this make any sense to you.." + e.toString() + "?");
@@ -64,8 +70,11 @@ public class BookingBusinessLayer extends BusinessLayer implements Iterable<Book
                     callableStatement.registerOutParameter(9, Types.INTEGER);
                     getDatabaseConnector().execute();
                     booking.setBookingID(callableStatement.getInt(9));
-                    this.bookings.add(booking);
-
+                    if(booking.isBeforeToday()) {
+                        this.archivedBookings.add(booking);
+                    } else {
+                        this.bookings.add(booking);
+                    }
                 } catch (SQLException e) {
                     MessageBox.errorMessageBox("There was an issue while we were trying to insert that booking into the database!\n" + "Does this make any sense to you.." + e.toString() + "?");
                 }
@@ -92,7 +101,11 @@ public class BookingBusinessLayer extends BusinessLayer implements Iterable<Book
                         callableStatement.registerOutParameter(9, Types.INTEGER);
 	                    getDatabaseConnector().execute();
 	                    bookingList.get(i).setBookingID(callableStatement.getInt(9));
-	                    this.bookings.add(bookingList.get(i));
+                    if(bookingList.get(i).isBeforeToday()) {
+                        this.archivedBookings.add(bookingList.get(i));
+                    } else {
+                        this.bookings.add(bookingList.get(i));
+                    }
 	                
                 }
                 } catch (SQLException e) {
@@ -167,7 +180,7 @@ public class BookingBusinessLayer extends BusinessLayer implements Iterable<Book
                     correctCurrentIndexWithID(bookingIDCurrentlyBeingProcessed);
                     callableStatement.setInt(1, bookings.get(this.currentIndexOfBookingInList).getBookingID());
                     getDatabaseConnector().execute();
-                    //might be best to place completed booking into archive table here
+                    archivedBookings.add(this.bookings.get(this.currentIndexOfBookingInList));
                     removeBookingFromList();
                 } catch (SQLException e) {
                     MessageBox.errorMessageBox("There was an issue while we were trying to complete that booking in the database!\n" + "Does this make any sense to you.." + e.toString() + "?");
@@ -226,11 +239,13 @@ public class BookingBusinessLayer extends BusinessLayer implements Iterable<Book
         }
     }
 
-    @Override
     public Iterator<Booking> iterator() {
         return bookings.iterator();
     }
 
+    public ArrayList<Booking> getArchivedBookings() {
+        return this.archivedBookings;
+    }
 
     Date getDateSqlStatement(Booking bookingInformationKnown) {
 

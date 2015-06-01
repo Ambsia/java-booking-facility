@@ -1,9 +1,6 @@
 package com.bookingsystem.controller.handler;
 
-import com.bookingsystem.model.businessmodel.AccountBusinessLayer;
-import com.bookingsystem.model.businessmodel.AccountManagementBusinessLayer;
-import com.bookingsystem.model.businessmodel.BookingBusinessLayer;
-import com.bookingsystem.model.businessmodel.LoggerBusinessLayer;
+import com.bookingsystem.model.businessmodel.*;
 import com.bookingsystem.view.BookingSystemUILoader;
 
 import java.awt.event.ActionListener;
@@ -17,14 +14,16 @@ public class Handler {
     private  AccountManagementBusinessLayer accountManagementBusinessLayer;
     private BookingBusinessLayer bookingBusinessLayer;
     private  LoggerBusinessLayer loggerBusinessLayer;
+    private ArchiveBusinessLayer archiveBusinessLayer;
     private BookingSystemUILoader view;
 
     public Handler(AccountBusinessLayer accountBusinessLayer, AccountManagementBusinessLayer accountManagementBusinessLayer,
-                   BookingBusinessLayer bookingBusinessLayer, LoggerBusinessLayer loggerBusinessLayer, BookingSystemUILoader view) {
+                   BookingBusinessLayer bookingBusinessLayer, LoggerBusinessLayer loggerBusinessLayer, BookingSystemUILoader view, ArchiveBusinessLayer archiveBusinessLayer) {
         this.accountBusinessLayer = accountBusinessLayer;
         this.accountManagementBusinessLayer = accountManagementBusinessLayer;
         this.bookingBusinessLayer = bookingBusinessLayer;
         this.loggerBusinessLayer = loggerBusinessLayer;
+        this.archiveBusinessLayer = archiveBusinessLayer;
         this.view = view;
     }
 
@@ -47,6 +46,8 @@ public class Handler {
     public LoggerBusinessLayer getLoggerBusinessLayer() {
         return loggerBusinessLayer;
     }
+
+    public ArchiveBusinessLayer getArchiveBusinessLayer() { return  archiveBusinessLayer; }
 
 
 

@@ -6,10 +6,9 @@ import com.bookingsystem.model.Equipment;
 import com.bookingsystem.model.Log;
 import com.bookingsystem.view.dialogpanels.bookingdialog.*;
 import com.bookingsystem.view.panelparts.controlpanes.UIBookingSystemBookingControlPanel;
-import com.bookingsystem.view.panes.UIBookingSystemPanel;
+import com.bookingsystem.view.panes.UIBookingSystemBookingPanel;
 
 import org.apache.commons.collections.IteratorUtils;
-import org.apache.poi.openxml4j.opc.OPCPackage;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
@@ -18,15 +17,11 @@ import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import javax.swing.*;
-import javax.swing.text.html.HTMLDocument;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.PushbackInputStream;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -45,7 +40,7 @@ public final class BookingHandler implements ActionListener {
     private final UIBookingSystemEditPanel bookingSystemEditPanel;
     private final UIBookingSystemRemovePanel bookingSystemRemovePanel;
     private final UIBookingSystemShowBookingsFound bookingSystemShowBookingsFound;
-    private final UIBookingSystemPanel bookingSystemPanel;
+    private final UIBookingSystemBookingPanel bookingSystemPanel;
     private final List<Integer> listOfBadBookingIDs;
     private final Handler handler;
     private int bookingIDCurrentlyBeingProcessed;
@@ -110,21 +105,20 @@ public final class BookingHandler implements ActionListener {
                                                         new Equipment(row.getCell((short) 5).toString()));
                                                 if (importedBooking.isBeforeToday() && !BOOKING_DATE_FORMAT.format(importedBooking.getBookingDate()).equals("25.12.15")) {
                                                     importedBooking.setBookingCompleted(true); //booking is before today's date therefore doesn't need to be shown
-                                                } else {
-                                                    bookingList.add(importedBooking);//not the correct id, will only add the problem bookings to the list if the id is correct...need to retrieve the id or add bookings different when importing
                                                 }
+                                                bookingList.add(importedBooking);//not the correct id, will only add the problem bookings to the list if the id is correct...need to retrieve the id or add bookings different when importing
                                             }
                                         }
                                     }
                                     handler.getBookingBusinessLayer().insertBookings(bookingList);
-                                    bookingSystemPanel.addBookingsToList(bookingList);                              
-                                    for (Booking b : bookingList) { 
-                                    	checkBookingDateTimeForErrors(b);
+                                    bookingSystemPanel.addBookingsToList(bookingList);
+                                    for (Booking b : bookingList) {
+                                        checkBookingDateTimeForErrors(b);
                                     }
                                     bookingList.clear();
                                     generateBadBookingTable();
                                 }
-                             
+
                             } else {
                                 MessageBox.errorMessageBox(".xlsx spreadsheets are only accepted.");
                                 break;
@@ -140,26 +134,54 @@ public final class BookingHandler implements ActionListener {
                     handler.getLoggerBusinessLayer().insertLog(log);
                     break;
                 case "Export":
-                	FileOutputStream fos;
-				try {
-					fos = new FileOutputStream("export.xlsx");
+                    FileOutputStream fos;
+                    XSSFWorkbook workbook;
+                    XSSFSheet sheet;
+                    Row row;
+                    try {
+                        int dialogResult = JOptionPane.showOptionDialog(null, "Would you like to generate a spreadsheet for all bookings or selected bookings?", "Generate Spreadsheet",
+                                JOptionPane.PLAIN_MESSAGE, JOptionPane.PLAIN_MESSAGE, null,
+                                new String[]{"All", "Selected"}, "All");
+                        if (dialogResult == 0 || dialogResult == 1) {
+                            JFileChooser jFileChooser1 = new JFileChooser();
+                            if (jFileChooser1.showSaveDialog(bookingSystemPanel) == JFileChooser.APPROVE_OPTION) {
 
-                XSSFWorkbook workbook = new XSSFWorkbook();
-                XSSFSheet sheet = workbook.createSheet("Exported Bookings");
-                int i = 0;
-                for (Object object : IteratorUtils.toList(handler.getBookingBusinessLayer().iterator())) {   
-                	Row row = sheet.createRow(i++);
-                	Cell cell1 = row.createCell(i);
-                	cell1.setCellValue(((Booking)object).getBookingDay());
-                   
-                }
-                workbook.write(fos);
-                fos.flush();
-                fos.close();
-				} catch (Exception e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+                                File f = jFileChooser1.getSelectedFile();
+                                fos = new FileOutputStream(f + ".xlsx");
+                                workbook = new XSSFWorkbook();
+                                sheet = workbook.createSheet("Exported Bookings");
+
+                                String[] titles = new String[]{"Day", "Date", "Time", "Location", "Holder", "Equipment"};
+                                row = sheet.createRow(0);
+                                for (int i = 0; i < titles.length; i++) {
+                                    Cell newCellTitle = row.createCell(i);
+                                    newCellTitle.setCellValue(titles[i]);
+                                }
+                                if (dialogResult == 0) {
+                                    int i = 1;
+                                    for (Object object : IteratorUtils.toList(handler.getBookingBusinessLayer().iterator())) {
+                                        addCells((Booking) object, sheet, i++);
+                                    }
+                                } else if (dialogResult == 1) {
+                                    int i = 1;
+                                    if (bookingSystemPanel.selectedRowCount() > 0) {
+                                        for (int id : bookingSystemPanel.getSelectedRows()) {
+                                            Booking booking = bookingSystemPanel.getBookingFromList(id);
+                                            addCells(booking, sheet, i++);
+                                        }
+                                    } else {
+                                        MessageBox.errorMessageBox("No bookings have been selected");
+                                    }
+                                }
+                                workbook.write(fos);
+                                fos.flush();
+                                fos.close();
+                                workbook.close();
+                            }
+                        }
+                    } catch(Exception e) {
+                        MessageBox.errorMessageBox(e.toString());
+                    }
                 break;
                 case "Search":
                     if (bookingSystemFindPanel.showDialog() == 0) {
@@ -195,7 +217,7 @@ public final class BookingHandler implements ActionListener {
                     if(bookingSystemPanel.selectedRowCount() > 1) { //handles multiple removals - cahnge 1 to 0 for a
                         if(JOptionPane.showOptionDialog(null, "Are you sure you wish to remove the selected " + bookingSystemPanel.getSelectedRows().length +" bookings?", "Remove Booking",
                                 JOptionPane.PLAIN_MESSAGE, JOptionPane.PLAIN_MESSAGE, null,
-                                new String[]{"Remove", "Cancel"}, "Add") == 0) {
+                                new String[]{"Remove", "Cancel"}, "Remove") == 0) {
                             for (int rowID : bookingSystemPanel.getSelectedRows()) {
                                 this.bookingIDCurrentlyBeingProcessed = bookingSystemPanel.getIDWithIndex(rowID);
                                 if (this.bookingIDCurrentlyBeingProcessed >= 0) {
@@ -263,7 +285,6 @@ public final class BookingHandler implements ActionListener {
                         if(!((Booking) object).getBookingCompleted()) {
                             checkBookingDateTimeForErrors((Booking) object);
                             bookingSystemPanel.addBookingToList((Booking) object);
-
                         } else {
                             //add to archived bookings
                         }
@@ -315,12 +336,38 @@ public final class BookingHandler implements ActionListener {
                             bookingSystemPanel.removeSelectedRowsFromList();
                         }
                         generateBadBookingTable();
+                    } else {
+                        MessageBox.warningMessageBox("Please select a booking to complete");
                     }
                     break;
                 default:
                     System.out.println("control handler not found");
             }
         }
+    }
+
+    private void addCells(Booking booking, XSSFSheet sheet, int rowN) {
+        int cellN = 0;
+        Row row = sheet.createRow(rowN);
+        while (cellN <= 5) {
+            Cell newCell = row.createCell(cellN);
+            switch (cellN++) {
+                case 0: newCell.setCellValue(booking.getBookingDay());
+                    break;
+                case 1: newCell.setCellValue(BOOKING_DATE_FORMAT.format(booking.getBookingDate()));
+                    break;
+                case 2: newCell.setCellValue(BOOKING_TIME_FORMAT.format(booking.getBookingStartTime()) + "-" +
+                        BOOKING_TIME_FORMAT.format(booking.getBookingCollectionTime()));
+                    break;
+                case 3: newCell.setCellValue(booking.getBookingLocation());
+                    break;
+                case 4: newCell.setCellValue(booking.getBookingHolder());
+                    break;
+                case 5: newCell.setCellValue(booking.getRequiredEquipment().GetEquipmentName());
+                    break;
+            }
+        }
+        cellN = 0;
     }
 
     private void checkBookingDateTimeForErrors(Booking booking) {

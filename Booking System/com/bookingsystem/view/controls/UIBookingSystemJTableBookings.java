@@ -1,11 +1,13 @@
 package com.bookingsystem.view.controls;
 
+import com.bookingsystem.helpers.MessageBox;
 import com.bookingsystem.model.Booking;
 import com.bookingsystem.model.Equipment;
 import com.bookingsystem.model.tablemodel.BookingTableModel;
 import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
 
 import java.awt.*;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -71,18 +73,26 @@ public class UIBookingSystemJTableBookings extends UIBookingSystemJTable {
 
 	public Object getRowFromList(int identifierOfData) {
 		if (identifierOfData >= 0) {
-			return new Booking((int) bookingTableModel.getValueAt(identifierOfData,0),
-					(String) bookingTableModel.getValueAt(identifierOfData,1),
-					(Date) bookingTableModel.getValueAt(identifierOfData,2),
-					(Date) bookingTableModel.getValueAt(identifierOfData,3),
-					(Date) bookingTableModel.getValueAt(identifierOfData,4),
-					(String) bookingTableModel.getValueAt(identifierOfData,5),
-					(String) bookingTableModel.getValueAt(identifierOfData,6),
-					(Equipment) bookingTableModel.getValueAt(identifierOfData,7) );
+			try {
+				return new Booking((int) bookingTableModel.getValueAt(identifierOfData, 0),
+						(String) bookingTableModel.getValueAt(identifierOfData, 1),
+						stringToDate((String) bookingTableModel.getValueAt(identifierOfData, 2)),
+						stringToTime((String)bookingTableModel.getValueAt(identifierOfData, 3),false),
+						stringToTime((String)bookingTableModel.getValueAt(identifierOfData, 3),true),
+						(String) bookingTableModel.getValueAt(identifierOfData, 4),
+						(String) bookingTableModel.getValueAt(identifierOfData, 5),
+						convertStringToEquipment((String)bookingTableModel.getValueAt(identifierOfData, 6)));
+			} catch (Exception e) {
+				e.printStackTrace();
+				return null;
+			}
 		}
 		else return null;
 	}
 
+	private Equipment convertStringToEquipment(String s) {
+		return new Equipment(s);
+	}
 	public void replaceRowInList(Object rowData) {
 		Booking booking = (Booking) rowData;
 		Calendar date1 = Calendar.getInstance();

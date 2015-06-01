@@ -18,6 +18,8 @@ final class BookingSystemMain {
 
 	private final AccountManagementBusinessLayer accountManagementBusinessLayer;
 
+	private final ArchiveBusinessLayer archiveBusinessLayer;
+
 	private final BusinessLayer businessLayer;
 
 
@@ -31,8 +33,9 @@ final class BookingSystemMain {
 		this.loggerBusinessLayer = new LoggerBusinessLayer();
 		this.accountBusinessLayer = new AccountBusinessLayer();
 		this.accountManagementBusinessLayer = new AccountManagementBusinessLayer();
+		this.archiveBusinessLayer = new ArchiveBusinessLayer();
 		this.businessLayer = new BusinessLayer();
-		this.controller = new BookingSystemController(view,bookingBusinessLayer, accountBusinessLayer, loggerBusinessLayer,accountManagementBusinessLayer);
+		this.controller = new BookingSystemController(view,bookingBusinessLayer, accountBusinessLayer, loggerBusinessLayer,accountManagementBusinessLayer, archiveBusinessLayer);
 	}
 
 	public BookingSystemUILoader getView() {

@@ -33,7 +33,7 @@ public class LoginHandler implements ActionListener {
         switch (arg0.getActionCommand()) {
             case "Login":
                accountModel = handler.getAccountBusinessLayer().retrieveAccount(handler.getView().getLoginPanel().getLoginUsernameText(), handler.getView().getLoginPanel().getLoginPasswordText());
-               accountModel = handler.getAccountBusinessLayer().retrieveAccount("alex", "donkey");
+             //  accountModel = handler.getAccountBusinessLayer().retrieveAccount("alex", "donkey");
                 if (handler.getAccountBusinessLayer().isAccountFound()) {
                     handler.getLoggerBusinessLayer().setAccountCurrentlyLoggedIn(accountModel);
                     handler.getView().removeLoginPanel();

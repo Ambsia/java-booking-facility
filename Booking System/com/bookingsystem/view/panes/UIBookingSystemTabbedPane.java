@@ -4,23 +4,25 @@ import javax.swing.*;
 
 public class UIBookingSystemTabbedPane extends JTabbedPane{
 
-	private final UIBookingSystemPanel bookingSystemPanel;
+	private final UIBookingSystemBookingPanel bookingSystemPanel;
 	private final UIBookingSystemAdminPanel bookingSystemAdminPanel;
-	private final UIBookingSystemArchive bookingSystemArchive;
+	private final UIBookingSystemArchivePanel bookingSystemArchive;
 
 	public UIBookingSystemTabbedPane() {
-		bookingSystemPanel = new UIBookingSystemPanel();
+		bookingSystemPanel = new UIBookingSystemBookingPanel();
 		this.add(bookingSystemPanel, "View Bookings");
 		bookingSystemAdminPanel = new UIBookingSystemAdminPanel();
-		bookingSystemArchive = new UIBookingSystemArchive();
+		bookingSystemArchive = new UIBookingSystemArchivePanel();
 		this.add(bookingSystemArchive, "Archives");
 	}
 
-	public UIBookingSystemPanel getBookingSystemPanel() { return bookingSystemPanel; }
+	public UIBookingSystemBookingPanel getBookingSystemPanel() { return bookingSystemPanel; }
 
 	public void removeBookingSystemPanel() {this.remove(bookingSystemPanel); }
 
 	public void showAdminPanel() { 	this.add(bookingSystemAdminPanel,"Admin Panel"); }
 
 	public UIBookingSystemAdminPanel getBookingSystemAdminPanel() { return bookingSystemAdminPanel; }
+
+	public UIBookingSystemArchivePanel getBookingSystemArchive() { return  bookingSystemArchive;}
 }

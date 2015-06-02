@@ -1,10 +1,15 @@
 package  com.bookingsystem.view;
 
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+
+import javax.swing.JFrame;
+import javax.swing.UIManager;
+
 import com.bookingsystem.view.controls.UIBookingSystemMenuBarLoader;
 import com.bookingsystem.view.panes.UIBookingSystemTabbedPane;
-
-import javax.swing.*;
-import java.awt.*;
 
 public class BookingSystemUILoader extends JFrame {
 

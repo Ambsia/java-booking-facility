@@ -1,14 +1,20 @@
 package com.bookingsystem.view.panelparts;
 
 
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
+import java.util.ArrayList;
+
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+
 import com.bookingsystem.model.Booking;
-import com.bookingsystem.model.Log;
 import com.bookingsystem.model.tablemodel.BookingProblemModel;
 import com.bookingsystem.view.controls.UIBookingSystemJTableBookingProblems;
-
-import javax.swing.*;
-import java.awt.*;
-import java.util.ArrayList;
 
 /**
  * Created by Alex on 10/02/2015.

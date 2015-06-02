@@ -1,14 +1,12 @@
 package com.bookingsystem.model.businessmodel;
 
-import com.bookingsystem.helpers.MessageBox;
 import java.sql.CallableStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Locale;
+
+import com.bookingsystem.helpers.MessageBox;
 
 /**
  * Created by Alex on 31/05/2015.
@@ -132,9 +130,8 @@ public class ArchiveBusinessLayer extends BusinessLayer {
         getDatabaseConnector().openConnection();
         if (getDatabaseConnector().isConnected()) {
             if (!getDatabaseConnector().isConnectionClosed()) {
-                getDatabaseConnector().createNewCallableStatement("{CALL spGetMostBookingsMadeBy(?)}");
+                getDatabaseConnector().createNewCallableStatement("{CALL spGetMostBookingsMadeBy}");
                 try (CallableStatement callableStatement = getDatabaseConnector().getCallableStatement()) {
-                    callableStatement.registerOutParameter(1, Types.INTEGER);
                     try (ResultSet rs = getDatabaseConnector().executeQuery()) {
                         if (rs.next()) {
                             staffMemberWithTheMostBookingsMade = rs.getString(1).trim();

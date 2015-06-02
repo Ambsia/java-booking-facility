@@ -1,14 +1,13 @@
 package com.bookingsystem.controller.handler;
 
-import com.bookingsystem.model.Booking;
-import com.bookingsystem.view.panes.UIBookingSystemArchivePanel;
-
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
+
+import com.bookingsystem.view.panes.UIBookingSystemArchivePanel;
 
 /**
  * Created by Alex on 30/05/2015.
@@ -35,17 +34,20 @@ public class ArchiveHandler implements ActionListener {
                 int seniorBookings = 0;
                 int totalDaysBooked = handler.getArchiveBusinessLayer().getTotalDaysBooked();
                 int totalBookingsCompleted = handler.getArchiveBusinessLayer().getTotalBookingsCompleted();
+                
+                int averageBookingsADay = totalDaysBooked != 0 ? (totalBookings / totalDaysBooked) : 0;
                 Date[] busiestHours = handler.getArchiveBusinessLayer().getBusiestHours();
                 String mostUsedEquipment = handler.getArchiveBusinessLayer().getMostUsedEquipment();
                 String mostUsedLocation = handler.getArchiveBusinessLayer().getMostUsedLocation();
                 String mostBookingsHeldBy = handler.getArchiveBusinessLayer().getStaffMemberWithTheMostBookingsMade();
 
+                
                 bookingSystemArchive.getUiBookingSystemArchiveViewPanel().setJTextArea("Booking Statistical view from dd/mm/yyyy to dd/mm/yyyy:\n" +"\n" +
                         "Total Bookings Made: " + totalBookings + "\n" +"\n" +
                         "Total Junior School Bookings: " + juniorBookings + "\n" +"\n" +
                         "Total Senior School Bookings: " + seniorBookings + "\n" +"\n"+
                         "Total Days Booked: " + totalDaysBooked + "\n" +"\n"+
-                        "Average Bookings Each Day:  " + totalBookings / totalDaysBooked + "\n" +"\n"+
+                        "Average Bookings Each Day:  " + averageBookingsADay + "\n" +"\n"+
                         "Busiest Hours:   " + BOOKING_TIME_FORMAT.format(busiestHours[0]) + "-" + BOOKING_TIME_FORMAT.format(busiestHours[1]) +"\n" + "\n" +
                         "Total Bookings Completed:   " + totalBookingsCompleted +"\n"+ "\n" +
                         "Most Used Equipment: " + mostUsedEquipment +"\n"+ "\n" +

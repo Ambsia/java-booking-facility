@@ -1,7 +1,6 @@
 package com.bookingsystem.model.tablemodel;
 
 import javax.swing.table.DefaultTableModel;
-import javax.swing.tree.DefaultTreeModel;
 
 /**
  * Author: [Alex]

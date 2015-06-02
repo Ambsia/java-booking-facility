@@ -1,6 +1,10 @@
 package com.bookingsystem.helpers;
 
-import java.sql.*;
+import java.sql.CallableStatement;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 /**
  * Created by Alex on 04/05/2015.

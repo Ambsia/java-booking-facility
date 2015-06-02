@@ -1,12 +1,17 @@
 package com.bookingsystem.view.panelparts;
 
+import java.awt.Component;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
+import java.util.ArrayList;
+
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+
 import com.bookingsystem.model.Log;
 import com.bookingsystem.model.tablemodel.LogTableModel;
 import com.bookingsystem.view.controls.UIBookingSystemJTableLogs;
-
-import javax.swing.*;
-import java.awt.*;
-import java.util.ArrayList;
 
 /**
  * Author: [Alex]

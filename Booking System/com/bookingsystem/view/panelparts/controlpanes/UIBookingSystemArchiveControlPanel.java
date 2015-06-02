@@ -1,6 +1,7 @@
 package com.bookingsystem.view.panelparts.controlpanes;
 
-import java.awt.*;
+import java.awt.Dimension;
+import java.awt.GridBagLayout;
 import java.awt.event.ActionListener;
 
 /**
@@ -15,7 +16,8 @@ public class UIBookingSystemArchiveControlPanel extends UIBookingSystemControlPa
         createControlPanel();
     }
 
-    public void addListeners(ActionListener al) {
+    @Override
+	public void addListeners(ActionListener al) {
         super.addListeners(al);
     }
 

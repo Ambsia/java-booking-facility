@@ -1,15 +1,17 @@
 package com.bookingsystem.model.businessmodel;
 
+import java.sql.CallableStatement;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Types;
+import java.util.ArrayList;
+import java.util.Iterator;
+
 import com.bookingsystem.helpers.MessageBox;
 import com.bookingsystem.helpers.ReturnSpecifiedPropertyValues;
 import com.bookingsystem.model.Account;
-import com.bookingsystem.model.Booking;
-import com.bookingsystem.model.Log;
-
-import java.lang.reflect.Type;
-import java.sql.*;
-import java.util.ArrayList;
-import java.util.Iterator;
 
 /**
  * Author: [Alex]
@@ -42,7 +44,7 @@ public class AccountManagementBusinessLayer extends BusinessLayer implements Ite
 			account.setUserID(callInsertAccount.getInt(5));
 			this.accounts.add(account);
 		} catch (SQLException e) {
-			MessageBox.errorMessageBox("There was an issue while retrieving accounts.\n" + "Does this make any sense to you.." + e.toString() + "?");
+			MessageBox.errorMessageBox("There was an issue while adding an account.\n" + "Does this make any sense to you.." + e.toString() + "?");
 		}
 	}
 

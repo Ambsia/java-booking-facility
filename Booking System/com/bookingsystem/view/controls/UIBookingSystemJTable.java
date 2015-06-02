@@ -1,12 +1,13 @@
 package com.bookingsystem.view.controls;
 
-import javax.swing.*;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
+
+import javax.swing.JTable;
 
 /**
  * Author: [Alex]
@@ -23,6 +24,7 @@ public abstract class UIBookingSystemJTable extends JTable implements BookingSys
 		this.getTableHeader().setReorderingAllowed(false);
 	}
 
+	@Override
 	public boolean isCellEditable(int row, int column) {
 		return false;
 	}

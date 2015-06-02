@@ -1,9 +1,10 @@
 package com.bookingsystem.helpers;
 
-import javax.swing.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+
+import javax.swing.JFormattedTextField;
 
 /**
  * Created by Alex on 09/03/2015.

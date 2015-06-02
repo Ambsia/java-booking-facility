@@ -1,13 +1,16 @@
 package com.bookingsystem.view.dialogpanels.bookingdialog;
 
+import java.awt.Component;
+import java.awt.Dimension;
+import java.util.ArrayList;
+
+import javax.swing.JOptionPane;
+import javax.swing.JScrollPane;
+
 import com.bookingsystem.model.Booking;
 import com.bookingsystem.model.tablemodel.BookingTableModel;
 import com.bookingsystem.view.controls.UIBookingSystemJTableBookings;
 import com.bookingsystem.view.dialogpanels.UIBookingSystemDialogPanel;
-
-import javax.swing.*;
-import java.awt.*;
-import java.util.ArrayList;
 
 /**
  * Author: [Alex]

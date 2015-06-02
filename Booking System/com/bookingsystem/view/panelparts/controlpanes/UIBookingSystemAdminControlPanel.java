@@ -1,9 +1,10 @@
 package com.bookingsystem.view.panelparts.controlpanes;
 
-import com.bookingsystem.view.dialogpanels.accountdialog.UIBookingSystemAccountAddPanel;
-
-import java.awt.*;
+import java.awt.Dimension;
+import java.awt.GridBagLayout;
 import java.awt.event.ActionListener;
+
+import com.bookingsystem.view.dialogpanels.accountdialog.UIBookingSystemAccountAddPanel;
 
 /**
  * Author: [Alex]
@@ -21,6 +22,7 @@ public class UIBookingSystemAdminControlPanel extends UIBookingSystemControlPane
 		bookingSystemAccountAddPanel = new UIBookingSystemAccountAddPanel();
 	}
 
+	@Override
 	public void addListeners(ActionListener al) {
 		super.addListeners(al);
 	}

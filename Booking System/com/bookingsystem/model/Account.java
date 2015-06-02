@@ -1,12 +1,17 @@
 package com.bookingsystem.model;
 
-import com.bookingsystem.helpers.MessageBox;
-import com.bookingsystem.helpers.ReturnSpecifiedPropertyValues;
-import org.apache.commons.codec.digest.DigestUtils;
-
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+
+import org.apache.commons.codec.digest.DigestUtils;
+
+import com.bookingsystem.helpers.MessageBox;
+import com.bookingsystem.helpers.ReturnSpecifiedPropertyValues;
 
 public final class Account {
 

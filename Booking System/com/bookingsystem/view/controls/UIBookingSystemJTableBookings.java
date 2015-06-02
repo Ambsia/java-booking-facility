@@ -1,17 +1,11 @@
 package com.bookingsystem.view.controls;
 
-import com.bookingsystem.helpers.MessageBox;
+import java.util.ArrayList;
+import java.util.Calendar;
+
 import com.bookingsystem.model.Booking;
 import com.bookingsystem.model.Equipment;
 import com.bookingsystem.model.tablemodel.BookingTableModel;
-import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
-
-import java.awt.*;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 
 /**
  * Author: [Alex]
@@ -26,12 +20,14 @@ public class UIBookingSystemJTableBookings extends UIBookingSystemJTable {
 		this.setModel(this.bookingTableModel);
 	}
 
+	@Override
 	public void addArrayOfRowsToList(ArrayList<Object> arrayList) {
 		for (Object object : arrayList) {
 			addRowToList(object);
 		}
 	}
 
+	@Override
 	public void addRowToList(Object data) {
 		Booking booking = (Booking) data;
 		Calendar date1 = Calendar.getInstance();
@@ -71,6 +67,7 @@ public class UIBookingSystemJTableBookings extends UIBookingSystemJTable {
 
 	}
 
+	@Override
 	public Object getRowFromList(int identifierOfData) {
 		if (identifierOfData >= 0) {
 			try {
@@ -93,6 +90,7 @@ public class UIBookingSystemJTableBookings extends UIBookingSystemJTable {
 	private Equipment convertStringToEquipment(String s) {
 		return new Equipment(s);
 	}
+	@Override
 	public void replaceRowInList(Object rowData) {
 		Booking booking = (Booking) rowData;
 		Calendar date1 = Calendar.getInstance();
@@ -131,6 +129,7 @@ public class UIBookingSystemJTableBookings extends UIBookingSystemJTable {
 		bookingTableModel.setValueAt(booking.getRequiredEquipment().GetEquipmentName(),this.getSelectedRow(),6);
 	}
 
+	@Override
 	public void removeRowFromList() {
 		if (this.getSelectedRow() < bookingTableModel.getRowCount() && this.getSelectedRow() >= 0) {
 			bookingTableModel.removeRow(this.getSelectedRow());
@@ -145,6 +144,7 @@ public class UIBookingSystemJTableBookings extends UIBookingSystemJTable {
 			bookingTableModel.removeRow(rows[i]-i);
 		}
 	}
+	@Override
 	public void removeAllRowsFromList() {
 		int rowCount = bookingTableModel.getRowCount();
 		for (int i = rowCount-1;i>=0;i--) {
@@ -159,6 +159,7 @@ public class UIBookingSystemJTableBookings extends UIBookingSystemJTable {
 		return super.getRowCount();
 	}
 
+	@Override
 	public int[] getSelectedRows() {
 		return super.getSelectedRows();
 	}

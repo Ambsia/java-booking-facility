@@ -1,12 +1,20 @@
 package com.bookingsystem.controller.handler;
 
-import com.bookingsystem.helpers.MessageBox;
-import com.bookingsystem.model.Booking;
-import com.bookingsystem.model.Equipment;
-import com.bookingsystem.model.Log;
-import com.bookingsystem.view.dialogpanels.bookingdialog.*;
-import com.bookingsystem.view.panelparts.controlpanes.UIBookingSystemBookingControlPanel;
-import com.bookingsystem.view.panes.UIBookingSystemBookingPanel;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
+
+import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 
 import org.apache.commons.collections.IteratorUtils;
 import org.apache.poi.ss.usermodel.Cell;
@@ -16,16 +24,17 @@ import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
-import javax.swing.*;
-
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.*;
+import com.bookingsystem.helpers.MessageBox;
+import com.bookingsystem.model.Booking;
+import com.bookingsystem.model.Equipment;
+import com.bookingsystem.model.Log;
+import com.bookingsystem.view.dialogpanels.bookingdialog.UIBookingSystemAddPanel;
+import com.bookingsystem.view.dialogpanels.bookingdialog.UIBookingSystemEditPanel;
+import com.bookingsystem.view.dialogpanels.bookingdialog.UIBookingSystemFindPanel;
+import com.bookingsystem.view.dialogpanels.bookingdialog.UIBookingSystemRemovePanel;
+import com.bookingsystem.view.dialogpanels.bookingdialog.UIBookingSystemShowBookingsFound;
+import com.bookingsystem.view.panelparts.controlpanes.UIBookingSystemBookingControlPanel;
+import com.bookingsystem.view.panes.UIBookingSystemBookingPanel;
 
 public final class BookingHandler implements ActionListener {
 
@@ -343,6 +352,7 @@ public final class BookingHandler implements ActionListener {
                 default:
                     System.out.println("control handler not found");
             }
+            handler.getView().repaint();
         }
     }
 

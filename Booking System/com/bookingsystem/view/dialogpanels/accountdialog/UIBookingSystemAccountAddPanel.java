@@ -1,9 +1,15 @@
 package com.bookingsystem.view.dialogpanels.accountdialog;
 
-import javax.swing.*;
-import java.awt.*;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.awt.Component;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
+
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JPasswordField;
+import javax.swing.JTextField;
 
 /**
  * Created by Alex on 04/05/2015.

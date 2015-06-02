@@ -1,15 +1,19 @@
 package com.bookingsystem.model.businessmodel;
 
-import com.bookingsystem.helpers.MessageBox;
-import com.bookingsystem.model.Booking;
-import com.bookingsystem.model.Equipment;
-
-import java.sql.*;
+import java.sql.CallableStatement;
+import java.sql.Date;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Types;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Locale;
+
+import com.bookingsystem.helpers.MessageBox;
+import com.bookingsystem.model.Booking;
+import com.bookingsystem.model.Equipment;
 
 /**
  * Author: [Alex] on [$Date]
@@ -239,7 +243,8 @@ public class BookingBusinessLayer extends BusinessLayer implements Iterable<Book
         }
     }
 
-    public Iterator<Booking> iterator() {
+    @Override
+	public Iterator<Booking> iterator() {
         return bookings.iterator();
     }
 

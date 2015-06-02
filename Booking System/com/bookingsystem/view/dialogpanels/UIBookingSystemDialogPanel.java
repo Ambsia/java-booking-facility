@@ -1,12 +1,9 @@
 package com.bookingsystem.view.dialogpanels;
 
-import com.bookingsystem.helpers.DateLabelFormatter;
-import org.jdatepicker.impl.JDatePanelImpl;
-import org.jdatepicker.impl.JDatePickerImpl;
-import org.jdatepicker.impl.UtilDateModel;
-
-import javax.swing.*;
-import java.awt.*;
+import java.awt.Component;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Time;
@@ -15,13 +12,29 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Properties;
 
+import javax.swing.JCheckBox;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JSpinner;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
+import javax.swing.SpinnerDateModel;
+
+import org.jdatepicker.impl.JDatePanelImpl;
+import org.jdatepicker.impl.JDatePickerImpl;
+import org.jdatepicker.impl.UtilDateModel;
+
+import com.bookingsystem.helpers.DateLabelFormatter;
+import com.bookingsystem.helpers.TextFieldRestriction;
+
 /**
  * Author: [Alex]
  */
 public abstract class UIBookingSystemDialogPanel extends JPanel implements UIBookingSystemDialogInterface {
 
 	private final static String[] DAYS = { "" ,"Sunday", "Monday" ,"Tuesday" ,"Wednesday","Thursday", "Friday", "Saturday" };
-	private final static String[] LABELS = {"Booking Day: ", "Booking Date: ", "Booking Start Time: ", "Booking Collection Time: ", "Booking Location: ", "Booking Holder: ", "Equipment: "};
+	private final static String[] LABELS = {"Booking Day: ", "Booking Date: ", "Booking Start: ", "Booking Collection: ", "Booking Location: ", "Booking Holder: ", "Equipment: ", "Recuring Booking: "};
 	private Component[] components;
 	private final JTextField txtBookingDay;
 	private final JTextField txtBookingLocation;
@@ -34,7 +47,10 @@ public abstract class UIBookingSystemDialogPanel extends JPanel implements UIBoo
 	private final JSpinner jSpinnerStartTime;
 	private final JSpinner jSpinnerCollectionTime;
 	private final UtilDateModel model;
-
+	private final JCheckBox chkRecuring;
+	private final JTextField txtWeeksRecuring;
+	GridBagConstraints gbc = new GridBagConstraints();
+	JLabel l = new JLabel("Weeks: ");
 	protected UIBookingSystemDialogPanel() {
 		setLayout(new GridBagLayout());
 
@@ -44,6 +60,9 @@ public abstract class UIBookingSystemDialogPanel extends JPanel implements UIBoo
 		txtAreaEquipment = new JTextArea(5,15);
 		jScrollPane = new JScrollPane(txtAreaEquipment);
 		txtBookingDay.setEditable(false);
+		chkRecuring = new JCheckBox();
+		txtWeeksRecuring = new JTextField(5);
+		txtWeeksRecuring.setDocument(new TextFieldRestriction());
 		Time time = Time.valueOf("12:00:00");
 		Date date = new Date();
 		date.setTime(time.getTime());
@@ -77,37 +96,86 @@ public abstract class UIBookingSystemDialogPanel extends JPanel implements UIBoo
 				txtBookingDay.setText(DAYS[dayOfWeek]);
 			}
 		});
+		
+		chkRecuring.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				txtWeeksRecuring.setVisible(chkRecuring.isSelected());
+				l.setVisible(chkRecuring.isSelected());
+			}
+		});
 	}
-	private void addControlToPanel(Component component, int gridX, int gridY) {
-		GridBagConstraints gbc = new GridBagConstraints();
+	private void addControlToPanel(GridBagConstraints gbcc,Component component, int gridX, int gridY) {
+		GridBagConstraints gbc = gbcc;
 		gbc.insets = new Insets(2,2,2,2);
 		gbc.gridx = gridX;
 		gbc.gridy = gridY;
+		gbc.gridwidth = 4;
 		gbc.fill = GridBagConstraints.BOTH;
 		gbc.anchor = GridBagConstraints.LAST_LINE_END;
-		gbc.weightx = 0;
-		gbc.weighty = 0;
+		gbc.weighty = 1;
+		add(component, gbc);
+	}
+	
+	private void addControl(GridBagConstraints gbcc, Component component,int x, int y) {
+		GridBagConstraints gbc = gbcc;
+		gbc.insets = new Insets(2,2,2,2);
+		gbc.gridx = x;
+		gbc.gridy = y;
+		gbc.gridwidth = 1;
+		gbc.anchor = GridBagConstraints.PAGE_START;
+		gbc.fill = GridBagConstraints.NONE;
+		gbc.weighty = 1;
+		gbc.weightx = .5;
 		add(component, gbc);
 	}
 
 
 	protected void addDefaultComponentsToPanel() {
 		components = new Component[] { txtBookingDay, datePicker, jSpinnerStartTime,jSpinnerCollectionTime,txtBookingLocation,txtBookingHolder, jScrollPane };
-
-		for (int i = 0;i<LABELS.length;i++) {
-			addControlToPanel(new JLabel(LABELS[i]), 0, i);
-			addControlToPanel(components[i], 1, i);
+		for (int i = 0;i<LABELS.length;i++) {	
+			if(i == 7) { 
+				
+				addControl(gbc,new JLabel(LABELS[7]), 0,7);
+				addControl(gbc,chkRecuring,1,7);
+				addControl(gbc,l,3,7);
+				addControl(gbc,txtWeeksRecuring,4,7);
+				txtWeeksRecuring.setVisible(false);
+				l.setVisible(false);
+				
+				
+			}	else { 
+				addControlToPanel(gbc,new JLabel(LABELS[i]), 0, i);
+				addControlToPanel(gbc,components[i], 1, i);
+			}
 		}
 		setVisible(true);
 	}
 
 	protected void addTheseComponentsToPanel(Component[] components, String[] LABELS) {
 		for (int i = 0;i<LABELS.length;i++) {
-			addControlToPanel(new JLabel(LABELS[i]), 0, i);
-			addControlToPanel(components[i], 1, i);
+			addControlToPanel(gbc,new JLabel(LABELS[i]), 0, i);
+			addControlToPanel(gbc,components[i], 1, i);
 		}
 
 	}
+	
+	public void clearInputs() {
+		txtBookingDay.setText("");
+		Time time = Time.valueOf("12:00:00");
+		Date date = new Date();
+		date.setTime(time.getTime());
+		model.setValue(null);
+		jSpinnerStartTime.setValue(date);
+		jSpinnerCollectionTime.setValue(date);
+		txtBookingLocation.setText("");
+		txtBookingHolder.setText("");
+		txtAreaEquipment.setText("");
+		txtWeeksRecuring.setVisible(false);
+		l.setVisible(false);
+		chkRecuring.setSelected(false);
+		revalidate();
+	} 
 	protected Component[] getComponentsAsList() {
 		return components;
 	}
@@ -139,6 +207,14 @@ public abstract class UIBookingSystemDialogPanel extends JPanel implements UIBoo
 			e.printStackTrace();
 		}
 		return bookingStartTime;
+	}
+	
+	private boolean getRecuringSelected() {
+		return chkRecuring.isSelected();
+	}
+	
+	private int getWeeksRecuringFor() {
+		return Integer.parseInt(txtWeeksRecuring.getText());
 	}
 
 	private String getTxtBookingCollectionTimeText() {

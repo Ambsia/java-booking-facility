@@ -1,9 +1,14 @@
 package com.bookingsystem.view.panelparts.controlpanes;
 
-import javax.swing.*;
-import java.awt.*;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.GridBagConstraints;
+import java.awt.Insets;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+
+import javax.swing.JButton;
+import javax.swing.JPanel;
 
 /**
  * Created by Alex on 24/05/2015.

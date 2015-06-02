@@ -1,9 +1,8 @@
 package com.bookingsystem.model.businessmodel;
 
-import com.bookingsystem.helpers.DatabaseConnector;
-
 import java.sql.Date;
-import java.util.Calendar;
+
+import com.bookingsystem.helpers.DatabaseConnector;
 
 /**
  * Author: [Alex]

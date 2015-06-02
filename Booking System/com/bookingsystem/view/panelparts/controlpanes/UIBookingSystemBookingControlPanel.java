@@ -1,8 +1,13 @@
 package com.bookingsystem.view.panelparts.controlpanes;
 
-import com.bookingsystem.view.dialogpanels.bookingdialog.*;
+import java.awt.Dimension;
+import java.awt.GridBagLayout;
 
-import java.awt.*;
+import com.bookingsystem.view.dialogpanels.bookingdialog.UIBookingSystemAddPanel;
+import com.bookingsystem.view.dialogpanels.bookingdialog.UIBookingSystemEditPanel;
+import com.bookingsystem.view.dialogpanels.bookingdialog.UIBookingSystemFindPanel;
+import com.bookingsystem.view.dialogpanels.bookingdialog.UIBookingSystemRemovePanel;
+import com.bookingsystem.view.dialogpanels.bookingdialog.UIBookingSystemShowBookingsFound;
 
 /**
  * Author: [Alex] on [$Date]

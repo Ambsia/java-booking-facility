@@ -1,9 +1,8 @@
 package com.bookingsystem.view.dialogpanels.bookingdialog;
 
-import com.bookingsystem.view.dialogpanels.UIBookingSystemDialogPanel;
+import javax.swing.JOptionPane;
 
-import javax.swing.*;
-import java.awt.*;
+import com.bookingsystem.view.dialogpanels.UIBookingSystemDialogPanel;
 
 /**
  * Author: [Alex] on [$Date]
@@ -11,6 +10,7 @@ import java.awt.*;
 public class UIBookingSystemAddPanel extends UIBookingSystemDialogPanel {
     public UIBookingSystemAddPanel() {
         super();
+        
         setLayout(super.getLayout());
         addDefaultComponentsToPanel();
         super.repaint();
@@ -18,6 +18,7 @@ public class UIBookingSystemAddPanel extends UIBookingSystemDialogPanel {
 
     @Override
     public int showDialog() {
+    	clearInputs();
         return JOptionPane.showOptionDialog(null, this, "Add Booking",
                 JOptionPane.PLAIN_MESSAGE, JOptionPane.PLAIN_MESSAGE,null,
                 new String[] {"Add", "Cancel" }, "Add");

@@ -1,18 +1,13 @@
 package com.bookingsystem.controller.handler;
 
 
-import com.bookingsystem.helpers.MessageBox;
-import com.bookingsystem.model.Account;
-import com.bookingsystem.model.Log;
-import com.bookingsystem.model.businessmodel.AccountBusinessLayer;
-import com.bookingsystem.model.businessmodel.LoggerBusinessLayer;
-import com.bookingsystem.view.BookingSystemUILoader;
-import com.bookingsystem.view.UILoginPanel;
-import com.sun.xml.internal.ws.util.HandlerAnnotationInfo;
-
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Date;
+
+import com.bookingsystem.helpers.MessageBox;
+import com.bookingsystem.model.Account;
+import com.bookingsystem.model.Log;
 
 /**
  * Author: [Alex] on [$Date]
@@ -32,8 +27,8 @@ public class LoginHandler implements ActionListener {
         Log log = new Log(arg0.getActionCommand(),this.getClass().getSimpleName(), new Date());
         switch (arg0.getActionCommand()) {
             case "Login":
-               accountModel = handler.getAccountBusinessLayer().retrieveAccount(handler.getView().getLoginPanel().getLoginUsernameText(), handler.getView().getLoginPanel().getLoginPasswordText());
-             //  accountModel = handler.getAccountBusinessLayer().retrieveAccount("alex", "donkey");
+               //accountModel = handler.getAccountBusinessLayer().retrieveAccount(handler.getView().getLoginPanel().getLoginUsernameText(), handler.getView().getLoginPanel().getLoginPasswordText());
+               accountModel = handler.getAccountBusinessLayer().retrieveAccount("alex", "donkey");
                 if (handler.getAccountBusinessLayer().isAccountFound()) {
                     handler.getLoggerBusinessLayer().setAccountCurrentlyLoggedIn(accountModel);
                     handler.getView().removeLoginPanel();

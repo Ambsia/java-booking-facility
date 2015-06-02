@@ -1,9 +1,9 @@
 package com.bookingsystem.view.controls;
 
+import java.util.ArrayList;
+
 import com.bookingsystem.model.Account;
 import com.bookingsystem.model.tablemodel.AccountTableModel;
-
-import java.util.ArrayList;
 
 /**
  * Author: [Alex]

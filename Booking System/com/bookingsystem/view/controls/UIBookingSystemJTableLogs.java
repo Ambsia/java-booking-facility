@@ -1,14 +1,11 @@
 package com.bookingsystem.view.controls;
 
-import com.bookingsystem.model.Account;
-import com.bookingsystem.model.Log;
-import com.bookingsystem.model.tablemodel.BookingTableModel;
-import com.bookingsystem.model.tablemodel.LogTableModel;
-
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+
+import com.bookingsystem.model.Log;
+import com.bookingsystem.model.tablemodel.LogTableModel;
 
 /**
  * Author: [Alex]

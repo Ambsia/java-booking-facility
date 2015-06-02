@@ -1,13 +1,13 @@
 package com.bookingsystem.model.businessmodel;
 
-import com.bookingsystem.helpers.MessageBox;
-import com.bookingsystem.model.Account;
-import com.bookingsystem.model.Log;
-
 import java.sql.CallableStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Date;
+
+import com.bookingsystem.helpers.MessageBox;
+import com.bookingsystem.model.Account;
+import com.bookingsystem.model.Log;
 
 /**
  * Author: [Alex] on [$Date]
@@ -28,7 +28,6 @@ public class AccountBusinessLayer extends BusinessLayer {
     }
 
     public Account retrieveAccount(String username, String password) {
-        Log log = new Log("Retrieval of account",this.getClass().getSimpleName(),new Date());
         Account account = new Account(0, 0, username, password);
         getDatabaseConnector().openConnection();
         if (getDatabaseConnector().isConnected()) {

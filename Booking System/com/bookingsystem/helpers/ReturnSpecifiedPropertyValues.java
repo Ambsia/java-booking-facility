@@ -13,12 +13,12 @@ public class ReturnSpecifiedPropertyValues {
     private final Properties properties;
 
     //pass properties through if we have more property files..
-    public ReturnSpecifiedPropertyValues() {
-        String propertyFileName = "config.properties";
+    public ReturnSpecifiedPropertyValues(String filePath) {
+        String propertyFileName = filePath;
 
         properties = new Properties();
         try {
-            InputStream inputStream = getClass().getResourceAsStream("config.properties");
+            InputStream inputStream = getClass().getResourceAsStream(filePath);
             if (inputStream != null) {
                 properties.load(inputStream);
             } else {
@@ -32,4 +32,6 @@ public class ReturnSpecifiedPropertyValues {
     public String getDatabaseConnectionString() {
         return "jdbc:sqlserver://" + properties.getProperty("server") + ":" + properties.getProperty("port") + ";user=" + properties.getProperty("user") + ";password=" + properties.getProperty("password") + ";databaseName=" +  properties.getProperty("database") + "";
     }
+    
+    
 }

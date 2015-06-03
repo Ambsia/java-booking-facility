@@ -128,6 +128,7 @@ public abstract class UIBookingSystemDialogPanel extends JPanel implements UIBoo
 		gbc.weighty = 1;
 		gbc.weightx = .5;
 		add(component, gbc);
+		component.setVisible(true);
 	}
 
 
@@ -135,21 +136,16 @@ public abstract class UIBookingSystemDialogPanel extends JPanel implements UIBoo
 		components = new Component[] { txtBookingDay, datePicker, jSpinnerStartTime,jSpinnerCollectionTime,txtBookingLocation,txtBookingHolder, jScrollPane };
 		for (int i = 0;i<LABELS.length;i++) {	
 			if(i == 7) { 
-				
 				addControl(gbc,new JLabel(LABELS[7]), 0,7);
 				addControl(gbc,chkRecuring,1,7);
 				addControl(gbc,l,3,7);
 				addControl(gbc,txtWeeksRecuring,4,7);
-				txtWeeksRecuring.setVisible(false);
-				l.setVisible(false);
-				
-				
 			}	else { 
 				addControlToPanel(gbc,new JLabel(LABELS[i]), 0, i);
 				addControlToPanel(gbc,components[i], 1, i);
 			}
 		}
-		setVisible(true);
+		revalidate();
 	}
 
 	protected void addTheseComponentsToPanel(Component[] components, String[] LABELS) {

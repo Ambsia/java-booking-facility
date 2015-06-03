@@ -63,7 +63,7 @@ public final class Account {
 	private String SHA1_HASH(String unHashedString) {
 		Connection con;
 		try {
-			ReturnSpecifiedPropertyValues returnSpecifiedPropertyValues = new ReturnSpecifiedPropertyValues();
+			ReturnSpecifiedPropertyValues returnSpecifiedPropertyValues = new ReturnSpecifiedPropertyValues("sqlconfig.properties");
 			con = DriverManager.getConnection(returnSpecifiedPropertyValues.getDatabaseConnectionString());
 
 			Statement stmt = con.createStatement();

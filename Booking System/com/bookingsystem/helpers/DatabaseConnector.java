@@ -18,7 +18,7 @@ public final class DatabaseConnector  {
     private Connection connection;
 
     public DatabaseConnector() {
-        this.returnSpecifiedPropertyValues = new ReturnSpecifiedPropertyValues();
+        this.returnSpecifiedPropertyValues = new ReturnSpecifiedPropertyValues("sqlconfig.properties");
         this.connectionString = this.returnSpecifiedPropertyValues.getDatabaseConnectionString();
         this.connection = null;
         this.callableStatement = null;

@@ -27,7 +27,7 @@ public class AccountManagementBusinessLayer extends BusinessLayer implements Ite
 		this.accounts = new ArrayList<>();
 
 		this.currentAccountID = -1;
-		ReturnSpecifiedPropertyValues returnSpecifiedPropertyValues = new ReturnSpecifiedPropertyValues();
+		ReturnSpecifiedPropertyValues returnSpecifiedPropertyValues = new ReturnSpecifiedPropertyValues("sqlconfig.properties");
 		databaseConnectionString = returnSpecifiedPropertyValues.getDatabaseConnectionString();
 		this.currentIndexInAccountList = -1;
 	}

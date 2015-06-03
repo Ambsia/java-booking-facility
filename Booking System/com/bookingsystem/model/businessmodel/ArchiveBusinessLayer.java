@@ -4,9 +4,11 @@ import java.sql.CallableStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
+import java.util.ArrayList;
 import java.util.Date;
 
 import com.bookingsystem.helpers.MessageBox;
+import com.bookingsystem.model.Equipment;
 
 /**
  * Created by Alex on 31/05/2015.
@@ -79,8 +81,8 @@ public class ArchiveBusinessLayer extends BusinessLayer {
         return totalCompletedBookings;
     }
 
-    public String getMostUsedEquipment() {
-        String mostUsedEquipment = "";
+    public ArrayList<Equipment> getMostUsedEquipment() {
+    	ArrayList<Equipment> mostUsedEquipmentList = new ArrayList<Equipment>();
         getDatabaseConnector().openConnection();
         if (getDatabaseConnector().isConnected()) {
             if (!getDatabaseConnector().isConnectionClosed()) {
@@ -88,9 +90,13 @@ public class ArchiveBusinessLayer extends BusinessLayer {
                 try (CallableStatement callableStatement = getDatabaseConnector().getCallableStatement()) {
                     callableStatement.registerOutParameter(1, Types.INTEGER);
                     try (ResultSet rs = getDatabaseConnector().executeQuery()) {
-                        if (rs.next()) {
-                            mostUsedEquipment = rs.getString(1);
-                            mostUsedEquipment += " (" + rs.getInt(2) + ") Uses.";
+                    	int i = 0;
+                        Equipment equipmentToAdd;
+                    	while (rs.next() && i<5) {
+                    		equipmentToAdd = new Equipment(rs.getString(1));
+                    		equipmentToAdd.setEquipmentStatistic(rs.getInt(2));
+                        	mostUsedEquipmentList.add(equipmentToAdd);
+                        	i++;
                         }
                     }
                 } catch (SQLException e) {
@@ -99,11 +105,11 @@ public class ArchiveBusinessLayer extends BusinessLayer {
             }
             getDatabaseConnector().closeConnection();
         }
-        return mostUsedEquipment;
+        return mostUsedEquipmentList;
     }
 
-    public String getMostUsedLocation() {
-        String mostUsedLocation = "";
+    public ArrayList<String> getMostUsedLocation() {
+    	ArrayList<String> mostUsedLocation = new ArrayList<>();
         getDatabaseConnector().openConnection();
         if (getDatabaseConnector().isConnected()) {
             if (!getDatabaseConnector().isConnectionClosed()) {
@@ -111,10 +117,11 @@ public class ArchiveBusinessLayer extends BusinessLayer {
                 try (CallableStatement callableStatement = getDatabaseConnector().getCallableStatement()) {
                     callableStatement.registerOutParameter(1, Types.INTEGER);
                     try (ResultSet rs = getDatabaseConnector().executeQuery()) {
-                        if (rs.next()) {
-                            mostUsedLocation = rs.getString(1);
-                            mostUsedLocation += " (" + rs.getInt(2) + ") Bookings.";
-                        }
+                    	int i = 0;
+                    	while (rs.next() && i<5) {
+                        	mostUsedLocation.add("- " + rs.getString(1) + " (" + rs.getInt(2) + ")");
+                        	i++;
+                    	}
                     }
                 } catch (SQLException e) {
                     MessageBox.errorMessageBox("There was an issue while we were trying to get the location that is most used!\n" + "Does this make any sense to you.." + e.toString() + "?");
@@ -125,18 +132,19 @@ public class ArchiveBusinessLayer extends BusinessLayer {
         return mostUsedLocation;
     }
 
-    public String getStaffMemberWithTheMostBookingsMade() {
-        String staffMemberWithTheMostBookingsMade = "";
+    public ArrayList<String> getStaffMemberWithTheMostBookingsMade() {
+    	ArrayList<String> staffMemberWithTheMostBookingsMadeList = new ArrayList<>();
         getDatabaseConnector().openConnection();
         if (getDatabaseConnector().isConnected()) {
             if (!getDatabaseConnector().isConnectionClosed()) {
                 getDatabaseConnector().createNewCallableStatement("{CALL spGetMostBookingsMadeBy}");
                 try (CallableStatement callableStatement = getDatabaseConnector().getCallableStatement()) {
                     try (ResultSet rs = getDatabaseConnector().executeQuery()) {
-                        if (rs.next()) {
-                            staffMemberWithTheMostBookingsMade = rs.getString(1).trim();
-                            staffMemberWithTheMostBookingsMade += " (" + rs.getInt(2) + ") Bookings.";
-                        }
+                    	int i = 0;
+                    	while (rs.next() && i<5) {
+                    		staffMemberWithTheMostBookingsMadeList.add("- " + rs.getString(1).trim() + " (" + rs.getInt(2) + ")");
+                        	i++;
+                    	}
                     }
                 } catch (SQLException e) {
                     MessageBox.errorMessageBox("There was an issue while we were trying to get the staff member with the most bookings made!\n" + "Does this make any sense to you.." + e.toString() + "?");
@@ -144,7 +152,7 @@ public class ArchiveBusinessLayer extends BusinessLayer {
             }
             getDatabaseConnector().closeConnection();
         }
-        return staffMemberWithTheMostBookingsMade;
+        return staffMemberWithTheMostBookingsMadeList;
     }
 
     public int getTotalSeniorBookings() {

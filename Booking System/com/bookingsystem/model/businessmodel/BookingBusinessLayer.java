@@ -69,7 +69,7 @@ public class BookingBusinessLayer extends BusinessLayer implements Iterable<Book
                     callableStatement.setTime(4, booking.getBookingCollectionTimeInSQLFormat());
                     callableStatement.setString(5, booking.getBookingLocation());
                     callableStatement.setString(6, booking.getBookingHolder());
-                    callableStatement.setString(7, booking.getRequiredEquipment().GetEquipmentName());
+                    callableStatement.setString(7, booking.getRequiredEquipment().getEquipmentName());
                     callableStatement.setBoolean(8,booking.getBookingCompleted());
                     callableStatement.registerOutParameter(9, Types.INTEGER);
                     getDatabaseConnector().execute();
@@ -100,7 +100,7 @@ public class BookingBusinessLayer extends BusinessLayer implements Iterable<Book
 	                    callableStatement.setTime(4, bookingList.get(i).getBookingCollectionTimeInSQLFormat());
 	                    callableStatement.setString(5, bookingList.get(i).getBookingLocation());
 	                    callableStatement.setString(6, bookingList.get(i).getBookingHolder());
-	                    callableStatement.setString(7, bookingList.get(i).getRequiredEquipment().GetEquipmentName());
+	                    callableStatement.setString(7, bookingList.get(i).getRequiredEquipment().getEquipmentName());
                         callableStatement.setBoolean(8,bookingList.get(i).getBookingCompleted());
                         callableStatement.registerOutParameter(9, Types.INTEGER);
 	                    getDatabaseConnector().execute();
@@ -133,7 +133,7 @@ public class BookingBusinessLayer extends BusinessLayer implements Iterable<Book
                     callableStatement.setTime(4, bookingInformationKnown.getBookingCollectionTimeInSQLFormat());
                     callableStatement.setString(5, bookingInformationKnown.getBookingLocation());
                     callableStatement.setString(6, bookingInformationKnown.getBookingHolder());
-                    callableStatement.setString(7, bookingInformationKnown.getRequiredEquipment().GetEquipmentName());
+                    callableStatement.setString(7, bookingInformationKnown.getRequiredEquipment().getEquipmentName());
                     try (ResultSet rs = getDatabaseConnector().executeQuery()) {
                         while (rs.next()) {
                             foundBookings.add(new Booking(rs.getInt(1), rs.getString(2), rs.getDate(3), rs.getTime(4), rs.getTime(5), rs.getString(6), rs.getString(7), new Equipment(rs.getString(8))));
@@ -164,7 +164,7 @@ public class BookingBusinessLayer extends BusinessLayer implements Iterable<Book
                     callableStatement.setTime(5, newBooking.getBookingCollectionTimeInSQLFormat());
                     callableStatement.setString(6, newBooking.getBookingLocation());
                     callableStatement.setString(7, newBooking.getBookingHolder());
-                    callableStatement.setString(8, newBooking.getRequiredEquipment().GetEquipmentName());
+                    callableStatement.setString(8, newBooking.getRequiredEquipment().getEquipmentName());
                     getDatabaseConnector().execute();
                     addBookingToListAtAGivenPosition(newBooking);
                 } catch (SQLException e) {

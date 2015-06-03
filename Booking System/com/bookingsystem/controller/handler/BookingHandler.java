@@ -373,7 +373,7 @@ public final class BookingHandler implements ActionListener {
                     break;
                 case 4: newCell.setCellValue(booking.getBookingHolder());
                     break;
-                case 5: newCell.setCellValue(booking.getRequiredEquipment().GetEquipmentName());
+                case 5: newCell.setCellValue(booking.getRequiredEquipment().getEquipmentName());
                     break;
             }
         }

@@ -11,25 +11,26 @@ public final class Equipment {
 		this.equipmentName = equipmentName;
 	}
 
-	public void SetEquipmentName(String equipmentName) {
+	public void setEquipmentName(String equipmentName) {
 		this.equipmentName = equipmentName;
 	}
 	
+	public void setEquipmentStatistic(int usageStatistic) {
+		this.equipmentUsage = usageStatistic;
+	}
 	
-	public String GetEquipmentName() {
+	
+	public String getEquipmentName() {
 		return this.equipmentName;
 	}
 	
-	public int GetEquipmentUsageStatistic() {
+	public int getEquipmentUsageStatistic() {
 		return this.equipmentUsage;
 	}
 
 
 	@Override
 	public String toString() {
-		return "Equipment{" +
-				"equipmentUsage=" + equipmentUsage +
-				", equipmentName='" + equipmentName + '\'' +
-				'}';
+		return this.equipmentName + " (" + this.equipmentUsage + ")";
 	}
 }

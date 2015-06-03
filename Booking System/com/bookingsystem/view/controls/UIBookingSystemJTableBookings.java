@@ -63,7 +63,7 @@ public class UIBookingSystemJTableBookings extends UIBookingSystemJTable {
 				time,
 				booking.getBookingLocation(),
 				booking.getBookingHolder(),
-				booking.getRequiredEquipment().GetEquipmentName()});
+				booking.getRequiredEquipment().getEquipmentName()});
 
 	}
 
@@ -126,7 +126,7 @@ public class UIBookingSystemJTableBookings extends UIBookingSystemJTable {
 		bookingTableModel.setValueAt(time,this.getSelectedRow(),3);
 		bookingTableModel.setValueAt(booking.getBookingLocation(),this.getSelectedRow(),4);
 		bookingTableModel.setValueAt(booking.getBookingHolder(),this.getSelectedRow(),5);
-		bookingTableModel.setValueAt(booking.getRequiredEquipment().GetEquipmentName(),this.getSelectedRow(),6);
+		bookingTableModel.setValueAt(booking.getRequiredEquipment().getEquipmentName(),this.getSelectedRow(),6);
 	}
 
 	@Override

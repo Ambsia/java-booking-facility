@@ -28,6 +28,7 @@ import com.bookingsystem.helpers.MessageBox;
 import com.bookingsystem.model.Booking;
 import com.bookingsystem.model.Equipment;
 import com.bookingsystem.model.Log;
+import com.bookingsystem.view.dialogpanels.UIBookingSystemDialogPanel;
 import com.bookingsystem.view.dialogpanels.bookingdialog.UIBookingSystemAddPanel;
 import com.bookingsystem.view.dialogpanels.bookingdialog.UIBookingSystemEditPanel;
 import com.bookingsystem.view.dialogpanels.bookingdialog.UIBookingSystemFindPanel;
@@ -44,7 +45,7 @@ public final class BookingHandler implements ActionListener {
     private static final DateFormat BOOKING_TIME_FORMAT_2 = new SimpleDateFormat("H", Locale.ENGLISH);
     private static final DateFormat BOOKING_TIME_FORMAT_3 = new SimpleDateFormat("(HH:mm)", Locale.ENGLISH);
 
-    private final UIBookingSystemAddPanel bookingSystemAddPanel;
+    private final UIBookingSystemDialogPanel bookingSystemAddPanel;
     private final UIBookingSystemFindPanel bookingSystemFindPanel;
     private final UIBookingSystemEditPanel bookingSystemEditPanel;
     private final UIBookingSystemRemovePanel bookingSystemRemovePanel;
@@ -120,7 +121,8 @@ public final class BookingHandler implements ActionListener {
                                         }
                                     }
                                     handler.getBookingBusinessLayer().insertBookings(bookingList);
-                                    bookingSystemPanel.addBookingsToList(bookingList);
+                                    handler.getBookingBusinessLayer().populateBookingListOnLoad();
+                                    bookingSystemPanel.addBookingsToList((ArrayList<Booking>) IteratorUtils.toList(handler.getBookingBusinessLayer().iterator()));
                                     for (Booking b : bookingList) {
                                         checkBookingDateTimeForErrors(b);
                                     }
@@ -206,13 +208,31 @@ public final class BookingHandler implements ActionListener {
                 case "Add":
                     if (bookingSystemAddPanel.showDialog() == 0) {
                         Booking newBooking = convertStringArrayToBooking(bookingSystemAddPanel.getBookingStringArray());
+                        newBooking.setIsRecuring(bookingSystemAddPanel.getRecuringSelected());
+                        if(bookingSystemAddPanel.getRecuringSelected()) {
+                        	newBooking.setWeeksRecuring(bookingSystemAddPanel.getWeeksRecuringFor());
+                        }
                         if (newBooking.isValid()) {
                             if(!newBooking.isBeforeToday()) {
-                                handler.getBookingBusinessLayer().insertBooking(newBooking);
-                                bookingSystemPanel.addBookingToList(newBooking);
-                                checkBookingDateTimeForErrors(newBooking);
-                                generateBadBookingTable();
-                                log.setBookingIDInserted(newBooking.getBookingID());
+                            	if(newBooking.getIsRecuringBooking() && newBooking.getWeeksRecuring() > 0) {
+                            		int week = 0;
+                            		for (;week<newBooking.getWeeksRecuring();week++) {
+                            			handler.getBookingBusinessLayer().insertBooking(newBooking);
+    	                                bookingSystemPanel.addBookingToList(newBooking);
+    	                                checkBookingDateTimeForErrors(newBooking);
+    	                                generateBadBookingTable();
+    	                                Calendar cal = Calendar.getInstance();                              
+    	                                cal.setTime(newBooking.getBookingDate());                 
+    	                                cal.add(Calendar.WEEK_OF_YEAR, 1);    	                                
+    	                                newBooking.setBookingDate(cal.getTime());
+                            		}
+                            	} else {
+	                                handler.getBookingBusinessLayer().insertBooking(newBooking);
+	                                bookingSystemPanel.addBookingToList(newBooking);
+	                                checkBookingDateTimeForErrors(newBooking);
+	                                generateBadBookingTable();
+	                                log.setBookingIDInserted(newBooking.getBookingID());
+                            	}
                             } else {
                                 MessageBox.errorMessageBox("The booking entered has a date before today's.");
                             }

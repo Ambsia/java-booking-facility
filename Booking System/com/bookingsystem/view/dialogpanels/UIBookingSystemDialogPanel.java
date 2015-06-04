@@ -193,6 +193,8 @@ public abstract class UIBookingSystemDialogPanel extends JPanel implements UIBoo
 	private String getTxtBookingHolderText() {
 		return txtBookingHolder.getText();
 	}
+	
+
 
 	private String getTxtBookingStartTimeText() {
 		String bookingStartTime = "";
@@ -205,12 +207,19 @@ public abstract class UIBookingSystemDialogPanel extends JPanel implements UIBoo
 		return bookingStartTime;
 	}
 	
-	private boolean getRecuringSelected() {
+	public boolean getRecuringSelected() {
 		return chkRecuring.isSelected();
 	}
 	
-	private int getWeeksRecuringFor() {
-		return Integer.parseInt(txtWeeksRecuring.getText());
+	public int getWeeksRecuringFor() {
+		if(chkRecuring.isSelected()) {
+			try { 
+			return Integer.parseInt(txtWeeksRecuring.getText());
+			} catch (NumberFormatException nfe) {
+				return 0;
+			}
+		}
+		return 0;
 	}
 
 	private String getTxtBookingCollectionTimeText() {

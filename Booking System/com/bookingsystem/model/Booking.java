@@ -15,7 +15,8 @@ public final class Booking  {
 	private Date bookingStartTime;
 	private Date bookingCollectionTime;
 	private Date bookingDate;
-	
+	private int weeksRecuring;
+	private boolean isRecuringBooking;
 	private Equipment requiredEquipment;
 	private String bookingHolder;
 	private static final DateFormat BOOKING_TIME_FORMAT = new SimpleDateFormat("HH:mm", Locale.ENGLISH);
@@ -84,6 +85,23 @@ public final class Booking  {
 
 	public String getBookingHolder() {
 		return bookingHolder;
+	}
+	
+	public void setIsRecuring(boolean isRecuringBooking) {
+		this.isRecuringBooking = isRecuringBooking;
+	}
+	
+	public boolean getIsRecuringBooking() {
+		return this.isRecuringBooking;
+	}
+	
+	
+	public int getWeeksRecuring() {
+		return this.weeksRecuring;
+	}
+	
+	public void setWeeksRecuring(int weeksRecuring) {
+		this.weeksRecuring = weeksRecuring;
 	}
 
 	public boolean getBookingCompleted() { return bookingCompleted; }
@@ -156,7 +174,8 @@ public final class Booking  {
 		if (bookingDate != null) {
 			if (BOOKING_DATE_FORMAT.format(bookingDate).equals(BOOKING_DATE_FORMAT.format(rightNow))) {
 				try {
-					return BOOKING_TIME_FORMAT.parse(BOOKING_TIME_FORMAT.format(rightNow)).after(BOOKING_TIME_FORMAT.parse(BOOKING_TIME_FORMAT.format(bookingStartTime)));
+					return BOOKING_TIME_FORMAT.parse(BOOKING_TIME_FORMAT.format(rightNow)).after(BOOKING_TIME_FORMAT.parse(BOOKING_TIME_FORMAT.format(bookingStartTime))) &&
+							BOOKING_TIME_FORMAT.parse(BOOKING_TIME_FORMAT.format(rightNow)).after(BOOKING_TIME_FORMAT.parse(BOOKING_TIME_FORMAT.format(bookingCollectionTime)));
 				} catch (ParseException e) {
 					return false;
 				}

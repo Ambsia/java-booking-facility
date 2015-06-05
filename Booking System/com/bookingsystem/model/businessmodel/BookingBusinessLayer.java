@@ -9,6 +9,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Locale;
 
 import com.bookingsystem.helpers.MessageBox;
@@ -21,7 +22,7 @@ import com.bookingsystem.model.Equipment;
 public class BookingBusinessLayer extends BusinessLayer implements Iterable<Booking> {
 
 
-    private final ArrayList<Booking> bookings;
+    private final List<Booking> bookings;
     private final ArrayList<Booking> archivedBookings;
     private int currentIndexOfBookingInList;
 

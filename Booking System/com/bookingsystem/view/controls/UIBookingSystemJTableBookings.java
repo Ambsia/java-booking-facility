@@ -5,6 +5,7 @@ import java.util.Calendar;
 
 import com.bookingsystem.model.Booking;
 import com.bookingsystem.model.Equipment;
+import com.bookingsystem.model.tablemodel.ArchiveTableModel;
 import com.bookingsystem.model.tablemodel.BookingTableModel;
 
 /**
@@ -12,9 +13,9 @@ import com.bookingsystem.model.tablemodel.BookingTableModel;
  */
 public class UIBookingSystemJTableBookings extends UIBookingSystemJTable {
 
-	private final BookingTableModel bookingTableModel;
+	private final ArchiveTableModel bookingTableModel;
 
-	public UIBookingSystemJTableBookings(BookingTableModel bookingTableModel) {
+	public UIBookingSystemJTableBookings(ArchiveTableModel bookingTableModel) {
 		super();
 		this.bookingTableModel = bookingTableModel;
 		this.setModel(this.bookingTableModel);

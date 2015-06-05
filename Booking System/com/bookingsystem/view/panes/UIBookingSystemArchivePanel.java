@@ -9,6 +9,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
 import com.bookingsystem.model.Booking;
+import com.bookingsystem.model.tablemodel.ArchiveTableModel;
 import com.bookingsystem.model.tablemodel.BookingTableModel;
 import com.bookingsystem.view.controls.UIBookingSystemJTable;
 import com.bookingsystem.view.controls.UIBookingSystemJTableBookings;
@@ -23,11 +24,10 @@ public class UIBookingSystemArchivePanel extends JPanel {
     private BookingTableModel model;
     private UIBookingSystemArchiveControlPanel uiBookingSystemArchiveControlPanel;
 
-
-
+    
     private UIBookingSystemArchiveViewPanel uiBookingSystemArchiveViewPanel;
     public UIBookingSystemArchivePanel() {
-        bookingSystemJTable = new UIBookingSystemJTableBookings(new BookingTableModel());
+        bookingSystemJTable = new UIBookingSystemJTableBookings(new ArchiveTableModel());
 
         setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
@@ -74,48 +74,50 @@ public class UIBookingSystemArchivePanel extends JPanel {
     public UIBookingSystemArchiveControlPanel getUiBookingSystemArchiveControlPanel() {
         return this.uiBookingSystemArchiveControlPanel;
     }
-    public ArrayList<String> getCurrentlySelectedRowAsStringArrayList() {
-        return bookingSystemJTable.getSelectedRowAsStringArrayList();
-    }
+    
 
-    public void addBookingToList(Booking booking) {
-        bookingSystemJTable.addRowToList(booking);
-    }
+//    public ArrayList<String> getCurrentlySelectedRowAsStringArrayList() {
+//        return bookingSystemJTable.getSelectedRowAsStringArrayList();
+//    }
+//
+//    public void addBookingToList(Booking booking) {
+//        bookingSystemJTable.addRowToList(booking);
+//    }
 
-    public void addBookingsToList(ArrayList<Booking> listOfBookings) {
-        ArrayList<Object> objectArrayList = new ArrayList<>();
-        for (Booking b : listOfBookings) {
-            objectArrayList.add(b);
-        }
-        bookingSystemJTable.addArrayOfRowsToList(objectArrayList);
-    }
-
-    public Booking getBookingFromList(int bookingId) {
-        return (Booking) bookingSystemJTable.getRowFromList(bookingId);
-    }
-
-    public int getIndexOfSelectedRow() {
-        return bookingSystemJTable.getSelectedRow();
-    }
-
-    public int getIDOfSelectedRow() {
-        return bookingSystemJTable.getIDOfSelectedRow();
-    }
-
-    public int getRowCountOfTable() {
-        return bookingSystemJTable.getRowCount();
-    }
-
-    public void replaceBookingInList(Booking newBooking) {
-        bookingSystemJTable.replaceRowInList(newBooking);
-    }
-
-    public void removeBookingFromTable() {
-        bookingSystemJTable.removeRowFromList();
-    }
-
-    public void removeAllBookings() {
-        bookingSystemJTable.removeAllRowsFromList();
-    }
+//    public void addBookingsToList(ArrayList<Booking> listOfBookings) {
+//        ArrayList<Object> objectArrayList = new ArrayList<>();
+//        for (Booking b : listOfBookings) {
+//            objectArrayList.add(b);
+//        }
+//        bookingSystemJTable.addArrayOfRowsToList(objectArrayList);
+//    }
+//
+//    public Booking getBookingFromList(int bookingId) {
+//        return (Booking) bookingSystemJTable.getRowFromList(bookingId);
+//    }
+//
+//    public int getIndexOfSelectedRow() {
+//        return bookingSystemJTable.getSelectedRow();
+//    }
+//
+//    public int getIDOfSelectedRow() {
+//        return bookingSystemJTable.getIDOfSelectedRow();
+//    }
+//
+//    public int getRowCountOfTable() {
+//        return bookingSystemJTable.getRowCount();
+//    }
+//
+//    public void replaceBookingInList(Booking newBooking) {
+//        bookingSystemJTable.replaceRowInList(newBooking);
+//    }
+//
+//    public void removeBookingFromTable() {
+//        bookingSystemJTable.removeRowFromList();
+//    }
+//
+//    public void removeAllBookings() {
+//        bookingSystemJTable.removeAllRowsFromList();
+//    }
 
 }

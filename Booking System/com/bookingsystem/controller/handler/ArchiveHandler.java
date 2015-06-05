@@ -30,9 +30,9 @@ public class ArchiveHandler implements ActionListener {
     	try {
         switch (e.getActionCommand()) {
             case "Load":
-                bookingSystemArchive.removeAllBookings();
+                //bookingSystemArchive.removeAllBookings();
                 if (!handler.getBookingBusinessLayer().getArchivedBookings().isEmpty()) {
-                bookingSystemArchive.addBookingsToList(handler.getBookingBusinessLayer().getArchivedBookings());
+                //bookingSystemArchive.addBookingsToList(handler.getBookingBusinessLayer().getArchivedBookings());
                 
                 int totalBookings = handler.getArchiveBusinessLayer().getTotalBookings();
                 int juniorBookings = 0;

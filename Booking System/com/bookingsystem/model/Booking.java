@@ -19,6 +19,7 @@ public final class Booking  {
 	private boolean isRecuringBooking;
 	private Equipment requiredEquipment;
 	private String bookingHolder;
+	private int bookingIndex;
 	private static final DateFormat BOOKING_TIME_FORMAT = new SimpleDateFormat("HH:mm", Locale.ENGLISH);
 	private static final DateFormat BOOKING_DATE_FORMAT = new SimpleDateFormat("dd.MM.yy", Locale.ENGLISH);
 
@@ -138,6 +139,7 @@ public final class Booking  {
 		this.bookingHolder = bookingHolder;
 		this.requiredEquipment = requiredEquipment; // this list will be passed when the booking is made
 		this.bookingCompleted = false;
+		this.bookingIndex =0;
 	}
 
 	
@@ -187,4 +189,11 @@ public final class Booking  {
 		}
 	}
 
+	public int getBookingIndex() {
+		return bookingIndex;
+	}
+
+	public void setBookingIndex(int bookingIndex) {
+		this.bookingIndex = bookingIndex;
+	}
 }

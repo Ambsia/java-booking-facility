@@ -5,8 +5,7 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.util.ArrayList;
 
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
+import javax.swing.*;
 
 import com.bookingsystem.model.Booking;
 import com.bookingsystem.model.tablemodel.ArchiveTableModel;
@@ -20,14 +19,14 @@ import com.bookingsystem.view.panelparts.controlpanes.UIBookingSystemArchiveCont
  * Created by Alex on 24/05/2015.
  */
 public class UIBookingSystemArchivePanel extends JPanel {
-    private final UIBookingSystemJTable bookingSystemJTable;
-    private BookingTableModel model;
+    private final JTable bookingSystemJTable;
+    private ArchiveTableModel archiveTableModel;
     private UIBookingSystemArchiveControlPanel uiBookingSystemArchiveControlPanel;
 
-    
+
     private UIBookingSystemArchiveViewPanel uiBookingSystemArchiveViewPanel;
     public UIBookingSystemArchivePanel() {
-        bookingSystemJTable = new UIBookingSystemJTableBookings(new ArchiveTableModel());
+        bookingSystemJTable = new JTable(archiveTableModel);
 
         setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
@@ -38,11 +37,11 @@ public class UIBookingSystemArchivePanel extends JPanel {
         gbc.weighty = 1;
         gbc.anchor = GridBagConstraints.FIRST_LINE_START;
         gbc.fill = GridBagConstraints.BOTH;
-        bookingSystemJTable.getColumn("Booking ID").setMinWidth(0);
-        bookingSystemJTable.getColumn("Booking ID").setMaxWidth(0);
-        bookingSystemJTable.getColumn("Booking ID").setPreferredWidth(0);
-        bookingSystemJTable.getColumn("Day").setMaxWidth(85);
-        bookingSystemJTable.getColumn("Date").setMaxWidth(80);
+//        bookingSystemJTable.getColumn("Booking ID").setMinWidth(0);
+//        bookingSystemJTable.getColumn("Booking ID").setMaxWidth(0);
+//        bookingSystemJTable.getColumn("Booking ID").setPreferredWidth(0);
+//        bookingSystemJTable.getColumn("Day").setMaxWidth(85);
+//        bookingSystemJTable.getColumn("Date").setMaxWidth(80);
         JScrollPane jScrollPane = new JScrollPane(bookingSystemJTable);
         gbc.gridheight = 2;
         this.add(jScrollPane, gbc);
@@ -74,8 +73,23 @@ public class UIBookingSystemArchivePanel extends JPanel {
     public UIBookingSystemArchiveControlPanel getUiBookingSystemArchiveControlPanel() {
         return this.uiBookingSystemArchiveControlPanel;
     }
-    
 
+    public void setJTableModel(ArchiveTableModel archiveTableModel) {
+        this.archiveTableModel = archiveTableModel;
+        this.bookingSystemJTable.setModel(this.archiveTableModel);
+        this.bookingSystemJTable.setAutoCreateRowSorter(true);
+        this.archiveTableModel.fireTableDataChanged();
+    }
+
+    public void removeAllBookings() {
+        this.removeAll();
+        this.archiveTableModel.fireTableDataChanged();
+    }
+
+
+    public ArchiveTableModel getJTableModel() {
+        return this.archiveTableModel;
+    }
 //    public ArrayList<String> getCurrentlySelectedRowAsStringArrayList() {
 //        return bookingSystemJTable.getSelectedRowAsStringArrayList();
 //    }

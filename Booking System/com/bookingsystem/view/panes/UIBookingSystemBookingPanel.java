@@ -5,14 +5,14 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.util.ArrayList;
+import java.util.List;
 
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
+import javax.swing.*;
+import javax.swing.table.TableModel;
+import javax.swing.table.TableRowSorter;
 
 import com.bookingsystem.model.Booking;
 import com.bookingsystem.model.tablemodel.BookingTableModel;
-import com.bookingsystem.view.controls.UIBookingSystemJTableBookings;
 import com.bookingsystem.view.panelparts.UIBookingSystemBookingViewPanel;
 import com.bookingsystem.view.panelparts.controlpanes.UIBookingSystemBookingControlPanel;
 
@@ -41,16 +41,11 @@ public class UIBookingSystemBookingPanel extends JPanel {
 		gbc.weighty = 1;
 		gbc.anchor = GridBagConstraints.FIRST_LINE_START;
 		gbc.fill = GridBagConstraints.BOTH;
-
-
 //		bookingSystemJTable.getColumn("Booking ID").setMinWidth(0);
 //		bookingSystemJTable.getColumn("Booking ID").setMaxWidth(0);
 //		bookingSystemJTable.getColumn("Booking ID").setPreferredWidth(0);
 //		bookingSystemJTable.getColumn("Day").setMaxWidth(85);
 //		bookingSystemJTable.getColumn("Date").setMaxWidth(80);
-
-		
-
 		JScrollPane jScrollPane = new JScrollPane(bookingSystemJTable);
 		gbc.gridheight = 2;
 		this.add(jScrollPane, gbc);
@@ -75,51 +70,8 @@ public class UIBookingSystemBookingPanel extends JPanel {
 		bookingSystemControlPanel.setMinimumSize(new Dimension(100, 100));
 		bookingSystemControlPanel.setPreferredSize(new Dimension(100, 100));
 		this.add(bookingSystemControlPanel, gbc);
-	}
 
-//	public ArrayList<String> getCurrentlySelectedRowAsStringArrayList() {
-//		return bookingSystemJTable.getSelectedRowAsStringArrayList();
-//	}
-//	
-//	public void addBookingToList(Booking booking) {
-//		bookingSystemJTable.addRowToList(booking);
-//	}
-//
-//	public void addBookingsToList(ArrayList<Booking> listOfBookings) {
-//		ArrayList<Object> objectArrayList = new ArrayList<>();
-//		for (Booking b : listOfBookings) {
-//			objectArrayList.add(b);
-//		}
-//		bookingSystemJTable.addArrayOfRowsToList(objectArrayList);
-//	}
-//	
-//	public Booking getBookingFromList(int bookingId) {
-//		return (Booking) bookingSystemJTable.getRowFromList(bookingId);
-//	}
-//
-//	public int getIndexOfSelectedRow() {
-//		return bookingSystemJTable.getSelectedRow();
-//	}
-//
-//	public int getIDOfSelectedRow() {
-//		return bookingSystemJTable.getIDOfSelectedRow();
-//	}
-//
-//	public int getRowCountOfTable() {
-//		return bookingSystemJTable.getRowCount();
-//	}
-//
-//	public void replaceBookingInList(Booking newBooking) {
-//		bookingSystemJTable.replaceRowInList(newBooking);
-//	}
-//
-//	public void removeBookingFromTable() {
-//		bookingSystemJTable.removeRowFromList();
-//	}
-//
-//	public void removeAllBookings() {
-//		bookingSystemJTable.removeAllRowsFromList();
-//	}
+	}
 
 	public UIBookingSystemBookingViewPanel getBookingSystemViewPanel() { return bookingSystemViewPanel; }
 
@@ -129,28 +81,43 @@ public class UIBookingSystemBookingPanel extends JPanel {
 		this.bookingSystemModel = bookingTableModel;
 		this.bookingSystemJTable.setModel(this.bookingSystemModel);
 		this.bookingSystemJTable.setAutoCreateRowSorter(true);
+
+		TableRowSorter<TableModel> sorter = new TableRowSorter<>(bookingSystemModel);
+		bookingSystemJTable.setRowSorter(sorter);
+		List<RowSorter.SortKey> sortKeys = new ArrayList<>();
+
+		int columnIndexToSort = 2;
+		sortKeys.add(new RowSorter.SortKey(columnIndexToSort, SortOrder.ASCENDING));
+
+		sorter.setSortKeys(sortKeys);
 		this.bookingSystemModel.fireTableDataChanged();
 	}
-	
+
 	public BookingTableModel getJTableModel() {
 		return this.bookingSystemModel;
 	}
-//	public int selectedRowCount() {
-//		return bookingSystemJTable.getSelectedRowCount();
-//	}
-//
-//	public void removeRow(int row) {
-//		bookingSystemJTable.removeRowFromList();
-//	}
-//
-//	public void removeSelectedRowsFromList() {
-//		bookingSystemJTable.removeSelectedRowsFromList();
-//	}
-//
-//	public int getIDWithIndex(int index) { return bookingSystemJTable.getIDWithIndex(index); }
 
-	public int[] getSelectedRows() {
-		return bookingSystemJTable.getSelectedRows();
+	public int selectedRowCount() {
+		return bookingSystemJTable.getSelectedRowCount();
 	}
 
+	public int rowViewIndexToModel(int row) {
+		return bookingSystemJTable.convertRowIndexToModel(row);
+	}
+
+	public Object getValueAt(int row, int column) {
+		return bookingSystemModel.getValueAt(row,column);
+	}
+
+	public List<Integer> getSelectedRows() {
+		List<Integer> integerList = new ArrayList<>();
+		for (int i = 0; i<bookingSystemJTable.getSelectedRows().length;i++) {
+			integerList.add(rowViewIndexToModel(bookingSystemJTable.getSelectedRows()[i]));
+		}
+		return integerList;
+	}
+
+	public int getSelectedRow() {
+		return bookingSystemJTable.getSelectedRow();
+	}
 }

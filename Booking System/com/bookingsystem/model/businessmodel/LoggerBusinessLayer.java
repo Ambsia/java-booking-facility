@@ -6,6 +6,8 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.sql.Types;
 import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 import com.bookingsystem.helpers.MessageBox;
 import com.bookingsystem.model.Account;
@@ -14,12 +16,13 @@ import com.bookingsystem.model.Log;
 /**
  * Author: [Alex]
  */
-public class LoggerBusinessLayer extends BusinessLayer {
+public class LoggerBusinessLayer extends BusinessLayer implements Iterable<Log> {
 
     private Account accountCurrentlyLoggedIn = null;
+    private List<Log> logList;
 
     public LoggerBusinessLayer() {
-
+        logList = new ArrayList<>();
     }
 
     public void insertLog(Log log) {
@@ -73,11 +76,11 @@ public class LoggerBusinessLayer extends BusinessLayer {
         }
     }
 
-    public ArrayList<Log> getLogsForAccount(int currentAccountID) {
+    public void getLogsForAccount(int currentAccountID) {
         getDatabaseConnector().openConnection();
         if (getDatabaseConnector().isConnected()) {
             if (!getDatabaseConnector().isConnectionClosed()) {
-                ArrayList<Log> logArrayList = new ArrayList<>();
+                logList.clear();
                 ArrayList<Integer> logIDS = new ArrayList<>();
                 ArrayList<Integer> integers = new ArrayList<>();
                 if (currentAccountID != -1) {
@@ -86,7 +89,7 @@ public class LoggerBusinessLayer extends BusinessLayer {
                         csGetLogsForAccount.setInt(1, currentAccountID);
                         try (ResultSet rs = csGetLogsForAccount.executeQuery()) {
                             while (rs.next()) {
-                                logArrayList.add(new Log(rs.getString(2), rs.getString(3), rs.getTimestamp(4)));
+                                logList.add(new Log(rs.getString(2), rs.getString(3), rs.getTimestamp(4)));
                                 logIDS.add(rs.getInt(1));
                             }
                         }
@@ -100,12 +103,11 @@ public class LoggerBusinessLayer extends BusinessLayer {
                                 integers.add(csGetIDPlayedWith.getInt(2));
                             }
 
-                            for (int k = 0; k < logArrayList.size(); k++) {
-                                logArrayList.get(k).setLogID(logIDS.get(k));
-                                logArrayList.get(k).setIdPlayedWith(integers.get(k));
+                            for (int k = 0; k < logList.size(); k++) {
+                                logList.get(k).setLogID(logIDS.get(k));
+                                logList.get(k).setIdPlayedWith(integers.get(k));
                             }
 
-                            return logArrayList;
                         }
                     } catch (SQLException e) {
                         MessageBox.errorMessageBox("There was an issue while retrieving logs for an account.\n" + "Does this make any sense to you.." + e.toString() + "?");
@@ -116,10 +118,14 @@ public class LoggerBusinessLayer extends BusinessLayer {
             }
             getDatabaseConnector().closeConnection();
         }
-        return null;
     }
 
     public void setAccountCurrentlyLoggedIn(Account accountCurrentlyLoggedIn) {
         this.accountCurrentlyLoggedIn = accountCurrentlyLoggedIn;
+    }
+
+    @Override
+    public Iterator<Log> iterator() {
+        return logList.iterator();
     }
 }

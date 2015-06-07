@@ -20,6 +20,7 @@ public final class Account {
 	private final String hashedPassword;
 	private int userLevel;
 	private String userSalt;
+	private int accountIndex;
 	public int getUserLevel() {
 		return userLevel;
 	}
@@ -100,5 +101,9 @@ public final class Account {
 				", userLevel=" + userLevel +
 				", userSalt='" + userSalt + '\'' +
 				'}';
+	}
+
+	public void setBookingIndex(int i) {
+		this.accountIndex = i;
 	}
 }

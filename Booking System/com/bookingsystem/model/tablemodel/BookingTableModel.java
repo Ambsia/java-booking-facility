@@ -2,9 +2,7 @@ package com.bookingsystem.model.tablemodel;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
+import java.util.*;
 
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableModel;
@@ -66,16 +64,15 @@ public class BookingTableModel extends AbstractTableModel {
     public Object getValueAt(int rowIndex, int columnIndex) {
         Booking booking = bookingList.get(rowIndex);
         Object returnValue = null;
-       
+
         switch (columnIndex) {
         case COLUMN_NO:
-            returnValue = booking.getBookingIndex();
+            returnValue = booking.getBookingID();
             break;
         case COLUMN_DAY:
             returnValue = booking.getBookingDay();
             break;
         case COLUMN_DATE:
-        	System.out.println(booking.getBookingDate());
             returnValue = BOOKING_DATE_FORMAT.format(booking.getBookingDate());
             break;
         case COLUMN_TIME:
@@ -93,7 +90,6 @@ public class BookingTableModel extends AbstractTableModel {
         default:
             throw new IllegalArgumentException("Invalid column index");
         }
-         
         return returnValue;
     }
      
@@ -129,15 +125,52 @@ public class BookingTableModel extends AbstractTableModel {
             throw new IllegalArgumentException("Invalid column index");
         }     
         this.fireTableCellUpdated(rowIndex, columnIndex);
+
+    }
+
+    public void clearBookingList() {
+        this.bookingList.clear();
+        System.out.println("Booking List Cleared. New Size: " + this.bookingList.size());
+        this.fireTableDataChanged();
     }
     
     public void addBooking(Booking booking) {
     	this.bookingList.add(booking);
-    	this.fireTableRowsInserted(this.bookingList.size()-2, this.bookingList.size()-1);
+        System.out.println("Booking Added To List. New Size: " + this.bookingList.size());
+        this.fireTableDataChanged();
     }
-    
+
+    public void addBookingList(List<Booking> bookingList) {
+        for (Booking b : bookingList) {
+            this.bookingList.add(b);
+            System.out.println("Booking Added To List. New Size: " + this.bookingList.size());
+            this.fireTableDataChanged();
+        }
+    }
+
     public void removeBooking(Booking booking) {
     	this.bookingList.remove(booking);
-    	this.fireTableRowsDeleted(this.bookingList.size()-3, this.bookingList.size()-2);
+        this.fireTableDataChanged();
     }
+
+    public Booking getBooking(int id) {
+        for (Booking b : this.bookingList) {
+            if (b.getBookingID() == id) {
+                return b;
+            }
+        }
+        return null;
+    }
+
+    public void removeRows(List<Integer> indices) {
+        Collections.sort(indices);
+        for (int i = indices.size() - 1; i >= 0; i--) {
+            System.out.println("index removing: " + indices.get(i) + " " + this.bookingList.get(indices.get(i)).toString()) ;
+            this.bookingList.remove(indices.get(i).intValue());
+            System.out.println("Booking Removed from List. New Size: " + this.bookingList.size());
+            fireTableRowsDeleted(indices.get(i), indices.get(i));
+        }
+        fireTableDataChanged();
+    }
+
 }

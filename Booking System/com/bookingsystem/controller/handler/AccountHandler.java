@@ -3,7 +3,9 @@ package com.bookingsystem.controller.handler;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Date;
+import java.util.Iterator;
 
+import com.bookingsystem.model.tablemodel.AccountTableModel;
 import org.apache.commons.collections.IteratorUtils;
 
 import com.bookingsystem.helpers.MessageBox;
@@ -23,12 +25,14 @@ public class AccountHandler implements ActionListener {
 	private final UIBookingSystemAccountAddPanel bookingSystemAccountAddPanel;
 	private int currentAccountIDBeingProcessed;
 	private final Handler handler;
+	private AccountTableModel accountTableModel;
 
 	public AccountHandler(Handler handler) {
 		this.handler = handler;
 		this.bookingSystemAdminPanel = handler.getView().getBookingSystemTabbedPane().getBookingSystemAdminPanel();
 		this.bookingSystemAdminViewPanel = bookingSystemAdminPanel.getBookingSystemAdminViewPanel();
 		this.bookingSystemAccountAddPanel = bookingSystemAdminPanel.getBookingSystemAdminControlPanel().getBookingSystemAccountAddPanel();
+		this.accountTableModel = bookingSystemAdminPanel.getJTableModel();
 		this.currentAccountIDBeingProcessed = -1;
 	}
 	@Override
@@ -36,11 +40,9 @@ public class AccountHandler implements ActionListener {
 		Log log = new Log(e.getActionCommand(), this.getClass().getSimpleName(), new Date());
 		switch (e.getActionCommand()) {
 			case "Load Accounts":
+				accountTableModel.clearAccountList();
 				handler.getAccountManagementBusinessLayer().getAllAccounts();
-				bookingSystemAdminPanel.removeAllAccounts();
-				for (Object object : IteratorUtils.toList(handler.getAccountManagementBusinessLayer().iterator())) {
-					bookingSystemAdminPanel.addAccountToList((Account) object);
-				}
+				accountTableModel.addAccountList(IteratorUtils.toList(handler.getAccountManagementBusinessLayer().iterator()));
 				break;
 			case "Add Account":
 				try {
@@ -57,7 +59,7 @@ public class AccountHandler implements ActionListener {
 							Account account = new Account(0, level, username, password);
 							handler.getAccountManagementBusinessLayer().addAccount(account);
 							log.setAccountIDCreated(account.getUserID());
-							bookingSystemAdminPanel.addAccountToList(account);
+							accountTableModel.addAccount(account);
 						}
 					} else {
 						MessageBox.infoMessageBox("You do not have enough access to do this.");
@@ -67,17 +69,21 @@ public class AccountHandler implements ActionListener {
 				}
 				break;
 			case "Remove Account":
-				this.currentAccountIDBeingProcessed = bookingSystemAdminPanel.getIDOfSelectedRow();
+				int modelRow = bookingSystemAdminPanel.rowViewIndexToModel(bookingSystemAdminPanel.getSelectedRow());
+				this.currentAccountIDBeingProcessed = (int) bookingSystemAdminPanel.getValueAt(modelRow, 0);
 				if ( currentAccountIDBeingProcessed != -1) {
 					if (handler.getAccountBusinessLayer().getAccountLoggedIn().getUserLevel() >= 3) {
-						Account account = bookingSystemAdminPanel.getAccountFromList(bookingSystemAdminPanel.getIndexOfSelectedRow());
+						this.currentAccountIDBeingProcessed = (int) accountTableModel.getValueAt(bookingSystemAdminPanel.getSelectedRow(), 0);
+						Account account = accountTableModel.getAccount(currentAccountIDBeingProcessed);
 						if (account.getUserLevel() < handler.getAccountBusinessLayer().getAccountLoggedIn().getUserLevel()) {
-							log.setAccountIDDeleted(bookingSystemAdminPanel.getIDOfSelectedRow());
-							handler.getAccountManagementBusinessLayer().setCurrentAccountID(bookingSystemAdminPanel.getIDOfSelectedRow());
-							handler.getAccountManagementBusinessLayer().setCurrentIndexOfAccountInList(bookingSystemAdminPanel.getIndexOfSelectedRow());
+
+							log.setAccountIDDeleted(currentAccountIDBeingProcessed);
+							handler.getAccountManagementBusinessLayer().setCurrentAccountID(currentAccountIDBeingProcessed);
+							handler.getAccountManagementBusinessLayer().setCurrentIndexOfAccountInList(bookingSystemAdminPanel.getSelectedRow());
 							handler.getAccountManagementBusinessLayer().removeAccount();
-							bookingSystemAdminPanel.removeAccountFromTable();
 							handler.getLoggerBusinessLayer().removeLogsForAccount(account.getUserID());
+							accountTableModel.removeRows(bookingSystemAdminPanel.getSelectedRows());
+
 						} else {
 							MessageBox.errorMessageBox("The user's privilege level is too high, and cannot be removed.");
 						}
@@ -89,15 +95,14 @@ public class AccountHandler implements ActionListener {
 				}
 				break;
 			case "View Exceptions":
-
 				break;
 			case "View Activity":
-				this.currentAccountIDBeingProcessed = bookingSystemAdminPanel.getIDOfSelectedRow();
+				modelRow = bookingSystemAdminPanel.rowViewIndexToModel(bookingSystemAdminPanel.getSelectedRow());
+				this.currentAccountIDBeingProcessed = (int) bookingSystemAdminPanel.getValueAt(modelRow, 0);
 				if ( currentAccountIDBeingProcessed != -1) {
-					bookingSystemAdminViewPanel.removeAllLogs();
-					for (Object object : IteratorUtils.toList(handler.getLoggerBusinessLayer().getLogsForAccount(bookingSystemAdminPanel.getIDOfSelectedRow()).iterator())) {
-						bookingSystemAdminViewPanel.addLogToList((Log) object);
-					}
+					bookingSystemAdminViewPanel.getJTableModel().clearArchiveList();
+					handler.getLoggerBusinessLayer().getLogsForAccount(this.currentAccountIDBeingProcessed);
+					bookingSystemAdminViewPanel.getJTableModel().addLogList(IteratorUtils.toList(handler.getLoggerBusinessLayer().iterator()));
 				} else {
 					MessageBox.errorMessageBox("You must select an account to view logs.");
 				}

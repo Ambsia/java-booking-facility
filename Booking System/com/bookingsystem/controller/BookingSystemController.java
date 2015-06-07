@@ -2,6 +2,9 @@ package com.bookingsystem.controller;
 
 import java.util.List;
 
+import com.bookingsystem.model.tablemodel.AccountTableModel;
+import com.bookingsystem.model.tablemodel.ArchiveTableModel;
+import com.bookingsystem.model.tablemodel.LogTableModel;
 import org.apache.commons.collections.IteratorUtils;
 
 import com.bookingsystem.controller.handler.AccountHandler;
@@ -44,14 +47,21 @@ public class BookingSystemController {
         UILoginPanel loginPanel = view.getLoginPanel();
         //Create All Business Lists Now//
         bookingBusinessLayer.populateBookingListOnLoad();
+        accountManagementBusinessLayer.getAllAccounts();
         //Create All Business Lists Now//
         //
         //All Table Models Here//
-        BookingTableModel bookingTableModel = new BookingTableModel(IteratorUtils.toList(bookingBusinessLayer.iterator()));       
+        BookingTableModel bookingTableModel = new BookingTableModel(IteratorUtils.toList(bookingBusinessLayer.iterator()));
+        ArchiveTableModel archiveTableModel = new ArchiveTableModel(bookingBusinessLayer.getArchivedBookings());
+        LogTableModel logTableModel = new LogTableModel(IteratorUtils.toList(loggerBusinessLayer.iterator()));
+        AccountTableModel accountTableModel = new AccountTableModel(IteratorUtils.toList(accountManagementBusinessLayer.iterator()));
         //All Table Models Here\\
         //
         //Send Table Models Here//
         bookingSystemPanel.setJTableModel(bookingTableModel);
+        bookingArchivePanel.setJTableModel(archiveTableModel);
+        bookingSystemAdminPanel.setJTableModel(accountTableModel);
+        bookingSystemAdminPanel.getBookingSystemAdminViewPanel().setJTableModel(logTableModel);
         //Send Table Models Here\\
         //
         

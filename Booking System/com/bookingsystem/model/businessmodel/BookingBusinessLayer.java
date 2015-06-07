@@ -23,7 +23,7 @@ public class BookingBusinessLayer extends BusinessLayer implements Iterable<Book
 
 
     private final List<Booking> bookings;
-    private final ArrayList<Booking> archivedBookings;
+    private final List<Booking> archivedBookings;
     private int currentIndexOfBookingInList;
 
     public BookingBusinessLayer() {
@@ -75,6 +75,7 @@ public class BookingBusinessLayer extends BusinessLayer implements Iterable<Book
                     callableStatement.registerOutParameter(9, Types.INTEGER);
                     getDatabaseConnector().execute();
                     booking.setBookingID(callableStatement.getInt(9));
+                    System.out.println(booking.getBookingID());
                     if(booking.isBeforeToday()) {
                         this.archivedBookings.add(booking);
                     } else {
@@ -249,7 +250,7 @@ public class BookingBusinessLayer extends BusinessLayer implements Iterable<Book
         return bookings.iterator();
     }
 
-    public ArrayList<Booking> getArchivedBookings() {
+    public List<Booking> getArchivedBookings() {
         return this.archivedBookings;
     }
 

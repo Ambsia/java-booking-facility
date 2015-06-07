@@ -5,29 +5,25 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.util.ArrayList;
+import java.util.List;
 
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
+import javax.swing.*;
 
 import com.bookingsystem.model.Log;
+import com.bookingsystem.model.tablemodel.BookingTableModel;
 import com.bookingsystem.model.tablemodel.LogTableModel;
-import com.bookingsystem.view.controls.UIBookingSystemJTableLogs;
 
 /**
  * Author: [Alex]
  */
 public class UIBookingSystemAdminViewPanel extends JPanel {
-	private UIBookingSystemJTableLogs bookingSystemJTableLogs;
+	private JTable bookingSystemJTableLogs;
+	private LogTableModel logTableModel;
 	private JScrollPane jScrollPane;
 	public UIBookingSystemAdminViewPanel() {
-		bookingSystemJTableLogs = new UIBookingSystemJTableLogs(new LogTableModel());
+		bookingSystemJTableLogs = new JTable(logTableModel);
 		setLayout(new GridBagLayout());
 		jScrollPane = new JScrollPane(bookingSystemJTableLogs);
-		bookingSystemJTableLogs.getColumn("ID").setPreferredWidth(40);
-
-		bookingSystemJTableLogs.getColumn("Event").setPreferredWidth(80);
-
-		bookingSystemJTableLogs.getColumn("ID Modified").setPreferredWidth(40);
 		addControlToPanel(jScrollPane);
 	}
 
@@ -43,41 +39,79 @@ public class UIBookingSystemAdminViewPanel extends JPanel {
 
 		add(component, gbc);
 	}
-	public void addLogToList(Log log) {
-		bookingSystemJTableLogs.addRowToList(log);
+
+
+	public void setJTableModel(LogTableModel logTableModel) {
+		this.logTableModel = logTableModel;
+		this.bookingSystemJTableLogs.setModel(this.logTableModel);
+		this.bookingSystemJTableLogs.setAutoCreateRowSorter(true);
+		this.logTableModel.fireTableDataChanged();
 	}
 
-	public void addLogsToList(ArrayList<Log> listOfLogs) {
-		ArrayList<Object> objectArrayList = new ArrayList<>();
-		for (Log log : listOfLogs) {
-			objectArrayList.add(log);
+	public LogTableModel getJTableModel() {
+		return this.logTableModel;
+	}
+
+	public int selectedRowCount() {
+		return bookingSystemJTableLogs.getSelectedRowCount();
+	}
+
+	public int rowViewIndexToModel(int row) {
+		return bookingSystemJTableLogs.convertRowIndexToModel(row);
+	}
+
+	public Object getValueAt(int row, int column) {
+		return logTableModel.getValueAt(row,column);
+	}
+
+	public List<Integer> getSelectedRows() {
+		List<Integer> integerList = new ArrayList<>();
+		for (int i = 0; i<bookingSystemJTableLogs.getSelectedRows().length;i++) {
+			integerList.add(rowViewIndexToModel(bookingSystemJTableLogs.getSelectedRows()[i]));
 		}
-		bookingSystemJTableLogs.addArrayOfRowsToList(objectArrayList);
+		return integerList;
 	}
 
-	public Log getLogFromList(int logId) {
-		return (Log) bookingSystemJTableLogs.getRowFromList(logId);
-	}
-
-	public int getIndexOfSelectedRow() {
+	public int getSelectedRow() {
 		return bookingSystemJTableLogs.getSelectedRow();
 	}
 
-	public int getIDOfSelectedRow() {
-		return bookingSystemJTableLogs.getIDOfSelectedRow();
-	}
 
-	public int getRowCountOfTable() {
-		return bookingSystemJTableLogs.getRowCount();
-	}
-
-	public void removeLogFromTable() {
-		bookingSystemJTableLogs.removeRowFromList();
-	}
-
-	public void removeAllLogs() {
-		bookingSystemJTableLogs.removeAllRowsFromList();
-	}
+//	public void addLogToList(Log log) {
+//		bookingSystemJTableLogs.addRowToList(log);
+//	}
+//
+//	public void addLogsToList(ArrayList<Log> listOfLogs) {
+//		ArrayList<Object> objectArrayList = new ArrayList<>();
+//		for (Log log : listOfLogs) {
+//			objectArrayList.add(log);
+//		}
+//		bookingSystemJTableLogs.addArrayOfRowsToList(objectArrayList);
+//	}
+//
+//	public Log getLogFromList(int logId) {
+//		return (Log) bookingSystemJTableLogs.getRowFromList(logId);
+//	}
+//
+//	public int getIndexOfSelectedRow() {
+//		return bookingSystemJTableLogs.getSelectedRow();
+//	}
+//
+//	public int getIDOfSelectedRow() {
+//		return bookingSystemJTableLogs.getIDOfSelectedRow();
+//	}
+//
+//	public int getRowCountOfTable() {
+//		return bookingSystemJTableLogs.getRowCount();
+//	}
+//
+//	public void removeLogFromTable() {
+//		bookingSystemJTableLogs.removeRowFromList();
+//	}
+//
+//	public void removeAllLogs() {
+//		bookingSystemJTableLogs.removeAllRowsFromList();
+//	}
 }
 
 

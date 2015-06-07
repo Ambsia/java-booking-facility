@@ -8,6 +8,7 @@ import java.sql.SQLException;
 import java.sql.Types;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 import com.bookingsystem.helpers.MessageBox;
 import com.bookingsystem.helpers.ReturnSpecifiedPropertyValues;
@@ -17,14 +18,14 @@ import com.bookingsystem.model.Account;
  * Author: [Alex]
  */
 public class AccountManagementBusinessLayer extends BusinessLayer implements Iterable<Account>{
-	private final ArrayList<Account> accounts;
+	private final List<Account> accountList;
 
 	private final String databaseConnectionString;
 	private int currentAccountID;
 	private int currentIndexInAccountList;
 
 	public AccountManagementBusinessLayer() {
-		this.accounts = new ArrayList<>();
+		this.accountList = new ArrayList<>();
 
 		this.currentAccountID = -1;
 		ReturnSpecifiedPropertyValues returnSpecifiedPropertyValues = new ReturnSpecifiedPropertyValues("sqlconfig.properties");
@@ -42,7 +43,7 @@ public class AccountManagementBusinessLayer extends BusinessLayer implements Ite
 			callInsertAccount.registerOutParameter(5, Types.INTEGER);
 			callInsertAccount.execute();
 			account.setUserID(callInsertAccount.getInt(5));
-			this.accounts.add(account);
+			this.accountList.add(account);
 		} catch (SQLException e) {
 			MessageBox.errorMessageBox("There was an issue while adding an account.\n" + "Does this make any sense to you.." + e.toString() + "?");
 		}
@@ -62,12 +63,12 @@ public class AccountManagementBusinessLayer extends BusinessLayer implements Ite
 	}
 
 	public void getAllAccounts() {
-		accounts.clear();
+		accountList.clear();
 		try (Connection connection = DriverManager.getConnection(databaseConnectionString) ;
 		     CallableStatement callableStatement = connection.prepareCall("{CALL spGetAllAccounts}")) {
 			ResultSet rs = callableStatement.executeQuery();
 			while (rs.next()) {
-				this.accounts.add(new Account(rs.getInt(1), rs.getInt(4), rs.getString(2), rs.getString(3)));
+				this.accountList.add(new Account(rs.getInt(1), rs.getInt(4), rs.getString(2), rs.getString(3)));
 			}
 		} catch (SQLException e) {
 			MessageBox.errorMessageBox("There was an issue while retrieving accounts.\n" + "Does this make any sense to you.." + e.toString() + "?");
@@ -79,7 +80,7 @@ public class AccountManagementBusinessLayer extends BusinessLayer implements Ite
 
 	@Override
 	public Iterator<Account> iterator() {
-		return accounts.iterator();
+		return accountList.iterator();
 	}
 
 	public void setCurrentAccountID(int currentAccountID) {
@@ -87,22 +88,22 @@ public class AccountManagementBusinessLayer extends BusinessLayer implements Ite
 	}
 
 	void removeAccountFromList() {
-		if (this.currentIndexInAccountList >= 0 && accounts.size() > 0) {
-			this.accounts.remove(this.currentIndexInAccountList);
+		if (this.currentIndexInAccountList >= 0 && accountList.size() > 0) {
+			this.accountList.remove(this.currentIndexInAccountList);
 		} else {
 			MessageBox.errorMessageBox("Nothing selected, or there is nothing to delete.");
 		}
 	}
 
 	void addAccountToListAtAGivenPosition(Account account){
-		if (currentIndexInAccountList >= 0 && currentIndexInAccountList <= accounts.size()) {
-			this.accounts.add(currentIndexInAccountList, account);
+		if (currentIndexInAccountList >= 0 && currentIndexInAccountList <= accountList.size()) {
+			this.accountList.add(currentIndexInAccountList, account);
 		}
 	}
 
 	public void setCurrentIndexOfAccountInList(int indexOfBookingInList) {
 		try {
-			if (indexOfBookingInList >= 0 && indexOfBookingInList <= accounts.size()) {
+			if (indexOfBookingInList >= 0 && indexOfBookingInList <= accountList.size()) {
 				this.currentIndexInAccountList = indexOfBookingInList;
 			}
 		} catch (IndexOutOfBoundsException e) {

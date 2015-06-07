@@ -4,14 +4,14 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.util.ArrayList;
+import java.util.List;
 
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
+import javax.swing.*;
 
 import com.bookingsystem.model.Account;
 import com.bookingsystem.model.tablemodel.AccountTableModel;
+import com.bookingsystem.model.tablemodel.BookingTableModel;
 import com.bookingsystem.view.controls.UIBookingSystemJTable;
-import com.bookingsystem.view.controls.UIBookingSystemJTableAccounts;
 import com.bookingsystem.view.panelparts.UIBookingSystemAdminViewPanel;
 import com.bookingsystem.view.panelparts.controlpanes.UIBookingSystemAdminControlPanel;
 
@@ -23,10 +23,10 @@ public class UIBookingSystemAdminPanel extends JPanel {
 
 
     private final UIBookingSystemAdminControlPanel bookingSystemAdminControlPanel;
-    private final UIBookingSystemJTable accountSystemJTable;
-
+    private final JTable accountSystemJTable;
+    private AccountTableModel accountTableModel;
     public UIBookingSystemAdminPanel() {
-        accountSystemJTable = new UIBookingSystemJTableAccounts(new AccountTableModel());
+        accountSystemJTable = new JTable(accountTableModel);
         setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
         bookingSystemAdminViewPanel = new UIBookingSystemAdminViewPanel();
@@ -63,51 +63,84 @@ public class UIBookingSystemAdminPanel extends JPanel {
         this.add(jScrollPane1, gbc);
 
     }
-
-    public ArrayList<String> getCurrentlySelectedRowAsStringArrayList() {
-        return accountSystemJTable.getSelectedRowAsStringArrayList();
+    public void setJTableModel(AccountTableModel accountTableModel) {
+        this.accountTableModel = accountTableModel;
+        this.accountSystemJTable.setModel(this.accountTableModel);
+        this.accountSystemJTable.setAutoCreateRowSorter(true);
+        this.accountTableModel.fireTableDataChanged();
     }
 
-    public void addAccountToList(Account account) {
-        accountSystemJTable.addRowToList(account);
+    public AccountTableModel getJTableModel() {
+        return this.accountTableModel;
     }
 
-    public void addAccountsToList(ArrayList<Account> listOfAccounts) {
-        ArrayList<Object> objectArrayList = new ArrayList<>();
-        for (Account account : listOfAccounts) {
-            objectArrayList.add(account);
+    public int selectedRowCount() {
+        return accountSystemJTable.getSelectedRowCount();
+    }
+
+    public int rowViewIndexToModel(int row) {
+        return accountSystemJTable.convertRowIndexToModel(row);
+    }
+
+    public Object getValueAt(int row, int column) {
+        return accountTableModel.getValueAt(row,column);
+    }
+
+    public List<Integer> getSelectedRows() {
+        List<Integer> integerList = new ArrayList<>();
+        for (int i = 0; i<accountSystemJTable.getSelectedRows().length;i++) {
+            integerList.add(rowViewIndexToModel(accountSystemJTable.getSelectedRows()[i]));
         }
-        accountSystemJTable.addArrayOfRowsToList(objectArrayList);
+        return integerList;
     }
 
-    public Account getAccountFromList(int accountId) {
-        System.out.println("account id " +accountId);
-        return (Account) accountSystemJTable.getRowFromList(accountId);
-    }
-
-    public int getIndexOfSelectedRow() {
+    public int getSelectedRow() {
         return accountSystemJTable.getSelectedRow();
     }
-
-    public int getIDOfSelectedRow() {
-        return accountSystemJTable.getIDOfSelectedRow();
-    }
-
-    public int getRowCountOfTable() {
-        return accountSystemJTable.getRowCount();
-    }
-
-    public void replaceAccountInList(Account newAccount) {
-        accountSystemJTable.replaceRowInList(newAccount);
-    }
-
-    public void removeAccountFromTable() {
-        accountSystemJTable.removeRowFromList();
-    }
-
-    public void removeAllAccounts() {
-        accountSystemJTable.removeAllRowsFromList();
-    }
+//    public ArrayList<String> getCurrentlySelectedRowAsStringArrayList() {
+//        return accountSystemJTable.getSelectedRowAsStringArrayList();
+//    }
+//
+//    public void addAccountToList(Account account) {
+//        accountSystemJTable.addRowToList(account);
+//    }
+//
+//    public void addAccountsToList(ArrayList<Account> listOfAccounts) {
+//        ArrayList<Object> objectArrayList = new ArrayList<>();
+//        for (Account account : listOfAccounts) {
+//            objectArrayList.add(account);
+//        }
+//        accountSystemJTable.addArrayOfRowsToList(objectArrayList);
+//    }
+//
+//    public Account getAccountFromList(int accountId) {
+//        System.out.println("account id " +accountId);
+//        return (Account) accountSystemJTable.getRowFromList(accountId);
+//    }
+//
+//    public int getIndexOfSelectedRow() {
+//        return accountSystemJTable.getSelectedRow();
+//    }
+//
+//    public int getIDOfSelectedRow() {
+//        return accountSystemJTable.getIDOfSelectedRow();
+//    }
+//
+//    public int getRowCountOfTable() {
+//        return accountSystemJTable.getRowCount();
+//    }
+//
+//    public void replaceAccountInList(Account newAccount) {
+//        accountSystemJTable.replaceRowInList(newAccount);
+//    }
+//
+//    public void removeAccountFromTable() {
+//        accountSystemJTable.removeRowFromList();
+//    }
+//
+//    public void removeAllAccounts() {
+//        accountSystemJTable.removeAllRowsFromList();
+//    }
 
     public UIBookingSystemAdminViewPanel getBookingSystemAdminViewPanel() { return bookingSystemAdminViewPanel; }
 

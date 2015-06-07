@@ -21,6 +21,7 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SpinnerDateModel;
 
+import com.bookingsystem.model.Booking;
 import org.jdatepicker.impl.JDatePanelImpl;
 import org.jdatepicker.impl.JDatePickerImpl;
 import org.jdatepicker.impl.UtilDateModel;
@@ -245,13 +246,14 @@ public abstract class UIBookingSystemDialogPanel extends JPanel implements UIBoo
 		};
 	}
 
-	public void setTextOfComponents(Object[] list) {
-		txtBookingDay.setText((String)list[0]);
-		model.setValue((Date)list[1]);
-		spinnerStartDateTimeModel.setValue(list[2]);
-		spinnerCollectionDateTimeModel.setValue(list[3]);
-		txtBookingLocation.setText((String)list[4]);
-		txtBookingHolder.setText((String)list[5]);
-		txtAreaEquipment.setText((String)list[6]);
+	public void setTextOfComponents(Object list) {
+		Booking booking = (Booking) list;
+		txtBookingDay.setText(booking.getBookingDay());
+		model.setValue(booking.getBookingDate());
+		spinnerStartDateTimeModel.setValue(booking.getBookingStartTime());
+		spinnerCollectionDateTimeModel.setValue(booking.getBookingCollectionTime());
+		txtBookingLocation.setText(booking.getBookingLocation());
+		txtBookingHolder.setText(booking.getBookingHolder());
+		txtAreaEquipment.setText(booking.getRequiredEquipment().getEquipmentName());
 	}
 }

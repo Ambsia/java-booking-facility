@@ -19,7 +19,6 @@ public final class Log {
     private final String eventLogged;
     private final Date dateAndTimeOfEvent;
     private final String classEvent;
-    private int logIndex;
 
     private int bookingIDInserted;
     private int bookingIDEdited;
@@ -117,7 +116,5 @@ public final class Log {
                 '}';
     }
 
-    public void setBookingIndex(int i) {
-        this.logIndex =i;
-    }
+
 }

@@ -3,14 +3,13 @@ package com.bookingsystem.controller.handler;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Date;
-import java.util.Iterator;
 
-import com.bookingsystem.model.tablemodel.AccountTableModel;
 import org.apache.commons.collections.IteratorUtils;
 
 import com.bookingsystem.helpers.MessageBox;
 import com.bookingsystem.model.Account;
 import com.bookingsystem.model.Log;
+import com.bookingsystem.model.tablemodel.AccountTableModel;
 import com.bookingsystem.view.dialogpanels.accountdialog.UIBookingSystemAccountAddPanel;
 import com.bookingsystem.view.panelparts.UIBookingSystemAdminViewPanel;
 import com.bookingsystem.view.panes.UIBookingSystemAdminPanel;
@@ -35,6 +34,7 @@ public class AccountHandler implements ActionListener {
 		this.accountTableModel = bookingSystemAdminPanel.getJTableModel();
 		this.currentAccountIDBeingProcessed = -1;
 	}
+	@SuppressWarnings("unchecked")
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		Log log = new Log(e.getActionCommand(), this.getClass().getSimpleName(), new Date());

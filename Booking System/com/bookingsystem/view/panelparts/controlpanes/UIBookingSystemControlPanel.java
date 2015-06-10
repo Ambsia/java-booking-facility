@@ -14,7 +14,11 @@ import javax.swing.JPanel;
  * Created by Alex on 24/05/2015.
  */
 public abstract class UIBookingSystemControlPanel extends JPanel {
-    private ArrayList<JButton> controlButtonList;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -3799165896581222861L;
+	private ArrayList<JButton> controlButtonList;
     private String[] buttonNames;
     private Dimension buttonDimension;
 

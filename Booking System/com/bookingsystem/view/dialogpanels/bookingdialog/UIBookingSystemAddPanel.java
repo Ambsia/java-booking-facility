@@ -8,7 +8,12 @@ import com.bookingsystem.view.dialogpanels.UIBookingSystemDialogPanel;
  * Author: [Alex] on [$Date]
  */
 public class UIBookingSystemAddPanel extends UIBookingSystemDialogPanel {
-    public UIBookingSystemAddPanel() {
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -5267785275189676299L;
+
+	public UIBookingSystemAddPanel() {
         super();
         
         setLayout(super.getLayout());

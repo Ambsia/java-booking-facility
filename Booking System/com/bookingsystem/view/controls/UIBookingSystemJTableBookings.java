@@ -1,12 +1,5 @@
 package com.bookingsystem.view.controls;
 
-import java.util.ArrayList;
-import java.util.Calendar;
-
-import com.bookingsystem.model.Booking;
-import com.bookingsystem.model.Equipment;
-import com.bookingsystem.model.tablemodel.ArchiveTableModel;
-import com.bookingsystem.model.tablemodel.BookingTableModel;
 
 /**
  * Author: [Alex]

@@ -15,7 +15,11 @@ import javax.swing.JTextArea;
  */
 public class UIBookingSystemArchiveViewPanel extends JPanel {
 
-    private JTextArea jTextArea;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 6827303413910281383L;
+	private JTextArea jTextArea;
     private JScrollPane jScrollPane;
     public UIBookingSystemArchiveViewPanel() {
         setLayout(new GridBagLayout());

@@ -21,19 +21,23 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SpinnerDateModel;
 
-import com.bookingsystem.model.Booking;
 import org.jdatepicker.impl.JDatePanelImpl;
 import org.jdatepicker.impl.JDatePickerImpl;
 import org.jdatepicker.impl.UtilDateModel;
 
 import com.bookingsystem.helpers.DateLabelFormatter;
 import com.bookingsystem.helpers.TextFieldRestriction;
+import com.bookingsystem.model.Booking;
 
 /**
  * Author: [Alex]
  */
 public abstract class UIBookingSystemDialogPanel extends JPanel implements UIBookingSystemDialogInterface {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 479014392857523664L;
 	private final static String[] DAYS = { "" ,"Sunday", "Monday" ,"Tuesday" ,"Wednesday","Thursday", "Friday", "Saturday" };
 	private final static String[] LABELS = {"Booking Day: ", "Booking Date: ", "Booking Start: ", "Booking Collection: ", "Booking Location: ", "Booking Holder: ", "Equipment: ", "Recuring Booking: "};
 	private Component[] components;

@@ -20,7 +20,6 @@ public final class Account {
 	private final String hashedPassword;
 	private int userLevel;
 	private String userSalt;
-	private int accountIndex;
 	public int getUserLevel() {
 		return userLevel;
 	}
@@ -53,11 +52,10 @@ public final class Account {
 
 	public String getUserSalt() {return this.userSalt;}
 
-	public Account(int userID, int userLevel, String userLogonName,
-			String unHashedPassword) {
+	public Account(int userID, int userLevel, String userLogonName,	String unHashedPassword) {
 		this.userID = userID;
 		this.userLevel = userLevel;
-		this.userLogonName = userLogonName;
+		this.userLogonName = userLogonName.trim();
 		this.hashedPassword = SHA1_HASH(unHashedPassword);
 	}
 
@@ -103,7 +101,4 @@ public final class Account {
 				'}';
 	}
 
-	public void setBookingIndex(int i) {
-		this.accountIndex = i;
-	}
 }

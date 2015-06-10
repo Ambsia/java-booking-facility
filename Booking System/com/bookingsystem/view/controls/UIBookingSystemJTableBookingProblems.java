@@ -12,7 +12,11 @@ import com.bookingsystem.model.tablemodel.BookingProblemModel;
  */
 
     public class UIBookingSystemJTableBookingProblems extends UIBookingSystemJTable {
-    private final BookingProblemModel bookingProblemModel;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 6315016386872298228L;
+	private final BookingProblemModel bookingProblemModel;
 
     public UIBookingSystemJTableBookingProblems(BookingProblemModel bookingProblemModel) {
         super();

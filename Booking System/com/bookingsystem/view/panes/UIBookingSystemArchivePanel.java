@@ -3,15 +3,12 @@ package com.bookingsystem.view.panes;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
-import java.util.ArrayList;
 
-import javax.swing.*;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
 
-import com.bookingsystem.model.Booking;
 import com.bookingsystem.model.tablemodel.ArchiveTableModel;
-import com.bookingsystem.model.tablemodel.BookingTableModel;
-import com.bookingsystem.view.controls.UIBookingSystemJTable;
-import com.bookingsystem.view.controls.UIBookingSystemJTableBookings;
 import com.bookingsystem.view.panelparts.UIBookingSystemArchiveViewPanel;
 import com.bookingsystem.view.panelparts.controlpanes.UIBookingSystemArchiveControlPanel;
 
@@ -19,7 +16,11 @@ import com.bookingsystem.view.panelparts.controlpanes.UIBookingSystemArchiveCont
  * Created by Alex on 24/05/2015.
  */
 public class UIBookingSystemArchivePanel extends JPanel {
-    private final JTable bookingSystemJTable;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -4584229791330483547L;
+	private final JTable bookingSystemJTable;
     private ArchiveTableModel archiveTableModel;
     private UIBookingSystemArchiveControlPanel uiBookingSystemArchiveControlPanel;
 

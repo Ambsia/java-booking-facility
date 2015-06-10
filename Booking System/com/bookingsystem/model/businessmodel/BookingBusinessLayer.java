@@ -194,6 +194,33 @@ public class BookingBusinessLayer extends BusinessLayer implements Iterable<Book
             }
         }
     }
+    
+    public List<Integer> isRoomFree(Booking booking) {
+    	List<Integer> listOfIntegers = new ArrayList<>();
+    	getDatabaseConnector().openConnection();
+    	if(getDatabaseConnector().isConnected()) {
+    		if(!getDatabaseConnector().isConnectionClosed()) {
+    			getDatabaseConnector().createNewCallableStatement("{CALL spCheckIfRoomIsFree(?,?,?)}");
+    			try (CallableStatement  callableStatement = getDatabaseConnector().getCallableStatement()) {
+    				callableStatement.setString(1,booking.getBookingLocation());
+    				callableStatement.setDate(2, convertFromJAVADateToSQLDate(booking.getBookingDate()));
+    				callableStatement.setTime(3, booking.getBookingStartTimeInSQLFormat());
+    				try (ResultSet rs = getDatabaseConnector().executeQuery()) {
+    					while(rs.next()) {
+    						listOfIntegers.add(rs.getInt(1));
+    					}
+    				}
+    			} catch (SQLException e) {
+    				MessageBox.errorMessageBox(("There was an issue whilst trying to see if a room was free!"));
+    			}
+    				
+    			}
+    		
+    	}
+    
+    	return listOfIntegers;
+    
+    }
 
     private void correctCurrentIndexWithID(int idToFind) {
         for (int i = 0; i<bookings.size();i++) {

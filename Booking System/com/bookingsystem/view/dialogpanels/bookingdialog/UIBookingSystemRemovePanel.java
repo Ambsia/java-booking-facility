@@ -8,6 +8,11 @@ import com.bookingsystem.view.dialogpanels.UIBookingSystemDialogPanel;
  * Author: [Alex]
  */
 public class UIBookingSystemRemovePanel extends UIBookingSystemDialogPanel {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -5819787011513181983L;
+
 	public UIBookingSystemRemovePanel() {
 		super();
 		addDefaultComponentsToPanel();

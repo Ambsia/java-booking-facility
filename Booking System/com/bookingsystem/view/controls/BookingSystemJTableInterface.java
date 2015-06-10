@@ -5,6 +5,7 @@ import java.util.ArrayList;
 /**
  * Author: [Alex]
  */
+@SuppressWarnings("hiding")
 public interface BookingSystemJTableInterface<Object> {
 
 	public void addArrayOfRowsToList(ArrayList<Object> arrayListOfData);

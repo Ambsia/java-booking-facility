@@ -1,11 +1,11 @@
 package com.bookingsystem.model.tablemodel;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.Collections;
+import java.util.Date;
+import java.util.Iterator;
+import java.util.List;
 
 import javax.swing.table.AbstractTableModel;
-import javax.swing.table.DefaultTableModel;
 
 import com.bookingsystem.model.Booking;
 import com.bookingsystem.model.Equipment;
@@ -13,11 +13,13 @@ import com.bookingsystem.model.Equipment;
 /**
  * Author: [Alex] on [$Date]
  */
-public class BookingTableModel extends AbstractTableModel {
+public class BookingTableModel extends AbstractTableModel implements Iterable<Booking> {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 392304419118777610L;
 	private static String[] columnNames = { "Booking ID","Day","Date","Time Of Booking","Room Booked","Booking Holder","Equipment" };
-	private static final DateFormat BOOKING_TIME_FORMAT = new SimpleDateFormat("HH:mm", Locale.ENGLISH);
-    private static final DateFormat BOOKING_DATE_FORMAT = new SimpleDateFormat("dd.MM.yy", Locale.ENGLISH);
 
 	private static final int COLUMN_NO = 0;
 	private static final int COLUMN_DAY = 1;
@@ -73,10 +75,10 @@ public class BookingTableModel extends AbstractTableModel {
             returnValue = booking.getBookingDay();
             break;
         case COLUMN_DATE:
-            returnValue = BOOKING_DATE_FORMAT.format(booking.getBookingDate());
+            returnValue = booking.getDateToString();
             break;
         case COLUMN_TIME:
-            returnValue = BOOKING_TIME_FORMAT.format(booking.getBookingStartTime()) + "-" + BOOKING_TIME_FORMAT.format(booking.getBookingCollectionTime());
+            returnValue = booking.getTimeToString();
             break;
         case COLUMN_ROOM:
             returnValue = booking.getBookingLocation();
@@ -85,7 +87,7 @@ public class BookingTableModel extends AbstractTableModel {
             returnValue = booking.getBookingHolder();
             break;
         case COLUMN_EQUIPMENT:
-            returnValue = booking.getRequiredEquipment();
+            returnValue = booking.getRequiredEquipment().getEquipmentName();
             break;
         default:
             throw new IllegalArgumentException("Invalid column index");
@@ -117,9 +119,6 @@ public class BookingTableModel extends AbstractTableModel {
         	break;
         case COLUMN_EQUIPMENT:
         	booking.setBookingEquipment((Equipment) value);
-        	break;
-        case 7:
-        	booking.setBookingCollectionTime((Date) value);
         	break;
         default:
             throw new IllegalArgumentException("Invalid column index");
@@ -172,5 +171,10 @@ public class BookingTableModel extends AbstractTableModel {
         }
         fireTableDataChanged();
     }
+
+	@Override
+	public Iterator<Booking> iterator() {
+		return bookingList.iterator();
+	}
 
 }

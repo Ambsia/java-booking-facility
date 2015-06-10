@@ -22,7 +22,11 @@ import com.bookingsystem.view.controls.UIBookingSystemJTableBookingProblems;
 
 public class UIBookingSystemBookingViewPanel extends JPanel {
 
-    private static ArrayList<JLabel> listOfViewBoxes;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -4535420505698893143L;
+	private static ArrayList<JLabel> listOfViewBoxes;
     private UIBookingSystemJTableBookingProblems bookingSystemJTableBookingProblems;
     private JScrollPane jScrollPane;
     private JLabel jLabel;

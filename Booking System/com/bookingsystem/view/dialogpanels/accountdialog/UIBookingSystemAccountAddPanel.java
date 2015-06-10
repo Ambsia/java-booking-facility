@@ -16,7 +16,11 @@ import javax.swing.JTextField;
  */
 public class UIBookingSystemAccountAddPanel extends JPanel {
 
-    private static final String[] LABELS = {"Account Name:", "Account Password:", "Account Level:"};
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 419911671046158169L;
+	private static final String[] LABELS = {"Account Name:", "Account Password:", "Account Level:"};
     private Component[] components;
     private final JTextField txtAccountName;
     private final JPasswordField txtAccountPassword;

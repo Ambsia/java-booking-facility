@@ -3,11 +3,9 @@ package com.bookingsystem.model.businessmodel;
 import java.sql.CallableStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Date;
 
 import com.bookingsystem.helpers.MessageBox;
 import com.bookingsystem.model.Account;
-import com.bookingsystem.model.Log;
 
 /**
  * Author: [Alex] on [$Date]

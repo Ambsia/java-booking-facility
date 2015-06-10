@@ -19,7 +19,7 @@ public class BusinessLayer {
 	}
 
 	//invoke the connection here and delegate it across
-	static java.sql.Date convertFromJAVADateToSQLDate(
+	protected static java.sql.Date convertFromJAVADateToSQLDate(
 			java.util.Date javaDate) {
 		java.sql.Date sqlDate = null;
 		if (javaDate != null) {

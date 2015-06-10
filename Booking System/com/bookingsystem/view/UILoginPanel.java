@@ -13,6 +13,10 @@ import javax.swing.JTextField;
 
 public class UILoginPanel extends JPanel {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -6831957389538369625L;
 	private final JTextField txtLoginUsername;
 	private final JTextField txtLoginPassword;
 	private final JButton btnLogin;

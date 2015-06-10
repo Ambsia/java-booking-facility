@@ -11,7 +11,11 @@ import javax.swing.JMenuItem;
  */
 public class UIBookingSystemMenuBarLoader extends JMenuBar {
 
-    private JMenuItem importMenuOption = new JMenuItem();
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -755878926887770109L;
+	private JMenuItem importMenuOption = new JMenuItem();
     private JMenuItem exitMenuOption = new JMenuItem();
 
     public UIBookingSystemMenuBarLoader() {

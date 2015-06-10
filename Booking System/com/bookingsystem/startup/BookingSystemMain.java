@@ -5,7 +5,6 @@ import com.bookingsystem.model.businessmodel.AccountBusinessLayer;
 import com.bookingsystem.model.businessmodel.AccountManagementBusinessLayer;
 import com.bookingsystem.model.businessmodel.ArchiveBusinessLayer;
 import com.bookingsystem.model.businessmodel.BookingBusinessLayer;
-import com.bookingsystem.model.businessmodel.BusinessLayer;
 import com.bookingsystem.model.businessmodel.LoggerBusinessLayer;
 import com.bookingsystem.view.BookingSystemUILoader;
 
@@ -25,8 +24,6 @@ final class BookingSystemMain {
 
 	private final ArchiveBusinessLayer archiveBusinessLayer;
 
-	private final BusinessLayer businessLayer;
-
 
 	public static void main(String[] args) {
 		new BookingSystemMain();
@@ -39,7 +36,6 @@ final class BookingSystemMain {
 		this.accountBusinessLayer = new AccountBusinessLayer();
 		this.accountManagementBusinessLayer = new AccountManagementBusinessLayer();
 		this.archiveBusinessLayer = new ArchiveBusinessLayer();
-		this.businessLayer = new BusinessLayer();
 		this.controller = new BookingSystemController(view,bookingBusinessLayer, accountBusinessLayer, loggerBusinessLayer,accountManagementBusinessLayer, archiveBusinessLayer);
 	}
 

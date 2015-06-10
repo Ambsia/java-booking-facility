@@ -12,7 +12,8 @@ import com.bookingsystem.view.BookingSystemUILoader;
  */
 public class Handler {
     //we will initially call handler passing all business logic over, then we will start calling specific logic classes
-    private AccountBusinessLayer accountBusinessLayer;
+    
+	private AccountBusinessLayer accountBusinessLayer;
     private  AccountManagementBusinessLayer accountManagementBusinessLayer;
     private BookingBusinessLayer bookingBusinessLayer;
     private  LoggerBusinessLayer loggerBusinessLayer;
@@ -50,12 +51,8 @@ public class Handler {
     }
 
     public ArchiveBusinessLayer getArchiveBusinessLayer() { return  archiveBusinessLayer; }
-
-
-
+    
     //will be the abstract class for all handlers, implementing interfaces and generic methods here
-
     //all business logic delegated from here
     //all view controls also delegated from here
-
 }

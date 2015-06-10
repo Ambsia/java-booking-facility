@@ -1,11 +1,5 @@
 package com.bookingsystem.view.controls;
 
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-
-import com.bookingsystem.model.Log;
-import com.bookingsystem.model.tablemodel.LogTableModel;
 
 /**
  * Author: [Alex]

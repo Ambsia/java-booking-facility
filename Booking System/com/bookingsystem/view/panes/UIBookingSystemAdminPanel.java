@@ -6,12 +6,11 @@ import java.awt.Insets;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.*;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
 
-import com.bookingsystem.model.Account;
 import com.bookingsystem.model.tablemodel.AccountTableModel;
-import com.bookingsystem.model.tablemodel.BookingTableModel;
-import com.bookingsystem.view.controls.UIBookingSystemJTable;
 import com.bookingsystem.view.panelparts.UIBookingSystemAdminViewPanel;
 import com.bookingsystem.view.panelparts.controlpanes.UIBookingSystemAdminControlPanel;
 
@@ -19,7 +18,13 @@ import com.bookingsystem.view.panelparts.controlpanes.UIBookingSystemAdminContro
  * Author: [Alex] on [$Date]
  */
 public class UIBookingSystemAdminPanel extends JPanel {
-    private final UIBookingSystemAdminViewPanel bookingSystemAdminViewPanel;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 7631101370024052195L;
+
+
+	private final UIBookingSystemAdminViewPanel bookingSystemAdminViewPanel;
 
 
     private final UIBookingSystemAdminControlPanel bookingSystemAdminControlPanel;

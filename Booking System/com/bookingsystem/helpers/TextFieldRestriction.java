@@ -4,6 +4,10 @@ import javax.swing.text.BadLocationException;
 import javax.swing.text.PlainDocument;
 
 public final class TextFieldRestriction extends PlainDocument {
+		/**
+	 * 
+	 */
+	private static final long serialVersionUID = -3357149113977337182L;
 		//fields
 	    private final int limit;
 

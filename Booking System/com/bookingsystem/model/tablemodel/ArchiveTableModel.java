@@ -1,19 +1,23 @@
 package com.bookingsystem.model.tablemodel;
 
-import com.bookingsystem.model.Booking;
-
-import javax.swing.table.AbstractTableModel;
-import javax.swing.table.DefaultTableModel;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Locale;
 
+import javax.swing.table.AbstractTableModel;
+
+import com.bookingsystem.model.Booking;
+
 /**
  * Created by Alex on 24/05/2015.
  */
 public class ArchiveTableModel extends AbstractTableModel {
-        private static final int COLUMN_NO = 0;
+        /**
+	 * 
+	 */
+	private static final long serialVersionUID = -5569825021693799992L;
+		private static final int COLUMN_NO = 0;
         private static final int COLUMN_DAY = 1;
         private static final int COLUMN_DATE = 2;
         private static final int COLUMN_TIME_OF_BOOKING = 3;
@@ -73,7 +77,7 @@ public class ArchiveTableModel extends AbstractTableModel {
                                 returnValue = booking.getBookingHolder();
                                 break;
                         case COLUMN_EQUIPMENT:
-                                returnValue = booking.getRequiredEquipment();
+                                returnValue = booking.getRequiredEquipment().getEquipmentName();
                                 break;
                         default:
                                 throw new IllegalArgumentException("Invalid column index");

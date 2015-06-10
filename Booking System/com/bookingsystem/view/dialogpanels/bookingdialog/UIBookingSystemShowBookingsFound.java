@@ -1,16 +1,7 @@
 package com.bookingsystem.view.dialogpanels.bookingdialog;
 
-import java.awt.Component;
-import java.awt.Dimension;
-import java.util.ArrayList;
-
 import javax.swing.JOptionPane;
-import javax.swing.JScrollPane;
 
-import com.bookingsystem.model.Booking;
-import com.bookingsystem.model.tablemodel.ArchiveTableModel;
-import com.bookingsystem.model.tablemodel.BookingTableModel;
-import com.bookingsystem.view.controls.UIBookingSystemJTableBookings;
 import com.bookingsystem.view.dialogpanels.UIBookingSystemDialogPanel;
 
 /**
@@ -18,6 +9,11 @@ import com.bookingsystem.view.dialogpanels.UIBookingSystemDialogPanel;
  */
 public class UIBookingSystemShowBookingsFound extends UIBookingSystemDialogPanel {
 	//private final UIBookingSystemJTableBookings bookingSystemJTable;
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -797960503107108736L;
 
 	public UIBookingSystemShowBookingsFound() {
 		super();

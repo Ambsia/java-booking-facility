@@ -11,6 +11,10 @@ import com.bookingsystem.view.dialogpanels.accountdialog.UIBookingSystemAccountA
  */
 public class UIBookingSystemAdminControlPanel extends UIBookingSystemControlPanel {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -5157872014641211611L;
 	private UIBookingSystemAccountAddPanel bookingSystemAccountAddPanel;
 	public UIBookingSystemAdminControlPanel() {
 		super();

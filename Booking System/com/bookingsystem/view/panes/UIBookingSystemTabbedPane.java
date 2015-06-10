@@ -4,6 +4,10 @@ import javax.swing.JTabbedPane;
 
 public class UIBookingSystemTabbedPane extends JTabbedPane{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -8800935066090636571L;
 	private final UIBookingSystemBookingPanel bookingSystemPanel;
 	private final UIBookingSystemAdminPanel bookingSystemAdminPanel;
 	private final UIBookingSystemArchivePanel bookingSystemArchive;

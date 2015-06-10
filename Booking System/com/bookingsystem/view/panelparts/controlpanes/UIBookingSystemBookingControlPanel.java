@@ -14,7 +14,11 @@ import com.bookingsystem.view.dialogpanels.bookingdialog.UIBookingSystemShowBook
  */
 public class UIBookingSystemBookingControlPanel extends UIBookingSystemControlPanel {
 
-    private final UIBookingSystemAddPanel uiBookingSystemAddPanel;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 5909181346406388926L;
+	private final UIBookingSystemAddPanel uiBookingSystemAddPanel;
     private final UIBookingSystemFindPanel uiBookingSystemFindPanel;
     private final UIBookingSystemEditPanel uiBookingSystemEditPanel;
     private final UIBookingSystemRemovePanel uiBookingSystemRemovePanel;

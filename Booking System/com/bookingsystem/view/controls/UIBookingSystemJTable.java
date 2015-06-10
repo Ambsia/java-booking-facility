@@ -15,7 +15,11 @@ import javax.swing.JTable;
 public abstract class UIBookingSystemJTable extends JTable implements BookingSystemJTableInterface<Object> {
 
 
-	 static final DateFormat BOOKING_DATE_FORMAT = new SimpleDateFormat("dd.MM.yy", Locale.ENGLISH);
+	 /**
+	 * 
+	 */
+	private static final long serialVersionUID = 5534068596222951987L;
+	static final DateFormat BOOKING_DATE_FORMAT = new SimpleDateFormat("dd.MM.yy", Locale.ENGLISH);
 	 static final DateFormat BOOKING_DATE_FORMAT_2 = new SimpleDateFormat("dd.MMM.yy", Locale.ENGLISH);
 	 static final DateFormat BOOKING_TIME_FORMAT = new SimpleDateFormat("HH:mm", Locale.ENGLISH);
 	 static final DateFormat BOOKING_TIME_FORMAT_2 = new SimpleDateFormat("H", Locale.ENGLISH);

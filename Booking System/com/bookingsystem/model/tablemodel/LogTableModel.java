@@ -1,20 +1,23 @@
 package com.bookingsystem.model.tablemodel;
 
-import com.bookingsystem.model.Booking;
-import com.bookingsystem.model.Log;
-
-import javax.swing.table.AbstractTableModel;
-import javax.swing.table.DefaultTableModel;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Locale;
+
+import javax.swing.table.AbstractTableModel;
+
+import com.bookingsystem.model.Log;
 
 /**
  * Author: [Alex]
  */
 public class LogTableModel extends AbstractTableModel {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -1125627184403170209L;
 	private static final int COLUMN_NO = 0;
 	private static final int COLUMN_TIMESTAMP = 1;
 	private static final int COLUMN_CLASS = 2;
@@ -29,10 +32,6 @@ public class LogTableModel extends AbstractTableModel {
 	public LogTableModel(List<Log> logList) {
 		super();
 		this.logList = logList;
-		int indexCount = 1;
-		for (Log l : logList) {
-			l.setBookingIndex(indexCount++);
-		}
 	}
 
 	@Override
@@ -79,9 +78,8 @@ public class LogTableModel extends AbstractTableModel {
 
 	@Override
 	public void setValueAt(Object value, int rowIndex, int columnIndex) {
-		Log log = logList.get(rowIndex);
+		//Log log = logList.get(rowIndex);
 		if (columnIndex == COLUMN_NO) {
-			log.setBookingIndex((int) value);
 		}
 		this.fireTableCellUpdated(rowIndex, columnIndex);
 	}

@@ -1,22 +1,20 @@
 package com.bookingsystem.model.tablemodel;
 
-import com.bookingsystem.model.Account;
-import com.bookingsystem.model.Booking;
-import com.bookingsystem.model.Equipment;
+import java.util.Collections;
+import java.util.List;
 
 import javax.swing.table.AbstractTableModel;
-import javax.swing.table.DefaultTableModel;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
+
+import com.bookingsystem.model.Account;
 
 /**
  * Author: [Alex]
  */
 public class AccountTableModel extends AbstractTableModel {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 3941353289504819621L;
 	private static final int COLUMN_NO = 0;
 	private static final int COLUMN_ACCOUNT_NAME = 1;
 	private static final int COLUMN_ACCOUNT_LEVEL = 2;
@@ -28,11 +26,6 @@ public class AccountTableModel extends AbstractTableModel {
 	public AccountTableModel(List<Account> accountList) {
 		super();
 		this.accountList = accountList;
-		System.out.println(accountList.toString());
-		int indexCount = 1;
-		for (Account account : accountList) {
-			account.setBookingIndex(indexCount++);
-		}
 	}
 
 	@Override
@@ -80,10 +73,9 @@ public class AccountTableModel extends AbstractTableModel {
 
 	@Override
 	public void setValueAt(Object value, int rowIndex, int columnIndex) {
-		Account account = accountList.get(rowIndex);
+		//Account account = accountList.get(rowIndex);
 		switch (columnIndex) {
 			case COLUMN_NO:
-				account.setBookingIndex((int) value);
 				break;
 			default:
 				throw new IllegalArgumentException("Invalid column index");

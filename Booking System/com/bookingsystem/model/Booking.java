@@ -24,7 +24,6 @@ public final class Booking  {
 	private static final DateFormat BOOKING_DATE_FORMAT = new SimpleDateFormat("dd.MM.yy", Locale.ENGLISH);
 
 	Log bookingLogger;
-	private Equipment bookingEquipment;
 
 	private boolean bookingCompleted;
 
@@ -196,4 +195,41 @@ public final class Booking  {
 	public void setBookingIndex(int bookingIndex) {
 		this.bookingIndex = bookingIndex;
 	}
+	
+	public String getDateToString() {
+			Calendar date1 = Calendar.getInstance();
+			date1.set(Calendar.AM_PM, Calendar.AM);
+			date1.set(Calendar.DAY_OF_MONTH, 25);
+			date1.set(Calendar.MONTH, 11);
+			date1.set(Calendar.HOUR, 00);
+			date1.set(Calendar.MINUTE, 00);
+			date1.set(Calendar.SECOND, 00);
+			date1.set(Calendar.MILLISECOND, 0);
+			String date11 = "";
+			if (BOOKING_DATE_FORMAT.format(this.bookingDate).equals(BOOKING_DATE_FORMAT.format(date1.getTime()))) {
+				date11 = "Unknown";
+			} else {
+				date11 = BOOKING_DATE_FORMAT.format(this.bookingDate);
+			}
+			return date11;
+	    
+	   }
+	
+	public String getTimeToString() {
+	Calendar date1 = Calendar.getInstance();
+	date1.set(Calendar.AM_PM, Calendar.AM);
+	date1.set(Calendar.DAY_OF_MONTH, 25);
+	date1.set(Calendar.MONTH, 11);
+	date1.set(Calendar.HOUR, 00);
+	date1.set(Calendar.MINUTE, 00);
+	date1.set(Calendar.SECOND, 00);
+	date1.set(Calendar.MILLISECOND, 0);
+	String time = "";
+	if (BOOKING_TIME_FORMAT.format(this.bookingStartTime).equals(BOOKING_TIME_FORMAT.format(date1.getTime()))) {
+		time= "Unknown";
+	} else {
+		time= BOOKING_TIME_FORMAT.format(this.bookingStartTime) + "-" + BOOKING_TIME_FORMAT.format(this.bookingCollectionTime);
+	}
+	return time;
+}
 }

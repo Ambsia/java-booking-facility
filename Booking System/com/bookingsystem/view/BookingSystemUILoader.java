@@ -13,6 +13,10 @@ import com.bookingsystem.view.panes.UIBookingSystemTabbedPane;
 
 public class BookingSystemUILoader extends JFrame {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 3618696916355638648L;
 	private final UILoginPanel loginPanel;
 	private final UIBookingSystemMenuBarLoader menuBarLoader;
 	private final UIBookingSystemTabbedPane bookingSystemTabbedPane;

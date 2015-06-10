@@ -7,16 +7,20 @@ import java.awt.Insets;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.*;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
 
-import com.bookingsystem.model.Log;
-import com.bookingsystem.model.tablemodel.BookingTableModel;
 import com.bookingsystem.model.tablemodel.LogTableModel;
 
 /**
  * Author: [Alex]
  */
 public class UIBookingSystemAdminViewPanel extends JPanel {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -5656361363227035414L;
 	private JTable bookingSystemJTableLogs;
 	private LogTableModel logTableModel;
 	private JScrollPane jScrollPane;

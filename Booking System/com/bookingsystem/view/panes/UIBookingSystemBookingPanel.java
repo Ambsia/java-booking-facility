@@ -30,7 +30,7 @@ import com.bookingsystem.view.panelparts.controlpanes.UIBookingSystemBookingCont
 public class UIBookingSystemBookingPanel extends JPanel {
 
     private static final DateFormat BOOKING_TIME_FORMAT = new SimpleDateFormat("HH:mm", Locale.ENGLISH);
-    private static final DateFormat BOOKING_DATE_FORMAT = new SimpleDateFormat("dd.MMM.yy", Locale.ENGLISH);
+    private static final DateFormat BOOKING_DATE_FORMAT = new SimpleDateFormat("dd.MM.yy", Locale.ENGLISH);
 
 	/**
 	 * 
@@ -101,10 +101,9 @@ public class UIBookingSystemBookingPanel extends JPanel {
 		TableRowSorter<TableModel> sorter = new TableRowSorter<>(bookingSystemModel);
 		bookingSystemJTable.setRowSorter(sorter);
 		List<RowSorter.SortKey> sortKeys = new ArrayList<>();
-
-		sortKeys.add(new RowSorter.SortKey(2, SortOrder.ASCENDING));
-		sortKeys.add(new RowSorter.SortKey(3, SortOrder.ASCENDING));
 		
+		//sortKeys.add(new RowSorter.SortKey(2, SortOrder.ASCENDING));
+		//sortKeys.add(new RowSorter.SortKey(columnIndexForName, SortOrder.ASCENDING));
 		sorter.setComparator(2, new Comparator<Object>() {
 			@Override
 			public int compare(Object arg0, Object arg1) {
@@ -117,19 +116,23 @@ public class UIBookingSystemBookingPanel extends JPanel {
 		        date1.set(Calendar.SECOND, 00);
 		        date1.set(Calendar.MILLISECOND, 0);
 		        date1.set(Calendar.YEAR, 2015);
-		        Date d1 = null;
-		        Date d2 = null;
-		        try { 
-		        	d1 = BOOKING_DATE_FORMAT.parse((String) arg0);
-		        	d2 = BOOKING_DATE_FORMAT.parse((String) arg1);
-		        	System.out.println(d1.toString());
-		        	System.out.println(d2.toString());
-		        } catch (ParseException e) {
-		        	d1 = date1.getTime();
-		        	d2 = date1.getTime();
+		        String date1string = BOOKING_DATE_FORMAT.format(date1.getTime());
+		        try {
+			        if (arg0.equals("Unknown") && !arg1.equals("Unknown")) {
+			        	System.out.println(date1string + " then formated " + BOOKING_DATE_FORMAT.parse(date1string));
+			        	return BOOKING_DATE_FORMAT.parse(date1string).compareTo((BOOKING_DATE_FORMAT.parse((String)arg1)));
+			        } else if ((String)arg1 == "Unknown" && (String)arg0 !="Unknown") { 
+			        	return BOOKING_DATE_FORMAT.parse(date1string).compareTo((BOOKING_DATE_FORMAT.parse((String)arg0)));
+			        } else if ((String)arg1 == "Unknown" && (String)arg0 =="Unknown") {
+			        	return BOOKING_DATE_FORMAT.parse(date1string).compareTo(date1.getTime());
+			        } else {
+			        	System.out.println(BOOKING_DATE_FORMAT.parse((String)arg0) +  " Compared To " + BOOKING_DATE_FORMAT.parse((String)arg1) + " = " + BOOKING_DATE_FORMAT.parse((String)arg0).compareTo((BOOKING_DATE_FORMAT.parse((String)arg1))));
+			            return BOOKING_DATE_FORMAT.parse((String)arg0).compareTo((BOOKING_DATE_FORMAT.parse((String)arg1)));
+			        }
+		        } catch (ParseException p) {
+		        	System.out.println("arg0 = " + arg0 + " arg1 = " + arg1);
+		        	return date1.getTime().compareTo(date1.getTime());
 		        }
-		        
-				return d1.compareTo(d2);
 			}
 		});
 		
@@ -162,7 +165,7 @@ public class UIBookingSystemBookingPanel extends JPanel {
 				return d1.compareTo(d2);
 			}
 		});
-
+		sorter.setSortable(3, false);
 		sorter.setSortKeys(sortKeys);
 		this.bookingSystemModel.fireTableDataChanged();
 	}

@@ -206,6 +206,7 @@ public final class Booking  {
 			date1.set(Calendar.SECOND, 00);
 			date1.set(Calendar.MILLISECOND, 0);
 			String date11 = "";
+			
 			if (BOOKING_DATE_FORMAT.format(this.bookingDate).equals(BOOKING_DATE_FORMAT.format(date1.getTime()))) {
 				date11 = "Unknown";
 			} else {

@@ -7,7 +7,6 @@ import com.bookingsystem.view.dialogpanels.bookingdialog.UIBookingSystemAddPanel
 import com.bookingsystem.view.dialogpanels.bookingdialog.UIBookingSystemEditPanel;
 import com.bookingsystem.view.dialogpanels.bookingdialog.UIBookingSystemFindPanel;
 import com.bookingsystem.view.dialogpanels.bookingdialog.UIBookingSystemRemovePanel;
-import com.bookingsystem.view.dialogpanels.bookingdialog.UIBookingSystemShowBookingsFound;
 
 /**
  * Author: [Alex] on [$Date]
@@ -22,7 +21,6 @@ public class UIBookingSystemBookingControlPanel extends UIBookingSystemControlPa
     private final UIBookingSystemFindPanel uiBookingSystemFindPanel;
     private final UIBookingSystemEditPanel uiBookingSystemEditPanel;
     private final UIBookingSystemRemovePanel uiBookingSystemRemovePanel;
-    private final UIBookingSystemShowBookingsFound uiBookingSystemShowBookingsFound;
 
     public UIBookingSystemBookingControlPanel() {
         super();
@@ -35,7 +33,6 @@ public class UIBookingSystemBookingControlPanel extends UIBookingSystemControlPa
         uiBookingSystemFindPanel = new UIBookingSystemFindPanel();
         uiBookingSystemEditPanel = new UIBookingSystemEditPanel();
         uiBookingSystemRemovePanel = new UIBookingSystemRemovePanel();
-        uiBookingSystemShowBookingsFound = new UIBookingSystemShowBookingsFound();
     }
 
 
@@ -56,6 +53,5 @@ public class UIBookingSystemBookingControlPanel extends UIBookingSystemControlPa
         return uiBookingSystemRemovePanel;
     }
 
-    public UIBookingSystemShowBookingsFound getUIBookingSystemShowBookingsFound() { return uiBookingSystemShowBookingsFound; }
 }
 

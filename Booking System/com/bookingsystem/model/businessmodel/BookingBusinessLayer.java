@@ -215,11 +215,8 @@ public class BookingBusinessLayer extends BusinessLayer implements Iterable<Book
     			}
     				
     			}
-    		
     	}
-    
     	return listOfIntegers;
-    
     }
 
     private void correctCurrentIndexWithID(int idToFind) {

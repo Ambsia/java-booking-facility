@@ -65,7 +65,7 @@ public final class BookingHandler implements ActionListener {
         date1.set(Calendar.SECOND, 00);
         date1.set(Calendar.MILLISECOND, 0);
         date1.set(Calendar.YEAR, 2015);
-
+        System.out.println(date1.getTime().toString());
         //date1's date is 25.12.01 -- never bookings on christmas!
         //date1's time is 00:00 -- never bookings at midnight!
 

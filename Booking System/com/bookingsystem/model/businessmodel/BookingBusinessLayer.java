@@ -44,7 +44,10 @@ public class BookingBusinessLayer extends BusinessLayer implements Iterable<Book
                         Booking booking;
                         booking = new Booking(rs.getInt(1), rs.getString(2).trim(), rs.getDate(3), rs.getTime(4), rs.getTime(5), rs.getString(6), rs.getString(7).trim(), new Equipment(rs.getString(8)));
                         booking.setBookingCompleted(rs.getBoolean(9));
-                        if(booking.isBeforeToday() || booking.getBookingCompleted()) {
+                        if(booking.isBeforeToday()) {
+                        	if (!booking.getBookingCompleted()) {
+                        		booking.setBookingCompleted(true);
+                        	}
                             this.archivedBookings.add(booking);
                         } else {
                             this.bookings.add(booking);
@@ -142,6 +145,7 @@ public class BookingBusinessLayer extends BusinessLayer implements Iterable<Book
                         }
                     }
                     getDatabaseConnector().closeConnection();
+                    this.bookings.addAll(0, foundBookings);
                     return foundBookings;
                 } catch (SQLException e) {
                     MessageBox.errorMessageBox("There was an issue while we were trying to find that booking in the database!\n" + "Does this make any sense to you.." + e.toString() + "?");

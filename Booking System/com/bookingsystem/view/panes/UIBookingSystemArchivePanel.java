@@ -3,10 +3,23 @@ package com.bookingsystem.view.panes;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Comparator;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
 
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.RowSorter;
+import javax.swing.SortOrder;
+import javax.swing.table.TableModel;
+import javax.swing.table.TableRowSorter;
 
 import com.bookingsystem.model.tablemodel.ArchiveTableModel;
 import com.bookingsystem.view.panelparts.UIBookingSystemArchiveViewPanel;
@@ -19,6 +32,9 @@ public class UIBookingSystemArchivePanel extends JPanel {
     /**
 	 * 
 	 */
+	
+    private static final DateFormat BOOKING_TIME_FORMAT = new SimpleDateFormat("HH:mm", Locale.ENGLISH);
+    private static final DateFormat BOOKING_DATE_FORMAT = new SimpleDateFormat("dd.MM.yy", Locale.ENGLISH);
 	private static final long serialVersionUID = -4584229791330483547L;
 	private final JTable bookingSystemJTable;
     private ArchiveTableModel archiveTableModel;
@@ -79,7 +95,75 @@ public class UIBookingSystemArchivePanel extends JPanel {
         this.archiveTableModel = archiveTableModel;
         this.bookingSystemJTable.setModel(this.archiveTableModel);
         this.bookingSystemJTable.setAutoCreateRowSorter(true);
-        this.archiveTableModel.fireTableDataChanged();
+        
+    	TableRowSorter<TableModel> sorter = new TableRowSorter<>(archiveTableModel);
+		bookingSystemJTable.setRowSorter(sorter);
+		List<RowSorter.SortKey> sortKeys = new ArrayList<>();
+		
+		sortKeys.add(new RowSorter.SortKey(2, SortOrder.ASCENDING));
+		sortKeys.add(new RowSorter.SortKey(3, SortOrder.ASCENDING));
+		sorter.setComparator(2, new Comparator<Object>() {
+			@Override
+			public int compare(Object arg0, Object arg1) {
+		        try {
+			        if (arg0.equals("Unknown") && !arg1.equals("Unknown")) {
+			        	return -1;
+			        } else if (arg1.equals("Unknown") && !arg0.equals("Unknown")) { 
+			        	return 1;
+			        } else if (arg0.equals("Unknown") && arg1.equals("Unknown")) {
+			        	return 0;
+			        } else {
+			            return BOOKING_DATE_FORMAT.parse((String) arg0).compareTo((BOOKING_DATE_FORMAT.parse((String) arg1)));
+			        }
+		        } catch (ParseException p) {
+		        	System.out.println("time");
+		        	return 0;
+		        }
+			}
+		});
+		
+		sorter.setComparator(3, new Comparator<Object>() {
+			@Override
+			public int compare(Object arg0, Object arg1) {
+				Date d1 =null;
+				Date d2 = null;
+				
+				   if (arg0.equals("Unknown") && !arg1.equals("Unknown")) {
+			        	return -1;
+			        } else if (arg1.equals("Unknown") && !arg0.equals("Unknown")) { 
+			        	return 1;
+			        } else if (arg0.equals("Unknown") && arg1.equals("Unknown")) {
+			        	return 0;
+			        } else {
+			        	
+						String[] s1ARRAY = (String[]) ((String) arg0).split("-"); //first argument split
+						String s1 = s1ARRAY[0];
+						
+						String[] s2ARRAY = (String[]) ((String) arg1).split("-"); //second argument
+						String s2 = s2ARRAY[0];
+
+						try {
+							 d1 = BOOKING_TIME_FORMAT.parse(s1);
+							 d2 = BOOKING_TIME_FORMAT.parse(s2);
+						} catch (ParseException e) {
+							 Calendar date = Calendar.getInstance();
+			                    date.set(Calendar.AM_PM, Calendar.AM);
+			                    date.set(Calendar.HOUR, 00);
+			                    date.set(Calendar.MINUTE, 00);
+			                   date.set(Calendar.SECOND, 00);
+			                   date.set(Calendar.MILLISECOND, 0);
+			                   d1= date.getTime();
+			                   d2= date.getTime();
+						}
+						
+						return d1.compareTo(d2);
+			           
+			}
+			}
+		});
+
+		sorter.setSortKeys(sortKeys);
+		this.archiveTableModel.fireTableDataChanged();
     }
 
     public void removeAllBookings() {

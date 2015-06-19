@@ -1,9 +1,6 @@
 package com.bookingsystem.model.tablemodel;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.List;
-import java.util.Locale;
 
 import javax.swing.table.AbstractTableModel;
 
@@ -20,11 +17,10 @@ public class ArchiveTableModel extends AbstractTableModel {
 		private static final int COLUMN_NO = 0;
         private static final int COLUMN_DAY = 1;
         private static final int COLUMN_DATE = 2;
-        private static final int COLUMN_TIME_OF_BOOKING = 3;
+        private static final int COLUMN_TIME = 3;
         private static final int COLUMN_ROOM_BOOKED = 4;
         private static final int COLUMN_BOOKING_HOLDER = 5;
         private static final int COLUMN_EQUIPMENT = 6;
-        static final DateFormat BOOKING_TIME_FORMAT = new SimpleDateFormat("HH:mm", Locale.ENGLISH);
 
         private String[] columnNames = {"Booking ID", "Day", "Date", "Time Of Booking", "Room Booked", "Booking Holder", "Equipment"};
         private List<Booking> bookingList;
@@ -65,11 +61,11 @@ public class ArchiveTableModel extends AbstractTableModel {
                                 returnValue = booking.getBookingDay();
                                 break;
                         case COLUMN_DATE:
-                                returnValue = booking.getBookingDate();
-                                break;
-                        case COLUMN_TIME_OF_BOOKING:
-                                returnValue = BOOKING_TIME_FORMAT.format(booking.getBookingStartTime()) +"-"+ BOOKING_TIME_FORMAT.format(booking.getBookingCollectionTime());
-                                break;
+                            returnValue = booking.getDateToString();
+                            break;
+                        case COLUMN_TIME:
+                            returnValue = booking.getTimeToString();
+                            break;
                         case COLUMN_ROOM_BOOKED:
                                 returnValue = booking.getBookingLocation();
                                 break;

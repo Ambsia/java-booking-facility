@@ -57,9 +57,7 @@ public class UIBookingSystemBookingPanel extends JPanel {
 		gbc.weighty = 1;
 		gbc.anchor = GridBagConstraints.FIRST_LINE_START;
 		gbc.fill = GridBagConstraints.BOTH;
-//		bookingSystemJTable.getColumn("Booking ID").setMinWidth(0);
-//		bookingSystemJTable.getColumn("Booking ID").setMaxWidth(0);
-//		bookingSystemJTable.getColumn("Booking ID").setPreferredWidth(0);
+
 //		bookingSystemJTable.getColumn("Day").setMaxWidth(85);
 //		bookingSystemJTable.getColumn("Date").setMaxWidth(80);
 		JScrollPane jScrollPane = new JScrollPane(bookingSystemJTable);
@@ -102,36 +100,24 @@ public class UIBookingSystemBookingPanel extends JPanel {
 		bookingSystemJTable.setRowSorter(sorter);
 		List<RowSorter.SortKey> sortKeys = new ArrayList<>();
 		
-		//sortKeys.add(new RowSorter.SortKey(2, SortOrder.ASCENDING));
-		//sortKeys.add(new RowSorter.SortKey(columnIndexForName, SortOrder.ASCENDING));
+		sortKeys.add(new RowSorter.SortKey(2, SortOrder.ASCENDING));
+		sortKeys.add(new RowSorter.SortKey(3, SortOrder.ASCENDING));
 		sorter.setComparator(2, new Comparator<Object>() {
 			@Override
 			public int compare(Object arg0, Object arg1) {
-				Calendar date1 = Calendar.getInstance();
-		        date1.set(Calendar.AM_PM,Calendar.AM);
-		        date1.set(Calendar.DAY_OF_MONTH,25);
-		        date1.set(Calendar.MONTH,11);
-		        date1.set(Calendar.HOUR, 00);
-		        date1.set(Calendar.MINUTE, 00);
-		        date1.set(Calendar.SECOND, 00);
-		        date1.set(Calendar.MILLISECOND, 0);
-		        date1.set(Calendar.YEAR, 2015);
-		        String date1string = BOOKING_DATE_FORMAT.format(date1.getTime());
 		        try {
 			        if (arg0.equals("Unknown") && !arg1.equals("Unknown")) {
-			        	System.out.println(date1string + " then formated " + BOOKING_DATE_FORMAT.parse(date1string));
-			        	return BOOKING_DATE_FORMAT.parse(date1string).compareTo((BOOKING_DATE_FORMAT.parse((String)arg1)));
-			        } else if ((String)arg1 == "Unknown" && (String)arg0 !="Unknown") { 
-			        	return BOOKING_DATE_FORMAT.parse(date1string).compareTo((BOOKING_DATE_FORMAT.parse((String)arg0)));
-			        } else if ((String)arg1 == "Unknown" && (String)arg0 =="Unknown") {
-			        	return BOOKING_DATE_FORMAT.parse(date1string).compareTo(date1.getTime());
+			        	return -1;
+			        } else if (arg1.equals("Unknown") && !arg0.equals("Unknown")) { 
+			        	return 1;
+			        } else if (arg0.equals("Unknown") && arg1.equals("Unknown")) {
+			        	return 0;
 			        } else {
-			        	System.out.println(BOOKING_DATE_FORMAT.parse((String)arg0) +  " Compared To " + BOOKING_DATE_FORMAT.parse((String)arg1) + " = " + BOOKING_DATE_FORMAT.parse((String)arg0).compareTo((BOOKING_DATE_FORMAT.parse((String)arg1))));
-			            return BOOKING_DATE_FORMAT.parse((String)arg0).compareTo((BOOKING_DATE_FORMAT.parse((String)arg1)));
+			            return BOOKING_DATE_FORMAT.parse((String) arg0).compareTo((BOOKING_DATE_FORMAT.parse((String) arg1)));
 			        }
 		        } catch (ParseException p) {
-		        	System.out.println("arg0 = " + arg0 + " arg1 = " + arg1);
-		        	return date1.getTime().compareTo(date1.getTime());
+		        	System.out.println("time");
+		        	return 0;
 		        }
 			}
 		});
@@ -142,30 +128,42 @@ public class UIBookingSystemBookingPanel extends JPanel {
 				Date d1 =null;
 				Date d2 = null;
 				
-				String[] s1ARRAY = (String[]) ((String) arg0).split("-");
-				String s1 = s1ARRAY[0];
-				
-				String[] s2ARRAY = (String[]) ((String) arg1).split("-");
-				String s2 = s2ARRAY[0];
+				   if (arg0.equals("Unknown") && !arg1.equals("Unknown")) {
+			        	return -1;
+			        } else if (arg1.equals("Unknown") && !arg0.equals("Unknown")) { 
+			        	return 1;
+			        } else if (arg0.equals("Unknown") && arg1.equals("Unknown")) {
+			        	return 0;
+			        } else {
+			        	
+						String[] s1ARRAY = (String[]) ((String) arg0).split("-"); //first argument split
+						String s1 = s1ARRAY[0];
+						
+						String[] s2ARRAY = (String[]) ((String) arg1).split("-"); //second argument
+						String s2 = s2ARRAY[0];
 
-				try {
-					 d1 = BOOKING_TIME_FORMAT.parse(s1);
-					 d2 = BOOKING_TIME_FORMAT.parse(s2);
-				} catch (ParseException e) {
-					 Calendar date = Calendar.getInstance();
-	                    date.set(Calendar.AM_PM, Calendar.AM);
-	                    date.set(Calendar.HOUR, 00);
-	                    date.set(Calendar.MINUTE, 00);
-	                   date.set(Calendar.SECOND, 00);
-	                   date.set(Calendar.MILLISECOND, 0);
-	                   d1= date.getTime();
-	                   d2= date.getTime();
-				}
-				
-				return d1.compareTo(d2);
+						try {
+							 d1 = BOOKING_TIME_FORMAT.parse(s1);
+							 d2 = BOOKING_TIME_FORMAT.parse(s2);
+						} catch (ParseException e) {
+							 Calendar date = Calendar.getInstance();
+			                    date.set(Calendar.AM_PM, Calendar.AM);
+			                    date.set(Calendar.HOUR, 00);
+			                    date.set(Calendar.MINUTE, 00);
+			                   date.set(Calendar.SECOND, 00);
+			                   date.set(Calendar.MILLISECOND, 0);
+			                   d1= date.getTime();
+			                   d2= date.getTime();
+						}
+						
+						return d1.compareTo(d2);
+			           
+			}
 			}
 		});
-		sorter.setSortable(3, false);
+		bookingSystemJTable.getColumn("Booking ID").setMinWidth(0);
+		bookingSystemJTable.getColumn("Booking ID").setMaxWidth(0);
+      	bookingSystemJTable.getColumn("Booking ID").setPreferredWidth(0);
 		sorter.setSortKeys(sortKeys);
 		this.bookingSystemModel.fireTableDataChanged();
 	}

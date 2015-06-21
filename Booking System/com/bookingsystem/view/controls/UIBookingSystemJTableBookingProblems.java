@@ -1,17 +1,16 @@
 package com.bookingsystem.view.controls;
 
-import java.util.ArrayList;
-import java.util.Date;
-
 import com.bookingsystem.model.Booking;
 import com.bookingsystem.model.Log;
 import com.bookingsystem.model.tablemodel.BookingProblemModel;
 
-/**
- * Created by Alex on 24/05/2015.
- */
+import java.util.ArrayList;
+import java.util.Date;
 
-    public class UIBookingSystemJTableBookingProblems extends UIBookingSystemJTable {
+/**
+ * Created by Alex on 24/05/2015
+ */
+public class UIBookingSystemJTableBookingProblems extends UIBookingSystemJTable {
     /**
 	 * 
 	 */
@@ -24,14 +23,12 @@ import com.bookingsystem.model.tablemodel.BookingProblemModel;
         this.setModel(this.bookingProblemModel);
     }
 
-    @Override
+
     public void addArrayOfRowsToList(ArrayList<Object> arrayList) {
-        for (Object object : arrayList) {
-            addRowToList(object);
-        }
+        arrayList.forEach(this::addRowToList);
     }
 
-    @Override
+
     public void addRowToList(Object data) {
         Booking booking = (Booking) data;
         bookingProblemModel.addRow(new Object[]{booking.getBookingID(), booking.getBookingDay(),
@@ -39,7 +36,7 @@ import com.bookingsystem.model.tablemodel.BookingProblemModel;
                         booking.getBookingLocation(),booking.getRequiredEquipment() });
     }
 
-    @Override
+
     public Object getRowFromList(int identifierOfData) {
         if (identifierOfData >= 0) {
             return new Log((String) bookingProblemModel.getValueAt(identifierOfData, 0),
@@ -59,11 +56,6 @@ import com.bookingsystem.model.tablemodel.BookingProblemModel;
         return false;
     }
 
-    @Override
-    public void replaceRowInList(Object rowData) {
-    }
-
-    @Override
     public void removeRowFromList() {
         if (this.getSelectedRow() < bookingProblemModel.getRowCount() && this.getSelectedRow() >= 0) {
             bookingProblemModel.removeRow(this.getSelectedRow());
@@ -72,7 +64,7 @@ import com.bookingsystem.model.tablemodel.BookingProblemModel;
         }
     }
 
-    @Override
+
     public void removeAllRowsFromList() {
         int rowCount = bookingProblemModel.getRowCount();
         for (int i = rowCount - 1; i >= 0; i--) {

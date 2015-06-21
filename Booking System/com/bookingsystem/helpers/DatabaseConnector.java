@@ -1,25 +1,19 @@
 package com.bookingsystem.helpers;
 
-import java.sql.CallableStatement;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 
 /**
- * Created by Alex on 04/05/2015.
+ * Created by Alex on 04/05/2015
  */
-
 public final class DatabaseConnector  {
 
-    private final ReturnSpecifiedPropertyValues returnSpecifiedPropertyValues;
     private final String connectionString;
     private CallableStatement callableStatement;
     private Connection connection;
 
     public DatabaseConnector() {
-        this.returnSpecifiedPropertyValues = new ReturnSpecifiedPropertyValues("sqlconfig.properties");
-        this.connectionString = this.returnSpecifiedPropertyValues.getDatabaseConnectionString();
+        ReturnSpecifiedPropertyValues returnSpecifiedPropertyValues = new ReturnSpecifiedPropertyValues("sqlconfig.properties");
+        this.connectionString = returnSpecifiedPropertyValues.getDatabaseConnectionString();
         this.connection = null;
         this.callableStatement = null;
     }
@@ -30,11 +24,11 @@ public final class DatabaseConnector  {
 
     public boolean isConnectionClosed() {
         try {
-            return this.connection.isClosed();
+            return !this.connection.isClosed();
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return true;
+        return false;
     }
 
     public void openConnection() {
@@ -83,8 +77,6 @@ public final class DatabaseConnector  {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return false;
+        return  false;
     }
-
-
 }

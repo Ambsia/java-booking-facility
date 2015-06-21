@@ -1,17 +1,7 @@
 package com.bookingsystem.controller;
 
-import org.apache.commons.collections.IteratorUtils;
-
-import com.bookingsystem.controller.handler.AccountHandler;
-import com.bookingsystem.controller.handler.ArchiveHandler;
-import com.bookingsystem.controller.handler.BookingHandler;
-import com.bookingsystem.controller.handler.Handler;
-import com.bookingsystem.controller.handler.LoginHandler;
-import com.bookingsystem.model.businessmodel.AccountBusinessLayer;
-import com.bookingsystem.model.businessmodel.AccountManagementBusinessLayer;
-import com.bookingsystem.model.businessmodel.ArchiveBusinessLayer;
-import com.bookingsystem.model.businessmodel.BookingBusinessLayer;
-import com.bookingsystem.model.businessmodel.LoggerBusinessLayer;
+import com.bookingsystem.controller.handler.*;
+import com.bookingsystem.model.businessmodel.*;
 import com.bookingsystem.model.tablemodel.AccountTableModel;
 import com.bookingsystem.model.tablemodel.ArchiveTableModel;
 import com.bookingsystem.model.tablemodel.BookingTableModel;
@@ -25,6 +15,7 @@ import com.bookingsystem.view.panes.UIBookingSystemAdminPanel;
 import com.bookingsystem.view.panes.UIBookingSystemArchivePanel;
 import com.bookingsystem.view.panes.UIBookingSystemBookingPanel;
 import com.bookingsystem.view.panes.UIBookingSystemTabbedPane;
+import org.apache.commons.collections.IteratorUtils;
 
 public class BookingSystemController {
     // account not instantiated until logged in or created!
@@ -50,7 +41,7 @@ public class BookingSystemController {
         //
         //All Table Models Here//
         BookingTableModel bookingTableModel = new BookingTableModel(IteratorUtils.toList(bookingBusinessLayer.iterator())); // will a
-        ArchiveTableModel archiveTableModel = new ArchiveTableModel(bookingBusinessLayer.getArchivedBookings());
+        ArchiveTableModel archiveTableModel = new ArchiveTableModel(IteratorUtils.toList(bookingBusinessLayer.getArchivedBookings().iterator()));
         LogTableModel logTableModel = new LogTableModel(IteratorUtils.toList(loggerBusinessLayer.iterator()));
 		AccountTableModel accountTableModel = new AccountTableModel(IteratorUtils.toList(accountManagementBusinessLayer.iterator()));
         //All Table Models Here\\

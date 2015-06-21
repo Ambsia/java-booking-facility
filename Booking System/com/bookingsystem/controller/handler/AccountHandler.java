@@ -1,11 +1,5 @@
 package com.bookingsystem.controller.handler;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.Date;
-
-import org.apache.commons.collections.IteratorUtils;
-
 import com.bookingsystem.helpers.MessageBox;
 import com.bookingsystem.model.Account;
 import com.bookingsystem.model.Log;
@@ -13,6 +7,11 @@ import com.bookingsystem.model.tablemodel.AccountTableModel;
 import com.bookingsystem.view.dialogpanels.accountdialog.UIBookingSystemAccountAddPanel;
 import com.bookingsystem.view.panelparts.UIBookingSystemAdminViewPanel;
 import com.bookingsystem.view.panes.UIBookingSystemAdminPanel;
+import org.apache.commons.collections.IteratorUtils;
+
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.Date;
 
 /**
  * Author: [Alex]
@@ -24,7 +23,7 @@ public class AccountHandler implements ActionListener {
 	private final UIBookingSystemAccountAddPanel bookingSystemAccountAddPanel;
 	private int currentAccountIDBeingProcessed;
 	private final Handler handler;
-	private AccountTableModel accountTableModel;
+	private final AccountTableModel accountTableModel;
 
 	public AccountHandler(Handler handler) {
 		this.handler = handler;
@@ -52,7 +51,7 @@ public class AccountHandler implements ActionListener {
 							char[] chars = bookingSystemAccountAddPanel.getAccountPasswordText();
 							String password = "";
 							for (char c : chars) {
-								password +=c;
+								password += c;
 							}
 							int level = Integer.parseInt(bookingSystemAccountAddPanel.getAccountUserLevelText());
 
@@ -69,14 +68,19 @@ public class AccountHandler implements ActionListener {
 				}
 				break;
 			case "Remove Account":
+				if (bookingSystemAdminPanel.selectedRowCount() > 0) {
 				int modelRow = bookingSystemAdminPanel.rowViewIndexToModel(bookingSystemAdminPanel.getSelectedRow());
 				this.currentAccountIDBeingProcessed = (int) bookingSystemAdminPanel.getValueAt(modelRow, 0);
-				if ( currentAccountIDBeingProcessed != -1) {
+
 					if (handler.getAccountBusinessLayer().getAccountLoggedIn().getUserLevel() >= 3) {
 						this.currentAccountIDBeingProcessed = (int) accountTableModel.getValueAt(bookingSystemAdminPanel.getSelectedRow(), 0);
 						Account account = accountTableModel.getAccount(currentAccountIDBeingProcessed);
 						if (account.getUserLevel() < handler.getAccountBusinessLayer().getAccountLoggedIn().getUserLevel()) {
-
+							try {
+								Thread.sleep(5);
+							} catch (InterruptedException e1) {
+								e1.printStackTrace();
+							}
 							log.setAccountIDDeleted(currentAccountIDBeingProcessed);
 							handler.getAccountManagementBusinessLayer().setCurrentAccountID(currentAccountIDBeingProcessed);
 							handler.getAccountManagementBusinessLayer().setCurrentIndexOfAccountInList(bookingSystemAdminPanel.getSelectedRow());
@@ -97,16 +101,16 @@ public class AccountHandler implements ActionListener {
 			case "View Exceptions":
 				break;
 			case "View Activity":
-				modelRow = bookingSystemAdminPanel.rowViewIndexToModel(bookingSystemAdminPanel.getSelectedRow());
-				this.currentAccountIDBeingProcessed = (int) bookingSystemAdminPanel.getValueAt(modelRow, 0);
-				if ( currentAccountIDBeingProcessed != -1) {
-					bookingSystemAdminViewPanel.getJTableModel().clearArchiveList();
-					handler.getLoggerBusinessLayer().getLogsForAccount(this.currentAccountIDBeingProcessed);
-					bookingSystemAdminViewPanel.getJTableModel().addLogList(IteratorUtils.toList(handler.getLoggerBusinessLayer().iterator()));
-				} else {
-					MessageBox.errorMessageBox("You must select an account to view logs.");
-				}
-				break;
+				if (bookingSystemAdminPanel.selectedRowCount() > 0) {
+					int modelRow = bookingSystemAdminPanel.rowViewIndexToModel(bookingSystemAdminPanel.getSelectedRow());
+					this.currentAccountIDBeingProcessed = (int) bookingSystemAdminPanel.getValueAt(modelRow, 0);
+						bookingSystemAdminViewPanel.getJTableModel().clearArchiveList();
+						handler.getLoggerBusinessLayer().getLogsForAccount(this.currentAccountIDBeingProcessed);
+						bookingSystemAdminViewPanel.getJTableModel().addLogList(IteratorUtils.toList(handler.getLoggerBusinessLayer().iterator()));
+					} else {
+						MessageBox.errorMessageBox("You must select an account to view logs.");
+					}
+					break;
 		}
 		handler.getLoggerBusinessLayer().insertLog(log);
 	}

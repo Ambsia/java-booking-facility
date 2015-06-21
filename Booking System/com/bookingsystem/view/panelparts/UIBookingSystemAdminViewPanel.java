@@ -1,17 +1,9 @@
 package com.bookingsystem.view.panelparts;
 
-import java.awt.Component;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.Insets;
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
-
 import com.bookingsystem.model.tablemodel.LogTableModel;
+
+import javax.swing.*;
+import java.awt.*;
 
 /**
  * Author: [Alex]
@@ -21,9 +13,9 @@ public class UIBookingSystemAdminViewPanel extends JPanel {
 	 * 
 	 */
 	private static final long serialVersionUID = -5656361363227035414L;
-	private JTable bookingSystemJTableLogs;
+	private final JTable bookingSystemJTableLogs;
 	private LogTableModel logTableModel;
-	private JScrollPane jScrollPane;
+	private final JScrollPane jScrollPane;
 	public UIBookingSystemAdminViewPanel() {
 		bookingSystemJTableLogs = new JTable(logTableModel);
 		setLayout(new GridBagLayout());
@@ -56,29 +48,39 @@ public class UIBookingSystemAdminViewPanel extends JPanel {
 		return this.logTableModel;
 	}
 
-	public int selectedRowCount() {
-		return bookingSystemJTableLogs.getSelectedRowCount();
-	}
+// --Commented out by Inspection START (21/06/2015 00:49):
+//	public int selectedRowCount() {
+//		return bookingSystemJTableLogs.getSelectedRowCount();
+//	}
+// --Commented out by Inspection STOP (21/06/2015 00:49)
 
-	public int rowViewIndexToModel(int row) {
-		return bookingSystemJTableLogs.convertRowIndexToModel(row);
-	}
+// --Commented out by Inspection START (21/06/2015 00:49):
+//	int rowViewIndexToModel(int row) {
+//		return bookingSystemJTableLogs.convertRowIndexToModel(row);
+//	}
+// --Commented out by Inspection STOP (21/06/2015 00:49)
 
-	public Object getValueAt(int row, int column) {
-		return logTableModel.getValueAt(row,column);
-	}
+// --Commented out by Inspection START (21/06/2015 00:49):
+//	public Object getValueAt(int row, int column) {
+//		return logTableModel.getValueAt(row,column);
+//	}
+// --Commented out by Inspection STOP (21/06/2015 00:49)
 
-	public List<Integer> getSelectedRows() {
-		List<Integer> integerList = new ArrayList<>();
-		for (int i = 0; i<bookingSystemJTableLogs.getSelectedRows().length;i++) {
-			integerList.add(rowViewIndexToModel(bookingSystemJTableLogs.getSelectedRows()[i]));
-		}
-		return integerList;
-	}
+// --Commented out by Inspection START (21/06/2015 00:49):
+//	public List<Integer> getSelectedRows() {
+//		List<Integer> integerList = new ArrayList<>();
+//		for (int i = 0; i<bookingSystemJTableLogs.getSelectedRows().length;i++) {
+//			integerList.add(rowViewIndexToModel(bookingSystemJTableLogs.getSelectedRows()[i]));
+//		}
+//		return integerList;
+//	}
+// --Commented out by Inspection STOP (21/06/2015 00:49)
 
-	public int getSelectedRow() {
-		return bookingSystemJTableLogs.getSelectedRow();
-	}
+// --Commented out by Inspection START (21/06/2015 00:49):
+//	public int getSelectedRow() {
+//		return bookingSystemJTableLogs.getSelectedRow();
+//	}
+// --Commented out by Inspection STOP (21/06/2015 00:49)
 
 
 //	public void addLogToList(Log log) {

@@ -1,10 +1,9 @@
 package com.bookingsystem.view.dialogpanels.bookingdialog;
 
-import javax.swing.JOptionPane;
-import javax.swing.JTextField;
-
 import com.bookingsystem.helpers.MessageBox;
 import com.bookingsystem.view.dialogpanels.UIBookingSystemDialogPanel;
+
+import javax.swing.*;
 
 public class UIBookingSystemFindPanel extends UIBookingSystemDialogPanel {
 

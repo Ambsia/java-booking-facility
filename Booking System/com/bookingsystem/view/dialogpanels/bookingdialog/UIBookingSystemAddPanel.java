@@ -1,8 +1,8 @@
 package com.bookingsystem.view.dialogpanels.bookingdialog;
 
-import javax.swing.JOptionPane;
-
 import com.bookingsystem.view.dialogpanels.UIBookingSystemDialogPanel;
+
+import javax.swing.*;
 
 /**
  * Author: [Alex] on [$Date]

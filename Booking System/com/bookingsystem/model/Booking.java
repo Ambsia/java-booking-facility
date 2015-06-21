@@ -15,15 +15,15 @@ public final class Booking  {
 	private Date bookingStartTime;
 	private Date bookingCollectionTime;
 	private Date bookingDate;
-	private int weeksRecuring;
-	private boolean isRecuringBooking;
+	private int weeksRecurring;
+	private boolean isRecurringBooking;
 	private Equipment requiredEquipment;
 	private String bookingHolder;
 	private int bookingIndex;
 	private static final DateFormat BOOKING_TIME_FORMAT = new SimpleDateFormat("HH:mm", Locale.ENGLISH);
 	private static final DateFormat BOOKING_DATE_FORMAT = new SimpleDateFormat("dd.MM.yy", Locale.ENGLISH);
 
-	Log bookingLogger;
+	// --Commented out by Inspection (21/06/2015 00:49):Log bookingLogger;
 
 	private boolean bookingCompleted;
 
@@ -79,29 +79,31 @@ public final class Booking  {
 		return requiredEquipment;
 	}
 
-	public void setRequiredEquipment(Equipment requiredEquipment) {
-		this.requiredEquipment = requiredEquipment;
-	}
+// --Commented out by Inspection START (21/06/2015 00:49):
+//	public void setRequiredEquipment(Equipment requiredEquipment) {
+//		this.requiredEquipment = requiredEquipment;
+//	}
+// --Commented out by Inspection STOP (21/06/2015 00:49)
 
 	public String getBookingHolder() {
 		return bookingHolder;
 	}
 	
-	public void setIsRecuring(boolean isRecuringBooking) {
-		this.isRecuringBooking = isRecuringBooking;
+	public void setIsRecurring(boolean isRecurringBooking) {
+		this.isRecurringBooking = isRecurringBooking;
 	}
 	
-	public boolean getIsRecuringBooking() {
-		return this.isRecuringBooking;
+	public boolean getIsRecurringBooking() {
+		return this.isRecurringBooking;
 	}
 	
 	
-	public int getWeeksRecuring() {
-		return this.weeksRecuring;
+	public int getWeeksRecurring() {
+		return this.weeksRecurring;
 	}
 	
-	public void setWeeksRecuring(int weeksRecuring) {
-		this.weeksRecuring = weeksRecuring;
+	public void setWeeksRecurring(int weeksRecurring) {
+		this.weeksRecurring = weeksRecurring;
 	}
 
 	public boolean getBookingCompleted() { return bookingCompleted; }
@@ -188,9 +190,11 @@ public final class Booking  {
 		}
 	}
 
-	public int getBookingIndex() {
-		return bookingIndex;
-	}
+// --Commented out by Inspection START (21/06/2015 00:49):
+//	public int getBookingIndex() {
+//		return bookingIndex;
+//	}
+// --Commented out by Inspection STOP (21/06/2015 00:49)
 
 	public void setBookingIndex(int bookingIndex) {
 		this.bookingIndex = bookingIndex;
@@ -201,11 +205,11 @@ public final class Booking  {
 			date1.set(Calendar.AM_PM, Calendar.AM);
 			date1.set(Calendar.DAY_OF_MONTH, 25);
 			date1.set(Calendar.MONTH, 11);
-			date1.set(Calendar.HOUR, 00);
-			date1.set(Calendar.MINUTE, 00);
-			date1.set(Calendar.SECOND, 00);
+			date1.set(Calendar.HOUR, 0);
+			date1.set(Calendar.MINUTE, 0);
+			date1.set(Calendar.SECOND, 0);
 			date1.set(Calendar.MILLISECOND, 0);
-			String date11 = "";
+			String date11;
 			
 			if (BOOKING_DATE_FORMAT.format(this.bookingDate).equals(BOOKING_DATE_FORMAT.format(date1.getTime()))) {
 				date11 = "Unknown";
@@ -221,11 +225,11 @@ public final class Booking  {
 	date1.set(Calendar.AM_PM, Calendar.AM);
 	date1.set(Calendar.DAY_OF_MONTH, 25);
 	date1.set(Calendar.MONTH, 11);
-	date1.set(Calendar.HOUR, 00);
-	date1.set(Calendar.MINUTE, 00);
-	date1.set(Calendar.SECOND, 00);
+	date1.set(Calendar.HOUR, 0);
+	date1.set(Calendar.MINUTE, 0);
+	date1.set(Calendar.SECOND, 0);
 	date1.set(Calendar.MILLISECOND, 0);
-	String time = "";
+	String time;
 	if (BOOKING_TIME_FORMAT.format(this.bookingStartTime).equals(BOOKING_TIME_FORMAT.format(date1.getTime()))) {
 		time= "Unknown";
 	} else {

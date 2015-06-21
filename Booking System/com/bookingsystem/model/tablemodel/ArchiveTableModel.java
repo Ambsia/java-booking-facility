@@ -1,13 +1,12 @@
 package com.bookingsystem.model.tablemodel;
 
-import java.util.List;
-
-import javax.swing.table.AbstractTableModel;
-
 import com.bookingsystem.model.Booking;
 
+import javax.swing.table.AbstractTableModel;
+import java.util.List;
+
 /**
- * Created by Alex on 24/05/2015.
+ * Created by Alex on 24/05/2015
  */
 public class ArchiveTableModel extends AbstractTableModel {
         /**
@@ -22,8 +21,8 @@ public class ArchiveTableModel extends AbstractTableModel {
         private static final int COLUMN_BOOKING_HOLDER = 5;
         private static final int COLUMN_EQUIPMENT = 6;
 
-        private String[] columnNames = {"Booking ID", "Day", "Date", "Time Of Booking", "Room Booked", "Booking Holder", "Equipment"};
-        private List<Booking> bookingList;
+        private final String[] columnNames = {"Booking ID", "Day", "Date", "Time Of Booking", "Room Booked", "Booking Holder", "Equipment"};
+        private final List<Booking> bookingList;
 
         public ArchiveTableModel(List<Booking> bookingList) {
                 super();
@@ -51,34 +50,38 @@ public class ArchiveTableModel extends AbstractTableModel {
 
         @Override
         public Object getValueAt(int rowIndex, int columnIndex) {
-                Booking booking = bookingList.get(rowIndex);
                 Object returnValue = null;
-                switch (columnIndex) {
-                        case COLUMN_NO:
-                                returnValue = booking.getBookingID();
-                                break;
-                        case COLUMN_DAY:
-                                returnValue = booking.getBookingDay();
-                                break;
-                        case COLUMN_DATE:
-                            returnValue = booking.getDateToString();
-                            break;
-                        case COLUMN_TIME:
-                            returnValue = booking.getTimeToString();
-                            break;
-                        case COLUMN_ROOM_BOOKED:
-                                returnValue = booking.getBookingLocation();
-                                break;
-                        case COLUMN_BOOKING_HOLDER:
-                                returnValue = booking.getBookingHolder();
-                                break;
-                        case COLUMN_EQUIPMENT:
-                                returnValue = booking.getRequiredEquipment().getEquipmentName();
-                                break;
-                        default:
-                                throw new IllegalArgumentException("Invalid column index");
-                }
+                try {
+                        Booking booking = bookingList.get(rowIndex);
 
+                        switch (columnIndex) {
+                                case COLUMN_NO:
+                                        returnValue = booking.getBookingID();
+                                        break;
+                                case COLUMN_DAY:
+                                        returnValue = booking.getBookingDay();
+                                        break;
+                                case COLUMN_DATE:
+                                        returnValue = booking.getDateToString();
+                                        break;
+                                case COLUMN_TIME:
+                                        returnValue = booking.getTimeToString();
+                                        break;
+                                case COLUMN_ROOM_BOOKED:
+                                        returnValue = booking.getBookingLocation();
+                                        break;
+                                case COLUMN_BOOKING_HOLDER:
+                                        returnValue = booking.getBookingHolder();
+                                        break;
+                                case COLUMN_EQUIPMENT:
+                                        returnValue = booking.getRequiredEquipment().getEquipmentName();
+                                        break;
+                                default:
+                                        throw new IllegalArgumentException("Invalid column index");
+                        }
+                } catch (IndexOutOfBoundsException ind) {
+                        System.out.println(ind.toString());
+                }
                 return returnValue;
         }
 
@@ -101,20 +104,26 @@ public class ArchiveTableModel extends AbstractTableModel {
 
         public void addBooking(Booking booking) {
                 this.bookingList.add(booking);
-                this.fireTableRowsInserted(0,bookingList.size()-1);
+                this.fireTableDataChanged();
         }
 
         public void addBookingList(List<Booking> bookingList) {
-                this.bookingList.addAll(bookingList);
+                for (Booking b : bookingList) {
+                        this.bookingList.add(b);
+                        this.fireTableDataChanged();
+                }
         }
 
-        public void removeBooking(Booking booking) {
-                this.bookingList.remove(booking);
-                this.fireTableRowsDeleted(this.bookingList.size()-3, this.bookingList.size()-2);
-        }
+// --Commented out by Inspection START (21/06/2015 00:49):
+//        public void removeBooking(Booking booking) {
+//                this.bookingList.remove(booking);
+//                this.fireTableRowsDeleted(this.bookingList.size()-3, this.bookingList.size()-2);
+//        }
+// --Commented out by Inspection STOP (21/06/2015 00:49)
 
         public void clearArchiveList() {
                 this.bookingList.clear();
+                this.fireTableDataChanged();
         }
 }
 

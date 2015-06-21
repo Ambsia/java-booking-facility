@@ -55,9 +55,11 @@ public final class Log {
         return classEvent;
     }
 
-    public int getAccountIDLoggedIn() {
-        return accountIDLoggedIn;
-    }
+// --Commented out by Inspection START (21/06/2015 00:49):
+//    public int getAccountIDLoggedIn() {
+//        return accountIDLoggedIn;
+//    }
+// --Commented out by Inspection STOP (21/06/2015 00:49)
 
     public void setAccountIDDeleted(int accountIDDeleted) {
         this.accountIDDeleted = accountIDDeleted;

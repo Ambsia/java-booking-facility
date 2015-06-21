@@ -1,17 +1,10 @@
 package com.bookingsystem.view.panelparts;
 
-import java.awt.Component;
-import java.awt.Font;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.Insets;
-
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
+import javax.swing.*;
+import java.awt.*;
 
 /**
- * Created by Alex on 24/05/2015.
+ * Created by Alex on 24/05/2015
  */
 public class UIBookingSystemArchiveViewPanel extends JPanel {
 
@@ -19,8 +12,8 @@ public class UIBookingSystemArchiveViewPanel extends JPanel {
 	 * 
 	 */
 	private static final long serialVersionUID = 6827303413910281383L;
-	private JTextArea jTextArea;
-    private JScrollPane jScrollPane;
+	private final JTextArea jTextArea;
+    private final JScrollPane jScrollPane;
     public UIBookingSystemArchiveViewPanel() {
         setLayout(new GridBagLayout());
         jTextArea = new JTextArea();

@@ -1,14 +1,13 @@
 package com.bookingsystem.model.tablemodel;
 
+import com.bookingsystem.model.Booking;
+import com.bookingsystem.model.Equipment;
+
+import javax.swing.table.AbstractTableModel;
 import java.util.Collections;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
-
-import javax.swing.table.AbstractTableModel;
-
-import com.bookingsystem.model.Booking;
-import com.bookingsystem.model.Equipment;
 
 /**
  * Author: [Alex] on [$Date]
@@ -19,7 +18,7 @@ public class BookingTableModel extends AbstractTableModel implements Iterable<Bo
 	 * 
 	 */
 	private static final long serialVersionUID = 392304419118777610L;
-	private static String[] columnNames = { "Booking ID","Day","Date","Time Of Booking","Room Booked","Booking Holder","Equipment" };
+	private static final String[] columnNames = { "Booking ID","Day","Date","Time Of Booking","Room Booked","Booking Holder","Equipment" };
 
 	private static final int COLUMN_NO = 0;
 	private static final int COLUMN_DAY = 1;
@@ -29,7 +28,7 @@ public class BookingTableModel extends AbstractTableModel implements Iterable<Bo
 	private static final int COLUMN_HOLDER = 5;
 	private static final int COLUMN_EQUIPMENT = 6;
     
-	private List<Booking> bookingList;
+	private final List<Booking> bookingList;
     
     public BookingTableModel(List<Booking> bookingList) {
         this.bookingList = bookingList;      
@@ -65,7 +64,7 @@ public class BookingTableModel extends AbstractTableModel implements Iterable<Bo
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
         Booking booking = bookingList.get(rowIndex);
-        Object returnValue = null;
+        Object returnValue;
 
         switch (columnIndex) {
         case COLUMN_NO:
@@ -103,8 +102,8 @@ public class BookingTableModel extends AbstractTableModel implements Iterable<Bo
         	booking.setBookingIndex((int) value);
         	break;
         case COLUMN_DAY:
-        	booking.setBookingDay((String) value);;
-        	break;
+        	booking.setBookingDay((String) value);
+            break;
         case COLUMN_DATE:
         	booking.setBookingDate((Date) value);
         	break;
@@ -147,10 +146,12 @@ public class BookingTableModel extends AbstractTableModel implements Iterable<Bo
         }
     }
 
-    public void removeBooking(Booking booking) {
-    	this.bookingList.remove(booking);
-        this.fireTableDataChanged();
-    }
+// --Commented out by Inspection START (21/06/2015 00:54):
+//    public void removeBooking(Booking booking) {
+//    	this.bookingList.remove(booking);
+//        this.fireTableDataChanged();
+//    }
+// --Commented out by Inspection STOP (21/06/2015 00:54)
 
     public Booking getBooking(int id) {
         for (Booking b : this.bookingList) {

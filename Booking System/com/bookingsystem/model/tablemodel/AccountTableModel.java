@@ -1,11 +1,10 @@
 package com.bookingsystem.model.tablemodel;
 
-import java.util.Collections;
-import java.util.List;
+import com.bookingsystem.model.Account;
 
 import javax.swing.table.AbstractTableModel;
-
-import com.bookingsystem.model.Account;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * Author: [Alex]
@@ -19,9 +18,9 @@ public class AccountTableModel extends AbstractTableModel {
 	private static final int COLUMN_ACCOUNT_NAME = 1;
 	private static final int COLUMN_ACCOUNT_LEVEL = 2;
 
-	private static String[] columnNames = {"Account ID", "Account Name", "Account Level"};
+	private static final String[] columnNames = {"Account ID", "Account Name", "Account Level"};
 
-	private List<Account> accountList;
+	private final List<Account> accountList;
 
 	public AccountTableModel(List<Account> accountList) {
 		super();
@@ -54,7 +53,7 @@ public class AccountTableModel extends AbstractTableModel {
 	@Override
 	public Object getValueAt(int rowIndex, int columnIndex) {
 		Account account = accountList.get(rowIndex);
-		Object returnValue = null;
+		Object returnValue;
 		switch (columnIndex) {
 			case COLUMN_NO:
 				returnValue = account.getUserID();
@@ -101,10 +100,12 @@ public class AccountTableModel extends AbstractTableModel {
 		}
 	}
 
-	public void removeAccount(Account account) {
-		this.accountList.remove(account);
-		this.fireTableDataChanged();
-	}
+// --Commented out by Inspection START (21/06/2015 00:48):
+//	public void removeAccount(Account account) {
+//		this.accountList.remove(account);
+//		this.fireTableDataChanged();
+//	}
+// --Commented out by Inspection STOP (21/06/2015 00:48)
 
 	public Account getAccount(int id) {
 		for (Account account : this.accountList) {

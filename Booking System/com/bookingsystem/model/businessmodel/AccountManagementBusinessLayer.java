@@ -1,8 +1,9 @@
 package com.bookingsystem.model.businessmodel;
 
+import com.bookingsystem.helpers.MessageBox;
+import com.bookingsystem.model.Account;
+
 import java.sql.CallableStatement;
-import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
@@ -10,17 +11,11 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import com.bookingsystem.helpers.MessageBox;
-import com.bookingsystem.helpers.ReturnSpecifiedPropertyValues;
-import com.bookingsystem.model.Account;
-
 /**
  * Author: [Alex]
  */
 public class AccountManagementBusinessLayer extends BusinessLayer implements Iterable<Account>{
 	private final List<Account> accountList;
-
-	private final String databaseConnectionString;
 	private int currentAccountID;
 	private int currentIndexInAccountList;
 
@@ -28,55 +23,67 @@ public class AccountManagementBusinessLayer extends BusinessLayer implements Ite
 		this.accountList = new ArrayList<>();
 
 		this.currentAccountID = -1;
-		ReturnSpecifiedPropertyValues returnSpecifiedPropertyValues = new ReturnSpecifiedPropertyValues("sqlconfig.properties");
-		databaseConnectionString = returnSpecifiedPropertyValues.getDatabaseConnectionString();
 		this.currentIndexInAccountList = -1;
 	}
 
 	public void addAccount(Account account) {
-		try (Connection connection = DriverManager.getConnection(databaseConnectionString) ;
-			 CallableStatement callInsertAccount = connection.prepareCall("{CALL spInsertAccount(?,?,?,?,?)}")) {
-			callInsertAccount.setInt(1, account.getUserLevel());
-			callInsertAccount.setString(2, account.getUsername());
-			callInsertAccount.setString(3, account.getHashedPassword());
-			callInsertAccount.setString(4, account.getUserSalt());
-			callInsertAccount.registerOutParameter(5, Types.INTEGER);
-			callInsertAccount.execute();
-			account.setUserID(callInsertAccount.getInt(5));
-			this.accountList.add(account);
-		} catch (SQLException e) {
-			MessageBox.errorMessageBox("There was an issue while adding an account.\n" + "Does this make any sense to you.." + e.toString() + "?");
+		getDatabaseConnector().openConnection();
+		if (getDatabaseConnector().isConnected()) {
+			if (getDatabaseConnector().isConnectionClosed()) {
+				getDatabaseConnector().createNewCallableStatement("{CALL spInsertAccount(?,?,?,?,?)}");
+				try (CallableStatement callableStatement = getDatabaseConnector().getCallableStatement()) {
+					callableStatement.setInt(1, account.getUserLevel());
+					callableStatement.setString(2, account.getUsername());
+					callableStatement.setString(3, account.getHashedPassword());
+					callableStatement.setString(4, account.getUserSalt());
+					callableStatement.registerOutParameter(5, Types.INTEGER);
+					getDatabaseConnector().execute();
+					account.setUserID(callableStatement.getInt(5));
+					this.accountList.add(account);
+				} catch (SQLException e) {
+					MessageBox.errorMessageBox("There was an issue while adding an account.\n" + "Does this make any sense to you.." + e.toString() + "?");
+				}
+			}
+			getDatabaseConnector().closeConnection();
 		}
 	}
 
 	public void removeAccount() {
 		if (this.currentAccountID != -1) {
-			try (Connection connection = DriverManager.getConnection(databaseConnectionString);
-				 CallableStatement callRemoveAccount = connection.prepareCall("{CALL spRemoveAccount(?)}")) {
-				callRemoveAccount.setInt(1, currentAccountID);
-				callRemoveAccount.execute();
-				removeAccountFromList();
-			} catch (SQLException e) {
-				MessageBox.errorMessageBox("There was an issue while retrieving accounts.\n" + "Does this make any sense to you.." + e.toString() + "?");
+			getDatabaseConnector().openConnection();
+			if (getDatabaseConnector().isConnected()) {
+				if (getDatabaseConnector().isConnectionClosed()) {
+					getDatabaseConnector().createNewCallableStatement("{CALL spRemoveAccount(?)}");
+					try (CallableStatement callableStatement = getDatabaseConnector().getCallableStatement()) {
+						callableStatement.setInt(1, currentAccountID);
+						getDatabaseConnector().execute();
+						removeAccountFromList();
+					} catch (SQLException e) {
+						MessageBox.errorMessageBox("There was an issue while retrieving accounts.\n" + "Does this make any sense to you.." + e.toString() + "?");
+					}
+				}
 			}
 		}
 	}
 
 	public void getAllAccounts() {
 		accountList.clear();
-		try (Connection connection = DriverManager.getConnection(databaseConnectionString) ;
-		     CallableStatement callableStatement = connection.prepareCall("{CALL spGetAllAccounts}")) {
-			ResultSet rs = callableStatement.executeQuery();
-			while (rs.next()) {
-				this.accountList.add(new Account(rs.getInt(1), rs.getInt(4), rs.getString(2), rs.getString(3)));
+		getDatabaseConnector().openConnection();
+		if (getDatabaseConnector().isConnected()) {
+			if (getDatabaseConnector().isConnectionClosed()) {
+				getDatabaseConnector().createNewCallableStatement("{CALL spGetAllAccounts}");
+				try (ResultSet rs = getDatabaseConnector().executeQuery()) {
+					while (rs.next()) {
+						this.accountList.add(new Account(rs.getInt(1), rs.getInt(4), rs.getString(2), rs.getString(3)));
+					}
+				} catch (SQLException e) {
+					MessageBox.errorMessageBox("There was an issue while retrieving accounts.\n" + "Does this make any sense to you.." + e.toString() + "?");
+				}
 			}
-		} catch (SQLException e) {
-			MessageBox.errorMessageBox("There was an issue while retrieving accounts.\n" + "Does this make any sense to you.." + e.toString() + "?");
 		}
 	}
 
-
-	public void editAccount(int accountID) { }
+	// --Commented out by Inspection (21/06/2015 00:45):public void editAccount(int accountID) { }
 
 	@Override
 	public Iterator<Account> iterator() {
@@ -95,11 +102,13 @@ public class AccountManagementBusinessLayer extends BusinessLayer implements Ite
 		}
 	}
 
-	void addAccountToListAtAGivenPosition(Account account){
-		if (currentIndexInAccountList >= 0 && currentIndexInAccountList <= accountList.size()) {
-			this.accountList.add(currentIndexInAccountList, account);
-		}
-	}
+// --Commented out by Inspection START (21/06/2015 00:45):
+//	void addAccountToListAtAGivenPosition(Account account){
+//		if (currentIndexInAccountList >= 0 && currentIndexInAccountList <= accountList.size()) {
+//			this.accountList.add(currentIndexInAccountList, account);
+//		}
+//	}
+// --Commented out by Inspection STOP (21/06/2015 00:45)
 
 	public void setCurrentIndexOfAccountInList(int indexOfBookingInList) {
 		try {

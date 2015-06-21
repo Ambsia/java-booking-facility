@@ -1,11 +1,10 @@
 package com.bookingsystem.view.panelparts.controlpanes;
 
-import java.awt.Dimension;
-import java.awt.GridBagLayout;
+import java.awt.*;
 import java.awt.event.ActionListener;
 
 /**
- * Created by Alex on 30/05/2015.
+ * Created by Alex on 30/05/2015
  */
 public class UIBookingSystemArchiveControlPanel extends UIBookingSystemControlPanel {
     /**
@@ -16,8 +15,8 @@ public class UIBookingSystemArchiveControlPanel extends UIBookingSystemControlPa
 	public UIBookingSystemArchiveControlPanel() {
         super();
         setLayout(new GridBagLayout());
-        setButtonNames(new String[] {"Load","",""});
-        setButtonDimension(new Dimension(100,25));
+        setButtonNames(new String[] {"View Statistics"});
+        setButtonDimension(new Dimension(125,25));
         createControlPanel();
     }
 

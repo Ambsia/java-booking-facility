@@ -1,17 +1,13 @@
 package com.bookingsystem.model.businessmodel;
 
-import java.sql.CallableStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Timestamp;
-import java.sql.Types;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-
 import com.bookingsystem.helpers.MessageBox;
 import com.bookingsystem.model.Account;
 import com.bookingsystem.model.Log;
+
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 /**
  * Author: [Alex]
@@ -19,7 +15,7 @@ import com.bookingsystem.model.Log;
 public class LoggerBusinessLayer extends BusinessLayer implements Iterable<Log> {
 
     private Account accountCurrentlyLoggedIn = null;
-    private List<Log> logList;
+    private final List<Log> logList;
 
     public LoggerBusinessLayer() {
         logList = new ArrayList<>();
@@ -28,7 +24,7 @@ public class LoggerBusinessLayer extends BusinessLayer implements Iterable<Log> 
     public void insertLog(Log log) {
         getDatabaseConnector().openConnection();
         if (getDatabaseConnector().isConnected()) {
-            if (!getDatabaseConnector().isConnectionClosed()) {
+            if (getDatabaseConnector().isConnectionClosed()) {
                 getDatabaseConnector().createNewCallableStatement("{CALL spInsertLog(?,?,?,?,?,?,?,?,?)}");
                 try (CallableStatement callableStatement = getDatabaseConnector().getCallableStatement()) {
                     callableStatement.setString(1, log.getEventLogged());
@@ -54,7 +50,7 @@ public class LoggerBusinessLayer extends BusinessLayer implements Iterable<Log> 
     }
 
 
-    public void exceptionCaused(Log log, Exception exceptionType) {
+    public void exceptionCaused() {
 
     }
 
@@ -62,7 +58,7 @@ public class LoggerBusinessLayer extends BusinessLayer implements Iterable<Log> 
         getDatabaseConnector().openConnection();
         if (getDatabaseConnector().isConnected()) {
             System.out.println("" + getDatabaseConnector().isConnected());
-            if (!getDatabaseConnector().isConnectionClosed()) {
+            if (getDatabaseConnector().isConnectionClosed()) {
                 getDatabaseConnector().createNewCallableStatement("{CALL spRemoveLogsForAccount(?)}");
                 try (CallableStatement callableStatement = getDatabaseConnector().getCallableStatement()) {
                     callableStatement.setInt(1, currentAccountID);
@@ -79,7 +75,7 @@ public class LoggerBusinessLayer extends BusinessLayer implements Iterable<Log> 
     public void getLogsForAccount(int currentAccountID) {
         getDatabaseConnector().openConnection();
         if (getDatabaseConnector().isConnected()) {
-            if (!getDatabaseConnector().isConnectionClosed()) {
+            if (getDatabaseConnector().isConnectionClosed()) {
                 logList.clear();
                 ArrayList<Integer> logIDS = new ArrayList<>();
                 ArrayList<Integer> integers = new ArrayList<>();

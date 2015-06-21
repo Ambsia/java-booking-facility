@@ -1,11 +1,11 @@
 package com.bookingsystem.model.businessmodel;
 
+import com.bookingsystem.helpers.MessageBox;
+import com.bookingsystem.model.Account;
+
 import java.sql.CallableStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-
-import com.bookingsystem.helpers.MessageBox;
-import com.bookingsystem.model.Account;
 
 /**
  * Author: [Alex] on [$Date]
@@ -29,7 +29,7 @@ public class AccountBusinessLayer extends BusinessLayer {
         Account account = new Account(0, 0, username, password);
         getDatabaseConnector().openConnection();
         if (getDatabaseConnector().isConnected()) {
-            if (!getDatabaseConnector().isConnectionClosed()) {
+            if (getDatabaseConnector().isConnectionClosed()) {
                 getDatabaseConnector().createNewCallableStatement("{ CALL spGetAccount(?,?) }");
                 try (CallableStatement callableStatement = getDatabaseConnector().getCallableStatement()) {
                     callableStatement.setString(1, account.getUsername());

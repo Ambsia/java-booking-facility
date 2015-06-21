@@ -1,5 +1,9 @@
 package com.bookingsystem.controller.handler;
 
+import com.bookingsystem.helpers.MessageBox;
+import com.bookingsystem.model.Equipment;
+import com.bookingsystem.view.panes.UIBookingSystemArchivePanel;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.DateFormat;
@@ -8,16 +12,12 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
 
-import com.bookingsystem.helpers.MessageBox;
-import com.bookingsystem.model.Equipment;
-import com.bookingsystem.view.panes.UIBookingSystemArchivePanel;
-
 /**
- * Created by Alex on 30/05/2015.
+ * Created by Alex on 30/05/2015
  */
 public class ArchiveHandler implements ActionListener {
-    private UIBookingSystemArchivePanel bookingSystemArchive;
-    private Handler handler;
+    private final UIBookingSystemArchivePanel bookingSystemArchive;
+    private final Handler handler;
 
     private static final DateFormat BOOKING_TIME_FORMAT = new SimpleDateFormat("HH:mm", Locale.ENGLISH);
     public ArchiveHandler(Handler handler) {
@@ -29,7 +29,7 @@ public class ArchiveHandler implements ActionListener {
     public void actionPerformed(ActionEvent e) {
     	try {
         switch (e.getActionCommand()) {
-            case "Load":
+            case "View Statistics":
                 //bookingSystemArchive.removeAllBookings();
                 if (!handler.getBookingBusinessLayer().getArchivedBookings().isEmpty()) {
                 //bookingSystemArchive.addBookingsToList(handler.getBookingBusinessLayer().getArchivedBookings());
@@ -73,11 +73,13 @@ public class ArchiveHandler implements ActionListener {
                         "Most Used Equipment: " + "\n" + mostUsedEquipmentString + "\n" +
                         "Most Used Location:  " + "\n"+ mostUsedLocationString + "\n" +
                         "Highest Amount Of Bookings Made By:  " +  "\n" + mostBookingsHeldByString);
+                } else {
+                    bookingSystemArchive.getUiBookingSystemArchiveViewPanel().setJTextArea("");
                 }
                 break;
         }
     	} catch (Exception exception) {
-    		MessageBox.errorMessageBox("An error occured whilst loading archives, please reload all bookings in the main booking panel.");
+    		MessageBox.errorMessageBox("An error occurred whilst loading archives, please reload all bookings in the main booking panel.");
     	}
     }
 }

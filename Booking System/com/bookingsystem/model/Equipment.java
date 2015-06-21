@@ -5,16 +5,18 @@ public final class Equipment {
 	
 	
 	private int equipmentUsage;
-	private String equipmentName;
+	private final String equipmentName;
 	
 	public Equipment(String equipmentName) {
 		this.equipmentName = equipmentName;
 	}
 
-	public void setEquipmentName(String equipmentName) {
-		this.equipmentName = equipmentName;
-	}
-	
+// --Commented out by Inspection START (21/06/2015 00:54):
+//	public void setEquipmentName(String equipmentName) {
+//		this.equipmentName = equipmentName;
+//	}
+// --Commented out by Inspection STOP (21/06/2015 00:54)
+
 	public void setEquipmentStatistic(int usageStatistic) {
 		this.equipmentUsage = usageStatistic;
 	}

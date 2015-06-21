@@ -1,13 +1,13 @@
 package com.bookingsystem.controller.handler;
 
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.Date;
-
 import com.bookingsystem.helpers.MessageBox;
 import com.bookingsystem.model.Account;
 import com.bookingsystem.model.Log;
+
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.Date;
 
 /**
  * Author: [Alex] on [$Date]
@@ -15,7 +15,7 @@ import com.bookingsystem.model.Log;
 
 public class LoginHandler implements ActionListener {
     private Account accountModel;
-    private Handler handler;
+    private final Handler handler;
 
     public LoginHandler(Handler handler)   {
         this.handler = handler;
@@ -36,6 +36,7 @@ public class LoginHandler implements ActionListener {
                     if (accountModel != null && accountModel.getUserLevel() > 2) {
                         handler.getView().getBookingSystemTabbedPane().showAdminPanel();
                     }
+                    log.setAccountIDCreated(accountModel.getUserID());
                     handler.getView().setVisible(true);
                 } else {
                     MessageBox.errorMessageBox("Incorrect password or login.");

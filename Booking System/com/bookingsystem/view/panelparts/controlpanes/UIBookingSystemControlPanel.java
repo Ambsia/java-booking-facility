@@ -1,34 +1,29 @@
 package com.bookingsystem.view.panelparts.controlpanes;
 
-import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.GridBagConstraints;
-import java.awt.Insets;
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
-import javax.swing.JButton;
-import javax.swing.JPanel;
-
 /**
- * Created by Alex on 24/05/2015.
+ * Created by Alex on 24/05/2015
  */
 public abstract class UIBookingSystemControlPanel extends JPanel {
     /**
 	 * 
 	 */
 	private static final long serialVersionUID = -3799165896581222861L;
-	private ArrayList<JButton> controlButtonList;
+	private final ArrayList<JButton> controlButtonList;
     private String[] buttonNames;
     private Dimension buttonDimension;
 
-    public UIBookingSystemControlPanel() {
+    UIBookingSystemControlPanel() {
         controlButtonList = new ArrayList<>();
         buttonNames = new String[]{};
         buttonDimension = new Dimension();
     }
 
-    protected void createControlPanel() {
+    void createControlPanel() {
         if(buttonNames.length != 0 && buttonDimension != null) {
             for (int buttonNo = 0, colsPassed = 0, rowsPassed = 0; buttonNo < buttonNames.length; buttonNo++) {
                 JPanel jPanel = new JPanel();
@@ -42,15 +37,15 @@ public abstract class UIBookingSystemControlPanel extends JPanel {
         }
     }
 
-    protected void setButtonDimension(Dimension dimension) {
+    void setButtonDimension(Dimension dimension) {
         this.buttonDimension = dimension;
     }
 
-    protected void setButtonNames(String[] buttonNames) {
+    void setButtonNames(String[] buttonNames) {
         this.buttonNames = buttonNames;
     }
 
-    protected void addControlToPanel(Component component, int gridX, int gridY) {
+    void addControlToPanel(Component component, int gridX, int gridY) {
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(0,0,0,0);
         gbc.gridx = gridX;

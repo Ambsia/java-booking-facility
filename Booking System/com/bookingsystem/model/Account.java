@@ -1,17 +1,12 @@
 package com.bookingsystem.model;
 
-import java.security.NoSuchAlgorithmException;
-import java.security.SecureRandom;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-
-import org.apache.commons.codec.digest.DigestUtils;
-
 import com.bookingsystem.helpers.MessageBox;
 import com.bookingsystem.helpers.ReturnSpecifiedPropertyValues;
+import org.apache.commons.codec.digest.DigestUtils;
+
+import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
+import java.sql.*;
 
 public final class Account {
 
@@ -28,19 +23,11 @@ public final class Account {
 		this.userLevel = userLevel;
 	}
 
-	public void setUserSalt(String userSalt) {
-		this.userSalt = userSalt;
-	}
-
 	public void setUserID(int userID) {
 		this.userID = userID;
 	}
 
 	public int getUserID() { return this.userID; }
-
-	public boolean validation() {
-		return !this.userLogonName.isEmpty() || !this.hashedPassword.isEmpty();
-	}
 
 	public String getUsername() {
 		return this.userLogonName;
@@ -79,7 +66,7 @@ public final class Account {
 		return DigestUtils.sha1Hex(unHashedString + userSalt);
 	}
 
-	public void generateSalt() {
+	void generateSalt() {
 		int salt;
 		try {
 			SecureRandom random = SecureRandom.getInstance("SHA1PRNG");

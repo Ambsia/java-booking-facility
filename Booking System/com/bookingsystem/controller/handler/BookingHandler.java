@@ -1,29 +1,5 @@
 package com.bookingsystem.controller.handler;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
-
-import javax.swing.JFileChooser;
-import javax.swing.JOptionPane;
-
-import org.apache.commons.collections.IteratorUtils;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.WorkbookFactory;
-import org.apache.poi.xssf.usermodel.XSSFRow;
-import org.apache.poi.xssf.usermodel.XSSFSheet;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-
 import com.bookingsystem.helpers.MessageBox;
 import com.bookingsystem.model.Booking;
 import com.bookingsystem.model.Equipment;
@@ -35,6 +11,23 @@ import com.bookingsystem.view.dialogpanels.bookingdialog.UIBookingSystemEditPane
 import com.bookingsystem.view.dialogpanels.bookingdialog.UIBookingSystemFindPanel;
 import com.bookingsystem.view.panelparts.controlpanes.UIBookingSystemBookingControlPanel;
 import com.bookingsystem.view.panes.UIBookingSystemBookingPanel;
+import org.apache.commons.collections.IteratorUtils;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.WorkbookFactory;
+import org.apache.poi.xssf.usermodel.XSSFRow;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+
+import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 public final class BookingHandler implements ActionListener {
 
@@ -51,18 +44,19 @@ public final class BookingHandler implements ActionListener {
     private final List<Integer> listOfBadBookingIDs;
     private final Handler handler;
     private int bookingIDCurrentlyBeingProcessed;
-    private BookingTableModel bookingTableModel;
-    private ArchiveTableModel archiveTableModel;
-    Calendar date1 = Calendar.getInstance();
+    private final BookingTableModel bookingTableModel;
+    private final ArchiveTableModel archiveTableModel;
+    private final Calendar date1 = Calendar.getInstance();
 
+    @SuppressWarnings("unchecked")
     public BookingHandler(Handler handler) {
         this.handler = handler;
         date1.set(Calendar.AM_PM,Calendar.AM);
         date1.set(Calendar.DAY_OF_MONTH,25);
         date1.set(Calendar.MONTH,11);
-        date1.set(Calendar.HOUR, 00);
-        date1.set(Calendar.MINUTE, 00);
-        date1.set(Calendar.SECOND, 00);
+        date1.set(Calendar.HOUR, 0);
+        date1.set(Calendar.MINUTE, 0);
+        date1.set(Calendar.SECOND, 0);
         date1.set(Calendar.MILLISECOND, 0);
         date1.set(Calendar.YEAR, 2015);
         System.out.println(date1.getTime().toString());
@@ -101,7 +95,7 @@ public final class BookingHandler implements ActionListener {
                                     XSSFSheet sheet = workBook.getSheetAt(1);
                                     int rows = sheet.getPhysicalNumberOfRows();
                                     workBook.close();
-                                    ArrayList<Booking> bookingList = new ArrayList<Booking>();
+                                    ArrayList<Booking> bookingList = new ArrayList<>();
                                     for (int r = 1; r < rows; r++) {
                                         XSSFRow row = sheet.getRow(r);
                                         if (row.toString() != "") {
@@ -123,10 +117,13 @@ public final class BookingHandler implements ActionListener {
                                     }
                                     handler.getBookingBusinessLayer().insertBookings(bookingList);
                                     for (Booking b : bookingList) {
-                                        
+
                                         if(b.getBookingCompleted()) {
-                                            archiveTableModel.addBooking(b);
+                                            System.out.println(b.toString());
+
+                                           archiveTableModel.addBooking(b);
                                         } else {
+
                                             bookingTableModel.addBooking(b);
                                         }
                                     }
@@ -143,7 +140,7 @@ public final class BookingHandler implements ActionListener {
                             break;
                         }
                     } catch (Exception e) {
-                        handler.getLoggerBusinessLayer().exceptionCaused(log, e);
+                        handler.getLoggerBusinessLayer().exceptionCaused();
                         System.out.println(e.toString());
                         MessageBox.errorMessageBox(e.toString());
                     }
@@ -178,7 +175,7 @@ public final class BookingHandler implements ActionListener {
                                     for (Object object : IteratorUtils.toList(handler.getBookingBusinessLayer().iterator())) {
                                         addCells((Booking) object, sheet, i++);
                                     }
-                                } else if (dialogResult == 1) {
+                                } else {
                                     int i = 1;
                                     if (bookingSystemPanel.selectedRowCount() > 0) {
                                         for (int rowID : bookingSystemPanel.getSelectedRows()) {
@@ -215,17 +212,16 @@ public final class BookingHandler implements ActionListener {
                 case "Add":
                     if (bookingSystemAddPanel.showDialog() == 0) {
                         Booking newBooking = convertStringArrayToBooking(bookingSystemAddPanel.getBookingStringArray());
-                        newBooking.setIsRecuring(bookingSystemAddPanel.getRecuringSelected());
+                        newBooking.setIsRecurring(bookingSystemAddPanel.getRecurringSelected());
                         List<Booking> bookingListCheck = new ArrayList<>();
-                        if(bookingSystemAddPanel.getRecuringSelected()) {
-                        	newBooking.setWeeksRecuring(bookingSystemAddPanel.getWeeksRecuringFor());
+                        if(bookingSystemAddPanel.getRecurringSelected()) {
+                        	newBooking.setWeeksRecurring(bookingSystemAddPanel.getWeeksRecurringFor());
                         }
                         if (newBooking.isValid()) {
                             if(!newBooking.isBeforeToday()) {
-                            	if(newBooking.getIsRecuringBooking() && newBooking.getWeeksRecuring() > 0) {
+                            	if(newBooking.getIsRecurringBooking() && newBooking.getWeeksRecurring() > 0) {
                             		int week = 0;
-                            		for (;week<newBooking.getWeeksRecuring();week++) {
-                            			System.out.println(generateCollisonString(newBooking));
+                            		for (;week<newBooking.getWeeksRecurring();week++) {
                             			handler.getBookingBusinessLayer().insertBooking(newBooking);
                             			bookingTableModel.addBooking(new Booking(newBooking.getBookingID(),newBooking.getBookingDay(),
                            					newBooking.getBookingDate(), newBooking.getBookingStartTime(),
@@ -233,6 +229,7 @@ public final class BookingHandler implements ActionListener {
                             					newBooking.getBookingHolder(), newBooking.getRequiredEquipment()));
                             			bookingListCheck.add(newBooking);
     	                                generateBadBookingTable();
+                                        checkBookingCollision(newBooking);
     	                                Calendar cal = Calendar.getInstance();   
     	                                cal.setTime(newBooking.getBookingDate());
     	                                System.out.println(cal.getTime().toString());
@@ -240,13 +237,12 @@ public final class BookingHandler implements ActionListener {
                                         newBooking.setBookingDate(cal.getTime());
                             		}
                             	} else {
-	                                handler.getBookingBusinessLayer().insertBooking(newBooking);
-                                    System.out.println(newBooking.getBookingID());
+                                    checkBookingCollision(newBooking);
+                                    handler.getBookingBusinessLayer().insertBooking(newBooking);
                                     bookingTableModel.addBooking(newBooking);
-                        			System.out.println(generateCollisonString(newBooking));
 	                                generateBadBookingTable();
-	                                log.setBookingIDInserted(newBooking.getBookingID());
-                            	}
+                                    log.setBookingIDInserted(newBooking.getBookingID());
+                                }
                                 checkBookingDateTimeForErrors(bookingListCheck);
                                 bookingListCheck.clear();
                             } else {
@@ -259,7 +255,7 @@ public final class BookingHandler implements ActionListener {
                     handler.getLoggerBusinessLayer().insertLog(log);
                     break;
                 case "Remove":
-                    if(bookingSystemPanel.selectedRowCount() > 0) { //handles multiple removals - cahnge 1 to 0 for a
+                    if(bookingSystemPanel.selectedRowCount() > 0) { //handles multiple removals - change 1 to 0 for a
                         if (JOptionPane.showOptionDialog(null, "Are you sure you wish to remove the selected " + bookingSystemPanel.getSelectedRows().size() + " bookings?", "Remove Booking",
                                 JOptionPane.PLAIN_MESSAGE, JOptionPane.PLAIN_MESSAGE, null,
                                 new String[]{"Remove", "Cancel"}, "Remove") == 0) {
@@ -277,14 +273,16 @@ public final class BookingHandler implements ActionListener {
                             bookingTableModel.removeRows(bookingSystemPanel.getSelectedRows());
                             generateBadBookingTable();
                         }
+                    } else {
+                        MessageBox.warningMessageBox("Please select a booking to remove");
                     }
 
 
                     break;
                 case "Edit":
+                    if(bookingSystemPanel.selectedRowCount() > 0) {
                     int modelRow = bookingSystemPanel.rowViewIndexToModel(bookingSystemPanel.getSelectedRow());
                     this.bookingIDCurrentlyBeingProcessed = (int) bookingSystemPanel.getValueAt(modelRow, 0);
-                    if (this.bookingIDCurrentlyBeingProcessed >= 0) {
                         bookingSystemEditPanel.setTextOfComponents(bookingTableModel.getBooking(this.bookingIDCurrentlyBeingProcessed));
                         if (bookingSystemEditPanel.showDialog() == 0) {
                             Booking newBooking = convertStringArrayToBooking(bookingSystemEditPanel.getBookingStringArray());
@@ -292,7 +290,7 @@ public final class BookingHandler implements ActionListener {
                                    if(!newBooking.isBeforeToday()) {
                                 	   List<Booking> editBookingCheck = new ArrayList<>();
                                 	   editBookingCheck.add(newBooking);
-                                	  
+                                       checkBookingCollision(newBooking);
                                        checkBookingDateTimeForErrors(editBookingCheck);
                                        generateBadBookingTable();
                                        handler.getBookingBusinessLayer().modifyBooking(this.bookingIDCurrentlyBeingProcessed, newBooking);
@@ -321,6 +319,7 @@ public final class BookingHandler implements ActionListener {
                     archiveTableModel.clearArchiveList();
                     handler.getBookingBusinessLayer().populateBookingListOnLoad();
                     bookingTableModel.addBookingList(IteratorUtils.toList(handler.getBookingBusinessLayer().iterator()));
+                    archiveTableModel.addBookingList(IteratorUtils.toList(handler.getBookingBusinessLayer().getArchivedBookings().iterator()));
                     checkBookingDateTimeForErrors(IteratorUtils.toList(handler.getBookingBusinessLayer().iterator()));
                     generateBadBookingTable();
                     handler.getLoggerBusinessLayer().insertLog(log);
@@ -328,9 +327,9 @@ public final class BookingHandler implements ActionListener {
                 case "Today's":
                     Calendar date = Calendar.getInstance();
                     date.set(Calendar.AM_PM, Calendar.AM);
-                    date.set(Calendar.HOUR, 00);
-                    date.set(Calendar.MINUTE, 00);
-                    date.set(Calendar.SECOND, 00);
+                    date.set(Calendar.HOUR, 0);
+                    date.set(Calendar.MINUTE, 0);
+                    date.set(Calendar.SECOND, 0);
                     date.set(Calendar.MILLISECOND, 0);
                     Booking b = new Booking(0, "", new Date(), date.getTime(), date.getTime(), "", "", new Equipment(""));
                     bookingTableModel.clearBookingList();
@@ -345,9 +344,9 @@ public final class BookingHandler implements ActionListener {
                     int dayOfMonth = Integer.parseInt(dayOfMonth_STRING);
                     date2.set(Calendar.DAY_OF_MONTH, (dayOfMonth + 1));
                     date2.set(Calendar.AM_PM,Calendar.AM);
-                    date2.set(Calendar.HOUR, 00);
-                    date2.set(Calendar.MINUTE, 00);
-                    date2.set(Calendar.SECOND, 00);
+                    date2.set(Calendar.HOUR, 0);
+                    date2.set(Calendar.MINUTE, 0);
+                    date2.set(Calendar.SECOND, 0);
                     date2.set(Calendar.MILLISECOND, 0);
                     Booking b1 = new Booking(0, "", date2.getTime(), date2.getTime(), date2.getTime(), "", "", new Equipment(""));
                     bookingTableModel.clearBookingList();
@@ -355,13 +354,14 @@ public final class BookingHandler implements ActionListener {
                     handler.getLoggerBusinessLayer().insertLog(log);
                     break;
                 case "Complete":
-                    if(bookingSystemPanel.selectedRowCount() > 0) { //handles multiple removals - cahnge 1 to 0 for a
+                    if(bookingSystemPanel.selectedRowCount() > 0) { //handles multiple removals - change 1 to 0 for a
                         if (JOptionPane.showOptionDialog(null, "Are you sure you wish to complete the selected " + bookingSystemPanel.getSelectedRows().size() + " bookings?", "Remove Booking",
                                 JOptionPane.PLAIN_MESSAGE, JOptionPane.PLAIN_MESSAGE, null,
                                 new String[]{"Complete", "Cancel"}, "Add") == 0) {
                             for (int rowID : bookingSystemPanel.getSelectedRows()) {
                                 this.bookingIDCurrentlyBeingProcessed = (int) bookingSystemPanel.getValueAt(rowID, 0);
                                 handler.getBookingBusinessLayer().completeBooking(this.bookingIDCurrentlyBeingProcessed);
+                                archiveTableModel.addBooking(bookingTableModel.getBooking(this.bookingIDCurrentlyBeingProcessed));
                                 log.setBookingIDEdited(this.bookingIDCurrentlyBeingProcessed);
                                 handler.getLoggerBusinessLayer().insertLog(log);
                             }
@@ -400,10 +400,9 @@ public final class BookingHandler implements ActionListener {
                     break;
             }
         }
-        cellN = 0;
     }
 
-    public void checkBookingDateTimeForErrors(List<Booking> bookingList) {
+    void checkBookingDateTimeForErrors(List<Booking> bookingList) {
     	for (Booking booking : bookingList) {
 	        if (BOOKING_TIME_FORMAT.format(booking.getBookingStartTime()).equals("00:00")
 	                || BOOKING_TIME_FORMAT.format(booking.getBookingCollectionTime()).equals("00:00")
@@ -420,6 +419,17 @@ public final class BookingHandler implements ActionListener {
     	}
     }
 
+    void checkBookingCollision(Booking booking) {
+            List<Integer> listOfBookingIdsThatCollide = handler.getBookingBusinessLayer().isRoomFree(booking);
+        StringBuilder stringBuilder = new StringBuilder();
+            if(listOfBookingIdsThatCollide.size() > 0) {
+                stringBuilder.append(listOfBookingIdsThatCollide.size() == 1 ? " booking." : " bookings.");
+                MessageBox.errorMessageBox("The following booking '" + booking.getBookingDay() +", "+ BOOKING_DATE_FORMAT.format(booking.getBookingDate()) + ", " + booking.getBookingLocation() +", " +
+                        BOOKING_TIME_FORMAT.format(booking.getBookingStartTime())+ "-" + BOOKING_TIME_FORMAT.format(booking.getBookingCollectionTime()) + "'" +
+                " is colliding with " + listOfBookingIdsThatCollide.size() + stringBuilder.toString());
+            }
+    }
+
     private Date stringToDate(String stringToConvert) {
         String s = stringToConvert.replaceAll("[^A-Za-z0-9. ]", "."); //will replace all non-alpha characters with a period
         try {
@@ -427,16 +437,16 @@ public final class BookingHandler implements ActionListener {
         } catch (ParseException parseException_1) {
             try {
                 return BOOKING_DATE_FORMAT_2.parse(s); //tries to match the string with teh format dd.MMM.yy
-            } catch (ParseException parseException_2) {
+            } catch (ParseException ignored) {
             }
         }
         return date1.getTime();
     }
 
     private Booking convertStringArrayToBooking(String[] bookingStrings) {
-        String stringToValidate = "";
+        String stringToValidate;
         Date date = new Date();
-        if (bookingStrings[1].toString() == "") {  //checking if the date has been entered as an empty string,
+        if (bookingStrings[1] == "") {  //checking if the date has been entered as an empty string,
             date.setTime(0);                    // if not we set the time as 0 and then proceed to format it
             stringToValidate = BOOKING_DATE_FORMAT.format(date);
         } else {
@@ -455,7 +465,7 @@ public final class BookingHandler implements ActionListener {
     private Date stringToTime(String unVerifiedStringToConvert, boolean collectionTime) {
         String lstrippedUnverifiedStringToConvert = unVerifiedStringToConvert.replaceAll("[a-zA-z ]", "");
         String strippedUnverifiedStringToConvert = lstrippedUnverifiedStringToConvert.replaceAll("[?().]", "");
-        int test = 0;
+        int test;
         String verifiedStringToConvert;
         if (!strippedUnverifiedStringToConvert.contains("-")) {
             verifiedStringToConvert = strippedUnverifiedStringToConvert;
@@ -491,7 +501,7 @@ public final class BookingHandler implements ActionListener {
                         }
                         verifiedStringToConvert = Integer.toString(test);
                         return BOOKING_TIME_FORMAT_2.parse(verifiedStringToConvert);
-                    } catch (Exception parseException_3) {
+                    } catch (Exception ignored) {
 
                     }
                 }
@@ -502,16 +512,13 @@ public final class BookingHandler implements ActionListener {
 
     private void generateBadBookingTable() {
         bookingSystemPanel.getBookingSystemViewPanel().removeAllProblems();
-        for (Object object : IteratorUtils.toList(handler.getBookingBusinessLayer().iterator())) {
-            if(!((Booking) object).getBookingCompleted()) {
-                for (int i = 0; i < listOfBadBookingIDs.size(); i++) {
-                    if (((Booking) object).getBookingID() == listOfBadBookingIDs.get(i)
-                            && !bookingSystemPanel.getBookingSystemViewPanel().isRowInTable(((Booking) object).getBookingID())) { //checks if the booking id is already in the table of problems
-                        bookingSystemPanel.getBookingSystemViewPanel().addProblemToList(((Booking) object));
-                    }
-                }
-            }
-        }
+        //checks if the booking id is already in the table of problems
+//checks if the booking id is already in the table of problems
+        IteratorUtils.toList(handler.getBookingBusinessLayer().iterator()).stream().filter(object -> !((Booking) object).getBookingCompleted()).forEach(object -> {  //checks if the booking id is already in the table of problems
+            listOfBadBookingIDs.stream().filter(listOfBadBookingID -> ((Booking) object).getBookingID() == listOfBadBookingID && !bookingSystemPanel.getBookingSystemViewPanel().isRowInTable(((Booking) object).getBookingID())).forEach(listOfBadBookingID -> { //checks if the booking id is already in the table of problems
+                bookingSystemPanel.getBookingSystemViewPanel().addProblemToList(((Booking) object));
+            });
+        });
     }
 
     private String validateDayAsString(String day) {
@@ -547,19 +554,7 @@ public final class BookingHandler implements ActionListener {
         }
     }
     
-    public String generateCollisonString(Booking booking) {
-    	List<Integer> listOfBookingIdsThatCollide = handler.getBookingBusinessLayer().isRoomFree(booking);
-    	StringBuilder sb = new StringBuilder();
-    	sb.append("The following bookings collide, due to the same locations: \n");
-    	for (int i : listOfBookingIdsThatCollide) {
-    		sb.append("Booking ID = " + bookingTableModel.getBooking(i).getBookingID() + " " +
-    				bookingTableModel.getBooking(i).getBookingDay() + " "  +
-    				bookingTableModel.getBooking(i).getBookingLocation() + " "  +
-    				bookingTableModel.getBooking(i).getBookingStartTime() + "\n");
-    	}
-    	return sb.toString();
- 
-    }
+
 }
 
 

@@ -1,20 +1,12 @@
 package com.bookingsystem.view.panelparts;
 
 
-import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.Insets;
-import java.util.ArrayList;
-
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-
 import com.bookingsystem.model.Booking;
 import com.bookingsystem.model.tablemodel.BookingProblemModel;
 import com.bookingsystem.view.controls.UIBookingSystemJTableBookingProblems;
+
+import javax.swing.*;
+import java.awt.*;
 
 /**
  * Created by Alex on 10/02/2015.
@@ -26,10 +18,9 @@ public class UIBookingSystemBookingViewPanel extends JPanel {
 	 * 
 	 */
 	private static final long serialVersionUID = -4535420505698893143L;
-	private static ArrayList<JLabel> listOfViewBoxes;
-    private UIBookingSystemJTableBookingProblems bookingSystemJTableBookingProblems;
-    private JScrollPane jScrollPane;
-    private JLabel jLabel;
+    private final UIBookingSystemJTableBookingProblems bookingSystemJTableBookingProblems;
+    private final JScrollPane jScrollPane;
+    private final JLabel jLabel;
 
     public UIBookingSystemBookingViewPanel() {
         setLayout(new GridBagLayout());
@@ -67,9 +58,6 @@ public class UIBookingSystemBookingViewPanel extends JPanel {
         add(component, gbc);
     }
 
-    public String getTextFromField(int i) {
-    	return listOfViewBoxes.get(i).getText();
-    }
 
 //    public static void setTextToField(ArrayList<String> listOfStrings) {
 //        if (listOfStrings != null) {
@@ -91,29 +79,39 @@ public class UIBookingSystemBookingViewPanel extends JPanel {
         bookingSystemJTableBookingProblems.addRowToList(booking);
     }
 
-    public void addProblemsToList(ArrayList<Booking> listOfBookings) {
-        ArrayList<Object> objectArrayList = new ArrayList<>();
-        for (Booking booking : listOfBookings) {
-            objectArrayList.add(booking);
-        }
-        bookingSystemJTableBookingProblems.addArrayOfRowsToList(objectArrayList);
-    }
+// --Commented out by Inspection START (21/06/2015 00:54):
+//    public void addProblemsToList(ArrayList<Booking> listOfBookings) {
+//        ArrayList<Object> objectArrayList = new ArrayList<>();
+//        for (Booking booking : listOfBookings) {
+//            objectArrayList.add(booking);
+//        }
+//        bookingSystemJTableBookingProblems.addArrayOfRowsToList(objectArrayList);
+//    }
+// --Commented out by Inspection STOP (21/06/2015 00:54)
 
-    public int getIndexOfSelectedRow() {
-        return bookingSystemJTableBookingProblems.getSelectedRow();
-    }
+// --Commented out by Inspection START (21/06/2015 00:54):
+//    public int getIndexOfSelectedRow() {
+//        return bookingSystemJTableBookingProblems.getSelectedRow();
+//    }
+// --Commented out by Inspection STOP (21/06/2015 00:54)
 
-    public int getIDOfSelectedRow() {
-        return bookingSystemJTableBookingProblems.getIDOfSelectedRow();
-    }
+// --Commented out by Inspection START (21/06/2015 00:54):
+//    public int getIDOfSelectedRow() {
+//        return bookingSystemJTableBookingProblems.getIDOfSelectedRow();
+//    }
+// --Commented out by Inspection STOP (21/06/2015 00:54)
 
-    public int getRowCountOfTable() {
-        return bookingSystemJTableBookingProblems.getRowCount();
-    }
+// --Commented out by Inspection START (21/06/2015 00:54):
+//    public int getRowCountOfTable() {
+//        return bookingSystemJTableBookingProblems.getRowCount();
+//    }
+// --Commented out by Inspection STOP (21/06/2015 00:54)
 
-    public void removeProblemFromTable() {
-        bookingSystemJTableBookingProblems.removeRowFromList();
-    }
+// --Commented out by Inspection START (21/06/2015 00:54):
+//    public void removeProblemFromTable() {
+//        bookingSystemJTableBookingProblems.removeRowFromList();
+//    }
+// --Commented out by Inspection STOP (21/06/2015 00:54)
 
     public boolean isRowInTable(int identifier) { return bookingSystemJTableBookingProblems.isRowInTable(identifier); }
 

@@ -1,10 +1,7 @@
 package com.bookingsystem.view.controls;
 
+import javax.swing.*;
 import java.awt.event.ActionListener;
-
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
 
 /**
  * Author: [Alex] on [$Date]
@@ -33,9 +30,11 @@ public class UIBookingSystemMenuBarLoader extends JMenuBar {
         importMenuOption.addActionListener(al);
     }
 
-    public void addExitOptionListener(ActionListener al) {
-        exitMenuOption.addActionListener(al);
-    }
+// --Commented out by Inspection START (21/06/2015 00:50):
+//    public void addExitOptionListener(ActionListener al) {
+//        exitMenuOption.addActionListener(al);
+//    }
+// --Commented out by Inspection STOP (21/06/2015 00:50)
 
 
 }

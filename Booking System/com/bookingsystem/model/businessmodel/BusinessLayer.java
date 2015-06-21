@@ -1,25 +1,25 @@
 package com.bookingsystem.model.businessmodel;
 
-import java.sql.Date;
-
 import com.bookingsystem.helpers.DatabaseConnector;
+
+import java.sql.Date;
 
 /**
  * Author: [Alex]
  */
-public class BusinessLayer {
-	private DatabaseConnector databaseConnector;
+class BusinessLayer {
+	private final DatabaseConnector databaseConnector;
 
-	public BusinessLayer() {
+	BusinessLayer() {
 		databaseConnector = new DatabaseConnector();
 	}
 
-	public DatabaseConnector getDatabaseConnector() {
+	DatabaseConnector getDatabaseConnector() {
 		return  databaseConnector;
 	}
 
 	//invoke the connection here and delegate it across
-	protected static java.sql.Date convertFromJAVADateToSQLDate(
+	static java.sql.Date convertFromJAVADateToSQLDate(
 			java.util.Date javaDate) {
 		java.sql.Date sqlDate = null;
 		if (javaDate != null) {

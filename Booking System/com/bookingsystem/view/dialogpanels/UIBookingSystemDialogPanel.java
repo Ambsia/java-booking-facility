@@ -1,9 +1,14 @@
 package com.bookingsystem.view.dialogpanels;
 
-import java.awt.Component;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.Insets;
+import com.bookingsystem.helpers.DateLabelFormatter;
+import com.bookingsystem.helpers.TextFieldRestriction;
+import com.bookingsystem.model.Booking;
+import org.jdatepicker.impl.JDatePanelImpl;
+import org.jdatepicker.impl.JDatePickerImpl;
+import org.jdatepicker.impl.UtilDateModel;
+
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Time;
@@ -11,23 +16,6 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Properties;
-
-import javax.swing.JCheckBox;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JSpinner;
-import javax.swing.JTextArea;
-import javax.swing.JTextField;
-import javax.swing.SpinnerDateModel;
-
-import org.jdatepicker.impl.JDatePanelImpl;
-import org.jdatepicker.impl.JDatePickerImpl;
-import org.jdatepicker.impl.UtilDateModel;
-
-import com.bookingsystem.helpers.DateLabelFormatter;
-import com.bookingsystem.helpers.TextFieldRestriction;
-import com.bookingsystem.model.Booking;
 
 /**
  * Author: [Alex]
@@ -39,7 +27,7 @@ public abstract class UIBookingSystemDialogPanel extends JPanel implements UIBoo
 	 */
 	private static final long serialVersionUID = 479014392857523664L;
 	private final static String[] DAYS = { "" ,"Sunday", "Monday" ,"Tuesday" ,"Wednesday","Thursday", "Friday", "Saturday" };
-	private final static String[] LABELS = {"Booking Day: ", "Booking Date: ", "Booking Start: ", "Booking Collection: ", "Booking Location: ", "Booking Holder: ", "Equipment: ", "Recuring Booking: "};
+	private final static String[] LABELS = {"Booking Day: ", "Booking Date: ", "Booking Start: ", "Booking Collection: ", "Booking Location: ", "Booking Holder: ", "Equipment: ", "Recurring Booking: "};
 	private Component[] components;
 	private final JTextField txtBookingDay;
 	private final JTextField txtBookingLocation;
@@ -52,10 +40,10 @@ public abstract class UIBookingSystemDialogPanel extends JPanel implements UIBoo
 	private final JSpinner jSpinnerStartTime;
 	private final JSpinner jSpinnerCollectionTime;
 	private final UtilDateModel model;
-	private final JCheckBox chkRecuring;
-	private final JTextField txtWeeksRecuring;
-	GridBagConstraints gbc = new GridBagConstraints();
-	JLabel l = new JLabel("Weeks: ");
+	private final JCheckBox chkRecurring;
+	private final JTextField txtWeeksRecurring;
+	private final GridBagConstraints gbc = new GridBagConstraints();
+	private final JLabel l = new JLabel("Weeks: ");
 	protected UIBookingSystemDialogPanel() {
 		setLayout(new GridBagLayout());
 
@@ -65,9 +53,9 @@ public abstract class UIBookingSystemDialogPanel extends JPanel implements UIBoo
 		txtAreaEquipment = new JTextArea(5,15);
 		jScrollPane = new JScrollPane(txtAreaEquipment);
 		txtBookingDay.setEditable(false);
-		chkRecuring = new JCheckBox();
-		txtWeeksRecuring = new JTextField(5);
-		txtWeeksRecuring.setDocument(new TextFieldRestriction());
+		chkRecurring = new JCheckBox();
+		txtWeeksRecurring = new JTextField(5);
+		txtWeeksRecurring.setDocument(new TextFieldRestriction());
 		Time time = Time.valueOf("12:00:00");
 		Date date = new Date();
 		date.setTime(time.getTime());
@@ -96,43 +84,39 @@ public abstract class UIBookingSystemDialogPanel extends JPanel implements UIBoo
 					Date date = new SimpleDateFormat("dd.MM.yy").parse(getFormattedDate());
 					c.setTime(date);
 				} catch (Exception ex) {
+					ex.printStackTrace();
 				}
 				int dayOfWeek = c.get(Calendar.DAY_OF_WEEK);
 				txtBookingDay.setText(DAYS[dayOfWeek]);
 			}
 		});
 		
-		chkRecuring.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				txtWeeksRecuring.setVisible(chkRecuring.isSelected());
-				l.setVisible(chkRecuring.isSelected());
-			}
-		});
+		chkRecurring.addActionListener(e -> {
+            txtWeeksRecurring.setVisible(chkRecurring.isSelected());
+            l.setVisible(chkRecurring.isSelected());
+        });
 	}
 	private void addControlToPanel(GridBagConstraints gbcc,Component component, int gridX, int gridY) {
-		GridBagConstraints gbc = gbcc;
-		gbc.insets = new Insets(2,2,2,2);
-		gbc.gridx = gridX;
-		gbc.gridy = gridY;
-		gbc.gridwidth = 4;
-		gbc.fill = GridBagConstraints.BOTH;
-		gbc.anchor = GridBagConstraints.LAST_LINE_END;
-		gbc.weighty = 1;
-		add(component, gbc);
+		gbcc.insets = new Insets(2,2,2,2);
+		gbcc.gridx = gridX;
+		gbcc.gridy = gridY;
+		gbcc.gridwidth = 4;
+		gbcc.fill = GridBagConstraints.BOTH;
+		gbcc.anchor = GridBagConstraints.LAST_LINE_END;
+		gbcc.weighty = 1;
+		add(component, gbcc);
 	}
 	
 	private void addControl(GridBagConstraints gbcc, Component component,int x, int y) {
-		GridBagConstraints gbc = gbcc;
-		gbc.insets = new Insets(2,2,2,2);
-		gbc.gridx = x;
-		gbc.gridy = y;
-		gbc.gridwidth = 1;
-		gbc.anchor = GridBagConstraints.PAGE_START;
-		gbc.fill = GridBagConstraints.NONE;
-		gbc.weighty = 1;
-		gbc.weightx = .5;
-		add(component, gbc);
+		gbcc.insets = new Insets(2,2,2,2);
+		gbcc.gridx = x;
+		gbcc.gridy = y;
+		gbcc.gridwidth = 1;
+		gbcc.anchor = GridBagConstraints.PAGE_START;
+		gbcc.fill = GridBagConstraints.NONE;
+		gbcc.weighty = 1;
+		gbcc.weightx = .5;
+		add(component, gbcc);
 		component.setVisible(true);
 	}
 
@@ -142,9 +126,9 @@ public abstract class UIBookingSystemDialogPanel extends JPanel implements UIBoo
 		for (int i = 0;i<LABELS.length;i++) {	
 			if(i == 7) { 
 				addControl(gbc,new JLabel(LABELS[7]), 0,7);
-				addControl(gbc,chkRecuring,1,7);
+				addControl(gbc,chkRecurring,1,7);
 				addControl(gbc,l,3,7);
-				addControl(gbc,txtWeeksRecuring,4,7);
+				addControl(gbc,txtWeeksRecurring,4,7);
 			}	else { 
 				addControlToPanel(gbc,new JLabel(LABELS[i]), 0, i);
 				addControlToPanel(gbc,components[i], 1, i);
@@ -153,14 +137,16 @@ public abstract class UIBookingSystemDialogPanel extends JPanel implements UIBoo
 		revalidate();
 	}
 
-	protected void addTheseComponentsToPanel(Component[] components, String[] LABELS) {
-		for (int i = 0;i<LABELS.length;i++) {
-			addControlToPanel(gbc,new JLabel(LABELS[i]), 0, i);
-			addControlToPanel(gbc,components[i], 1, i);
-		}
+// --Commented out by Inspection START (21/06/2015 00:50):
+//	protected void addTheseComponentsToPanel(Component[] components, String[] LABELS) {
+//		for (int i = 0;i<LABELS.length;i++) {
+//			addControlToPanel(gbc,new JLabel(LABELS[i]), 0, i);
+//			addControlToPanel(gbc,components[i], 1, i);
+//		}
+//
+//	}
+// --Commented out by Inspection STOP (21/06/2015 00:50)
 
-	}
-	
 	public void clearInputs() {
 		txtBookingDay.setText("");
 		Time time = Time.valueOf("12:00:00");
@@ -172,17 +158,19 @@ public abstract class UIBookingSystemDialogPanel extends JPanel implements UIBoo
 		txtBookingLocation.setText("");
 		txtBookingHolder.setText("");
 		txtAreaEquipment.setText("");
-		txtWeeksRecuring.setVisible(false);
+		txtWeeksRecurring.setVisible(false);
 		l.setVisible(false);
-		chkRecuring.setSelected(false);
+		chkRecurring.setSelected(false);
 		revalidate();
 	} 
 	protected Component[] getComponentsAsList() {
 		return components;
 	}
-	public String[] getLabels() {
-		return LABELS;
-	}
+// --Commented out by Inspection START (21/06/2015 00:50):
+//	public String[] getLabels() {
+//		return LABELS;
+//	}
+// --Commented out by Inspection STOP (21/06/2015 00:50)
 	private String getTxtAreaEquipmentText() {
 		return txtAreaEquipment.getText();
 	}
@@ -212,14 +200,14 @@ public abstract class UIBookingSystemDialogPanel extends JPanel implements UIBoo
 		return bookingStartTime;
 	}
 	
-	public boolean getRecuringSelected() {
-		return chkRecuring.isSelected();
+	public boolean getRecurringSelected() {
+		return chkRecurring.isSelected();
 	}
 	
-	public int getWeeksRecuringFor() {
-		if(chkRecuring.isSelected()) {
+	public int getWeeksRecurringFor() {
+		if(chkRecurring.isSelected()) {
 			try { 
-			return Integer.parseInt(txtWeeksRecuring.getText());
+			return Integer.parseInt(txtWeeksRecurring.getText());
 			} catch (NumberFormatException nfe) {
 				return 0;
 			}

@@ -1,13 +1,12 @@
 package com.bookingsystem.model.tablemodel;
 
+import com.bookingsystem.model.Log;
+
+import javax.swing.table.AbstractTableModel;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Locale;
-
-import javax.swing.table.AbstractTableModel;
-
-import com.bookingsystem.model.Log;
 
 /**
  * Author: [Alex]
@@ -24,10 +23,10 @@ public class LogTableModel extends AbstractTableModel {
 	private static final int COLUMN_EVENT = 3;
 	private static final int COLUMN_ID_MODIFIED= 4;
 
-	static final DateFormat BOOKING_TIME_FORMAT = new SimpleDateFormat("dd/MM/yy - HH:mm", Locale.ENGLISH);
+	private static final DateFormat BOOKING_TIME_FORMAT = new SimpleDateFormat("dd/MM/yy - HH:mm", Locale.ENGLISH);
 
-	private String[] columnNames = {"ID", "Timestamp", "Class", "Event", "ID Modified"};
-	private List<Log> logList;
+	private final String[] columnNames = {"ID", "Timestamp", "Class", "Event", "ID Modified"};
+	private final List<Log> logList;
 
 	public LogTableModel(List<Log> logList) {
 		super();
@@ -52,7 +51,7 @@ public class LogTableModel extends AbstractTableModel {
 	@Override
 	public Object getValueAt(int rowIndex, int columnIndex) {
 		Log log = logList.get(rowIndex);
-		Object returnValue = null;
+		Object returnValue;
 		switch (columnIndex) {
 			case COLUMN_NO:
 				returnValue = log.getLogID();
@@ -78,10 +77,6 @@ public class LogTableModel extends AbstractTableModel {
 
 	@Override
 	public void setValueAt(Object value, int rowIndex, int columnIndex) {
-		//Log log = logList.get(rowIndex);
-		if (columnIndex == COLUMN_NO) {
-		}
-		this.fireTableCellUpdated(rowIndex, columnIndex);
 	}
 
 	@Override

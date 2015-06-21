@@ -1,24 +1,20 @@
 package com.bookingsystem.controller.handler;
 
-import com.bookingsystem.model.businessmodel.AccountBusinessLayer;
-import com.bookingsystem.model.businessmodel.AccountManagementBusinessLayer;
-import com.bookingsystem.model.businessmodel.ArchiveBusinessLayer;
-import com.bookingsystem.model.businessmodel.BookingBusinessLayer;
-import com.bookingsystem.model.businessmodel.LoggerBusinessLayer;
+import com.bookingsystem.model.businessmodel.*;
 import com.bookingsystem.view.BookingSystemUILoader;
 
 /**
- * Created by Alex on 04/05/2015.
+ * Created by Alex on 04/05/2015
  */
 public class Handler {
     //we will initially call handler passing all business logic over, then we will start calling specific logic classes
     
-	private AccountBusinessLayer accountBusinessLayer;
-    private  AccountManagementBusinessLayer accountManagementBusinessLayer;
-    private BookingBusinessLayer bookingBusinessLayer;
-    private  LoggerBusinessLayer loggerBusinessLayer;
-    private ArchiveBusinessLayer archiveBusinessLayer;
-    private BookingSystemUILoader view;
+	private final AccountBusinessLayer accountBusinessLayer;
+    private final AccountManagementBusinessLayer accountManagementBusinessLayer;
+    private final BookingBusinessLayer bookingBusinessLayer;
+    private final LoggerBusinessLayer loggerBusinessLayer;
+    private final ArchiveBusinessLayer archiveBusinessLayer;
+    private final BookingSystemUILoader view;
 
     public Handler(AccountBusinessLayer accountBusinessLayer, AccountManagementBusinessLayer accountManagementBusinessLayer,
                    BookingBusinessLayer bookingBusinessLayer, LoggerBusinessLayer loggerBusinessLayer, BookingSystemUILoader view, ArchiveBusinessLayer archiveBusinessLayer) {

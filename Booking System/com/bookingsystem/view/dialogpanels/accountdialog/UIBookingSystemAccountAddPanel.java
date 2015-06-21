@@ -1,18 +1,10 @@
 package com.bookingsystem.view.dialogpanels.accountdialog;
 
-import java.awt.Component;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.Insets;
-
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JPasswordField;
-import javax.swing.JTextField;
+import javax.swing.*;
+import java.awt.*;
 
 /**
- * Created by Alex on 04/05/2015.
+ * Created by Alex on 04/05/2015
  */
 public class UIBookingSystemAccountAddPanel extends JPanel {
 
@@ -48,7 +40,7 @@ public class UIBookingSystemAccountAddPanel extends JPanel {
     }
 
 
-    public void addDefaultComponentsToPanel() {
+    void addDefaultComponentsToPanel() {
         components = new Component[]{txtAccountName, txtAccountPassword, txtAccountLevel};
 
         for (int i = 0; i < LABELS.length; i++) {
@@ -57,16 +49,20 @@ public class UIBookingSystemAccountAddPanel extends JPanel {
         }
     }
 
-    public void addTheseComponentsToPanel(Component[] components, String[] LABELS) {
-        for (int i = 0; i < LABELS.length; i++) {
-            addControlToPanel(new JLabel(LABELS[i]), 0, i);
-            addControlToPanel(components[i], 1, i);
-        }
-    }
+// --Commented out by Inspection START (21/06/2015 00:49):
+//    public void addTheseComponentsToPanel(Component[] components, String[] LABELS) {
+//        for (int i = 0; i < LABELS.length; i++) {
+//            addControlToPanel(new JLabel(LABELS[i]), 0, i);
+//            addControlToPanel(components[i], 1, i);
+//        }
+//    }
+// --Commented out by Inspection STOP (21/06/2015 00:49)
 
-    public Component[] getComponentsAsList() {
-        return components;
-    }
+// --Commented out by Inspection START (21/06/2015 00:49):
+//    public Component[] getComponentsAsList() {
+//        return components;
+//    }
+// --Commented out by Inspection STOP (21/06/2015 00:49)
 
     public String getAccountNameText() {
         return txtAccountName.getText();
@@ -81,11 +77,13 @@ public class UIBookingSystemAccountAddPanel extends JPanel {
     }
 
 
-    public void setTextOfComponents(Object[] list) {
-        txtAccountName.setText((String) list[0]);
-        txtAccountPassword.setText((String) list[1]);
-        txtAccountLevel.setText((String) list[2]);
-    }
+// --Commented out by Inspection START (21/06/2015 00:49):
+//    public void setTextOfComponents(Object[] list) {
+//        txtAccountName.setText((String) list[0]);
+//        txtAccountPassword.setText((String) list[1]);
+//        txtAccountLevel.setText((String) list[2]);
+//    }
+// --Commented out by Inspection STOP (21/06/2015 00:49)
 
     public int showDialog() {
         return JOptionPane.showOptionDialog(null, this, "Add Account",

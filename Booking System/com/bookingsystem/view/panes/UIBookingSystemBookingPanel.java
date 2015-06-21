@@ -1,30 +1,18 @@
 package com.bookingsystem.view.panes;
 
-import java.awt.Dimension;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.Insets;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Comparator;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
-
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
-import javax.swing.RowSorter;
-import javax.swing.SortOrder;
-import javax.swing.table.TableModel;
-import javax.swing.table.TableRowSorter;
-
 import com.bookingsystem.model.tablemodel.BookingTableModel;
 import com.bookingsystem.view.panelparts.UIBookingSystemBookingViewPanel;
 import com.bookingsystem.view.panelparts.controlpanes.UIBookingSystemBookingControlPanel;
+
+import javax.swing.*;
+import javax.swing.table.TableModel;
+import javax.swing.table.TableRowSorter;
+import java.awt.*;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
+import java.util.List;
 
 
 public class UIBookingSystemBookingPanel extends JPanel {
@@ -41,7 +29,7 @@ public class UIBookingSystemBookingPanel extends JPanel {
 	//private final UIBookingSystemJTableBookings bookingSystemJTable;
 	//private BookingTableModel model;
 	
-	private JTable bookingSystemJTable;
+	private final JTable bookingSystemJTable;
 	private BookingTableModel bookingSystemModel;
 	public UIBookingSystemBookingPanel() {
 	//	bookingSystemJTable = new UIBookingSystemJTableBookings(bookingSystemModel);
@@ -125,8 +113,8 @@ public class UIBookingSystemBookingPanel extends JPanel {
 		sorter.setComparator(3, new Comparator<Object>() {
 			@Override
 			public int compare(Object arg0, Object arg1) {
-				Date d1 =null;
-				Date d2 = null;
+				Date d1;
+				Date d2;
 				
 				   if (arg0.equals("Unknown") && !arg1.equals("Unknown")) {
 			        	return -1;
@@ -136,10 +124,10 @@ public class UIBookingSystemBookingPanel extends JPanel {
 			        	return 0;
 			        } else {
 			        	
-						String[] s1ARRAY = (String[]) ((String) arg0).split("-"); //first argument split
+						String[] s1ARRAY = ((String) arg0).split("-"); //first argument split
 						String s1 = s1ARRAY[0];
 						
-						String[] s2ARRAY = (String[]) ((String) arg1).split("-"); //second argument
+						String[] s2ARRAY = ((String) arg1).split("-"); //second argument
 						String s2 = s2ARRAY[0];
 
 						try {
@@ -148,9 +136,9 @@ public class UIBookingSystemBookingPanel extends JPanel {
 						} catch (ParseException e) {
 							 Calendar date = Calendar.getInstance();
 			                    date.set(Calendar.AM_PM, Calendar.AM);
-			                    date.set(Calendar.HOUR, 00);
-			                    date.set(Calendar.MINUTE, 00);
-			                   date.set(Calendar.SECOND, 00);
+			                    date.set(Calendar.HOUR, 0);
+			                    date.set(Calendar.MINUTE, 0);
+			                   date.set(Calendar.SECOND, 0);
 			                   date.set(Calendar.MILLISECOND, 0);
 			                   d1= date.getTime();
 			                   d2= date.getTime();

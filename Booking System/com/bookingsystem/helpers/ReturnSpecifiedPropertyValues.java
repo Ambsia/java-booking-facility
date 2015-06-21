@@ -14,7 +14,6 @@ public class ReturnSpecifiedPropertyValues {
 
     //pass properties through if we have more property files..
     public ReturnSpecifiedPropertyValues(String filePath) {
-        String propertyFileName = filePath;
 
         properties = new Properties();
         try {
@@ -22,7 +21,7 @@ public class ReturnSpecifiedPropertyValues {
             if (inputStream != null) {
                 properties.load(inputStream);
             } else {
-                throw new FileNotFoundException("Property file '" + propertyFileName + "' not found.");
+                throw new FileNotFoundException("Property file '" + filePath + "' not found.");
             }
         } catch (IOException e) {
             MessageBox.errorMessageBox("There was an issue whilst we were trying to open the property file!\n" + "Does this make any sense to you.." + e.toString() + "?");

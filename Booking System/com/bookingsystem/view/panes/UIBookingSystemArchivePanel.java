@@ -1,32 +1,21 @@
 package com.bookingsystem.view.panes;
 
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.Insets;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Comparator;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
-
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
-import javax.swing.RowSorter;
-import javax.swing.SortOrder;
-import javax.swing.table.TableModel;
-import javax.swing.table.TableRowSorter;
-
 import com.bookingsystem.model.tablemodel.ArchiveTableModel;
 import com.bookingsystem.view.panelparts.UIBookingSystemArchiveViewPanel;
 import com.bookingsystem.view.panelparts.controlpanes.UIBookingSystemArchiveControlPanel;
 
+import javax.swing.*;
+import javax.swing.table.TableModel;
+import javax.swing.table.TableRowSorter;
+import java.awt.*;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
+import java.util.List;
+
 /**
- * Created by Alex on 24/05/2015.
+ * Created by Alex on 24/05/2015
  */
 public class UIBookingSystemArchivePanel extends JPanel {
     /**
@@ -38,10 +27,10 @@ public class UIBookingSystemArchivePanel extends JPanel {
 	private static final long serialVersionUID = -4584229791330483547L;
 	private final JTable bookingSystemJTable;
     private ArchiveTableModel archiveTableModel;
-    private UIBookingSystemArchiveControlPanel uiBookingSystemArchiveControlPanel;
+    private final UIBookingSystemArchiveControlPanel uiBookingSystemArchiveControlPanel;
 
 
-    private UIBookingSystemArchiveViewPanel uiBookingSystemArchiveViewPanel;
+    private final UIBookingSystemArchiveViewPanel uiBookingSystemArchiveViewPanel;
     public UIBookingSystemArchivePanel() {
         bookingSystemJTable = new JTable(archiveTableModel);
 
@@ -125,8 +114,8 @@ public class UIBookingSystemArchivePanel extends JPanel {
 		sorter.setComparator(3, new Comparator<Object>() {
 			@Override
 			public int compare(Object arg0, Object arg1) {
-				Date d1 =null;
-				Date d2 = null;
+				Date d1;
+				Date d2;
 				
 				   if (arg0.equals("Unknown") && !arg1.equals("Unknown")) {
 			        	return -1;
@@ -136,10 +125,10 @@ public class UIBookingSystemArchivePanel extends JPanel {
 			        	return 0;
 			        } else {
 			        	
-						String[] s1ARRAY = (String[]) ((String) arg0).split("-"); //first argument split
+						String[] s1ARRAY = ((String) arg0).split("-"); //first argument split
 						String s1 = s1ARRAY[0];
 						
-						String[] s2ARRAY = (String[]) ((String) arg1).split("-"); //second argument
+						String[] s2ARRAY = ((String) arg1).split("-"); //second argument
 						String s2 = s2ARRAY[0];
 
 						try {
@@ -148,9 +137,9 @@ public class UIBookingSystemArchivePanel extends JPanel {
 						} catch (ParseException e) {
 							 Calendar date = Calendar.getInstance();
 			                    date.set(Calendar.AM_PM, Calendar.AM);
-			                    date.set(Calendar.HOUR, 00);
-			                    date.set(Calendar.MINUTE, 00);
-			                   date.set(Calendar.SECOND, 00);
+			                    date.set(Calendar.HOUR, 0);
+			                    date.set(Calendar.MINUTE, 0);
+			                   date.set(Calendar.SECOND, 0);
 			                   date.set(Calendar.MILLISECOND, 0);
 			                   d1= date.getTime();
 			                   d2= date.getTime();
@@ -166,10 +155,12 @@ public class UIBookingSystemArchivePanel extends JPanel {
 		this.archiveTableModel.fireTableDataChanged();
     }
 
-    public void removeAllBookings() {
-        this.removeAll();
-        this.archiveTableModel.fireTableDataChanged();
-    }
+// --Commented out by Inspection START (21/06/2015 00:50):
+//    public void removeAllBookings() {
+//        this.removeAll();
+//        this.archiveTableModel.fireTableDataChanged();
+//    }
+// --Commented out by Inspection STOP (21/06/2015 00:50)
 
 
     public ArchiveTableModel getJTableModel() {

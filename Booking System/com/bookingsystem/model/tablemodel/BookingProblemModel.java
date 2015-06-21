@@ -3,7 +3,7 @@ package com.bookingsystem.model.tablemodel;
 import javax.swing.table.DefaultTableModel;
 
 /**
- * Created by Alex on 24/05/2015.
+ * Created by Alex on 24/05/2015
  */
 public class BookingProblemModel extends  DefaultTableModel {
     /**

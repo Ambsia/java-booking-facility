@@ -1,5 +1,8 @@
 package com.bookingsystem.model.businessmodel;
 
+import com.bookingsystem.helpers.MessageBox;
+import com.bookingsystem.model.Equipment;
+
 import java.sql.CallableStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -7,11 +10,8 @@ import java.sql.Types;
 import java.util.ArrayList;
 import java.util.Date;
 
-import com.bookingsystem.helpers.MessageBox;
-import com.bookingsystem.model.Equipment;
-
 /**
- * Created by Alex on 31/05/2015.
+ * Created by Alex on 31/05/2015
  */
 public class ArchiveBusinessLayer extends BusinessLayer {
     public ArchiveBusinessLayer() {
@@ -22,7 +22,7 @@ public class ArchiveBusinessLayer extends BusinessLayer {
         int totalBookings = 0;
         getDatabaseConnector().openConnection();
         if (getDatabaseConnector().isConnected()) {
-            if (!getDatabaseConnector().isConnectionClosed()) {
+            if (getDatabaseConnector().isConnectionClosed()) {
                 getDatabaseConnector().createNewCallableStatement("{CALL spGetNOfBookingsMade}");
                 try (ResultSet rs = getDatabaseConnector().executeQuery()) {
                     while (rs.next()) {
@@ -41,7 +41,7 @@ public class ArchiveBusinessLayer extends BusinessLayer {
         Date[] dates = new Date[2];
         getDatabaseConnector().openConnection();
         if (getDatabaseConnector().isConnected()) {
-            if (!getDatabaseConnector().isConnectionClosed()) {
+            if (getDatabaseConnector().isConnectionClosed()) {
                 getDatabaseConnector().createNewCallableStatement("{CALL spGetBusiestHours(?,?)}");
                 try (CallableStatement callableStatement = getDatabaseConnector().getCallableStatement()) {
                     callableStatement.registerOutParameter(1, Types.INTEGER);
@@ -66,7 +66,7 @@ public class ArchiveBusinessLayer extends BusinessLayer {
         int totalCompletedBookings = 0;
         getDatabaseConnector().openConnection();
         if (getDatabaseConnector().isConnected()) {
-            if (!getDatabaseConnector().isConnectionClosed()) {
+            if (getDatabaseConnector().isConnectionClosed()) {
                 getDatabaseConnector().createNewCallableStatement("{CALL spGetNBookingsCompleted}");
                 try (ResultSet rs = getDatabaseConnector().executeQuery()) {
                     while (rs.next()) {
@@ -82,21 +82,21 @@ public class ArchiveBusinessLayer extends BusinessLayer {
     }
 
     public ArrayList<Equipment> getMostUsedEquipment() {
-    	ArrayList<Equipment> mostUsedEquipmentList = new ArrayList<Equipment>();
+        ArrayList<Equipment> mostUsedEquipmentList = new ArrayList<>();
         getDatabaseConnector().openConnection();
         if (getDatabaseConnector().isConnected()) {
-            if (!getDatabaseConnector().isConnectionClosed()) {
+            if (getDatabaseConnector().isConnectionClosed()) {
                 getDatabaseConnector().createNewCallableStatement("{CALL spGetMostUsedEquipment(?)}");
                 try (CallableStatement callableStatement = getDatabaseConnector().getCallableStatement()) {
                     callableStatement.registerOutParameter(1, Types.INTEGER);
                     try (ResultSet rs = getDatabaseConnector().executeQuery()) {
-                    	int i = 0;
+                        int i = 0;
                         Equipment equipmentToAdd;
-                    	while (rs.next() && i<5) {
-                    		equipmentToAdd = new Equipment(rs.getString(1));
-                    		equipmentToAdd.setEquipmentStatistic(rs.getInt(2));
-                        	mostUsedEquipmentList.add(equipmentToAdd);
-                        	i++;
+                        while (rs.next() && i < 5) {
+                            equipmentToAdd = new Equipment(rs.getString(1));
+                            equipmentToAdd.setEquipmentStatistic(rs.getInt(2));
+                            mostUsedEquipmentList.add(equipmentToAdd);
+                            i++;
                         }
                     }
                 } catch (SQLException e) {
@@ -108,11 +108,12 @@ public class ArchiveBusinessLayer extends BusinessLayer {
         return mostUsedEquipmentList;
     }
 
+
     public ArrayList<String> getMostUsedLocation() {
     	ArrayList<String> mostUsedLocation = new ArrayList<>();
         getDatabaseConnector().openConnection();
         if (getDatabaseConnector().isConnected()) {
-            if (!getDatabaseConnector().isConnectionClosed()) {
+            if (getDatabaseConnector().isConnectionClosed()) {
                 getDatabaseConnector().createNewCallableStatement("{CALL spGetMostUsedLocation(?)}");
                 try (CallableStatement callableStatement = getDatabaseConnector().getCallableStatement()) {
                     callableStatement.registerOutParameter(1, Types.INTEGER);
@@ -136,7 +137,7 @@ public class ArchiveBusinessLayer extends BusinessLayer {
     	ArrayList<String> staffMemberWithTheMostBookingsMadeList = new ArrayList<>();
         getDatabaseConnector().openConnection();
         if (getDatabaseConnector().isConnected()) {
-            if (!getDatabaseConnector().isConnectionClosed()) {
+            if (getDatabaseConnector().isConnectionClosed()) {
                 getDatabaseConnector().createNewCallableStatement("{CALL spGetMostBookingsMadeBy}");
                 try (CallableStatement callableStatement = getDatabaseConnector().getCallableStatement()) {
                     try (ResultSet rs = getDatabaseConnector().executeQuery()) {
@@ -155,19 +156,23 @@ public class ArchiveBusinessLayer extends BusinessLayer {
         return staffMemberWithTheMostBookingsMadeList;
     }
 
-    public int getTotalSeniorBookings() {
-        return  0;
-    }
+// --Commented out by Inspection START (21/06/2015 00:53):
+//    public int getTotalSeniorBookings() {
+//        return  0;
+//    }
+// --Commented out by Inspection STOP (21/06/2015 00:53)
 
-    public int getTotalJuniorBookings() {
-        return  0;
-    }
+// --Commented out by Inspection START (21/06/2015 00:53):
+//    public int getTotalJuniorBookings() {
+//        return  0;
+//    }
+// --Commented out by Inspection STOP (21/06/2015 00:53)
 
     public int getTotalDaysBooked() {
         int totalDaysBooked = 0;
         getDatabaseConnector().openConnection();
         if (getDatabaseConnector().isConnected()) {
-            if (!getDatabaseConnector().isConnectionClosed()) {
+            if (getDatabaseConnector().isConnectionClosed()) {
                 getDatabaseConnector().createNewCallableStatement("{CALL spGetTotalDaysBooked}");
                 try (ResultSet rs = getDatabaseConnector().executeQuery()) {
                     while (rs.next()) {

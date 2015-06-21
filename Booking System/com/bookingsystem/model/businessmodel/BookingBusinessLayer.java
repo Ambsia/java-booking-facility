@@ -1,20 +1,16 @@
 package com.bookingsystem.model.businessmodel;
 
-import java.sql.CallableStatement;
-import java.sql.Date;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Types;
+import com.bookingsystem.helpers.MessageBox;
+import com.bookingsystem.model.Booking;
+import com.bookingsystem.model.Equipment;
+
+import java.sql.*;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
-
-import com.bookingsystem.helpers.MessageBox;
-import com.bookingsystem.model.Booking;
-import com.bookingsystem.model.Equipment;
 
 /**
  * Author: [Alex] on [$Date]
@@ -35,7 +31,7 @@ public class BookingBusinessLayer extends BusinessLayer implements Iterable<Book
     public void populateBookingListOnLoad() {
         getDatabaseConnector().openConnection();
         if (getDatabaseConnector().isConnected()) {
-            if (!getDatabaseConnector().isConnectionClosed()) {
+            if (getDatabaseConnector().isConnectionClosed()) {
                 bookings.clear();
                 archivedBookings.clear();
                 getDatabaseConnector().createNewCallableStatement("{CALL spGetAllBookings}");
@@ -44,12 +40,13 @@ public class BookingBusinessLayer extends BusinessLayer implements Iterable<Book
                         Booking booking;
                         booking = new Booking(rs.getInt(1), rs.getString(2).trim(), rs.getDate(3), rs.getTime(4), rs.getTime(5), rs.getString(6), rs.getString(7).trim(), new Equipment(rs.getString(8)));
                         booking.setBookingCompleted(rs.getBoolean(9));
-                        if(booking.isBeforeToday()) {
-                        	if (!booking.getBookingCompleted()) {
+                        if(booking.isBeforeToday() || booking.getBookingCompleted()) {
+                            System.out.println("adding this booking: " + booking.toString());
+                            if (!booking.getBookingCompleted()) {
                         		booking.setBookingCompleted(true);
                         	}
                             this.archivedBookings.add(booking);
-                        } else {
+                        } else  {
                             this.bookings.add(booking);
                         }
                     }
@@ -64,7 +61,7 @@ public class BookingBusinessLayer extends BusinessLayer implements Iterable<Book
     public void insertBooking(Booking booking) {
         getDatabaseConnector().openConnection();
         if (getDatabaseConnector().isConnected()) {
-            if (!getDatabaseConnector().isConnectionClosed()) {
+            if (getDatabaseConnector().isConnectionClosed()) {
                 getDatabaseConnector().createNewCallableStatement("{CALL spInsertBooking(?,?,?,?,?,?,?,?,?)}");
                 try (CallableStatement callableStatement = getDatabaseConnector().getCallableStatement()) {
                     callableStatement.setString(1, booking.getBookingDay());
@@ -93,30 +90,31 @@ public class BookingBusinessLayer extends BusinessLayer implements Iterable<Book
     }
     
     public void insertBookings(ArrayList<Booking> bookingList) {
+
         getDatabaseConnector().openConnection();
         if (getDatabaseConnector().isConnected()) {
-            if (!getDatabaseConnector().isConnectionClosed()) {
+            if (getDatabaseConnector().isConnectionClosed()) {
                 getDatabaseConnector().createNewCallableStatement("{CALL spInsertBooking(?,?,?,?,?,?,?,?,?)}");
                 try (CallableStatement callableStatement = getDatabaseConnector().getCallableStatement()) {
-                for(int i = 0;i<bookingList.size();i++) {
-                    callableStatement.setString(1, bookingList.get(i).getBookingDay());
-	                    callableStatement.setDate(2, convertFromJAVADateToSQLDate(bookingList.get(i).getBookingDate()));
-	                    callableStatement.setTime(3, bookingList.get(i).getBookingStartTimeInSQLFormat());
-	                    callableStatement.setTime(4, bookingList.get(i).getBookingCollectionTimeInSQLFormat());
-	                    callableStatement.setString(5, bookingList.get(i).getBookingLocation());
-	                    callableStatement.setString(6, bookingList.get(i).getBookingHolder());
-	                    callableStatement.setString(7, bookingList.get(i).getRequiredEquipment().getEquipmentName());
-                        callableStatement.setBoolean(8,bookingList.get(i).getBookingCompleted());
+                    for (Booking aBookingList : bookingList) {
+                        callableStatement.setString(1, aBookingList.getBookingDay());
+                        callableStatement.setDate(2, convertFromJAVADateToSQLDate(aBookingList.getBookingDate()));
+                        callableStatement.setTime(3, aBookingList.getBookingStartTimeInSQLFormat());
+                        callableStatement.setTime(4, aBookingList.getBookingCollectionTimeInSQLFormat());
+                        callableStatement.setString(5, aBookingList.getBookingLocation());
+                        callableStatement.setString(6, aBookingList.getBookingHolder());
+                        callableStatement.setString(7, aBookingList.getRequiredEquipment().getEquipmentName());
+                        callableStatement.setBoolean(8, aBookingList.getBookingCompleted());
                         callableStatement.registerOutParameter(9, Types.INTEGER);
-	                    getDatabaseConnector().execute();
-	                    bookingList.get(i).setBookingID(callableStatement.getInt(9));
-                    if(bookingList.get(i).isBeforeToday()) {
-                        this.archivedBookings.add(bookingList.get(i));
-                    } else {
-                        this.bookings.add(bookingList.get(i));
+                        getDatabaseConnector().execute();
+                        aBookingList.setBookingID(callableStatement.getInt(9));
+                        if (aBookingList.isBeforeToday()) {
+                            System.out.println("ADDING THIS= " + aBookingList.toString());
+                            this.archivedBookings.add(aBookingList);
+                        } else {
+                            this.bookings.add(aBookingList);
+                        }
                     }
-	                
-                }
                 } catch (SQLException e) {
                 	MessageBox.errorMessageBox("There was an issue while we were trying to insert that booking into the database!\n" + "Does this make any sense to you.." + e.toString() + "?");
                 }
@@ -128,7 +126,7 @@ public class BookingBusinessLayer extends BusinessLayer implements Iterable<Book
     public ArrayList<Booking> findBookings(Booking bookingInformationKnown) { //show in a separate dialog, all users to save them to file
         getDatabaseConnector().openConnection();
         if (getDatabaseConnector().isConnected()) {
-            if (!getDatabaseConnector().isConnectionClosed()) {
+            if (getDatabaseConnector().isConnectionClosed()) {
                 getDatabaseConnector().createNewCallableStatement("{CALL spFindBooking(?,?,?,?,?,?,?)}");
                 try (CallableStatement callableStatement = getDatabaseConnector().getCallableStatement()) {
                     ArrayList<Booking> foundBookings = new ArrayList<>();
@@ -159,7 +157,7 @@ public class BookingBusinessLayer extends BusinessLayer implements Iterable<Book
     public void modifyBooking(int bookingID, Booking newBooking) {
         getDatabaseConnector().openConnection();
         if (getDatabaseConnector().isConnected()) {
-            if (!getDatabaseConnector().isConnectionClosed()) {
+            if (getDatabaseConnector().isConnectionClosed()) {
                 getDatabaseConnector().createNewCallableStatement("{CALL spModifyBooking(?,?,?,?,?,?,?,?)}");
                 try (CallableStatement callableStatement = getDatabaseConnector().getCallableStatement()) {
                     correctCurrentIndexWithID(bookingID);
@@ -184,7 +182,7 @@ public class BookingBusinessLayer extends BusinessLayer implements Iterable<Book
     public void completeBooking(int bookingIDCurrentlyBeingProcessed) {
         getDatabaseConnector().openConnection();
         if(getDatabaseConnector().isConnected()) {
-            if(!getDatabaseConnector().isConnectionClosed()) {
+            if(getDatabaseConnector().isConnectionClosed()) {
                 getDatabaseConnector().createNewCallableStatement("{CALL spCompleteBooking(?)}");
                 try (CallableStatement callableStatement = getDatabaseConnector().getCallableStatement()) {
                     correctCurrentIndexWithID(bookingIDCurrentlyBeingProcessed);
@@ -203,22 +201,23 @@ public class BookingBusinessLayer extends BusinessLayer implements Iterable<Book
     	List<Integer> listOfIntegers = new ArrayList<>();
     	getDatabaseConnector().openConnection();
     	if(getDatabaseConnector().isConnected()) {
-    		if(!getDatabaseConnector().isConnectionClosed()) {
-    			getDatabaseConnector().createNewCallableStatement("{CALL spCheckIfRoomIsFree(?,?,?)}");
+    		if(getDatabaseConnector().isConnectionClosed()) {
+    			getDatabaseConnector().createNewCallableStatement("{CALL spCheckIfRoomIsFree(?,?,?,?)}");
     			try (CallableStatement  callableStatement = getDatabaseConnector().getCallableStatement()) {
     				callableStatement.setString(1,booking.getBookingLocation());
     				callableStatement.setDate(2, convertFromJAVADateToSQLDate(booking.getBookingDate()));
     				callableStatement.setTime(3, booking.getBookingStartTimeInSQLFormat());
+                    callableStatement.setInt(4,booking.getBookingID());
     				try (ResultSet rs = getDatabaseConnector().executeQuery()) {
     					while(rs.next()) {
-    						listOfIntegers.add(rs.getInt(1));
+                            System.out.println(rs.getInt(1));
+                            listOfIntegers.add(rs.getInt(1));
     					}
     				}
     			} catch (SQLException e) {
     				MessageBox.errorMessageBox(("There was an issue whilst trying to see if a room was free!"));
     			}
-    				
-    			}
+    		}
     	}
     	return listOfIntegers;
     }
@@ -234,7 +233,7 @@ public class BookingBusinessLayer extends BusinessLayer implements Iterable<Book
     public void removeBooking(int bookingID) {
         getDatabaseConnector().openConnection();
         if (getDatabaseConnector().isConnected()) {
-            if (!getDatabaseConnector().isConnectionClosed()) {
+            if (getDatabaseConnector().isConnectionClosed()) {
                 getDatabaseConnector().createNewCallableStatement("{CALL spRemoveBooking(?)}");
                 try {
                     getDatabaseConnector().getCallableStatement().setInt(1, bookingID);

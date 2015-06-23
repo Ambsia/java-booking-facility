@@ -41,7 +41,6 @@ public class BookingBusinessLayer extends BusinessLayer implements Iterable<Book
                         booking = new Booking(rs.getInt(1), rs.getString(2).trim(), rs.getDate(3), rs.getTime(4), rs.getTime(5), rs.getString(6), rs.getString(7).trim(), new Equipment(rs.getString(8)));
                         booking.setBookingCompleted(rs.getBoolean(9));
                         if(booking.isBeforeToday() || booking.getBookingCompleted()) {
-                            System.out.println("adding this booking: " + booking.toString());
                             if (!booking.getBookingCompleted()) {
                         		booking.setBookingCompleted(true);
                         	}
@@ -75,7 +74,6 @@ public class BookingBusinessLayer extends BusinessLayer implements Iterable<Book
                     callableStatement.registerOutParameter(9, Types.INTEGER);
                     getDatabaseConnector().execute();
                     booking.setBookingID(callableStatement.getInt(9));
-                    System.out.println(booking.getBookingID());
                     if(booking.isBeforeToday()) {
                         this.archivedBookings.add(booking);
                     } else {
@@ -90,7 +88,6 @@ public class BookingBusinessLayer extends BusinessLayer implements Iterable<Book
     }
     
     public void insertBookings(ArrayList<Booking> bookingList) {
-
         getDatabaseConnector().openConnection();
         if (getDatabaseConnector().isConnected()) {
             if (getDatabaseConnector().isConnectionClosed()) {
@@ -109,7 +106,6 @@ public class BookingBusinessLayer extends BusinessLayer implements Iterable<Book
                         getDatabaseConnector().execute();
                         aBookingList.setBookingID(callableStatement.getInt(9));
                         if (aBookingList.isBeforeToday()) {
-                            System.out.println("ADDING THIS= " + aBookingList.toString());
                             this.archivedBookings.add(aBookingList);
                         } else {
                             this.bookings.add(aBookingList);

@@ -89,6 +89,7 @@ public final class BookingHandler implements ActionListener {
                         if (returnVal == JFileChooser.APPROVE_OPTION) {
                             if (jFileChooser.getSelectedFile().getName()
                                     .endsWith(".xlsx")) {
+                            	System.out.println("opened sheet");
                                 bookingSystemPanel.getBookingSystemViewPanel().removeAllProblems();
                                 File file = jFileChooser.getSelectedFile();
                                 try (XSSFWorkbook workBook = (XSSFWorkbook) WorkbookFactory.create(file)) { //creates a smaller footprint when creating the file without a stream
@@ -96,9 +97,10 @@ public final class BookingHandler implements ActionListener {
                                     int rows = sheet.getPhysicalNumberOfRows();
                                     workBook.close();
                                     ArrayList<Booking> bookingList = new ArrayList<>();
+                                    System.out.println("starting loop");
                                     for (int r = 1; r < rows; r++) {
                                         XSSFRow row = sheet.getRow(r);
-                                        if (row.toString() != "") {
+                                        if (row.toString() != "" && row != null) {
                                             if (row.getCell((short) 0).toString() != "") {
                                                 Booking importedBooking = new Booking(r,
                                                         validateDayAsString(row.getCell((short) 0).toString()),
@@ -111,6 +113,7 @@ public final class BookingHandler implements ActionListener {
                                                 if (importedBooking.isBeforeToday() && !BOOKING_DATE_FORMAT.format(importedBooking.getBookingDate()).equals("25.12.15")) {
                                                     importedBooking.setBookingCompleted(true); //booking is before today's date therefore doesn't need to be shown
                                                 }
+                                                System.out.println(importedBooking.toString());
                                                 bookingList.add(importedBooking);
                                             }
                                         }
@@ -119,11 +122,8 @@ public final class BookingHandler implements ActionListener {
                                     for (Booking b : bookingList) {
 
                                         if(b.getBookingCompleted()) {
-                                            System.out.println(b.toString());
-
                                            archiveTableModel.addBooking(b);
                                         } else {
-
                                             bookingTableModel.addBooking(b);
                                         }
                                     }
@@ -141,7 +141,7 @@ public final class BookingHandler implements ActionListener {
                         }
                     } catch (Exception e) {
                         handler.getLoggerBusinessLayer().exceptionCaused();
-                        System.out.println(e.toString());
+                        e.printStackTrace();
                         MessageBox.errorMessageBox(e.toString());
                     }
                     handler.getLoggerBusinessLayer().insertLog(log);
@@ -316,10 +316,10 @@ public final class BookingHandler implements ActionListener {
                 case "Load":
                     bookingTableModel.clearBookingList();
                     bookingSystemPanel.getBookingSystemViewPanel().removeAllProblems();
-                    archiveTableModel.clearArchiveList();
+                   // archiveTableModel.clearArchiveList();
                     handler.getBookingBusinessLayer().populateBookingListOnLoad();
                     bookingTableModel.addBookingList(IteratorUtils.toList(handler.getBookingBusinessLayer().iterator()));
-                    archiveTableModel.addBookingList(IteratorUtils.toList(handler.getBookingBusinessLayer().getArchivedBookings().iterator()));
+                   // archiveTableModel.addBookingList(IteratorUtils.toList(handler.getBookingBusinessLayer().getArchivedBookings().iterator()));
                     checkBookingDateTimeForErrors(IteratorUtils.toList(handler.getBookingBusinessLayer().iterator()));
                     generateBadBookingTable();
                     handler.getLoggerBusinessLayer().insertLog(log);

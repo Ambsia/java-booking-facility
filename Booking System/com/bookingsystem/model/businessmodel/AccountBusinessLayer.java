@@ -38,7 +38,7 @@ public class AccountBusinessLayer extends BusinessLayer {
                         if (rs.next()) {
                             account.setUserID(rs.getInt(1));
                             account.setUserLevel(rs.getInt(2));
-                            accountFound = true;
+                            this.accountFound = true;
                             this.accountLoggedIn = account;
                             getDatabaseConnector().closeConnection();
                             this.error_code = ACCOUNT_FOUND;

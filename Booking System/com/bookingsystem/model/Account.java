@@ -12,7 +12,7 @@ public final class Account {
 
 	private int userID;
 	private final String userLogonName;
-	private final String hashedPassword;
+	private String hashedPassword;
 	private int userLevel;
 	private String userSalt;
 	public int getUserLevel() {
@@ -43,27 +43,52 @@ public final class Account {
 		this.userID = userID;
 		this.userLevel = userLevel;
 		this.userLogonName = userLogonName.trim();
-		this.hashedPassword = SHA1_HASH(unHashedPassword);
+		this.hashedPassword = SHA1_HASH(unHashedPassword, this.userLogonName);
 	}
 
-	private String SHA1_HASH(String unHashedString) {
+	private String SHA1_HASH(String unHashedString, String username) {
+		return DigestUtils.sha1Hex(unHashedString + getSalt(username));
+	}
+
+	private String getSalt(String username) {
+		String userSalt = "";
 		Connection con;
 		try {
 			ReturnSpecifiedPropertyValues returnSpecifiedPropertyValues = new ReturnSpecifiedPropertyValues("sqlconfig.properties");
 			con = DriverManager.getConnection(returnSpecifiedPropertyValues.getDatabaseConnectionString());
 
 			Statement stmt = con.createStatement();
-			ResultSet rs = stmt.executeQuery("EXECUTE spGetSalt '" + this.getUsername() + "'");
+			ResultSet rs = stmt.executeQuery("EXECUTE spGetSalt '" + username + "'");
 			if(rs.next())  {
 				userSalt = rs.getString(1);
 			} else {
 				generateSalt();
 			}
-
+			stmt.close();
+			con.close();
 		} catch (SQLException e) {
 			MessageBox.errorMessageBox("There was an issue while we were trying to hash something..!\n" + "Does this make sense you to.." + e.toString() + "?");
 		}
-		return DigestUtils.sha1Hex(unHashedString + userSalt);
+		return userSalt;
+	}
+
+	public boolean changePassword(int userID, String username, String newPassword) {
+		String newPasswordHashed = SHA1_HASH(newPassword, username);
+		Connection con;
+		try {
+			ReturnSpecifiedPropertyValues returnSpecifiedPropertyValues = new ReturnSpecifiedPropertyValues("sqlconfig.properties");
+			con = DriverManager.getConnection(returnSpecifiedPropertyValues.getDatabaseConnectionString());
+
+			CallableStatement callableStatement = con.prepareCall("{CALL spChangePassword(?,?)}");
+			callableStatement.setInt(1, userID);
+			callableStatement.setString(2, newPasswordHashed);
+			callableStatement.execute();
+			return true;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			MessageBox.errorMessageBox("There was an issue whilst attempting to change a password.");
+		}
+		return false;
 	}
 
 	void generateSalt() {

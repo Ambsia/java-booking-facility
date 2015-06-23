@@ -1,6 +1,7 @@
 package com.bookingsystem.view.panes;
 
 import com.bookingsystem.model.tablemodel.AccountTableModel;
+import com.bookingsystem.view.dialogpanels.accountdialog.UIBookingSystemChangePasswordPanel;
 import com.bookingsystem.view.panelparts.UIBookingSystemAdminViewPanel;
 import com.bookingsystem.view.panelparts.controlpanes.UIBookingSystemAdminControlPanel;
 
@@ -30,6 +31,7 @@ public class UIBookingSystemAdminPanel extends JPanel {
         setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
         bookingSystemAdminViewPanel = new UIBookingSystemAdminViewPanel();
+
         gbc.insets = new Insets(10, 10, 10, 10);
         gbc.gridx = 0;
         gbc.gridy = 0;

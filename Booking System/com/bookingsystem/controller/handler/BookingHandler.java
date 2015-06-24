@@ -20,14 +20,18 @@ import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.List;
 
 public final class BookingHandler implements ActionListener {
 
@@ -74,6 +78,36 @@ public final class BookingHandler implements ActionListener {
         this.checkBookingDateTimeForErrors(IteratorUtils.toList(bookingTableModel.iterator()));
         generateBadBookingTable();
         bookingIDCurrentlyBeingProcessed = 1;
+
+        bookingSystemPanel.getBookingSystemViewPanel().getBookingSystemJTableProblems().addMouseListener(new MouseAdapter() {
+            public void mousePressed(MouseEvent me) {
+                JTable table = (JTable) me.getSource();
+                Point p = me.getPoint();
+                int row = table.rowAtPoint(p);
+                if (me.getClickCount() == 2) {
+                    int id = (int)bookingSystemPanel.getBookingSystemViewPanel().getBookingSystemJTableProblems().getValueAt(row,0);
+                    Booking b = bookingTableModel.getBooking(id);
+                    bookingSystemEditPanel.setTextOfComponents(bookingTableModel.getBooking(id));
+                    if (bookingSystemEditPanel.showDialog() == 0) {
+                        Booking newBooking = convertStringArrayToBooking(bookingSystemEditPanel.getBookingStringArray());
+                        if (newBooking.isValid()) {
+                            if(!newBooking.isBeforeToday()) {
+                                List<Booking> editBookingCheck = new ArrayList<>();
+                                editBookingCheck.add(newBooking);
+                                checkBookingCollision(newBooking);
+                                checkBookingDateTimeForErrors(editBookingCheck);
+                                generateBadBookingTable();
+                                handler.getBookingBusinessLayer().modifyBooking(id, newBooking);
+                                ActionEvent actionEvent = new ActionEvent(this,0,"Load");
+                                actionPerformed(actionEvent);
+                            }
+                        } else {
+                            MessageBox.errorMessageBox("Please enter all of the required details for booking");
+                        }
+                    }
+                }
+            }
+        });
     }
 
     @SuppressWarnings("unchecked")

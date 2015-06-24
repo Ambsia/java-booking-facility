@@ -34,6 +34,8 @@ public class BookingSystemUILoader extends JFrame {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		this.setFocusable(true);
+		this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 	}
 
 	public UIBookingSystemMenuBarLoader getMenuBarLoader() {

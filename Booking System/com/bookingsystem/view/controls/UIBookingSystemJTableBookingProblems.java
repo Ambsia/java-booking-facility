@@ -64,6 +64,9 @@ public class UIBookingSystemJTableBookingProblems extends UIBookingSystemJTable 
         }
     }
 
+    public int getIDOfRow(int index) {
+        return (int) bookingProblemModel.getValueAt(0,index);
+    }
 
     public void removeAllRowsFromList() {
         int rowCount = bookingProblemModel.getRowCount();

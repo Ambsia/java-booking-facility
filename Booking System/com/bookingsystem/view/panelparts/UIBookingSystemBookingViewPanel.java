@@ -7,6 +7,8 @@ import com.bookingsystem.view.controls.UIBookingSystemJTableBookingProblems;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 /**
  * Created by Alex on 10/02/2015.
@@ -43,6 +45,8 @@ public class UIBookingSystemBookingViewPanel extends JPanel {
 //            listOfViewBoxes.add( new JLabel());
 //            addControlToPanel(listOfViewBoxes.get(i),i);
 //        }
+
+
     }
 
     private void addControlToPanel(Component component, int gridY) {
@@ -118,4 +122,6 @@ public class UIBookingSystemBookingViewPanel extends JPanel {
     public void removeAllProblems() {
         bookingSystemJTableBookingProblems.removeAllRowsFromList();
     }
+
+    public JTable getBookingSystemJTableProblems() {return bookingSystemJTableBookingProblems;}
 }

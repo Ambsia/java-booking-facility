@@ -90,7 +90,7 @@ public class AccountHandler implements ActionListener {
 							MessageBox.errorMessageBox("The user's privilege level is too high, and cannot be removed.");
 						}
 					} else {
-						MessageBox.errorMessageBox("You do not have enough access to do this.");
+						MessageBox.errorMessageBox("Insufficient access privileges for operation.");
 					}
 				} else {
 					MessageBox.errorMessageBox("You must select an account to remove.");
@@ -125,6 +125,8 @@ public class AccountHandler implements ActionListener {
 								MessageBox.errorMessageBox("The new password needs to have atleast 4 characters.");
 							}
 						}
+					} else {
+						MessageBox.errorMessageBox("Insufficient access privileges for operation.");
 					}
 				} else {
 					bookingSystemChangePasswordPanel.setLblUsernameText("Changing password for: " + handler.getAccountBusinessLayer().getAccountLoggedIn().getUsername().replaceFirst("[a-z]", handler.getAccountBusinessLayer().getAccountLoggedIn().getUsername().substring(0,1).toUpperCase()));

@@ -131,7 +131,6 @@ public final class BookingHandler implements ActionListener {
                                     bookingList.clear();
                                     generateBadBookingTable();
                                 }
-
                             } else {
                                 MessageBox.errorMessageBox(".xlsx spreadsheets are only accepted.");
                                 break;
@@ -316,7 +315,7 @@ public final class BookingHandler implements ActionListener {
                 case "Load":
                     bookingTableModel.clearBookingList();
                     bookingSystemPanel.getBookingSystemViewPanel().removeAllProblems();
-                   // archiveTableModel.clearArchiveList();
+                    //archiveTableModel.clearArchiveList();
                     handler.getBookingBusinessLayer().populateBookingListOnLoad();
                     bookingTableModel.addBookingList(IteratorUtils.toList(handler.getBookingBusinessLayer().iterator()));
                    // archiveTableModel.addBookingList(IteratorUtils.toList(handler.getBookingBusinessLayer().getArchivedBookings().iterator()));

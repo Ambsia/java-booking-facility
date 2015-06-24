@@ -21,6 +21,7 @@ final class BookingSystemMain {
 
 	private BookingSystemMain() {
 		this.view = new BookingSystemUILoader();
+		
 		this.bookingBusinessLayer = new BookingBusinessLayer();
 		LoggerBusinessLayer loggerBusinessLayer = new LoggerBusinessLayer();
 		AccountBusinessLayer accountBusinessLayer = new AccountBusinessLayer();

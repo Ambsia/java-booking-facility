@@ -25,7 +25,10 @@ public class BookingSystemUILoader extends JFrame {
 		bookingSystemTabbedPane = new UIBookingSystemTabbedPane();
 		setLayout(new BorderLayout());
 		this.setTitle("LGS Booking System");
-
+//		ImageIcon icon = 
+//				new ImageIcon(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/rsz_lgs_logo_150.png")));
+//		setIconImage(icon.getImage());
+		//this.setIconImage(new ImageIcon(getClass().getResource(url)).getImage());
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 		} catch (Exception e) {
@@ -55,8 +58,8 @@ public class BookingSystemUILoader extends JFrame {
 		gridBagConstraints.fill = GridBagConstraints.BOTH;
 		this.add(bookingSystemTabbedPane, gridBagConstraints);
 
-		this.setPreferredSize(new Dimension(1200,550));
-		this.setMinimumSize(new Dimension(1175,500));
+		this.setPreferredSize(new Dimension(1250,550));
+		this.setMinimumSize(new Dimension(1225,500));
 
 		this.pack();
 		this.setLocationRelativeTo(null);

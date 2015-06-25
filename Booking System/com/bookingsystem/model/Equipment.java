@@ -8,7 +8,7 @@ public final class Equipment {
 	private final String equipmentName;
 	
 	public Equipment(String equipmentName) {
-		this.equipmentName = equipmentName;
+		this.equipmentName = equipmentName.trim();
 	}
 
 // --Commented out by Inspection START (21/06/2015 00:54):

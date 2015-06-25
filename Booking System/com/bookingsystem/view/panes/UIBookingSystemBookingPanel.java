@@ -33,7 +33,7 @@ public class UIBookingSystemBookingPanel extends JPanel {
 	private BookingTableModel bookingSystemModel;
 	public UIBookingSystemBookingPanel() {
 	//	bookingSystemJTable = new UIBookingSystemJTableBookings(bookingSystemModel);
-
+		
 		bookingSystemJTable = new JTable(bookingSystemModel);
 		setLayout(new GridBagLayout());
 		GridBagConstraints gbc = new GridBagConstraints();
@@ -150,16 +150,24 @@ public class UIBookingSystemBookingPanel extends JPanel {
 			}
 		});
 		bookingSystemJTable.getColumn("Booking ID").setMinWidth(0);
-		bookingSystemJTable.getColumn("Booking ID").setMaxWidth(0);
-      	bookingSystemJTable.getColumn("Booking ID").setPreferredWidth(0);
+		bookingSystemJTable.getColumn("Booking ID").setMaxWidth(00);
+      	bookingSystemJTable.getColumn("Booking ID").setPreferredWidth(00);
 		sorter.setSortKeys(sortKeys);
 		this.bookingSystemModel.fireTableDataChanged();
+	}
+	
+	public JTable getBookingSystemJTable() {
+		return bookingSystemJTable;
 	}
 
 	public BookingTableModel getJTableModel() {
 		return this.bookingSystemModel;
 	}
 
+	public void changeSelection(int row) {
+		bookingSystemJTable.changeSelection(row,0,false,false);
+		bookingSystemJTable.repaint();
+	}
 	public int selectedRowCount() {
 		return bookingSystemJTable.getSelectedRowCount();
 	}
@@ -172,6 +180,13 @@ public class UIBookingSystemBookingPanel extends JPanel {
 		return bookingSystemModel.getValueAt(row,column);
 	}
 
+	public int returnRowIndexForValue(final int j) { 
+	      for (int i = 0; i <= bookingSystemJTable.getRowCount(); i++)
+	                if (bookingSystemJTable.getValueAt(i, 0).equals(j))
+	                     return i;
+		return -1;
+	 }
+	
 	public List<Integer> getSelectedRows() {
 		List<Integer> integerList = new ArrayList<>();
 		for (int i = 0; i<bookingSystemJTable.getSelectedRows().length;i++) {

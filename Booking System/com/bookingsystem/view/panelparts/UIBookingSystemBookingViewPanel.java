@@ -32,7 +32,9 @@ public class UIBookingSystemBookingViewPanel extends JPanel {
         bookingSystemJTableBookingProblems = new UIBookingSystemJTableBookingProblems(new BookingProblemModel());
         setLayout(new GridBagLayout());
         jScrollPane = new JScrollPane(bookingSystemJTableBookingProblems);
-        bookingSystemJTableBookingProblems.getColumn("ID").setPreferredWidth(40);
+        bookingSystemJTableBookingProblems.getColumn("ID").setMinWidth(0);
+        bookingSystemJTableBookingProblems.getColumn("ID").setMaxWidth(00);
+        bookingSystemJTableBookingProblems.getColumn("ID").setPreferredWidth(00);
         bookingSystemJTableBookingProblems.getColumn("Day").setPreferredWidth(60);
         bookingSystemJTableBookingProblems.getColumn("Holder").setPreferredWidth(60);
         bookingSystemJTableBookingProblems.getColumn("Location").setPreferredWidth(60);

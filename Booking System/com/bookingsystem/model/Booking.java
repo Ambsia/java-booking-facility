@@ -132,12 +132,12 @@ public final class Booking  {
 				Date bookingCollectionTime, String bookingLocation, String bookingHolder,
 				Equipment requiredEquipment) {
 		this.bookingID = bookingID;
-		this.bookingDay = bookingDay;
+		this.bookingDay = bookingDay.trim();
 		this.bookingDate = bookingDate;
 		this.bookingStartTime = bookingStartTime;
 		this.bookingCollectionTime = bookingCollectionTime;
-		this.bookingLocation = bookingLocation;
-		this.bookingHolder = bookingHolder;
+		this.bookingLocation = bookingLocation.trim();
+		this.bookingHolder = bookingHolder.trim();
 		this.requiredEquipment = requiredEquipment; // this list will be passed when the booking is made
 		this.bookingCompleted = false;
 		this.bookingIndex =0;

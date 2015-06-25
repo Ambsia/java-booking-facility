@@ -79,14 +79,17 @@ public final class BookingHandler implements ActionListener {
         generateBadBookingTable();
         bookingIDCurrentlyBeingProcessed = 1;
 
+        //these can be handled else where!
         bookingSystemPanel.getBookingSystemViewPanel().getBookingSystemJTableProblems().addMouseListener(new MouseAdapter() {
             public void mousePressed(MouseEvent me) {
                 JTable table = (JTable) me.getSource();
                 Point p = me.getPoint();
                 int row = table.rowAtPoint(p);
+                int id = (int)bookingSystemPanel.getBookingSystemViewPanel().getBookingSystemJTableProblems().getValueAt(row,0);
+                Booking b = bookingTableModel.getBooking(id);
+                System.out.println(b);
+                if (b != null) {
                 if (me.getClickCount() == 2) {
-                    int id = (int)bookingSystemPanel.getBookingSystemViewPanel().getBookingSystemJTableProblems().getValueAt(row,0);
-                    Booking b = bookingTableModel.getBooking(id);
                     bookingSystemEditPanel.setTextOfComponents(bookingTableModel.getBooking(id));
                     if (bookingSystemEditPanel.showDialog() == 0) {
                         Booking newBooking = convertStringArrayToBooking(bookingSystemEditPanel.getBookingStringArray());
@@ -105,6 +108,44 @@ public final class BookingHandler implements ActionListener {
                             MessageBox.errorMessageBox("Please enter all of the required details for booking");
                         }
                     }
+                } else if (me.getClickCount() == 1) {
+                	int rowInBookingList = bookingSystemPanel.returnRowIndexForValue(b.getBookingID());
+                	bookingSystemPanel.changeSelection(rowInBookingList);
+                	
+                }
+                }
+            }
+        });
+        
+        bookingSystemPanel.getBookingSystemJTable().addMouseListener(new MouseAdapter() {
+            public void mousePressed(MouseEvent me) {
+                JTable table = (JTable) me.getSource();
+                Point p = me.getPoint();
+                int row = table.rowAtPoint(p);
+                int id = (int)bookingSystemPanel.getBookingSystemJTable().getValueAt(row, 0);
+                Booking b = bookingTableModel.getBooking(id);
+                System.out.println(b);
+                if (b != null) {
+                if (me.getClickCount() == 2) {
+                    bookingSystemEditPanel.setTextOfComponents(bookingTableModel.getBooking(id));
+                    if (bookingSystemEditPanel.showDialog() == 0) {
+                        Booking newBooking = convertStringArrayToBooking(bookingSystemEditPanel.getBookingStringArray());
+                        if (newBooking.isValid()) {
+                            if(!newBooking.isBeforeToday()) {
+                                List<Booking> editBookingCheck = new ArrayList<>();
+                                editBookingCheck.add(newBooking);
+                                checkBookingCollision(newBooking);
+                                checkBookingDateTimeForErrors(editBookingCheck);
+                                generateBadBookingTable();
+                                handler.getBookingBusinessLayer().modifyBooking(id, newBooking);
+                                ActionEvent actionEvent = new ActionEvent(this,0,"Load");
+                                actionPerformed(actionEvent);
+                            }
+                        } else {
+                            MessageBox.errorMessageBox("Please enter all of the required details for booking");
+                        }
+                    }
+                }
                 }
             }
         });
@@ -236,7 +277,7 @@ public final class BookingHandler implements ActionListener {
                     if (bookingSystemFindPanel.showDialog() == 0) {
                         this.bookingIDCurrentlyBeingProcessed = 1;
                         Booking bookingToFind = convertStringArrayToBooking(bookingSystemFindPanel.getBookingStringArray());
-                        MessageBox.infoMessageBox("A search will be performed based on the given details." + "\n" + bookingToFind.toString());
+                        MessageBox.infoMessageBox("A search will be performed based on the given details.");
                         bookingTableModel.clearBookingList();
                         bookingTableModel.addBookingList(handler.getBookingBusinessLayer().findBookings(bookingToFind));
                     }
@@ -459,7 +500,7 @@ public final class BookingHandler implements ActionListener {
                 stringBuilder.append(listOfBookingIdsThatCollide.size() == 1 ? " booking." : " bookings.");
                 MessageBox.errorMessageBox("The following booking '" + booking.getBookingDay() +", "+ BOOKING_DATE_FORMAT.format(booking.getBookingDate()) + ", " + booking.getBookingLocation() +", " +
                         BOOKING_TIME_FORMAT.format(booking.getBookingStartTime())+ "-" + BOOKING_TIME_FORMAT.format(booking.getBookingCollectionTime()) + "'" +
-                " is colliding with " + listOfBookingIdsThatCollide.size() + stringBuilder.toString());
+                " collides with " + listOfBookingIdsThatCollide.size() + stringBuilder.toString());
             }
     }
 

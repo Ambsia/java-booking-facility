@@ -20,7 +20,7 @@ public class UIBookingSystemAdminControlPanel extends UIBookingSystemControlPane
 	public UIBookingSystemAdminControlPanel() {
 		super();
 		setLayout(new GridBagLayout());
-		setButtonNames(new String[] {"Load Accounts","Add Account","Remove Account","View Activity", "Change Password"});
+		setButtonNames(new String[] {"Load Accounts","Add Account","Remove Account","View Activity", "Change Password", "Change Level"});
 		setButtonDimension(new Dimension(138, 25));
 		createControlPanel();
 

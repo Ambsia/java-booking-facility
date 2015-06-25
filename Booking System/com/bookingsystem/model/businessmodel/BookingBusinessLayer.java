@@ -38,12 +38,12 @@ public class BookingBusinessLayer extends BusinessLayer implements Iterable<Book
                 try (ResultSet rs = getDatabaseConnector().executeQuery()) {
                     while (rs.next()) {
                         Booking booking;
-                        booking = new Booking(rs.getInt(1), rs.getString(2).trim(), rs.getDate(3), rs.getTime(4), rs.getTime(5), rs.getString(6), rs.getString(7).trim(), new Equipment(rs.getString(8)));
+                        booking = new Booking(rs.getInt(1), rs.getString(2), rs.getDate(3), rs.getTime(4), rs.getTime(5), rs.getString(6), rs.getString(7), new Equipment(rs.getString(8)));
                         booking.setBookingCompleted(rs.getBoolean(9));
-                        if(booking.isBeforeToday() || booking.getBookingCompleted()) {
-                            if (!booking.getBookingCompleted()) {
-                        		booking.setBookingCompleted(true);
-                        	}
+                        if(booking.getBookingCompleted()) {
+//                            if (!booking.getBookingCompleted()) {
+//                        		booking.setBookingCompleted(true);
+//                        	}
                             this.archivedBookings.add(booking);
                         } else  {
                             this.bookings.add(booking);

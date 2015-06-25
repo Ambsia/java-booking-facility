@@ -96,6 +96,8 @@ public class AccountHandler implements ActionListener {
 					MessageBox.errorMessageBox("You must select an account to remove.");
 				}
 				break;
+			case "Change Level":
+				break;
 			case "Change Password":
 				if (bookingSystemAdminPanel.selectedRowCount() > 0) {
 					int modelRow = bookingSystemAdminPanel.rowViewIndexToModel(bookingSystemAdminPanel.getSelectedRow());

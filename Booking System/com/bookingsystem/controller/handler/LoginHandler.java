@@ -27,15 +27,18 @@ public class LoginHandler implements ActionListener {
         Log log = new Log(arg0.getActionCommand(),this.getClass().getSimpleName(), new Date());
         switch (arg0.getActionCommand()) {
             case "Login":
-               accountModel = handler.getAccountBusinessLayer().retrieveAccount(handler.getView().getLoginPanel().getLoginUsernameText(), handler.getView().getLoginPanel().getLoginPasswordText());
-             // accountModel = handler.getAccountBusinessLayer().retrieveAccount("alex", "donkey");
+               //accountModel = handler.getAccountBusinessLayer().retrieveAccount(handler.getView().getLoginPanel().getLoginUsernameText(), handler.getView().getLoginPanel().getLoginPasswordText());
+              accountModel = handler.getAccountBusinessLayer().retrieveAccount("alex", "donkey");
                
                 if (handler.getAccountBusinessLayer().isAccountFound()) {
                     handler.getLoggerBusinessLayer().setAccountCurrentlyLoggedIn(accountModel);
                     handler.getView().removeLoginPanel();
                     handler.getView().showBookingSystemPanel();
-                    if (accountModel != null && accountModel.getUserLevel() > 2) {
+                    if (accountModel != null && accountModel.getUserLevel() >= 2) {
                         handler.getView().getBookingSystemTabbedPane().showAdminPanel();
+                    }  else if (accountModel.getUserLevel() == 0) {
+                        System.out.println("true");
+                        handler.getView().getBookingSystemTabbedPane().getBookingSystemPanel().getBookingSystemControlPanel().restrictControls();
                     }
                     log.setAccountIDCreated(accountModel.getUserID());
                     handler.getView().setVisible(true);

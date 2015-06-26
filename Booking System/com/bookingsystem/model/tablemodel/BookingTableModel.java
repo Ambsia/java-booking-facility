@@ -128,20 +128,17 @@ public class BookingTableModel extends AbstractTableModel implements Iterable<Bo
 
     public void clearBookingList() {
         this.bookingList.clear();
-        System.out.println("Booking List Cleared. New Size: " + this.bookingList.size());
         this.fireTableDataChanged();
     }
     
     public void addBooking(Booking booking) {
     	this.bookingList.add(booking);
-        System.out.println("Booking Added To List. New Size: " + this.bookingList.size());
         this.fireTableDataChanged();
     }
 
     public void addBookingList(List<Booking> bookingList) {
         for (Booking b : bookingList) {
             this.bookingList.add(b);
-            System.out.println("Booking Added To List. New Size: " + this.bookingList.size());
             this.fireTableDataChanged();
         }
     }
@@ -165,9 +162,7 @@ public class BookingTableModel extends AbstractTableModel implements Iterable<Bo
     public void removeRows(List<Integer> indices) {
         Collections.sort(indices);
         for (int i = indices.size() - 1; i >= 0; i--) {
-            System.out.println("index removing: " + indices.get(i) + " " + this.bookingList.get(indices.get(i)).toString()) ;
             this.bookingList.remove(indices.get(i).intValue());
-            System.out.println("Booking Removed from List. New Size: " + this.bookingList.size());
             fireTableRowsDeleted(indices.get(i), indices.get(i));
         }
         fireTableDataChanged();

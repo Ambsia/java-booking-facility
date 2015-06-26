@@ -6,9 +6,11 @@ import com.bookingsystem.model.Log;
 import com.bookingsystem.model.tablemodel.AccountTableModel;
 import com.bookingsystem.view.dialogpanels.accountdialog.UIBookingSystemAccountAddPanel;
 import com.bookingsystem.view.dialogpanels.accountdialog.UIBookingSystemChangePasswordPanel;
+import com.bookingsystem.view.dialogpanels.accountdialog.UIBookingSystemChangeUserLevel;
 import com.bookingsystem.view.panelparts.UIBookingSystemAdminViewPanel;
 import com.bookingsystem.view.panes.UIBookingSystemAdminPanel;
 import org.apache.commons.collections.IteratorUtils;
+import sun.nio.cs.MS1250;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -23,6 +25,7 @@ public class AccountHandler implements ActionListener {
 	private final UIBookingSystemAdminViewPanel bookingSystemAdminViewPanel;
 	private final UIBookingSystemAccountAddPanel bookingSystemAccountAddPanel;
 	private final UIBookingSystemChangePasswordPanel bookingSystemChangePasswordPanel;
+	private final UIBookingSystemChangeUserLevel bookingSystemChangeUserLevel;
 	private int currentAccountIDBeingProcessed;
 	private final Handler handler;
 	private final AccountTableModel accountTableModel;
@@ -33,6 +36,7 @@ public class AccountHandler implements ActionListener {
 		this.bookingSystemAdminViewPanel = bookingSystemAdminPanel.getBookingSystemAdminViewPanel();
 		this.bookingSystemAccountAddPanel = bookingSystemAdminPanel.getBookingSystemAdminControlPanel().getBookingSystemAccountAddPanel();
 		this.bookingSystemChangePasswordPanel = bookingSystemAdminPanel.getBookingSystemAdminControlPanel().getBookingSystemChangePasswordPanel();
+		this.bookingSystemChangeUserLevel = bookingSystemAdminPanel.getBookingSystemAdminControlPanel().getBookingSystemChangeUserLevel();
 		this.accountTableModel = bookingSystemAdminPanel.getJTableModel();
 		this.currentAccountIDBeingProcessed = -1;
 	}
@@ -57,14 +61,19 @@ public class AccountHandler implements ActionListener {
 								password += c;
 							}
 							int level = Integer.parseInt(bookingSystemAccountAddPanel.getAccountUserLevelText());
+							if (level <=3 || handler.getAccountBusinessLayer().getAccountLoggedIn().getUserLevel() >= 5) {
+								Account account = new Account(0, level, username, password);
+								if (handler.getAccountManagementBusinessLayer().addAccount(account)) {
+									log.setAccountIDCreated(account.getUserID());
+									accountTableModel.addAccount(account);
+								}
+							} else {
+								MessageBox.errorMessageBox("New accounts user level must be between 0-3.");
+							}
 
-							Account account = new Account(0, level, username, password);
-							handler.getAccountManagementBusinessLayer().addAccount(account);
-							log.setAccountIDCreated(account.getUserID());
-							accountTableModel.addAccount(account);
 						}
 					} else {
-						MessageBox.infoMessageBox("You do not have enough access to do this.");
+						MessageBox.errorMessageBox("Insufficient access privileges for operation.");
 					}
 				} catch (NumberFormatException nfe) {
 					MessageBox.errorMessageBox("Error");
@@ -72,12 +81,14 @@ public class AccountHandler implements ActionListener {
 				break;
 			case "Remove Account":
 				if (bookingSystemAdminPanel.selectedRowCount() > 0) {
-				int modelRow = bookingSystemAdminPanel.rowViewIndexToModel(bookingSystemAdminPanel.getSelectedRow());
-				this.currentAccountIDBeingProcessed = (int) bookingSystemAdminPanel.getValueAt(modelRow, 0);
-
-					if (handler.getAccountBusinessLayer().getAccountLoggedIn().getUserLevel() >= 3) {
-						this.currentAccountIDBeingProcessed = (int) accountTableModel.getValueAt(bookingSystemAdminPanel.getSelectedRow(), 0);
-						Account account = accountTableModel.getAccount(currentAccountIDBeingProcessed);
+					int modelRow = bookingSystemAdminPanel.rowViewIndexToModel(bookingSystemAdminPanel.getSelectedRow());
+					this.currentAccountIDBeingProcessed = (int) bookingSystemAdminPanel.getValueAt(modelRow, 0);
+					this.currentAccountIDBeingProcessed = (int) accountTableModel.getValueAt(bookingSystemAdminPanel.getSelectedRow(), 0);
+					Account account = accountTableModel.getAccount(currentAccountIDBeingProcessed);
+					if (handler.getAccountBusinessLayer().getAccountLoggedIn().getUserLevel() >= 3
+							&& handler.getAccountBusinessLayer().getAccountLoggedIn().getUserID() != account.getUserID()
+							&& account.getUserLevel() < 3
+							|| handler.getAccountBusinessLayer().getAccountLoggedIn().getUserLevel() >= 5) {
 						if (account.getUserLevel() < handler.getAccountBusinessLayer().getAccountLoggedIn().getUserLevel()) {
 							log.setAccountIDDeleted(currentAccountIDBeingProcessed);
 							handler.getAccountManagementBusinessLayer().setCurrentAccountID(currentAccountIDBeingProcessed);
@@ -85,7 +96,6 @@ public class AccountHandler implements ActionListener {
 							handler.getAccountManagementBusinessLayer().removeAccount();
 							handler.getLoggerBusinessLayer().removeLogsForAccount(account.getUserID());
 							accountTableModel.removeRows(bookingSystemAdminPanel.getSelectedRows());
-
 						} else {
 							MessageBox.errorMessageBox("The user's privilege level is too high, and cannot be removed.");
 						}
@@ -97,13 +107,43 @@ public class AccountHandler implements ActionListener {
 				}
 				break;
 			case "Change Level":
+				if (bookingSystemAdminPanel.selectedRowCount() > 0) {
+					int modelRow = bookingSystemAdminPanel.rowViewIndexToModel(bookingSystemAdminPanel.getSelectedRow());
+					this.currentAccountIDBeingProcessed = (int) bookingSystemAdminPanel.getValueAt(modelRow, 0);
+					Account account = accountTableModel.getAccount(currentAccountIDBeingProcessed);
+					if (handler.getAccountBusinessLayer().getAccountLoggedIn().getUserLevel() >= 3
+							&& account.getUserLevel() < 3
+							|| handler.getAccountBusinessLayer().getAccountLoggedIn().getUserLevel() >= 5) {
+						bookingSystemChangeUserLevel.setLblUsernameText("Changing user level for: " + accountTableModel.getAccount(this.currentAccountIDBeingProcessed).getUsername());
+						if (bookingSystemChangeUserLevel.showDialog() == 0) {
+								log.setAccountIDCreated(this.currentAccountIDBeingProcessed);
+								if (bookingSystemChangeUserLevel.getNewAccountLevel() != -1 && bookingSystemChangeUserLevel.getNewAccountLevel() <= 3 || handler.getAccountBusinessLayer().getAccountLoggedIn().getUserLevel() >= 5) {
+									if (handler.getAccountBusinessLayer().getAccountLoggedIn().changeUserLevel(accountTableModel.getAccount(this.currentAccountIDBeingProcessed).getUserID(), bookingSystemChangeUserLevel.getNewAccountLevel())) {
+
+										accountTableModel.setValueAt(bookingSystemChangeUserLevel.getNewAccountLevel(),modelRow,2);
+										MessageBox.infoMessageBox("You have changed " + accountTableModel.getAccount(this.currentAccountIDBeingProcessed).getUsername() + "'s user level.");
+									}
+								} else {
+									MessageBox.errorMessageBox("Please enter a new user level, between 0-3.");
+								}
+							}
+						bookingSystemChangeUserLevel.clearTextBoxes();
+					} else {
+						MessageBox.errorMessageBox("Insufficient access privileges for operation.");
+					}
+				}
 				break;
 			case "Change Password":
 				if (bookingSystemAdminPanel.selectedRowCount() > 0) {
 					int modelRow = bookingSystemAdminPanel.rowViewIndexToModel(bookingSystemAdminPanel.getSelectedRow());
 					this.currentAccountIDBeingProcessed = (int) bookingSystemAdminPanel.getValueAt(modelRow, 0);
-					if (handler.getAccountBusinessLayer().getAccountLoggedIn().getUserLevel() > 50 || this.currentAccountIDBeingProcessed == handler.getAccountBusinessLayer().getAccountLoggedIn().getUserID()) {
-						bookingSystemChangePasswordPanel.setLblUsernameText("Changing password for: " + accountTableModel.getAccount(this.currentAccountIDBeingProcessed).getUsername());
+					Account account = accountTableModel.getAccount(currentAccountIDBeingProcessed);
+					System.out.println(account.getUserLevel());
+					System.out.println(handler.getAccountBusinessLayer().getAccountLoggedIn().getUserLevel());
+					if (account.getUserLevel() < 3 && handler.getAccountBusinessLayer().getAccountLoggedIn().getUserLevel() >= 3
+							|| this.currentAccountIDBeingProcessed == handler.getAccountBusinessLayer().getAccountLoggedIn().getUserID()
+							|| handler.getAccountBusinessLayer().getAccountLoggedIn().getUserLevel() >= 5) {
+						bookingSystemChangePasswordPanel.setLblUsernameText("Changing password for: " + account.getUsername());
 						if (bookingSystemChangePasswordPanel.showDialog() == 0) {
 							if (bookingSystemChangePasswordPanel.getPasswordsMoreOrEqualToFourCharacters()) {
 								if (bookingSystemChangePasswordPanel.getPasswordsTheSame()) {
@@ -157,8 +197,8 @@ public class AccountHandler implements ActionListener {
 				break;
 			case "View Activity":
 				if (bookingSystemAdminPanel.selectedRowCount() > 0) {
-					int modelRow = bookingSystemAdminPanel.rowViewIndexToModel(bookingSystemAdminPanel.getSelectedRow());
-					this.currentAccountIDBeingProcessed = (int) bookingSystemAdminPanel.getValueAt(modelRow, 0);
+						int modelRow = bookingSystemAdminPanel.rowViewIndexToModel(bookingSystemAdminPanel.getSelectedRow());
+						this.currentAccountIDBeingProcessed = (int) bookingSystemAdminPanel.getValueAt(modelRow, 0);
 						bookingSystemAdminViewPanel.getJTableModel().clearArchiveList();
 						handler.getLoggerBusinessLayer().getLogsForAccount(this.currentAccountIDBeingProcessed);
 						bookingSystemAdminViewPanel.getJTableModel().addLogList(IteratorUtils.toList(handler.getLoggerBusinessLayer().iterator()));

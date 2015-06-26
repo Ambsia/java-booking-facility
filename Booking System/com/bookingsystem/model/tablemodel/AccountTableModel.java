@@ -72,9 +72,15 @@ public class AccountTableModel extends AbstractTableModel {
 
 	@Override
 	public void setValueAt(Object value, int rowIndex, int columnIndex) {
-		//Account account = accountList.get(rowIndex);
+		Account account = accountList.get(rowIndex);
+		System.out.println(columnIndex);
 		switch (columnIndex) {
 			case COLUMN_NO:
+				break;
+			case COLUMN_ACCOUNT_NAME:
+				break;
+			case COLUMN_ACCOUNT_LEVEL:
+				account.setUserLevel((int)value);
 				break;
 			default:
 				throw new IllegalArgumentException("Invalid column index");

@@ -11,7 +11,7 @@ public class UIBookingSystemChangePasswordPanel  extends JPanel {
     /**
      *
      */
-    private static final long serialVersionUID = 419911671046158169L;
+
     private static final String[] LABELS = {"New Password:", "Confirm Password:"};
     private Component[] components;
 

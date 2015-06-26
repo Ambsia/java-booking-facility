@@ -2,6 +2,7 @@ package com.bookingsystem.view.panelparts.controlpanes;
 
 import com.bookingsystem.view.dialogpanels.accountdialog.UIBookingSystemAccountAddPanel;
 import com.bookingsystem.view.dialogpanels.accountdialog.UIBookingSystemChangePasswordPanel;
+import com.bookingsystem.view.dialogpanels.accountdialog.UIBookingSystemChangeUserLevel;
 
 import java.awt.*;
 
@@ -16,6 +17,7 @@ public class UIBookingSystemAdminControlPanel extends UIBookingSystemControlPane
 	private static final long serialVersionUID = -5157872014641211611L;
 	private final UIBookingSystemAccountAddPanel bookingSystemAccountAddPanel;
 	private final UIBookingSystemChangePasswordPanel bookingSystemChangePasswordPanel;
+	private final UIBookingSystemChangeUserLevel bookingSystemChangeUserLevel;
 
 	public UIBookingSystemAdminControlPanel() {
 		super();
@@ -26,10 +28,15 @@ public class UIBookingSystemAdminControlPanel extends UIBookingSystemControlPane
 
 		bookingSystemAccountAddPanel = new UIBookingSystemAccountAddPanel();
 		bookingSystemChangePasswordPanel = new UIBookingSystemChangePasswordPanel();
+		bookingSystemChangeUserLevel = new UIBookingSystemChangeUserLevel();
 	}
 
 	public UIBookingSystemChangePasswordPanel getBookingSystemChangePasswordPanel() {
 		return  bookingSystemChangePasswordPanel;
+	}
+
+	public UIBookingSystemChangeUserLevel getBookingSystemChangeUserLevel() {
+		return bookingSystemChangeUserLevel;
 	}
 
 	public UIBookingSystemAccountAddPanel getBookingSystemAccountAddPanel() {

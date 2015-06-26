@@ -2,11 +2,9 @@ package com.bookingsystem.model.businessmodel;
 
 import com.bookingsystem.helpers.MessageBox;
 import com.bookingsystem.model.Account;
+import com.bookingsystem.model.Log;
 
-import java.sql.CallableStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Types;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -26,26 +24,39 @@ public class AccountManagementBusinessLayer extends BusinessLayer implements Ite
 		this.currentIndexInAccountList = -1;
 	}
 
-	public void addAccount(Account account) {
+	public boolean addAccount(Account account) {
 		getDatabaseConnector().openConnection();
 		if (getDatabaseConnector().isConnected()) {
 			if (getDatabaseConnector().isConnectionClosed()) {
-				getDatabaseConnector().createNewCallableStatement("{CALL spInsertAccount(?,?,?,?,?)}");
-				try (CallableStatement callableStatement = getDatabaseConnector().getCallableStatement()) {
-					callableStatement.setInt(1, account.getUserLevel());
-					callableStatement.setString(2, account.getUsername());
-					callableStatement.setString(3, account.getHashedPassword());
-					callableStatement.setString(4, account.getUserSalt());
-					callableStatement.registerOutParameter(5, Types.INTEGER);
-					getDatabaseConnector().execute();
-					account.setUserID(callableStatement.getInt(5));
-					this.accountList.add(account);
-				} catch (SQLException e) {
+				getDatabaseConnector().createNewCallableStatement("{CALL spCheckForDuplicateUsername(?,?)}");
+				try (CallableStatement csCheckForDupeName = getDatabaseConnector().getCallableStatement()) {
+					csCheckForDupeName.setString(1, account.getUsername());
+					csCheckForDupeName.registerOutParameter(2, Types.INTEGER);
+					csCheckForDupeName.execute();
+					if (csCheckForDupeName.getInt(2) == 0) {
+						getDatabaseConnector().createNewCallableStatement("{CALL spInsertAccount(?,?,?,?,?)}");
+						try (CallableStatement callableStatement = getDatabaseConnector().getCallableStatement()) {
+							callableStatement.setInt(1, account.getUserLevel());
+							callableStatement.setString(2, account.getUsername());
+							callableStatement.setString(3, account.getHashedPassword());
+							callableStatement.setString(4, account.getUserSalt());
+							callableStatement.registerOutParameter(5, Types.INTEGER);
+							getDatabaseConnector().execute();
+							account.setUserID(callableStatement.getInt(5));
+							this.accountList.add(account);
+							getDatabaseConnector().closeConnection();
+							return true;
+						}
+					} else {
+						MessageBox.errorMessageBox("There is already an account with the username '" + account.getUsername()+ "'");
+					}
+					} catch (SQLException e) {
 					MessageBox.errorMessageBox("There was an issue while adding an account.\n" + "Does this make any sense to you.." + e.toString() + "?");
 				}
 			}
 			getDatabaseConnector().closeConnection();
 		}
+		return false;
 	}
 
 	public void removeAccount() {

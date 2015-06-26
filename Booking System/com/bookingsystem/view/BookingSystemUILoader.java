@@ -44,9 +44,10 @@ public class BookingSystemUILoader extends JFrame {
 
 	public void showLoginPanel() {
 		this.add(loginPanel);
-		this.pack();
-		this.setLocationRelativeTo(null);
+		loginPanel.setEnabled(true);
+		this.setLocationRelativeTo(this);
 		this.setVisible(true);
+		this.pack();
 	}
 
 	public void showBookingSystemPanel() {

@@ -85,8 +85,24 @@ public final class Account {
 			callableStatement.execute();
 			return true;
 		} catch (SQLException e) {
-			e.printStackTrace();
-			MessageBox.errorMessageBox("There was an issue whilst attempting to change a password.");
+			MessageBox.errorMessageBox("There was an issue whilst attempting to change an accounts password.");
+		}
+		return false;
+	}
+
+	public boolean changeUserLevel(int userID, int newLevel) {
+		Connection con;
+		try {
+			ReturnSpecifiedPropertyValues returnSpecifiedPropertyValues = new ReturnSpecifiedPropertyValues("sqlconfig.properties");
+			con = DriverManager.getConnection(returnSpecifiedPropertyValues.getDatabaseConnectionString());
+
+			CallableStatement callableStatement = con.prepareCall("{CALL spChangeUserLevel(?,?)}");
+			callableStatement.setInt(1, userID);
+			callableStatement.setInt(2, newLevel);
+			callableStatement.execute();
+			return true;
+		} catch (SQLException e) {
+			MessageBox.errorMessageBox("There was an issue whilst attempting to change an accounts user level.");
 		}
 		return false;
 	}

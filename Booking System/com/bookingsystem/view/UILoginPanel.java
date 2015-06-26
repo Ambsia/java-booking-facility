@@ -1,8 +1,13 @@
 package  com.bookingsystem.view;
 
+import javafx.scene.input.KeyCode;
+import sun.awt.ExtendedKeyCodes;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 
 public class UILoginPanel extends JPanel {
 
@@ -40,7 +45,44 @@ public class UILoginPanel extends JPanel {
 		gbc.gridx = 1;
 		gbc.anchor = GridBagConstraints.EAST;
 		this.add(btnClear, gbc);
+
+		txtLoginPassword.addKeyListener(new KeyListener() {
+			@Override
+			public void keyTyped(KeyEvent e) {
+			}
+
+			@Override
+			public void keyPressed(KeyEvent e) {
+				if (e.getKeyChar() == '\n') {
+					btnLogin.doClick();
+				}
+			}
+
+			@Override
+			public void keyReleased(KeyEvent e)  {
+			}
+		});
+
+		txtLoginUsername.addKeyListener(new KeyListener() {
+			@Override
+			public void keyTyped(KeyEvent e) {
+			}
+
+			@Override
+			public void keyPressed(KeyEvent e) {
+				if (e.getKeyChar() == '\n') {
+					btnLogin.doClick();
+				}
+			}
+
+			@Override
+			public void keyReleased(KeyEvent e)  {
+			}
+		});
 	}
+
+
+
 
 	public void addSubmitListener(ActionListener al) {
 		btnLogin.addActionListener(al);
@@ -62,5 +104,6 @@ public class UILoginPanel extends JPanel {
 		this.txtLoginPassword.setText("");
 		this.txtLoginUsername.setText("");
 	}
+
 
 }

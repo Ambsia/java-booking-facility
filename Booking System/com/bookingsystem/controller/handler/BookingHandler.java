@@ -82,6 +82,7 @@ public final class BookingHandler implements ActionListener {
         //these can be handled else where!
         bookingSystemPanel.getBookingSystemViewPanel().getBookingSystemJTableProblems().addMouseListener(new MouseAdapter() {
             public void mousePressed(MouseEvent me) {
+                if(handler.getAccountBusinessLayer().getAccountLoggedIn().getUserLevel()>0) {
                 JTable table = (JTable) me.getSource();
                 Point p = me.getPoint();
                 int row = table.rowAtPoint(p);
@@ -89,29 +90,30 @@ public final class BookingHandler implements ActionListener {
                 Booking b = bookingTableModel.getBooking(id);
                 System.out.println(b);
                 if (b != null) {
-                if (me.getClickCount() == 2) {
-                    bookingSystemEditPanel.setTextOfComponents(bookingTableModel.getBooking(id));
-                    if (bookingSystemEditPanel.showDialog() == 0) {
-                        Booking newBooking = convertStringArrayToBooking(bookingSystemEditPanel.getBookingStringArray());
-                        if (newBooking.isValid()) {
-                            if(!newBooking.isBeforeToday()) {
-                                List<Booking> editBookingCheck = new ArrayList<>();
-                                editBookingCheck.add(newBooking);
-                                checkBookingCollision(newBooking);
-                                checkBookingDateTimeForErrors(editBookingCheck);
-                                generateBadBookingTable();
-                                handler.getBookingBusinessLayer().modifyBooking(id, newBooking);
-                                ActionEvent actionEvent = new ActionEvent(this,0,"Load");
-                                actionPerformed(actionEvent);
+                    if (me.getClickCount() == 2) {
+                        bookingSystemEditPanel.setTextOfComponents(bookingTableModel.getBooking(id));
+                        if (bookingSystemEditPanel.showDialog() == 0) {
+                            Booking newBooking = convertStringArrayToBooking(bookingSystemEditPanel.getBookingStringArray());
+                            if (newBooking.isValid()) {
+                                if (!newBooking.isBeforeToday()) {
+                                    List<Booking> editBookingCheck = new ArrayList<>();
+                                    editBookingCheck.add(newBooking);
+                                    checkBookingCollision(newBooking);
+                                    checkBookingDateTimeForErrors(editBookingCheck);
+                                    generateBadBookingTable();
+                                    handler.getBookingBusinessLayer().modifyBooking(id, newBooking);
+                                    ActionEvent actionEvent = new ActionEvent(this, 0, "Load");
+                                    actionPerformed(actionEvent);
+                                }
+                            } else {
+                                MessageBox.errorMessageBox("Please enter all of the required details for booking");
                             }
-                        } else {
-                            MessageBox.errorMessageBox("Please enter all of the required details for booking");
                         }
+                    } else if (me.getClickCount() == 1) {
+                        int rowInBookingList = bookingSystemPanel.returnRowIndexForValue(b.getBookingID());
+                        bookingSystemPanel.changeSelection(rowInBookingList);
+
                     }
-                } else if (me.getClickCount() == 1) {
-                	int rowInBookingList = bookingSystemPanel.returnRowIndexForValue(b.getBookingID());
-                	bookingSystemPanel.changeSelection(rowInBookingList);
-                	
                 }
                 }
             }
@@ -119,33 +121,35 @@ public final class BookingHandler implements ActionListener {
         
         bookingSystemPanel.getBookingSystemJTable().addMouseListener(new MouseAdapter() {
             public void mousePressed(MouseEvent me) {
-                JTable table = (JTable) me.getSource();
-                Point p = me.getPoint();
-                int row = table.rowAtPoint(p);
-                int id = (int)bookingSystemPanel.getBookingSystemJTable().getValueAt(row, 0);
-                Booking b = bookingTableModel.getBooking(id);
-                System.out.println(b);
-                if (b != null) {
-                if (me.getClickCount() == 2) {
-                    bookingSystemEditPanel.setTextOfComponents(bookingTableModel.getBooking(id));
-                    if (bookingSystemEditPanel.showDialog() == 0) {
-                        Booking newBooking = convertStringArrayToBooking(bookingSystemEditPanel.getBookingStringArray());
-                        if (newBooking.isValid()) {
-                            if(!newBooking.isBeforeToday()) {
-                                List<Booking> editBookingCheck = new ArrayList<>();
-                                editBookingCheck.add(newBooking);
-                                checkBookingCollision(newBooking);
-                                checkBookingDateTimeForErrors(editBookingCheck);
-                                generateBadBookingTable();
-                                handler.getBookingBusinessLayer().modifyBooking(id, newBooking);
-                                ActionEvent actionEvent = new ActionEvent(this,0,"Load");
-                                actionPerformed(actionEvent);
+                if(handler.getAccountBusinessLayer().getAccountLoggedIn().getUserLevel()>0) {
+                    JTable table = (JTable) me.getSource();
+                    Point p = me.getPoint();
+                    int row = table.rowAtPoint(p);
+                    int id = (int) bookingSystemPanel.getBookingSystemJTable().getValueAt(row, 0);
+                    Booking b = bookingTableModel.getBooking(id);
+                    System.out.println(b);
+                    if (b != null) {
+                        if (me.getClickCount() == 2) {
+                            bookingSystemEditPanel.setTextOfComponents(bookingTableModel.getBooking(id));
+                            if (bookingSystemEditPanel.showDialog() == 0) {
+                                Booking newBooking = convertStringArrayToBooking(bookingSystemEditPanel.getBookingStringArray());
+                                if (newBooking.isValid()) {
+                                    if (!newBooking.isBeforeToday()) {
+                                        List<Booking> editBookingCheck = new ArrayList<>();
+                                        editBookingCheck.add(newBooking);
+                                        checkBookingCollision(newBooking);
+                                        checkBookingDateTimeForErrors(editBookingCheck);
+                                        generateBadBookingTable();
+                                        handler.getBookingBusinessLayer().modifyBooking(id, newBooking);
+                                        ActionEvent actionEvent = new ActionEvent(this, 0, "Load");
+                                        actionPerformed(actionEvent);
+                                    }
+                                } else {
+                                    MessageBox.errorMessageBox("Please enter all of the required details for booking");
+                                }
                             }
-                        } else {
-                            MessageBox.errorMessageBox("Please enter all of the required details for booking");
                         }
                     }
-                }
                 }
             }
         });
@@ -393,7 +397,7 @@ public final class BookingHandler implements ActionListener {
                     //archiveTableModel.clearArchiveList();
                     handler.getBookingBusinessLayer().populateBookingListOnLoad();
                     bookingTableModel.addBookingList(IteratorUtils.toList(handler.getBookingBusinessLayer().iterator()));
-                   // archiveTableModel.addBookingList(IteratorUtils.toList(handler.getBookingBusinessLayer().getArchivedBookings().iterator()));
+                    //archiveTableModel.addBookingList(IteratorUtils.toList(handler.getBookingBusinessLayer().getArchivedBookings().iterator()));
                     checkBookingDateTimeForErrors(IteratorUtils.toList(handler.getBookingBusinessLayer().iterator()));
                     generateBadBookingTable();
                     handler.getLoggerBusinessLayer().insertLog(log);

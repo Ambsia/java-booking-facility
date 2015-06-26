@@ -62,4 +62,8 @@ public abstract class UIBookingSystemControlPanel extends JPanel {
             button.addActionListener(al);
         }
     }
+
+    public ArrayList<JButton> getControlButtonList() {
+        return  controlButtonList;
+    }
 }

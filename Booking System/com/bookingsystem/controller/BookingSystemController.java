@@ -21,8 +21,9 @@ public class BookingSystemController {
     // account not instantiated until logged in or created!
     @SuppressWarnings("unchecked")
 	public BookingSystemController(BookingSystemUILoader view, BookingBusinessLayer bookingBusinessLayer, AccountBusinessLayer accountBusinessLayer, LoggerBusinessLayer loggerBusinessLayer, AccountManagementBusinessLayer accountManagementBusinessLayer, ArchiveBusinessLayer archiveBusinessLayer) {
+
         view.showLoginPanel();
-        
+
         UIBookingSystemTabbedPane bookingSystemTabbedPane = view.getBookingSystemTabbedPane();
         //
         UIBookingSystemArchivePanel bookingArchivePanel = bookingSystemTabbedPane.getBookingSystemArchive();
@@ -69,5 +70,6 @@ public class BookingSystemController {
         bookingSystemAdminControlPanel.addListeners(accountHandler);
         //
         bookingSystemArchiveControlPanel.addListeners(archiveHandler);
+
     }
 }

@@ -5,7 +5,9 @@ import com.bookingsystem.view.dialogpanels.bookingdialog.UIBookingSystemEditPane
 import com.bookingsystem.view.dialogpanels.bookingdialog.UIBookingSystemFindPanel;
 import com.bookingsystem.view.dialogpanels.bookingdialog.UIBookingSystemRemovePanel;
 
+import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
 
 /**
  * Author: [Alex] on [$Date]
@@ -27,7 +29,6 @@ public class UIBookingSystemBookingControlPanel extends UIBookingSystemControlPa
         setButtonNames(new String[] {"Load","Search","Complete","Add","Edit", "Remove","Export", "Today's", "Tomorrows"});
         setButtonDimension(new Dimension(100,25));
         createControlPanel();
-
         uiBookingSystemAddPanel = new UIBookingSystemAddPanel();
         uiBookingSystemFindPanel = new UIBookingSystemFindPanel();
         uiBookingSystemEditPanel = new UIBookingSystemEditPanel();
@@ -35,6 +36,14 @@ public class UIBookingSystemBookingControlPanel extends UIBookingSystemControlPa
     }
 
 
+    public void restrictControls() {
+        ArrayList<JButton> jButtonArrayList = getControlButtonList();
+        for(JButton jButton : jButtonArrayList) {
+            if (jButton.getText() == "Add" || jButton.getText() == "Edit"||jButton.getText() == "Remove"||jButton.getText() == "Complete") {
+                jButton.setText("No Access");
+            }
+        }
+    }
 
     public UIBookingSystemEditPanel getUIBookingSystemEditPanel() {
         return uiBookingSystemEditPanel;

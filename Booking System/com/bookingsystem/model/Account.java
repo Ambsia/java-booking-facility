@@ -47,11 +47,12 @@ public final class Account {
 	}
 
 	private String SHA1_HASH(String unHashedString, String username) {
-		return DigestUtils.sha1Hex(unHashedString + getSalt(username));
+		getSalt(username);
+
+		return DigestUtils.sha1Hex(unHashedString + this.getUserSalt());
 	}
 
-	private String getSalt(String username) {
-		String userSalt = "";
+	private void getSalt(String username) {
 		Connection con;
 		try {
 			ReturnSpecifiedPropertyValues returnSpecifiedPropertyValues = new ReturnSpecifiedPropertyValues("sqlconfig.properties");
@@ -60,7 +61,7 @@ public final class Account {
 			Statement stmt = con.createStatement();
 			ResultSet rs = stmt.executeQuery("EXECUTE spGetSalt '" + username + "'");
 			if(rs.next())  {
-				userSalt = rs.getString(1);
+				this.userSalt = rs.getString(1);
 			} else {
 				generateSalt();
 			}
@@ -69,7 +70,6 @@ public final class Account {
 		} catch (SQLException e) {
 			MessageBox.errorMessageBox("There was an issue while we were trying to hash something..!\n" + "Does this make sense you to.." + e.toString() + "?");
 		}
-		return userSalt;
 	}
 
 	public boolean changePassword(int userID, String username, String newPassword) {
@@ -85,6 +85,7 @@ public final class Account {
 			callableStatement.execute();
 			return true;
 		} catch (SQLException e) {
+			e.printStackTrace();
 			MessageBox.errorMessageBox("There was an issue whilst attempting to change an accounts password.");
 		}
 		return false;
@@ -115,6 +116,7 @@ public final class Account {
 		} catch (NoSuchAlgorithmException e) {
 			salt = 0;
 		}
+		System.out.println(salt);
 		this.userSalt = ""+salt;
 	}
 

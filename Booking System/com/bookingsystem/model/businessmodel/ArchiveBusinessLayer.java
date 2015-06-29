@@ -92,7 +92,7 @@ public class ArchiveBusinessLayer extends BusinessLayer {
                     try (ResultSet rs = getDatabaseConnector().executeQuery()) {
                         int i = 0;
                         Equipment equipmentToAdd;
-                        while (rs.next() && i < 5) {
+                        while (rs.next() && i < 15) {
                             equipmentToAdd = new Equipment(rs.getString(1));
                             equipmentToAdd.setEquipmentStatistic(rs.getInt(2));
                             mostUsedEquipmentList.add(equipmentToAdd);

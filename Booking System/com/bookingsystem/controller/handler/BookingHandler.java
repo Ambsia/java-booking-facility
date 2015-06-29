@@ -121,13 +121,12 @@ public final class BookingHandler implements ActionListener {
         
         bookingSystemPanel.getBookingSystemJTable().addMouseListener(new MouseAdapter() {
             public void mousePressed(MouseEvent me) {
-                if(handler.getAccountBusinessLayer().getAccountLoggedIn().getUserLevel()>0) {
+                if(handler.getAccountBusinessLayer().getAccountLoggedIn().getUserLevel()>0 && bookingTableModel.getRowCount() > 0) {
                     JTable table = (JTable) me.getSource();
                     Point p = me.getPoint();
                     int row = table.rowAtPoint(p);
                     int id = (int) bookingSystemPanel.getBookingSystemJTable().getValueAt(row, 0);
                     Booking b = bookingTableModel.getBooking(id);
-                    System.out.println(b);
                     if (b != null) {
                         if (me.getClickCount() == 2) {
                             bookingSystemEditPanel.setTextOfComponents(bookingTableModel.getBooking(id));
@@ -172,14 +171,15 @@ public final class BookingHandler implements ActionListener {
                                 bookingSystemPanel.getBookingSystemViewPanel().removeAllProblems();
                                 File file = jFileChooser.getSelectedFile();
                                 try (XSSFWorkbook workBook = (XSSFWorkbook) WorkbookFactory.create(file)) { //creates a smaller footprint when creating the file without a stream
-                                    XSSFSheet sheet = workBook.getSheetAt(1);
+                                    XSSFSheet sheet = workBook.getSheetAt(0);
                                     int rows = sheet.getPhysicalNumberOfRows();
                                     workBook.close();
                                     ArrayList<Booking> bookingList = new ArrayList<>();
                                     System.out.println("starting loop");
                                     for (int r = 1; r < rows; r++) {
                                         XSSFRow row = sheet.getRow(r);
-                                        if (row.toString() != "" && row != null) {
+                                        System.out.println(row);
+                                        if (row.toString() != "") {
                                             if (row.getCell((short) 0).toString() != "") {
                                                 Booking importedBooking = new Booking(r,
                                                         validateDayAsString(row.getCell((short) 0).toString()),
@@ -192,7 +192,6 @@ public final class BookingHandler implements ActionListener {
                                                 if (importedBooking.isBeforeToday() && !BOOKING_DATE_FORMAT.format(importedBooking.getBookingDate()).equals("25.12.15")) {
                                                     importedBooking.setBookingCompleted(true); //booking is before today's date therefore doesn't need to be shown
                                                 }
-                                                System.out.println(importedBooking.toString());
                                                 bookingList.add(importedBooking);
                                             }
                                         }

@@ -102,7 +102,7 @@ public final class BookingHandler implements ActionListener {
                                     checkBookingDateTimeForErrors(editBookingCheck);
                                     generateBadBookingTable();
                                     handler.getBookingBusinessLayer().modifyBooking(id, newBooking);
-                                    ActionEvent actionEvent = new ActionEvent(this, 0, "Load");
+                                    ActionEvent actionEvent = new ActionEvent(this, 0, "Refresh");
                                     actionPerformed(actionEvent);
                                 }
                             } else {
@@ -140,7 +140,7 @@ public final class BookingHandler implements ActionListener {
                                         checkBookingDateTimeForErrors(editBookingCheck);
                                         generateBadBookingTable();
                                         handler.getBookingBusinessLayer().modifyBooking(id, newBooking);
-                                        ActionEvent actionEvent = new ActionEvent(this, 0, "Load");
+                                        ActionEvent actionEvent = new ActionEvent(this, 0, "Refresh");
                                         actionPerformed(actionEvent);
                                     }
                                 } else {
@@ -171,14 +171,27 @@ public final class BookingHandler implements ActionListener {
                                 bookingSystemPanel.getBookingSystemViewPanel().removeAllProblems();
                                 File file = jFileChooser.getSelectedFile();
                                 try (XSSFWorkbook workBook = (XSSFWorkbook) WorkbookFactory.create(file)) { //creates a smaller footprint when creating the file without a stream
-                                    XSSFSheet sheet = workBook.getSheetAt(0);
+                                    int dialogResult = 0;
+                                    System.out.println(workBook.getNumberOfSheets());
+                                    if (workBook.getNumberOfSheets() > 1) {
+                                        String[] sheetNumbers = new String[workBook.getNumberOfSheets()];
+                                        int i = 0;
+                                        while (i < workBook.getNumberOfSheets()) {
+                                            sheetNumbers[i] = ""+ workBook.getSheetAt(i).getSheetName();
+                                            i++;
+                                        }
+                                        dialogResult = JOptionPane.showOptionDialog(null, "Which sheet of the document would you like to import, check if you're not sure.", "Generate Spreadsheet",
+                                                JOptionPane.PLAIN_MESSAGE, JOptionPane.PLAIN_MESSAGE, null,
+                                                sheetNumbers, "");
+                                    }
+
+                                    XSSFSheet sheet = workBook.getSheetAt(dialogResult);
+                                    //check for more sheets!!
                                     int rows = sheet.getPhysicalNumberOfRows();
                                     workBook.close();
                                     ArrayList<Booking> bookingList = new ArrayList<>();
-                                    System.out.println("starting loop");
                                     for (int r = 1; r < rows; r++) {
                                         XSSFRow row = sheet.getRow(r);
-                                        System.out.println(row);
                                         if (row.toString() != "") {
                                             if (row.getCell((short) 0).toString() != "") {
                                                 Booking importedBooking = new Booking(r,
@@ -193,21 +206,23 @@ public final class BookingHandler implements ActionListener {
                                                     importedBooking.setBookingCompleted(true); //booking is before today's date therefore doesn't need to be shown
                                                 }
                                                 bookingList.add(importedBooking);
+//                                                if(importedBooking.getBookingCompleted()) {
+//                                                    archiveTableModel.addBooking(importedBooking);
+//                                                } else {
+//                                                    bookingTableModel.addBooking(importedBooking);
+//                                                }
                                             }
                                         }
                                     }
-                                    handler.getBookingBusinessLayer().insertBookings(bookingList);
-                                    for (Booking b : bookingList) {
 
-                                        if(b.getBookingCompleted()) {
-                                           archiveTableModel.addBooking(b);
-                                        } else {
-                                            bookingTableModel.addBooking(b);
-                                        }
-                                    }
-                                    checkBookingDateTimeForErrors(bookingList);
-                                    bookingList.clear();
-                                    generateBadBookingTable();
+                                    handler.getBookingBusinessLayer().insertBookings(bookingList);
+                                    ActionEvent actionEvent = new ActionEvent(this, 0, "Refresh");
+                                    ActionEvent actionEvent2 = new ActionEvent(this, 0, "Load Archive");
+                                    actionPerformed(actionEvent);
+                                    actionPerformed(actionEvent2);
+//                                    checkBookingDateTimeForErrors(bookingList);
+//                                    bookingList.clear();
+//                                    generateBadBookingTable();
                                 }
                             } else {
                                 MessageBox.errorMessageBox(".xlsx spreadsheets are only accepted.");
@@ -390,16 +405,18 @@ public final class BookingHandler implements ActionListener {
                     }
                     handler.getLoggerBusinessLayer().insertLog(log);
                     break;
-                case "Load":
+                case "Refresh":
                     bookingTableModel.clearBookingList();
                     bookingSystemPanel.getBookingSystemViewPanel().removeAllProblems();
-                    //archiveTableModel.clearArchiveList();
                     handler.getBookingBusinessLayer().populateBookingListOnLoad();
                     bookingTableModel.addBookingList(IteratorUtils.toList(handler.getBookingBusinessLayer().iterator()));
-                    //archiveTableModel.addBookingList(IteratorUtils.toList(handler.getBookingBusinessLayer().getArchivedBookings().iterator()));
                     checkBookingDateTimeForErrors(IteratorUtils.toList(handler.getBookingBusinessLayer().iterator()));
                     generateBadBookingTable();
                     handler.getLoggerBusinessLayer().insertLog(log);
+                    break;
+                case "Load Archive":
+                    archiveTableModel.clearArchiveList();
+                    archiveTableModel.addBookingList(IteratorUtils.toList(handler.getBookingBusinessLayer().getArchivedBookings().iterator()));
                     break;
                 case "Today's":
                     Calendar date = Calendar.getInstance();

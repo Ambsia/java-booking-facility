@@ -6,9 +6,11 @@ public final class Equipment {
 	
 	private int equipmentUsage;
 	private final String equipmentName;
+	private final String equipmentDescription;
 	
-	public Equipment(String equipmentName) {
+	public Equipment(String equipmentName, String equipmentDescription) {
 		this.equipmentName = equipmentName.trim();
+		this.equipmentDescription = equipmentDescription.trim();
 	}
 
 // --Commented out by Inspection START (21/06/2015 00:54):

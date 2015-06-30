@@ -161,6 +161,7 @@ public final class BookingHandler implements ActionListener {
         if (handler.getAccountBusinessLayer().isAccountFound()) {
             switch (eventOccurred.getActionCommand()) {
                 case "Import":
+                	if (handler.getAccountBusinessLayer().getAccountLoggedIn().getUserLevel() >=2) {
                     JFileChooser jFileChooser = new JFileChooser();
                     try {
                         int returnVal = jFileChooser.showOpenDialog(bookingSystemPanel);
@@ -236,6 +237,9 @@ public final class BookingHandler implements ActionListener {
                         e.printStackTrace();
                         MessageBox.errorMessageBox(e.toString());
                     }
+                	} else {
+                		MessageBox.errorMessageBox("Insufficient access privileges for operation.");
+                	}
                     handler.getLoggerBusinessLayer().insertLog(log);
                     break;
                 case "Export":

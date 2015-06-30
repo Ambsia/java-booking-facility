@@ -14,6 +14,8 @@ final class BookingSystemMain {
 
 	private final ArchiveBusinessLayer archiveBusinessLayer;
 
+	private final  EquipmentBusinessLayer equipments;
+
 
 	public static void main(String[] args) {
 		new BookingSystemMain();
@@ -21,8 +23,9 @@ final class BookingSystemMain {
 
 	private BookingSystemMain() {
 		this.view = new BookingSystemUILoader();
-		
-		this.bookingBusinessLayer = new BookingBusinessLayer();
+		equipments = new EquipmentBusinessLayer();
+
+		this.bookingBusinessLayer = new BookingBusinessLayer(equipments);
 		LoggerBusinessLayer loggerBusinessLayer = new LoggerBusinessLayer();
 		AccountBusinessLayer accountBusinessLayer = new AccountBusinessLayer();
 		AccountManagementBusinessLayer accountManagementBusinessLayer = new AccountManagementBusinessLayer();

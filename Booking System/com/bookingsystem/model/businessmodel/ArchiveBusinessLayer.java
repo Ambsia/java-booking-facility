@@ -94,7 +94,7 @@ public class ArchiveBusinessLayer extends BusinessLayer {
                         Equipment equipmentToAdd;
                         while (rs.next() && i < 15) {
                             equipmentToAdd = new Equipment(rs.getString(1));
-                            equipmentToAdd.setEquipmentStatistic(rs.getInt(2));
+                            equipmentToAdd.setEquipmentUsage(rs.getInt(2));
                             mostUsedEquipmentList.add(equipmentToAdd);
                             i++;
                         }

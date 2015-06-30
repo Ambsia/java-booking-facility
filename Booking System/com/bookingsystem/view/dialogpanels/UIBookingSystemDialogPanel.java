@@ -3,6 +3,7 @@ package com.bookingsystem.view.dialogpanels;
 import com.bookingsystem.helpers.DateLabelFormatter;
 import com.bookingsystem.helpers.TextFieldRestriction;
 import com.bookingsystem.model.Booking;
+import com.bookingsystem.model.Equipment;
 import org.jdatepicker.impl.JDatePanelImpl;
 import org.jdatepicker.impl.JDatePickerImpl;
 import org.jdatepicker.impl.UtilDateModel;
@@ -13,9 +14,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Time;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Properties;
+import java.util.*;
+import java.util.List;
 
 /**
  * Author: [Alex]
@@ -33,6 +33,7 @@ public abstract class UIBookingSystemDialogPanel extends JPanel implements UIBoo
 	private final JTextField txtBookingLocation;
 	private final JTextField txtBookingHolder;
 	private final JTextArea txtAreaEquipment;
+	private final JComboBox<Equipment> equipmentJComboBox;
 	private final JScrollPane jScrollPane;
 	private final JDatePickerImpl datePicker;
 	private final SpinnerDateModel spinnerStartDateTimeModel;
@@ -51,6 +52,7 @@ public abstract class UIBookingSystemDialogPanel extends JPanel implements UIBoo
 		txtBookingLocation = new JTextField(5);
 		txtBookingHolder = new JTextField(5);
 		txtAreaEquipment = new JTextArea(5,15);
+		equipmentJComboBox = new JComboBox<>();
 		jScrollPane = new JScrollPane(txtAreaEquipment);
 		txtBookingDay.setEditable(false);
 		chkRecurring = new JCheckBox();
@@ -122,7 +124,7 @@ public abstract class UIBookingSystemDialogPanel extends JPanel implements UIBoo
 
 
 	protected void addDefaultComponentsToPanel() {
-		components = new Component[] { txtBookingDay, datePicker, jSpinnerStartTime,jSpinnerCollectionTime,txtBookingLocation,txtBookingHolder, jScrollPane };
+		components = new Component[] { txtBookingDay, datePicker, jSpinnerStartTime,jSpinnerCollectionTime,txtBookingLocation,txtBookingHolder, equipmentJComboBox };
 		for (int i = 0;i<LABELS.length;i++) {	
 			if(i == 7) { 
 				addControl(gbc,new JLabel(LABELS[7]), 0,7);
@@ -199,6 +201,14 @@ public abstract class UIBookingSystemDialogPanel extends JPanel implements UIBoo
 		}
 		return bookingStartTime;
 	}
+
+	public  void setEquipmentJComboBox(List<Equipment> equipments) {
+		equipments.forEach(equipmentJComboBox::addItem);
+	}
+
+	public Equipment getSelectedEquipment() {
+		return equipmentJComboBox.getItemAt(equipmentJComboBox.getSelectedIndex());
+	}
 	
 	public boolean getRecurringSelected() {
 		return chkRecurring.isSelected();
@@ -214,6 +224,8 @@ public abstract class UIBookingSystemDialogPanel extends JPanel implements UIBoo
 		}
 		return 0;
 	}
+
+
 
 	private String getTxtBookingCollectionTimeText() {
 		String bookingCollectionTime = "";
@@ -234,8 +246,7 @@ public abstract class UIBookingSystemDialogPanel extends JPanel implements UIBoo
 
 	public String[] getBookingStringArray () {
 		return new String[]{ getTxtBookingDayText(),  getFormattedDate(), getTxtBookingStartTimeText(),getTxtBookingCollectionTimeText(),
-				getTxtBookingLocationText(), getTxtBookingHolderText(), getTxtAreaEquipmentText()
-		};
+				getTxtBookingLocationText(), getTxtBookingHolderText(), Integer.toString(getSelectedEquipment().getEquipmentID())};
 	}
 
 	public void setTextOfComponents(Object list) {
@@ -246,6 +257,6 @@ public abstract class UIBookingSystemDialogPanel extends JPanel implements UIBoo
 		spinnerCollectionDateTimeModel.setValue(booking.getBookingCollectionTime());
 		txtBookingLocation.setText(booking.getBookingLocation());
 		txtBookingHolder.setText(booking.getBookingHolder());
-		txtAreaEquipment.setText(booking.getRequiredEquipment().getEquipmentName());
+		equipmentJComboBox.setSelectedItem(booking.getRequiredEquipment());
 	}
 }

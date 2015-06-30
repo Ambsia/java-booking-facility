@@ -64,6 +64,7 @@ public final class BookingHandler implements ActionListener {
         date1.set(Calendar.MILLISECOND, 0);
         date1.set(Calendar.YEAR, 2015);
         System.out.println(date1.getTime().toString());
+
         //date1's date is 25.12.01 -- never bookings on christmas!
         //date1's time is 00:00 -- never bookings at midnight!
 
@@ -78,6 +79,9 @@ public final class BookingHandler implements ActionListener {
         this.checkBookingDateTimeForErrors(IteratorUtils.toList(bookingTableModel.iterator()));
         generateBadBookingTable();
         bookingIDCurrentlyBeingProcessed = 1;
+        bookingSystemAddPanel.setEquipmentJComboBox(IteratorUtils.toList(handler.getBookingBusinessLayer().getEquipments().iterator()));
+        bookingSystemFindPanel.setEquipmentJComboBox(IteratorUtils.toList(handler.getBookingBusinessLayer().getEquipments().iterator()));
+        bookingSystemEditPanel.setEquipmentJComboBox(IteratorUtils.toList(handler.getBookingBusinessLayer().getEquipments().iterator()));
 
         //these can be handled else where!
         bookingSystemPanel.getBookingSystemViewPanel().getBookingSystemJTableProblems().addMouseListener(new MouseAdapter() {
@@ -389,14 +393,14 @@ public final class BookingHandler implements ActionListener {
                                        checkBookingCollision(newBooking);
                                        checkBookingDateTimeForErrors(editBookingCheck);
                                        generateBadBookingTable();
-                                       handler.getBookingBusinessLayer().modifyBooking(this.bookingIDCurrentlyBeingProcessed, newBooking);
+                                       handler.getBookingBusinessLayer().modifyBooking(this.bookingIDCurrentlyBeingProcessed,newBooking);
                                        bookingTableModel.setValueAt(newBooking.getBookingDay(),modelRow,1);
                                        bookingTableModel.setValueAt(newBooking.getBookingDate(),modelRow,2);
-                                       bookingTableModel.setValueAt(newBooking.getBookingStartTime(),modelRow,3);
+                                       bookingTableModel.setValueAt(newBooking.getBookingStartTime(), modelRow, 3);
                                        bookingTableModel.getBooking(this.bookingIDCurrentlyBeingProcessed).setBookingCollectionTime(newBooking.getBookingCollectionTime());
                                        bookingTableModel.setValueAt(newBooking.getBookingLocation(),modelRow,4);
                                        bookingTableModel.setValueAt(newBooking.getBookingHolder(),modelRow,5);
-                                       bookingTableModel.setValueAt(newBooking.getRequiredEquipment(),modelRow,6);
+                                       bookingTableModel.setValueAt(newBooking.getRequiredEquipment(), modelRow, 6);
 
                                        log.setBookingIDEdited(this.bookingIDCurrentlyBeingProcessed);
                                    }
@@ -557,7 +561,7 @@ public final class BookingHandler implements ActionListener {
                 stringToTime(bookingStrings[3], true),
                 bookingStrings[4],
                 bookingStrings[5],
-                new Equipment(bookingStrings[6]));
+                handler.getBookingBusinessLayer().getEquipments().getEqiupment(Integer.parseInt(bookingStrings[6])));
     }
 
     private Date stringToTime(String unVerifiedStringToConvert, boolean collectionTime) {

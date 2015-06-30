@@ -4,13 +4,15 @@ package  com.bookingsystem.model;
 public final class Equipment {
 	
 	
-	private int equipmentUsage;
+	private int equipmentID;
 	private final String equipmentName;
-	private final String equipmentDescription;
-	
-	public Equipment(String equipmentName, String equipmentDescription) {
+	private String equipmentDescription;
+	private int equipmentUsage;
+
+	public Equipment(String equipmentName) {
 		this.equipmentName = equipmentName.trim();
-		this.equipmentDescription = equipmentDescription.trim();
+		this.equipmentUsage = 0;
+		this.equipmentDescription = "";
 	}
 
 // --Commented out by Inspection START (21/06/2015 00:54):
@@ -19,18 +21,23 @@ public final class Equipment {
 //	}
 // --Commented out by Inspection STOP (21/06/2015 00:54)
 
-	public void setEquipmentStatistic(int usageStatistic) {
-		this.equipmentUsage = usageStatistic;
-	}
-	
-	
+	public int getEquipmentID(){ return this.equipmentID;}
+
+	public void setEquipmentID(int equipmentID) {this.equipmentID = equipmentID;}
+
 	public String getEquipmentName() {
 		return this.equipmentName;
 	}
 	
-	public int getEquipmentUsageStatistic() {
+	public int getEquipmentUsage() {
 		return this.equipmentUsage;
 	}
+
+	public void setEquipmentUsage(int equipmentUsage) { this.equipmentUsage = equipmentUsage;}
+
+	public String getEquipmentDescription() {return  this.equipmentDescription;}
+
+	public void setEquipmentDescription(String equipmentDescription) { this.equipmentDescription = equipmentDescription;}
 
 
 	@Override

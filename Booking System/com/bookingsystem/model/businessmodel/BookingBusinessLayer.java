@@ -21,11 +21,13 @@ public class BookingBusinessLayer extends BusinessLayer implements Iterable<Book
     private final List<Booking> bookings;
     private final List<Booking> archivedBookings;
     private int currentIndexOfBookingInList;
+    private EquipmentBusinessLayer equipments;
 
-    public BookingBusinessLayer() {
+    public BookingBusinessLayer(EquipmentBusinessLayer equipments) {
         bookings = new ArrayList<>();
         archivedBookings = new ArrayList<>();
         currentIndexOfBookingInList = -1;
+        this.equipments = equipments;
     }
 
     public void populateBookingListOnLoad() {
@@ -37,16 +39,19 @@ public class BookingBusinessLayer extends BusinessLayer implements Iterable<Book
                 getDatabaseConnector().createNewCallableStatement("{CALL spGetAllBookings}");
                 try (ResultSet rs = getDatabaseConnector().executeQuery()) {
                     while (rs.next()) {
-                        Booking booking;
-                        booking = new Booking(rs.getInt(1), rs.getString(2), rs.getDate(3), rs.getTime(4), rs.getTime(5), rs.getString(6), rs.getString(7), new Equipment(rs.getString(8)));
-                        booking.setBookingCompleted(rs.getBoolean(9));
-                        if(booking.getBookingCompleted()) {
-//                            if (!booking.getBookingCompleted()) {
-//                        		booking.setBookingCompleted(true);
-//                        	}
-                            this.archivedBookings.add(booking);
-                        } else  {
-                            this.bookings.add(booking);
+                        Booking booking = null;
+                        try {
+                            booking = new Booking(rs.getInt(1), rs.getString(2), rs.getDate(3), rs.getTime(4), rs.getTime(5), rs.getString(6), rs.getString(7), equipments.getEqiupment(rs.getInt(8)));
+                            booking.setBookingCompleted(rs.getBoolean(9));
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                        if (booking != null) {
+                            if (booking.getBookingCompleted()) {
+                                this.archivedBookings.add(booking);
+                            } else {
+                                this.bookings.add(booking);
+                            }
                         }
                     }
                 } catch (SQLException e) {
@@ -69,7 +74,7 @@ public class BookingBusinessLayer extends BusinessLayer implements Iterable<Book
                     callableStatement.setTime(4, booking.getBookingCollectionTimeInSQLFormat());
                     callableStatement.setString(5, booking.getBookingLocation());
                     callableStatement.setString(6, booking.getBookingHolder());
-                    callableStatement.setString(7, booking.getRequiredEquipment().getEquipmentName());
+                    callableStatement.setInt(7, booking.getRequiredEquipment().getEquipmentID());
                     callableStatement.setBoolean(8,booking.getBookingCompleted());
                     callableStatement.registerOutParameter(9, Types.INTEGER);
                     getDatabaseConnector().execute();
@@ -164,7 +169,7 @@ public class BookingBusinessLayer extends BusinessLayer implements Iterable<Book
                     callableStatement.setTime(5, newBooking.getBookingCollectionTimeInSQLFormat());
                     callableStatement.setString(6, newBooking.getBookingLocation());
                     callableStatement.setString(7, newBooking.getBookingHolder());
-                    callableStatement.setString(8, newBooking.getRequiredEquipment().getEquipmentName());
+                    callableStatement.setInt(8, newBooking.getRequiredEquipment().getEquipmentID());
                     getDatabaseConnector().execute();
                     addBookingToListAtAGivenPosition(newBooking);
                 } catch (SQLException e) {
@@ -192,7 +197,7 @@ public class BookingBusinessLayer extends BusinessLayer implements Iterable<Book
             }
         }
     }
-    
+
     public List<Integer> isRoomFree(Booking booking) {
     	List<Integer> listOfIntegers = new ArrayList<>();
     	getDatabaseConnector().openConnection();
@@ -267,6 +272,12 @@ public class BookingBusinessLayer extends BusinessLayer implements Iterable<Book
             MessageBox.errorMessageBox("Big problems......");
         }
     }
+
+    public EquipmentBusinessLayer getEquipments() {
+        return equipments;
+    }
+
+
 
     @Override
 	public Iterator<Booking> iterator() {

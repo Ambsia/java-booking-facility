@@ -43,10 +43,9 @@ public class ArchiveHandler implements ActionListener {
                 int averageBookingsADay = totalDaysBooked != 0 ? (totalBookings / totalDaysBooked) : 0;
                 Date[] busiestHours = handler.getArchiveBusinessLayer().getBusiestHours();
                 
-                ArrayList<Equipment> mostUsedEquipmentList = handler.getArchiveBusinessLayer().getMostUsedEquipment();
                 String mostUsedEquipmentString = "";
-                for (Equipment equipment : mostUsedEquipmentList) {
-                	mostUsedEquipmentString += "- " + equipment.getEquipmentName() + " (" + equipment.getEquipmentUsageStatistic() + ")" + "\n";
+                for (Equipment equipment : handler.getBookingBusinessLayer().getEquipments()) {
+                	mostUsedEquipmentString += "- " + equipment.getEquipmentName() + " (" + equipment.getEquipmentUsage() + ")" + "\n";
                 }
                 
                 String mostUsedLocationString = "";

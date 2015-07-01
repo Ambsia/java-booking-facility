@@ -39,9 +39,18 @@ public final class Equipment {
 
 	public void setEquipmentDescription(String equipmentDescription) { this.equipmentDescription = equipmentDescription;}
 
+	public void increaseEquipmentUsage() {
+		this.equipmentUsage++;
+	}
+
+	public void decreaseEquipmentUsage() {
+		this.equipmentUsage--;
+	}
 
 	@Override
 	public String toString() {
 		return this.equipmentName + " (" + this.equipmentUsage + ")";
 	}
+
+
 }

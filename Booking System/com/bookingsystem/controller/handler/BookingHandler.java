@@ -78,9 +78,7 @@ public final class BookingHandler implements ActionListener {
         this.checkBookingDateTimeForErrors(IteratorUtils.toList(bookingTableModel.iterator()));
         generateBadBookingTable();
         bookingIDCurrentlyBeingProcessed = 1;
-        bookingSystemAddPanel.setEquipmentJComboBox(IteratorUtils.toList(handler.getBookingBusinessLayer().getEquipments().iterator()));
-        bookingSystemFindPanel.setEquipmentJComboBox(IteratorUtils.toList(handler.getBookingBusinessLayer().getEquipments().iterator()));
-        bookingSystemEditPanel.setEquipmentJComboBox(IteratorUtils.toList(handler.getBookingBusinessLayer().getEquipments().iterator()));
+        initialiseDialogs();
         
 
         //these can be handled else where!
@@ -105,7 +103,7 @@ public final class BookingHandler implements ActionListener {
                                     checkBookingCollision(newBooking);
                                     checkBookingDateTimeForErrors(editBookingCheck);
                                     generateBadBookingTable();
-                                    handler.getBookingBusinessLayer().modifyBooking(id, newBooking);
+                                    handler.getBookingBusinessLayer().modifyBooking(bookingTableModel.getBooking(id), newBooking);
                                     ActionEvent actionEvent = new ActionEvent(this, 0, "Refresh");
                                     actionPerformed(actionEvent);
                                 }
@@ -143,7 +141,7 @@ public final class BookingHandler implements ActionListener {
                                         checkBookingCollision(newBooking);
                                         checkBookingDateTimeForErrors(editBookingCheck);
                                         generateBadBookingTable();
-                                        handler.getBookingBusinessLayer().modifyBooking(id, newBooking);
+                                        handler.getBookingBusinessLayer().modifyBooking(bookingTableModel.getBooking(id), newBooking);
                                         ActionEvent actionEvent = new ActionEvent(this, 0, "Refresh");
                                         actionPerformed(actionEvent);
                                     }
@@ -191,6 +189,7 @@ public final class BookingHandler implements ActionListener {
                                     }
 
                                     XSSFSheet sheet = workBook.getSheetAt(dialogResult);
+
                                     //check for more sheets!!
                                     int rows = sheet.getPhysicalNumberOfRows();
                                     workBook.close();
@@ -199,35 +198,44 @@ public final class BookingHandler implements ActionListener {
                                         XSSFRow row = sheet.getRow(r);
                                         if (row.toString() != "") {
                                             if (row.getCell((short) 0).toString() != "") {
-                                                Booking importedBooking = new Booking(r,
-                                                        validateDayAsString(row.getCell((short) 0).toString()),
-                                                        stringToDate(row.getCell((short) 1).toString()),
-                                                        stringToTime(row.getCell((short) 2).toString(), false),
-                                                        stringToTime(row.getCell((short) 2).toString(), true),
-                                                        row.getCell((short) 3).toString(),
-                                                        row.getCell((short) 4).toString(),
-                                                        new Equipment(row.getCell((short) 5).toString()));
-                                                if (importedBooking.isBeforeToday() && !BOOKING_DATE_FORMAT.format(importedBooking.getBookingDate()).equals("25.12.15")) {
-                                                    importedBooking.setBookingCompleted(true); //booking is before today's date therefore doesn't need to be shown
+                                                dialogResult = 0;
+                                                Equipment equipment = handler.getBookingBusinessLayer().getEquipments().getEquipmentWithName(row.getCell((short) 5).toString().trim());
+                                                if (equipment == null) {
+                                                    dialogResult = JOptionPane.showOptionDialog(null, "The equipment " + row.getCell((short) 5).toString() + " could not be found in the database. Would you like to add it?\nIf not the current booking will not be imported.", "Equipment",
+                                                            JOptionPane.PLAIN_MESSAGE, JOptionPane.WARNING_MESSAGE, null,
+                                                            new String[]{"Yes", "No"}, "Yes");
+                                                    if (dialogResult == 0) {
+                                                        equipment = new Equipment(row.getCell((short) 5).toString());
+                                                        equipment.setEquipmentDescription("");
+                                                        equipment.setEquipmentUsage(0);
+                                                        System.out.println(equipment.getEquipmentID());
+                                                        handler.getBookingBusinessLayer().getEquipments().addEquipment(equipment);
+                                                        System.out.println(equipment.getEquipmentID());
+                                                    }
                                                 }
-                                                bookingList.add(importedBooking);
-//                                                if(importedBooking.getBookingCompleted()) {
-//                                                    archiveTableModel.addBooking(importedBooking);
-//                                                } else {
-//                                                    bookingTableModel.addBooking(importedBooking);
-//                                                }
+                                                if (equipment != null) {
+                                                    equipment.increaseEquipmentUsage();
+                                                    Booking importedBooking = new Booking(r,
+                                                            validateDayAsString(row.getCell((short) 0).toString()),
+                                                            stringToDate(row.getCell((short) 1).toString()),
+                                                            stringToTime(row.getCell((short) 2).toString(), false),
+                                                            stringToTime(row.getCell((short) 2).toString(), true),
+                                                            row.getCell((short) 3).toString(),
+                                                            row.getCell((short) 4).toString(),
+                                                            equipment);
+                                                    if (importedBooking.isBeforeToday() && !BOOKING_DATE_FORMAT.format(importedBooking.getBookingDate()).equals("25.12.15")) {
+                                                        importedBooking.setBookingCompleted(true); //booking is before today's date therefore doesn't need to be shown
+                                                    }
+                                                    bookingList.add(importedBooking);
+                                                }
                                             }
                                         }
                                     }
-
                                     handler.getBookingBusinessLayer().insertBookings(bookingList);
                                     ActionEvent actionEvent = new ActionEvent(this, 0, "Refresh");
                                     ActionEvent actionEvent2 = new ActionEvent(this, 0, "Load Archive");
                                     actionPerformed(actionEvent);
                                     actionPerformed(actionEvent2);
-//                                    checkBookingDateTimeForErrors(bookingList);
-//                                    bookingList.clear();
-//                                    generateBadBookingTable();
                                 }
                             } else {
                                 MessageBox.errorMessageBox(".xlsx spreadsheets are only accepted.");
@@ -363,7 +371,7 @@ public final class BookingHandler implements ActionListener {
                             for (int rowID : bookingSystemPanel.getSelectedRows()) {
                                 this.bookingIDCurrentlyBeingProcessed = (int) bookingSystemPanel.getValueAt(rowID, 0);
                                 if (this.bookingIDCurrentlyBeingProcessed >= 0) {
-                                    handler.getBookingBusinessLayer().removeBooking(this.bookingIDCurrentlyBeingProcessed);
+                                    handler.getBookingBusinessLayer().removeBooking(bookingTableModel.getBooking(this.bookingIDCurrentlyBeingProcessed));
                                     if (listOfBadBookingIDs.contains(this.bookingIDCurrentlyBeingProcessed)) {
                                         listOfBadBookingIDs.remove(listOfBadBookingIDs.indexOf(this.bookingIDCurrentlyBeingProcessed));
                                     }
@@ -394,7 +402,7 @@ public final class BookingHandler implements ActionListener {
                                        checkBookingCollision(newBooking);
                                        checkBookingDateTimeForErrors(editBookingCheck);
                                        generateBadBookingTable();
-                                       handler.getBookingBusinessLayer().modifyBooking(this.bookingIDCurrentlyBeingProcessed,newBooking);
+                                       handler.getBookingBusinessLayer().modifyBooking(bookingTableModel.getBooking(this.bookingIDCurrentlyBeingProcessed),newBooking);
                                        bookingTableModel.setValueAt(newBooking.getBookingDay(),modelRow,1);
                                        bookingTableModel.setValueAt(newBooking.getBookingDate(),modelRow,2);
                                        bookingTableModel.setValueAt(newBooking.getBookingStartTime(), modelRow, 3);
@@ -655,6 +663,12 @@ public final class BookingHandler implements ActionListener {
             }
             return day;
         }
+    }
+
+    private void initialiseDialogs() {
+        bookingSystemAddPanel.setEquipmentJComboBox(IteratorUtils.toList(handler.getBookingBusinessLayer().getEquipments().iterator()));
+        bookingSystemFindPanel.setEquipmentJComboBox(IteratorUtils.toList(handler.getBookingBusinessLayer().getEquipments().iterator()));
+        bookingSystemEditPanel.setEquipmentJComboBox(IteratorUtils.toList(handler.getBookingBusinessLayer().getEquipments().iterator()));
     }
     
 

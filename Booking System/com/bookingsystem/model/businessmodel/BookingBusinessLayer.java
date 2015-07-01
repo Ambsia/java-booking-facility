@@ -6,6 +6,7 @@ import com.bookingsystem.model.Equipment;
 
 import java.sql.*;
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -41,7 +42,14 @@ public class BookingBusinessLayer extends BusinessLayer implements Iterable<Book
                     while (rs.next()) {
                         Booking booking = null;
                         try {
-                            booking = new Booking(rs.getInt(1), rs.getString(2), rs.getDate(3), rs.getTime(4), rs.getTime(5), rs.getString(6), rs.getString(7), equipments.getEqiupment(rs.getInt(8)));
+                            booking = new Booking(rs.getInt(1),
+                                    rs.getString(2),
+                                    rs.getDate(3),
+                                    rs.getTime(4),
+                                    rs.getTime(5),
+                                    rs.getString(6),
+                                    rs.getString(7),
+                                    equipments.getEqiupment(rs.getInt(8)));
                             booking.setBookingCompleted(rs.getBoolean(9));
                         } catch (Exception e) {
                             e.printStackTrace();
@@ -75,9 +83,10 @@ public class BookingBusinessLayer extends BusinessLayer implements Iterable<Book
                     callableStatement.setString(5, booking.getBookingLocation());
                     callableStatement.setString(6, booking.getBookingHolder());
                     callableStatement.setInt(7, booking.getRequiredEquipment().getEquipmentID());
-                    callableStatement.setBoolean(8,booking.getBookingCompleted());
+                    callableStatement.setBoolean(8, booking.getBookingCompleted());
                     callableStatement.registerOutParameter(9, Types.INTEGER);
                     getDatabaseConnector().execute();
+                    equipments.increaseEquipmentUsage(booking.getRequiredEquipment().getEquipmentID());
                     booking.setBookingID(callableStatement.getInt(9));
                     if(booking.isBeforeToday()) {
                         this.archivedBookings.add(booking);
@@ -105,11 +114,12 @@ public class BookingBusinessLayer extends BusinessLayer implements Iterable<Book
                         callableStatement.setTime(4, aBookingList.getBookingCollectionTimeInSQLFormat());
                         callableStatement.setString(5, aBookingList.getBookingLocation());
                         callableStatement.setString(6, aBookingList.getBookingHolder());
-                        callableStatement.setString(7, aBookingList.getRequiredEquipment().getEquipmentName());
+                        callableStatement.setInt(7, aBookingList.getRequiredEquipment().getEquipmentID());
                         callableStatement.setBoolean(8, aBookingList.getBookingCompleted());
                         callableStatement.registerOutParameter(9, Types.INTEGER);
                         getDatabaseConnector().execute();
                         aBookingList.setBookingID(callableStatement.getInt(9));
+                        equipments.increaseEquipmentUsage(aBookingList.getRequiredEquipment().getEquipmentID());
                         if (aBookingList.isBeforeToday()) {
                             this.archivedBookings.add(aBookingList);
                         } else {
@@ -139,20 +149,20 @@ public class BookingBusinessLayer extends BusinessLayer implements Iterable<Book
                     callableStatement.setString(6, bookingInformationKnown.getBookingHolder());
                     callableStatement.setInt(7, bookingInformationKnown.getRequiredEquipment().getEquipmentID());
                     System.out.println("here");
-                    Equipment equipment;
                     try (ResultSet rs = getDatabaseConnector().executeQuery()) {
                         while (rs.next()) {
-                        	System.out.println("id= " + rs.getInt(1)  + "\n"+ "day= " + rs.getString(2) + "\n"  + "date= " + rs.getDate(3) + "\n" +
-                        			"datetime= " + rs.getTime(4) + "\n" + "gettime= " + rs.getTime(5) + "\n"
-                        	 + "location= " + rs.getString(6) + "\n" + "holder= " + rs.getString(7) + "\n" + "equipment= " + rs.getString(8) + "\n" +
-                        	 "equipmentid= " + rs.getInt(10) + "\n" + "equipment name= " + rs.getString(11) + "\n" + "equipment description= " + 
-                        	 rs.getString(12)  + "\n" 
-                        	 + "\n" + "equipment usage= " + rs.getInt(13) );
-                        	equipment = new Equipment(rs.getString(11));
-                        	equipment.setEquipmentID(rs.getInt(10));
-                        	equipment.setEquipmentDescription(rs.getString(12));
-                        	equipment.setEquipmentUsage(rs.getInt(13));
-                            foundBookings.add(new Booking(rs.getInt(1), rs.getString(2), rs.getDate(3), rs.getTime(4), rs.getTime(5), rs.getString(6), rs.getString(7), equipment));
+//                        	System.out.println("id= " + rs.getInt(1) + "\n" + "day= " + rs.getString(2) + "\n" + "date= " + rs.getDate(3) + "\n" +
+//                        			"datetime= " + rs.getTime(4) + "\n" + "gettime= " + rs.getTime(5) + "\n"
+//                        	 + "location= " + rs.getString(6) + "\n" + "holder= " + rs.getString(7) + "\n" + "equipment= " + rs.getString(8) + "\n" +
+//                        	 "equipmentid= " + rs.getInt(10) + "\n" + "equipment name= " + rs.getString(11) + "\n" + "equipment description= " +
+//                        	 rs.getString(12)  + "\n"
+//                        	 + "\n" + "equipment usage= " + rs.getInt(13) );
+//                        	equipment.setEquipmentID(rs.getInt(10));
+//                        	equipment.setEquipmentDescription(rs.getString(12));
+//                        	equipment.setEquipmentUsage(rs.getInt(13));
+                                    foundBookings.add(new Booking(rs.getInt(1), rs.getString(2), rs.getDate(3),
+                                            rs.getTime(4), rs.getTime(5), rs.getString(6), rs.getString(7),
+                                            equipments.getEqiupment(bookingInformationKnown.getRequiredEquipment().getEquipmentID())));
                         }
                     }
                     getDatabaseConnector().closeConnection();
@@ -168,14 +178,15 @@ public class BookingBusinessLayer extends BusinessLayer implements Iterable<Book
         return null;
     }
 
-    public void modifyBooking(int bookingID, Booking newBooking) {
+
+    public void modifyBooking(Booking oldBooking, Booking newBooking) {
         getDatabaseConnector().openConnection();
         if (getDatabaseConnector().isConnected()) {
             if (getDatabaseConnector().isConnectionClosed()) {
-                getDatabaseConnector().createNewCallableStatement("{CALL spModifyBooking(?,?,?,?,?,?,?,?)}");
+                    getDatabaseConnector().createNewCallableStatement("{CALL spModifyBooking(?,?,?,?,?,?,?,?)}");
                 try (CallableStatement callableStatement = getDatabaseConnector().getCallableStatement()) {
-                    correctCurrentIndexWithID(bookingID);
-                    callableStatement.setInt(1, bookingID);
+                    correctCurrentIndexWithID(oldBooking.getBookingID());
+                    callableStatement.setInt(1, oldBooking.getBookingID());
                     callableStatement.setString(2, newBooking.getBookingDay());
                     callableStatement.setDate(3, convertFromJAVADateToSQLDate(newBooking.getBookingDate()));
                     callableStatement.setTime(4, newBooking.getBookingStartTimeInSQLFormat());
@@ -184,9 +195,12 @@ public class BookingBusinessLayer extends BusinessLayer implements Iterable<Book
                     callableStatement.setString(7, newBooking.getBookingHolder());
                     callableStatement.setInt(8, newBooking.getRequiredEquipment().getEquipmentID());
                     getDatabaseConnector().execute();
+                    if (newBooking.getRequiredEquipment().getEquipmentID() != oldBooking.getRequiredEquipment().getEquipmentID()) {
+                        equipments.decreaseEquipmentUsage(oldBooking.getRequiredEquipment().getEquipmentID());
+                    }
                     addBookingToListAtAGivenPosition(newBooking);
                 } catch (SQLException e) {
-                    MessageBox.errorMessageBox("There was an issue while we were trying to modify that booking in the database!\n" + "Does this make any sense to you.." + e.toString() + "?");
+                    MessageBox.errorMessageBox("There was an issue while we were trying to modify that booking in the database.\n" + "Does this make any sense to you.." + e.toString() + "?");
                 }
                 getDatabaseConnector().closeConnection();
             }
@@ -244,15 +258,16 @@ public class BookingBusinessLayer extends BusinessLayer implements Iterable<Book
         }
     }
 
-    public void removeBooking(int bookingID) {
+    public void removeBooking(Booking booking) {
         getDatabaseConnector().openConnection();
         if (getDatabaseConnector().isConnected()) {
             if (getDatabaseConnector().isConnectionClosed()) {
                 getDatabaseConnector().createNewCallableStatement("{CALL spRemoveBooking(?)}");
                 try {
-                    getDatabaseConnector().getCallableStatement().setInt(1, bookingID);
+                    getDatabaseConnector().getCallableStatement().setInt(1, booking.getBookingID());
                     getDatabaseConnector().execute();
-                    correctCurrentIndexWithID(bookingID);
+                    equipments.decreaseEquipmentUsage(booking.getRequiredEquipment().getEquipmentID());
+                    correctCurrentIndexWithID( booking.getBookingID());
                     removeBookingFromList();
                 } catch (SQLException e) {
                     MessageBox.errorMessageBox("There was an issue while we were trying to remove that booking from the database!\n" + "Does this make any sense to you.." + e.toString() + "?");
@@ -273,16 +288,6 @@ public class BookingBusinessLayer extends BusinessLayer implements Iterable<Book
     private void addBookingToListAtAGivenPosition(Booking newBooking) {
         if (currentIndexOfBookingInList >= 0 && currentIndexOfBookingInList <= bookings.size()) {
             this.bookings.add(currentIndexOfBookingInList, newBooking);
-        }
-    }
-
-    public void setCurrentIndexOfBookingInList(int indexOfBookingInList) {
-        try {
-            if (indexOfBookingInList >= 0 && indexOfBookingInList <= bookings.size()) {
-                this.currentIndexOfBookingInList = indexOfBookingInList;
-            }
-        } catch (IndexOutOfBoundsException e) {
-            MessageBox.errorMessageBox("Big problems......");
         }
     }
 

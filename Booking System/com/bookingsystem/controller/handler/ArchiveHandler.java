@@ -3,6 +3,7 @@ package com.bookingsystem.controller.handler;
 import com.bookingsystem.helpers.MessageBox;
 import com.bookingsystem.model.Equipment;
 import com.bookingsystem.view.panes.UIBookingSystemArchivePanel;
+import org.apache.commons.collections.IteratorUtils;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -31,7 +32,7 @@ public class ArchiveHandler implements ActionListener {
         switch (e.getActionCommand()) {
             case "View Statistics":
                 //bookingSystemArchive.removeAllBookings();
-                if (!handler.getBookingBusinessLayer().getArchivedBookings().isEmpty()) {
+                if (!handler.getBookingBusinessLayer().getArchivedBookings().isEmpty() || !IteratorUtils.toList(handler.getBookingBusinessLayer().iterator()).isEmpty()) {
                 //bookingSystemArchive.addBookingsToList(handler.getBookingBusinessLayer().getArchivedBookings());
                 
                 int totalBookings = handler.getArchiveBusinessLayer().getTotalBookings();

@@ -1,14 +1,19 @@
 package com.bookingsystem.view.dialogpanels;
 
+import com.bookingsystem.helpers.ComboBoxRenderer;
 import com.bookingsystem.helpers.DateLabelFormatter;
 import com.bookingsystem.helpers.TextFieldRestriction;
 import com.bookingsystem.model.Booking;
 import com.bookingsystem.model.Equipment;
+
 import org.jdatepicker.impl.JDatePanelImpl;
 import org.jdatepicker.impl.JDatePickerImpl;
 import org.jdatepicker.impl.UtilDateModel;
 
+
+
 import javax.swing.*;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -45,7 +50,11 @@ public abstract class UIBookingSystemDialogPanel extends JPanel implements UIBoo
 	private final JTextField txtWeeksRecurring;
 	private final GridBagConstraints gbc = new GridBagConstraints();
 	private final JLabel l = new JLabel("Weeks: ");
+
+	private ComboBoxRenderer cmbRenderer;
 	protected UIBookingSystemDialogPanel() {
+		cmbRenderer = new ComboBoxRenderer();
+		
 		setLayout(new GridBagLayout());
 
 		txtBookingDay = new JTextField(5);
@@ -53,6 +62,7 @@ public abstract class UIBookingSystemDialogPanel extends JPanel implements UIBoo
 		txtBookingHolder = new JTextField(5);
 		txtAreaEquipment = new JTextArea(5,15);
 		equipmentJComboBox = new JComboBox<>();
+		equipmentJComboBox.setRenderer(cmbRenderer);
 		jScrollPane = new JScrollPane(txtAreaEquipment);
 		txtBookingDay.setEditable(false);
 		chkRecurring = new JCheckBox();
@@ -202,13 +212,21 @@ public abstract class UIBookingSystemDialogPanel extends JPanel implements UIBoo
 		return bookingStartTime;
 	}
 
-	public  void setEquipmentJComboBox(List<Equipment> equipments) {
+	public void setEquipmentJComboBox(List<Equipment> equipments) {
 		equipments.forEach(equipmentJComboBox::addItem);
+		
+		ArrayList<String> tooltips = new ArrayList<String>();
+		for (Equipment e : equipments) {
+			tooltips.add(e.getEquipmentDescription());
+		}
+		
+		this.cmbRenderer.setTooltips(tooltips);
 	}
 
 	public Equipment getSelectedEquipment() {
 		return equipmentJComboBox.getItemAt(equipmentJComboBox.getSelectedIndex());
 	}
+	
 	
 	public boolean getRecurringSelected() {
 		return chkRecurring.isSelected();
@@ -225,8 +243,6 @@ public abstract class UIBookingSystemDialogPanel extends JPanel implements UIBoo
 		return 0;
 	}
 
-
-
 	private String getTxtBookingCollectionTimeText() {
 		String bookingCollectionTime = "";
 		try {
@@ -236,6 +252,8 @@ public abstract class UIBookingSystemDialogPanel extends JPanel implements UIBoo
 		}
 		return bookingCollectionTime;
 	}
+	
+
 
 	private String getFormattedDate() {
 		String datePattern = "dd.MM.yy";

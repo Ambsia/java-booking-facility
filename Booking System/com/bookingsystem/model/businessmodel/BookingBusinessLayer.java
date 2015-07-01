@@ -137,16 +137,29 @@ public class BookingBusinessLayer extends BusinessLayer implements Iterable<Book
                     callableStatement.setTime(4, bookingInformationKnown.getBookingCollectionTimeInSQLFormat());
                     callableStatement.setString(5, bookingInformationKnown.getBookingLocation());
                     callableStatement.setString(6, bookingInformationKnown.getBookingHolder());
-                    callableStatement.setString(7, bookingInformationKnown.getRequiredEquipment().getEquipmentName());
+                    callableStatement.setInt(7, bookingInformationKnown.getRequiredEquipment().getEquipmentID());
+                    System.out.println("here");
+                    Equipment equipment;
                     try (ResultSet rs = getDatabaseConnector().executeQuery()) {
                         while (rs.next()) {
-                            foundBookings.add(new Booking(rs.getInt(1), rs.getString(2), rs.getDate(3), rs.getTime(4), rs.getTime(5), rs.getString(6), rs.getString(7), new Equipment(rs.getString(8))));
+                        	System.out.println("id= " + rs.getInt(1)  + "\n"+ "day= " + rs.getString(2) + "\n"  + "date= " + rs.getDate(3) + "\n" +
+                        			"datetime= " + rs.getTime(4) + "\n" + "gettime= " + rs.getTime(5) + "\n"
+                        	 + "location= " + rs.getString(6) + "\n" + "holder= " + rs.getString(7) + "\n" + "equipment= " + rs.getString(8) + "\n" +
+                        	 "equipmentid= " + rs.getInt(10) + "\n" + "equipment name= " + rs.getString(11) + "\n" + "equipment description= " + 
+                        	 rs.getString(12)  + "\n" 
+                        	 + "\n" + "equipment usage= " + rs.getInt(13) );
+                        	equipment = new Equipment(rs.getString(11));
+                        	equipment.setEquipmentID(rs.getInt(10));
+                        	equipment.setEquipmentDescription(rs.getString(12));
+                        	equipment.setEquipmentUsage(rs.getInt(13));
+                            foundBookings.add(new Booking(rs.getInt(1), rs.getString(2), rs.getDate(3), rs.getTime(4), rs.getTime(5), rs.getString(6), rs.getString(7), equipment));
                         }
                     }
                     getDatabaseConnector().closeConnection();
                     this.bookings.addAll(0, foundBookings);
                     return foundBookings;
                 } catch (SQLException e) {
+                	e.printStackTrace();
                     MessageBox.errorMessageBox("There was an issue while we were trying to find that booking in the database!\n" + "Does this make any sense to you.." + e.toString() + "?");
                 }
             }

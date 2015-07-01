@@ -63,7 +63,6 @@ public final class BookingHandler implements ActionListener {
         date1.set(Calendar.SECOND, 0);
         date1.set(Calendar.MILLISECOND, 0);
         date1.set(Calendar.YEAR, 2015);
-        System.out.println(date1.getTime().toString());
 
         //date1's date is 25.12.01 -- never bookings on christmas!
         //date1's time is 00:00 -- never bookings at midnight!
@@ -82,6 +81,7 @@ public final class BookingHandler implements ActionListener {
         bookingSystemAddPanel.setEquipmentJComboBox(IteratorUtils.toList(handler.getBookingBusinessLayer().getEquipments().iterator()));
         bookingSystemFindPanel.setEquipmentJComboBox(IteratorUtils.toList(handler.getBookingBusinessLayer().getEquipments().iterator()));
         bookingSystemEditPanel.setEquipmentJComboBox(IteratorUtils.toList(handler.getBookingBusinessLayer().getEquipments().iterator()));
+        
 
         //these can be handled else where!
         bookingSystemPanel.getBookingSystemViewPanel().getBookingSystemJTableProblems().addMouseListener(new MouseAdapter() {
@@ -303,8 +303,9 @@ public final class BookingHandler implements ActionListener {
                     if (bookingSystemFindPanel.showDialog() == 0) {
                         this.bookingIDCurrentlyBeingProcessed = 1;
                         Booking bookingToFind = convertStringArrayToBooking(bookingSystemFindPanel.getBookingStringArray());
-                        MessageBox.infoMessageBox("A search will be performed based on the given details.");
                         bookingTableModel.clearBookingList();
+                 
+                        System.out.println(bookingToFind.getRequiredEquipment().getEquipmentID());
                         bookingTableModel.addBookingList(handler.getBookingBusinessLayer().findBookings(bookingToFind));
                     }
                     handler.getLoggerBusinessLayer().insertLog(log);

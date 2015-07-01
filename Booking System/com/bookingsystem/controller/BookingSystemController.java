@@ -37,6 +37,7 @@ public class BookingSystemController {
         UILoginPanel loginPanel = view.getLoginPanel();
         //Create All Business Lists Now//
         bookingBusinessLayer.getEquipments().populateEquipmentList();
+        
         bookingBusinessLayer.populateBookingListOnLoad();
         accountManagementBusinessLayer.getAllAccounts();
         //Create All Business Lists Now//

@@ -5,7 +5,7 @@ public final class Equipment {
 	
 	
 	private int equipmentID;
-	private final String equipmentName;
+	private String equipmentName;
 	private String equipmentDescription;
 	private int equipmentUsage;
 
@@ -34,6 +34,8 @@ public final class Equipment {
 	}
 
 	public void setEquipmentUsage(int equipmentUsage) { this.equipmentUsage = equipmentUsage;}
+
+	public void setEquipmentName(String equipmentName) { this.equipmentName = equipmentName; }
 
 	public String getEquipmentDescription() {return  this.equipmentDescription;}
 

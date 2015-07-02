@@ -16,6 +16,7 @@ public abstract class UIBookingSystemControlPanel extends JPanel {
 	private final ArrayList<JButton> controlButtonList;
     private String[] buttonNames;
     private Dimension buttonDimension;
+    private int columnns = 3;
 
     UIBookingSystemControlPanel() {
         controlButtonList = new ArrayList<>();
@@ -29,7 +30,7 @@ public abstract class UIBookingSystemControlPanel extends JPanel {
                 JPanel jPanel = new JPanel();
                 JButton jButton = new JButton(buttonNames[buttonNo]);
                 jButton.setPreferredSize(buttonDimension);
-                if (colsPassed == 3) { rowsPassed++; colsPassed = 0; }
+                if (colsPassed == columnns) { rowsPassed++; colsPassed = 0; }
                 addControlToPanel(jPanel, colsPassed++, rowsPassed);
                 controlButtonList.add(jButton);
                 jPanel.add(controlButtonList.get(buttonNo));
@@ -65,5 +66,8 @@ public abstract class UIBookingSystemControlPanel extends JPanel {
 
     public ArrayList<JButton> getControlButtonList() {
         return  controlButtonList;
+    }
+    public void setColumnns(int columnns) {
+        this.columnns = columnns;
     }
 }

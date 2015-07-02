@@ -5,6 +5,7 @@ import com.bookingsystem.view.dialogpanels.accountdialog.UIBookingSystemChangePa
 import com.bookingsystem.view.dialogpanels.accountdialog.UIBookingSystemChangeUserLevel;
 import com.bookingsystem.view.dialogpanels.equipmentdialog.UIBookingSystemAddEquipment;
 import com.bookingsystem.view.dialogpanels.equipmentdialog.UIBookingSystemEditEquipment;
+import com.bookingsystem.view.dialogpanels.equipmentdialog.UIBookingSystemRemoveEquipment;
 
 import java.awt.*;
 
@@ -23,23 +24,25 @@ public class UIBookingSystemEquipmentControlPanel extends UIBookingSystemControl
 
 	public UIBookingSystemEquipmentControlPanel() {
 		super();
+		super.setColumnns(2);
 		setLayout(new GridBagLayout());
-		setButtonNames(new String[] {"Add Equipment","Edit Equipment","Remove Equipment"});
-		setButtonDimension(new Dimension(138, 25));
+		setButtonNames(new String[] {"Import Equipment","Add Equipment","Edit Equipment","Remove Equipment"});
+		setButtonDimension(new Dimension(125, 25));
 		createControlPanel();
 
 		bookingSystemEquipmentAddPanel = new UIBookingSystemAddEquipment();
 		bookingSystemEquipmentEditPanel = new UIBookingSystemEditEquipment();
-		bookingSystemChangeUserLevel = new UIBookingSystemChangeUserLevel();
+		bookingSystemEquipmentRemovePanel = new UIBookingSystemRemoveEquipment();
 	}
 
 	public UIBookingSystemEditEquipment getBookingSystemEquipmenttEditPanel() {
 		return  bookingSystemEquipmentEditPanel;
 	}
 
-	public UIBookingSystemChangeUserLevel getBookingSystemChangeUserLevel() {
-		return bookingSystemChangeUserLevel;
+	public UIBookingSystemRemoveEquipment getBookingSystemEquipmentRemovePanel() {
+		return bookingSystemEquipmentRemovePanel;
 	}
+
 
 	public UIBookingSystemAddEquipment getBookingSystemEquipmenttAddPanel() {
 		return bookingSystemEquipmentAddPanel;

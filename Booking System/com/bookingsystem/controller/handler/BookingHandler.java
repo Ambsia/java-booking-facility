@@ -90,27 +90,9 @@ public final class BookingHandler implements ActionListener {
                 int row = table.rowAtPoint(p);
                 int id = (int)bookingSystemPanel.getBookingSystemViewPanel().getBookingSystemJTableProblems().getValueAt(row,0);
                 Booking b = bookingTableModel.getBooking(id);
-                System.out.println(b);
                 if (b != null) {
                     if (me.getClickCount() == 2) {
-                        bookingSystemEditPanel.setTextOfComponents(bookingTableModel.getBooking(id));
-                        if (bookingSystemEditPanel.showDialog() == 0) {
-                            Booking newBooking = convertStringArrayToBooking(bookingSystemEditPanel.getBookingStringArray());
-                            if (newBooking.isValid()) {
-                                if (!newBooking.isBeforeToday()) {
-                                    List<Booking> editBookingCheck = new ArrayList<>();
-                                    editBookingCheck.add(newBooking);
-                                    checkBookingCollision(newBooking);
-                                    checkBookingDateTimeForErrors(editBookingCheck);
-                                    generateBadBookingTable();
-                                    handler.getBookingBusinessLayer().modifyBooking(bookingTableModel.getBooking(id), newBooking);
-                                    ActionEvent actionEvent = new ActionEvent(this, 0, "Refresh");
-                                    actionPerformed(actionEvent);
-                                }
-                            } else {
-                                MessageBox.errorMessageBox("Please enter all of the required details for booking");
-                            }
-                        }
+                     editBooking(id);
                     } else if (me.getClickCount() == 1) {
                         int rowInBookingList = bookingSystemPanel.returnRowIndexForValue(b.getBookingID());
                         bookingSystemPanel.changeSelection(rowInBookingList);
@@ -131,24 +113,7 @@ public final class BookingHandler implements ActionListener {
                     Booking b = bookingTableModel.getBooking(id);
                     if (b != null) {
                         if (me.getClickCount() == 2) {
-                            bookingSystemEditPanel.setTextOfComponents(bookingTableModel.getBooking(id));
-                            if (bookingSystemEditPanel.showDialog() == 0) {
-                                Booking newBooking = convertStringArrayToBooking(bookingSystemEditPanel.getBookingStringArray());
-                                if (newBooking.isValid()) {
-                                    if (!newBooking.isBeforeToday()) {
-                                        List<Booking> editBookingCheck = new ArrayList<>();
-                                        editBookingCheck.add(newBooking);
-                                        checkBookingCollision(newBooking);
-                                        checkBookingDateTimeForErrors(editBookingCheck);
-                                        generateBadBookingTable();
-                                        handler.getBookingBusinessLayer().modifyBooking(bookingTableModel.getBooking(id), newBooking);
-                                        ActionEvent actionEvent = new ActionEvent(this, 0, "Refresh");
-                                        actionPerformed(actionEvent);
-                                    }
-                                } else {
-                                    MessageBox.errorMessageBox("Please enter all of the required details for booking");
-                                }
-                            }
+                        	editBooking(id);
                         }
                     }
                 }
@@ -156,6 +121,26 @@ public final class BookingHandler implements ActionListener {
         });
     }
 
+    private void editBooking(int id) { 
+    	   bookingSystemEditPanel.setTextOfComponents(bookingTableModel.getBooking(id));
+           if (bookingSystemEditPanel.showDialog() == 0) {
+               Booking newBooking = convertStringArrayToBooking(bookingSystemEditPanel.getBookingStringArray());
+               if (newBooking.isValid()) {
+                   if (!newBooking.isBeforeToday()) {
+                       List<Booking> editBookingCheck = new ArrayList<>();
+                       editBookingCheck.add(newBooking);
+                       checkBookingCollision(newBooking);
+                       checkBookingDateTimeForErrors(editBookingCheck);
+                       generateBadBookingTable();
+                       handler.getBookingBusinessLayer().modifyBooking(bookingTableModel.getBooking(id), newBooking);
+                       ActionEvent actionEvent = new ActionEvent(this, 0, "Refresh");
+                       actionPerformed(actionEvent);
+                   }
+               } else {
+                   MessageBox.errorMessageBox("Please enter all of the required details for booking");
+               }
+           }
+    }
     @SuppressWarnings("unchecked")
 	@Override
     public void actionPerformed(ActionEvent eventOccurred) {
@@ -236,6 +221,7 @@ public final class BookingHandler implements ActionListener {
                                     ActionEvent actionEvent2 = new ActionEvent(this, 0, "Load Archive");
                                     actionPerformed(actionEvent);
                                     actionPerformed(actionEvent2);
+                                    initialiseDialogs();
                                 }
                             } else {
                                 MessageBox.errorMessageBox(".xlsx spreadsheets are only accepted.");

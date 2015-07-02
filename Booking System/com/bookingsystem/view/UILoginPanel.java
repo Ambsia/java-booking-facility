@@ -1,8 +1,5 @@
 package  com.bookingsystem.view;
 
-import javafx.scene.input.KeyCode;
-import sun.awt.ExtendedKeyCodes;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;

@@ -9,6 +9,10 @@ import java.awt.*;
 public class UIBookingSystemChangePasswordPanel  extends JPanel {
 
     /**
+	 * 
+	 */
+	private static final long serialVersionUID = 3894462264069720457L;
+	/**
      *
      */
 

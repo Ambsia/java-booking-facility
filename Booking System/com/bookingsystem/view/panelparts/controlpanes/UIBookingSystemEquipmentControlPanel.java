@@ -24,10 +24,10 @@ public class UIBookingSystemEquipmentControlPanel extends UIBookingSystemControl
 
 	public UIBookingSystemEquipmentControlPanel() {
 		super();
-		super.setColumnns(2);
+		super.setColumnns(4);
 		setLayout(new GridBagLayout());
 		setButtonNames(new String[] {"Import Equipment","Add Equipment","Edit Equipment","Remove Equipment"});
-		setButtonDimension(new Dimension(125, 25));
+		setButtonDimension(new Dimension(145, 25));
 		createControlPanel();
 
 		bookingSystemEquipmentAddPanel = new UIBookingSystemAddEquipment();

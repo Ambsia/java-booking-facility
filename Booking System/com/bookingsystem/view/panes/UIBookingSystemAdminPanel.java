@@ -19,10 +19,7 @@ public class UIBookingSystemAdminPanel extends JPanel {
 	 */
 	private static final long serialVersionUID = 7631101370024052195L;
 
-
 	private final UIBookingSystemAdminViewPanel bookingSystemAdminViewPanel;
-
-
     private final UIBookingSystemAdminControlPanel bookingSystemAdminControlPanel;
     private final JTable accountSystemJTable;
     private AccountTableModel accountTableModel;

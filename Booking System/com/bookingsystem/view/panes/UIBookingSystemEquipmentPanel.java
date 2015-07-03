@@ -17,7 +17,9 @@ import javax.swing.JTable;
 import com.bookingsystem.model.Equipment;
 import com.bookingsystem.model.tablemodel.BookingTableModel;
 import com.bookingsystem.model.tablemodel.EquipmentTableModel;
+import com.bookingsystem.view.panelparts.UIBookingSystemAdminViewPanel;
 import com.bookingsystem.view.panelparts.UIBookingSystemBookingViewPanel;
+import com.bookingsystem.view.panelparts.controlpanes.UIBookingSystemAdminControlPanel;
 import com.bookingsystem.view.panelparts.controlpanes.UIBookingSystemBookingControlPanel;
 import com.bookingsystem.view.panelparts.controlpanes.UIBookingSystemEquipmentControlPanel;
 
@@ -40,52 +42,52 @@ public class UIBookingSystemEquipmentPanel extends JPanel {
 	//	bookingSystemJTable = new UIBookingSystemJTableBookings(bookingSystemModel);
 
 		bookingSystemEquipmentTable = new JTable(equipmentTableModel);
-		setLayout(new GridBagLayout());
-		GridBagConstraints gbc = new GridBagConstraints();
-		//bookingSystemViewPanel = new UIBookingSystemBookingViewPanel();
-		gbc.insets = new Insets(10, 10, 10, 10);
-		gbc.gridx = 0;
-		gbc.gridy = 0;
-		gbc.weightx = 0.2;
-		gbc.weighty = 1;
-		gbc.anchor = GridBagConstraints.FIRST_LINE_START;
-		gbc.fill = GridBagConstraints.BOTH;
+        setLayout(new GridBagLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
+        //bookingSystemAdminViewPanel = new UIBookingSystemAdminViewPanel();
 
-//		bookingSystemJTable.getColumn("Day").setMaxWidth(85);
-//		bookingSystemJTable.getColumn("Date").setMaxWidth(80);
-		JScrollPane jScrollPane = new JScrollPane(bookingSystemEquipmentTable);
-		gbc.gridheight = 2;
-		this.add(jScrollPane, gbc);
-		//JScrollPane jScrollPane1 = new JScrollPane(bookingSystemViewPanel);
-		gbc.gridheight = 1;
-		gbc.gridy = 0;
-		gbc.gridx = 1;
-		gbc.weightx = .8;
-		gbc.weighty = .9;
-		gbc.anchor = GridBagConstraints.PAGE_START;
-		gbc.fill = GridBagConstraints.BOTH;
-		//jScrollPane1.setMinimumSize(new Dimension(100, 100));
-		//jScrollPane1.setPreferredSize(new Dimension(100, 100));
-		//this.add(jScrollPane1, gbc);
-		bookingSystemEquipmentControlPanel = new UIBookingSystemEquipmentControlPanel();
-		gbc.gridy = 1;
-		gbc.gridx = 1;
-		gbc.weightx = .4;
-		gbc.weighty = .1;
-		gbc.anchor = GridBagConstraints.LAST_LINE_END;
-		gbc.fill = GridBagConstraints.BOTH;
-		bookingSystemEquipmentControlPanel.setMinimumSize(new Dimension(100, 100));
-		bookingSystemEquipmentControlPanel.setPreferredSize(new Dimension(100, 100));
-		this.add(bookingSystemEquipmentControlPanel, gbc);
+        gbc.insets = new Insets(10, 10, 10, 10);
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.weightx = 0.5;
+        gbc.weighty = 0.9;
+        gbc.anchor = GridBagConstraints.FIRST_LINE_START;
+        gbc.fill = GridBagConstraints.BOTH;
 
+        JScrollPane jScrollPane = new JScrollPane(bookingSystemEquipmentTable);
+        gbc.gridheight = 1;
+        this.add(jScrollPane, gbc);
+
+        bookingSystemEquipmentControlPanel = new UIBookingSystemEquipmentControlPanel();
+        gbc.gridy = 1;
+        gbc.gridx = 0;
+        gbc.weightx = .5;
+        gbc.weighty = .1;
+        gbc.anchor = GridBagConstraints.LAST_LINE_END;
+        gbc.fill = GridBagConstraints.BOTH;
+
+        this.add(bookingSystemEquipmentControlPanel, gbc);
+
+        JScrollPane jScrollPane1 = new JScrollPane();//bookingSystemAdminViewPanel);
+        gbc.gridheight = 2;
+        gbc.gridy = 0;
+        gbc.gridx = 1;
+        gbc.weightx = .8;
+        gbc.weighty = 1;
+        gbc.anchor = GridBagConstraints.PAGE_START;
+        gbc.fill = GridBagConstraints.BOTH;
+        this.add(jScrollPane1, gbc);
 	}
 	public void setJTableModel(EquipmentTableModel equipmentTableModel) {
 		this.equipmentTableModel = equipmentTableModel;
 		this.bookingSystemEquipmentTable.setModel(this.equipmentTableModel);
 		this.bookingSystemEquipmentTable.setAutoCreateRowSorter(true);
-		bookingSystemEquipmentTable.getColumn("Equipment ID").setMinWidth(25);
-		bookingSystemEquipmentTable.getColumn("Equipment ID").setMaxWidth(25);
-		bookingSystemEquipmentTable.getColumn("Equipment ID").setPreferredWidth(25);
+		bookingSystemEquipmentTable.getColumn("Equipment ID").setMinWidth(90);
+		bookingSystemEquipmentTable.getColumn("Equipment ID").setMaxWidth(90);
+		bookingSystemEquipmentTable.getColumn("Equipment ID").setPreferredWidth(90);
+		bookingSystemEquipmentTable.getColumn("Equipment Usage").setMinWidth(120);
+		bookingSystemEquipmentTable.getColumn("Equipment Usage").setMaxWidth(120);
+		bookingSystemEquipmentTable.getColumn("Equipment Usage").setPreferredWidth(120);
 	}
 
 	public JTable getBookingSystemEquipmentTable() {

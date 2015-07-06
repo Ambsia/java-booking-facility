@@ -38,7 +38,14 @@ public class EquipmentHandler implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         switch (e.getActionCommand().toString()) {
             case "Add Equipment":
-                    this.bookingSystemAddEquipment.showDialog();
+            	int modelRow = this.bookingSystemEquipmentPanel.rowViewIndexToModel(this.bookingSystemEquipmentPanel.getSelectedRow());
+                this.currentEquipmentIDBeingHandled = (int) bookingSystemEquipmentPanel.getValueAt(modelRow, 0);
+                if (this.currentEquipmentIDBeingHandled != -1) {
+                	if (this.bookingSystemAddEquipment.showDialog() == 0) {
+                		
+                	
+                	}
+                }
                 break;
             case "Edit Equipment":
                     this.bookingSystemEditEquipment.showDialog();

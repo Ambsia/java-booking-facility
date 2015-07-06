@@ -1,9 +1,11 @@
 package com.bookingsystem.controller.handler;
 
+import com.bookingsystem.model.tablemodel.EquipmentTableModel;
 import com.bookingsystem.view.dialogpanels.equipmentdialog.UIBookingSystemAddEquipment;
 import com.bookingsystem.view.dialogpanels.equipmentdialog.UIBookingSystemEditEquipment;
 import com.bookingsystem.view.dialogpanels.equipmentdialog.UIBookingSystemRemoveEquipment;
 import com.bookingsystem.view.panelparts.controlpanes.UIBookingSystemEquipmentControlPanel;
+import com.bookingsystem.view.panes.UIBookingSystemEquipmentPanel;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -14,20 +16,22 @@ import java.awt.event.ActionListener;
 public class EquipmentHandler implements ActionListener {
 
     private final Handler handler;
-
     private final UIBookingSystemEquipmentControlPanel bookingSystemEquipmentControlPanel;
     private final UIBookingSystemAddEquipment bookingSystemAddEquipment;
     private final UIBookingSystemEditEquipment bookingSystemEditEquipment;
     private final UIBookingSystemRemoveEquipment bookingSystemRemoveEquipment;
-
+    private int currentEquipmentIDBeingHandled;
+    private final UIBookingSystemEquipmentPanel bookingSystemEquipmentPanel;
+    private final EquipmentTableModel equipmentTableModel;
     public EquipmentHandler(Handler handler) {
         this.handler = handler;
-
-        this.bookingSystemEquipmentControlPanel = handler.getView().getBookingSystemTabbedPane().getBookingSystemEquipmentPanel().getBookingSystemEquipmentControlPanel();
+        this.bookingSystemEquipmentPanel = handler.getView().getBookingSystemTabbedPane().getBookingSystemEquipmentPanel();
+        this.equipmentTableModel = bookingSystemEquipmentPanel.getTableModel();
+        this.currentEquipmentIDBeingHandled = -1;
+        this.bookingSystemEquipmentControlPanel = this.bookingSystemEquipmentPanel.getBookingSystemEquipmentControlPanel();
         this.bookingSystemAddEquipment = this.bookingSystemEquipmentControlPanel.getBookingSystemEquipmenttAddPanel();
         this.bookingSystemEditEquipment = this.bookingSystemEquipmentControlPanel.getBookingSystemEquipmenttEditPanel();
         this.bookingSystemRemoveEquipment = this.bookingSystemEquipmentControlPanel.getBookingSystemEquipmentRemovePanel();
-
     }
 
     @Override
@@ -41,6 +45,7 @@ public class EquipmentHandler implements ActionListener {
                 break;
             case "Remove Equipment":
                     this.bookingSystemRemoveEquipment.showDialog();
+                    
                 break;
             default:;
         }

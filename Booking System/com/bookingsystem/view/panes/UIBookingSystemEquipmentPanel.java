@@ -94,45 +94,45 @@ public class UIBookingSystemEquipmentPanel extends JPanel {
 		return bookingSystemEquipmentTable;
 	}
 
-//	public BookingTableModel getJTableModel() {
-//		return this.bookingSystemModel;
-//	}
-//
-//	public void changeSelection(int row) {
-//		bookingSystemJTable.changeSelection(row,0,false,false);
-//		bookingSystemJTable.repaint();
-//	}
-//	public int selectedRowCount() {
-//		return bookingSystemJTable.getSelectedRowCount();
-//	}
-//
-//	public int rowViewIndexToModel(int row) {
-//		return bookingSystemJTable.convertRowIndexToModel(row);
-//	}
-//
-//	public Object getValueAt(int row, int column) {
-//		return bookingSystemModel.getValueAt(row,column);
-//	}
-//
-//	public int returnRowIndexForValue(final int j) {
-//		for (int i = 0; i <= bookingSystemJTable.getRowCount(); i++)
-//			if (bookingSystemJTable.getValueAt(i, 0).equals(j))
-//				return i;
-//		return -1;
-//	}
-//
-//	public List<Integer> getSelectedRows() {
-//		List<Integer> integerList = new ArrayList<>();
-//		for (int i = 0; i<bookingSystemJTable.getSelectedRows().length;i++) {
-//			integerList.add(rowViewIndexToModel(bookingSystemJTable.getSelectedRows()[i]));
-//		}
-//		return integerList;
-//	}
-//
-//	public int getSelectedRow() {
-//		return bookingSystemJTable.getSelectedRow();
-//	}
-//
+	public EquipmentTableModel getTableModel() {
+		return this.equipmentTableModel;
+	}
+
+	public void changeSelection(int row) {
+		bookingSystemEquipmentTable.changeSelection(row,0,false,false);
+		bookingSystemEquipmentTable.repaint();
+	}
+	public int selectedRowCount() {
+		return bookingSystemEquipmentTable.getSelectedRowCount();
+	}
+
+	public int rowViewIndexToModel(int row) {
+		return bookingSystemEquipmentTable.convertRowIndexToModel(row);
+	}
+
+	public Object getValueAt(int row, int column) {
+		return bookingSystemEquipmentTable.getValueAt(row,column);
+	}
+
+	public int returnRowIndexForValue(final int j) {
+		for (int i = 0; i <= bookingSystemEquipmentTable.getRowCount(); i++)
+			if (bookingSystemEquipmentTable.getValueAt(i, 0).equals(j))
+				return i;
+		return -1;
+	}
+
+	public List<Integer> getSelectedRows() {
+		List<Integer> integerList = new ArrayList<>();
+		for (int i = 0; i<bookingSystemEquipmentTable.getSelectedRows().length;i++) {
+			integerList.add(rowViewIndexToModel(bookingSystemEquipmentTable.getSelectedRows()[i]));
+		}
+		return integerList;
+	}
+
+	public int getSelectedRow() {
+		return bookingSystemEquipmentTable.getSelectedRow();
+	}
+
 	public UIBookingSystemEquipmentControlPanel getBookingSystemEquipmentControlPanel() {return this.bookingSystemEquipmentControlPanel;}
 
 }

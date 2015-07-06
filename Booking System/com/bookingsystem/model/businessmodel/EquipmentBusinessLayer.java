@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-/**
+ /**
  * Created by Alex on 30/06/2015
  */
 public class EquipmentBusinessLayer  extends  BusinessLayer implements Iterable<Equipment> {
@@ -27,6 +27,7 @@ public class EquipmentBusinessLayer  extends  BusinessLayer implements Iterable<
     }
 
     public void populateEquipmentList() {
+    	equipmentList.clear();
         Equipment equipment;
         getDatabaseConnector().openConnection();
         if (getDatabaseConnector().isConnected()) {
@@ -46,8 +47,8 @@ public class EquipmentBusinessLayer  extends  BusinessLayer implements Iterable<
                 getDatabaseConnector().closeConnection();
             }
         }
-
-    }
+    }                                                                                                                          
+    
     public void addEquipment(Equipment equipment) {
         getDatabaseConnector().openConnection();
         if(getDatabaseConnector().isConnected()) {

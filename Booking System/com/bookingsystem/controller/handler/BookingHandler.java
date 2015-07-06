@@ -299,7 +299,6 @@ public final class BookingHandler implements ActionListener {
                         Booking bookingToFind = convertStringArrayToBooking(bookingSystemFindPanel.getBookingStringArray());
                         bookingTableModel.clearBookingList();
                  
-                        System.out.println(bookingToFind.getRequiredEquipment().getEquipmentID());
                         bookingTableModel.addBookingList(handler.getBookingBusinessLayer().findBookings(bookingToFind));
                     }
                     handler.getLoggerBusinessLayer().insertLog(log);

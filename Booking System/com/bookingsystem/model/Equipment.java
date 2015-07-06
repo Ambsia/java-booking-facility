@@ -54,5 +54,9 @@ public final class Equipment {
 		return this.equipmentName + " (" + this.equipmentUsage + ")";
 	}
 
+	public boolean verify() {
+		return !this.equipmentName.isEmpty();
+	}
+
 
 }

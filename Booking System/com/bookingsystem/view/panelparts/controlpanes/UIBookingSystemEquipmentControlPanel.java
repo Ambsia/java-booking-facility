@@ -8,6 +8,9 @@ import com.bookingsystem.view.dialogpanels.equipmentdialog.UIBookingSystemEditEq
 import com.bookingsystem.view.dialogpanels.equipmentdialog.UIBookingSystemRemoveEquipment;
 
 import java.awt.*;
+import java.util.ArrayList;
+
+import javax.swing.JButton;
 
 /**
  * Author: [Alex]
@@ -26,8 +29,8 @@ public class UIBookingSystemEquipmentControlPanel extends UIBookingSystemControl
 		super();
 		super.setColumnns(4);
 		setLayout(new GridBagLayout());
-		setButtonNames(new String[] {"Import Equipment","Add Equipment","Edit Equipment","Remove Equipment"});
-		setButtonDimension(new Dimension(145, 25));
+		setButtonNames(new String[] {"Refresh", "Import","Add","Edit","Remove"});
+		setButtonDimension(new Dimension(125, 25));
 		createControlPanel();
 
 		bookingSystemEquipmentAddPanel = new UIBookingSystemAddEquipment();
@@ -35,6 +38,17 @@ public class UIBookingSystemEquipmentControlPanel extends UIBookingSystemControl
 		bookingSystemEquipmentRemovePanel = new UIBookingSystemRemoveEquipment();
 	}
 
+	
+	public void restrictControls() {
+	        ArrayList<JButton> jButtonArrayList = getControlButtonList();
+	        for(JButton jButton : jButtonArrayList) {
+	            if (jButton.getText() == "Import" || jButton.getText() == "Add"|| 
+	            		jButton.getText() == "Edit"||jButton.getText() == "Remove") {
+	                jButton.setText("No Access");
+	            }
+	        }
+	}
+	  
 	public UIBookingSystemEditEquipment getBookingSystemEquipmenttEditPanel() {
 		return  bookingSystemEquipmentEditPanel;
 	}

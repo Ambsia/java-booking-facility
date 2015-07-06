@@ -39,6 +39,7 @@ public class LoginHandler implements ActionListener {
                     }  else if (accountModel.getUserLevel() == 0) {
                         System.out.println("true");
                         handler.getView().getBookingSystemTabbedPane().getBookingSystemPanel().getBookingSystemControlPanel().restrictControls();
+                        handler.getView().getBookingSystemTabbedPane().getBookingSystemEquipmentPanel().getBookingSystemEquipmentControlPanel().restrictControls();
                     }
                     log.setAccountIDCreated(accountModel.getUserID());
                     handler.getView().setVisible(true);

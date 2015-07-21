@@ -49,45 +49,71 @@ public class EquipmentBusinessLayer  extends  BusinessLayer implements Iterable<
         }
     }                                                                                                                          
     
-    public void addEquipment(Equipment equipment) {
+    public boolean addEquipment(Equipment equipment) {
         getDatabaseConnector().openConnection();
-        if(getDatabaseConnector().isConnected()) {
+        if (getDatabaseConnector().isConnected()) {
             if (getDatabaseConnector().isConnectionClosed()) {
-                getDatabaseConnector().createNewCallableStatement("{CALL spInsertEquipment(?,?,?)}");
-                try (CallableStatement callableStatement = getDatabaseConnector().getCallableStatement()) {
-                    callableStatement.setString(1, equipment.getEquipmentName());
-                    callableStatement.setString(2,equipment.getEquipmentDescription());
-                    callableStatement.registerOutParameter(3, Types.INTEGER);
-                    getDatabaseConnector().execute();
-                    equipment.setEquipmentID(callableStatement.getInt(3));
-                    System.out.println(equipment.toString());
-                    this.equipmentList.add(equipment);
+                getDatabaseConnector().createNewCallableStatement("{CALL spCheckForDuplicateEquipmentName(?,?)}");
+                try (CallableStatement csCheckForDupeName = getDatabaseConnector().getCallableStatement()) {
+                    csCheckForDupeName.setString(1, equipment.getEquipmentName());
+                    csCheckForDupeName.registerOutParameter(2, Types.INTEGER);
+                    csCheckForDupeName.execute();
+                    if (csCheckForDupeName.getInt(2) == 0) {
+                        getDatabaseConnector().createNewCallableStatement("{CALL spInsertEquipment(?,?,?)}");
+                        try (CallableStatement callableStatement = getDatabaseConnector().getCallableStatement()) {
+                            callableStatement.setString(1, equipment.getEquipmentName());
+                            callableStatement.setString(2, equipment.getEquipmentDescription());
+                            callableStatement.registerOutParameter(3, Types.INTEGER);
+                            getDatabaseConnector().execute();
+                            equipment.setEquipmentID(callableStatement.getInt(3));
+                            System.out.println(equipment.toString());
+                            this.equipmentList.add(equipment);
+                            return true;
+                        }
+                    }
                 } catch (SQLException e) {
                     MessageBox.errorMessageBox("There was an issue while we were trying to add equipment into the database.\n" + "Does this make any sense to you.." + e.toString() + "?");
                 }
                 getDatabaseConnector().closeConnection();
             }
         }
+        return false;
     }
 
-    public void editEquipment(Equipment equipment) {
+
+    public boolean editEquipment(int equipmentID, Equipment newEquipment) {
         getDatabaseConnector().openConnection();
-        if(getDatabaseConnector().isConnected()) {
+        if (getDatabaseConnector().isConnected()) {
             if (getDatabaseConnector().isConnectionClosed()) {
-                getDatabaseConnector().createNewCallableStatement("{CALL spMofifyEquipment(?,?,?)}");
-                try (CallableStatement callableStatement = getDatabaseConnector().getCallableStatement()) {
-                    callableStatement.setInt(1, equipment.getEquipmentID());
-                    callableStatement.setString(2, equipment.getEquipmentName());
-                    callableStatement.setString(3, equipment.getEquipmentDescription());
-                    getDatabaseConnector().execute();
-                    correctCurrentIndexWithID(equipment.getEquipmentID());
-                    addEquipmentToListAtAGivenPosition(equipment);
+                getDatabaseConnector().createNewCallableStatement("{CALL spCheckForDuplicateEquipmentName(?,?)}");
+                try (CallableStatement csCheckForDupeName = getDatabaseConnector().getCallableStatement()) {
+                    csCheckForDupeName.setString(1, newEquipment.getEquipmentName());
+                    System.out.println(newEquipment.getEquipmentName());
+                    csCheckForDupeName.registerOutParameter(2, Types.INTEGER);
+                    csCheckForDupeName.execute();
+                    System.out.println("made it here though");
+                    System.out.println(csCheckForDupeName.getInt(2));
+                    if (csCheckForDupeName.getInt(2) == 0) {
+                        System.out.println("made it");
+                        getDatabaseConnector().createNewCallableStatement("{CALL spMofifyEquipment(?,?,?)}");
+                        try (CallableStatement callableStatement = getDatabaseConnector().getCallableStatement()) {
+                            callableStatement.setInt(1, equipmentID);
+                            callableStatement.setString(2, newEquipment.getEquipmentName());
+                            callableStatement.setString(3, newEquipment.getEquipmentDescription());
+                            getDatabaseConnector().execute();
+                            correctCurrentIndexWithID(equipmentID);
+                            removeEquipmentFromList();
+                            addEquipmentToListAtAGivenPosition(newEquipment);
+                            return true;
+                        }
+                    }
                 } catch (SQLException e) {
                     MessageBox.errorMessageBox("There was an issue while we were trying to add equipment into the database.\n" + "Does this make any sense to you.." + e.toString() + "?");
                 }
                 getDatabaseConnector().closeConnection();
             }
         }
+        return  false;
     }
 
     public void removeEquipment(int equipmentID) {
@@ -184,8 +210,6 @@ public class EquipmentBusinessLayer  extends  BusinessLayer implements Iterable<
             this.equipmentList.add(currentIndexOfEquipmentInList, equipment);
         }
     }
-
-
 
     @Override
     public Iterator<Equipment> iterator() {

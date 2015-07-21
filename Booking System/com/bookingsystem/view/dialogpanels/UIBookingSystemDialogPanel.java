@@ -213,6 +213,10 @@ public abstract class UIBookingSystemDialogPanel extends JPanel implements UIBoo
 	}
 
 	public void setEquipmentJComboBox(List<Equipment> equipments) {
+		equipmentJComboBox.removeAllItems();
+		this.cmbRenderer.removeAll();
+		System.out.println(equipmentJComboBox.getItemCount());
+
 		equipments.forEach(equipmentJComboBox::addItem);
 		
 		ArrayList<String> tooltips = new ArrayList<String>();
@@ -222,6 +226,45 @@ public abstract class UIBookingSystemDialogPanel extends JPanel implements UIBoo
 		
 		this.cmbRenderer.setTooltips(tooltips);
 	}
+
+	public void addEquipmentToComboBox(Equipment equipment) {
+		equipmentJComboBox.addItem(equipment);
+		this.cmbRenderer.addTooltip(equipment.getEquipmentDescription());
+	}
+
+
+	public void addEquipmentListToComboBox(List<Equipment> equipmentList) {
+		equipmentList.forEach(equipmentJComboBox::addItem);
+		ArrayList<String> tooltips = new ArrayList<String>();
+//	for (Equipment e : equipmentList) {
+	//		this.cmbRenderer.addTooltip(e.getEquipmentDescription());
+	//	}
+
+	}
+
+	public void replaceEquipment(Equipment equipment) {
+		for (int i = 0; i<equipmentJComboBox.getItemCount();i++) {
+			if (equipmentJComboBox.getItemAt(i).getEquipmentID() == equipment.getEquipmentID()) {
+				equipmentJComboBox.getItemAt(i).setEquipmentName(equipment.getEquipmentName());
+				equipmentJComboBox.getItemAt(i).setEquipmentDescription(equipment.getEquipmentDescription());
+				equipmentJComboBox.getItemAt(i).setEquipmentUsage(equipment.getEquipmentUsage());
+				//this.cmbRenderer.replaceToolTip(i,equipment.getEquipmentDescription());
+			}
+		}
+	}
+
+
+
+	public void removeEquipmentFromComboBox(int equipmentID) {
+		for (int i = 0; i<equipmentJComboBox.getItemCount();i++) {
+			if (equipmentJComboBox.getItemAt(i).getEquipmentID() == equipmentID) {
+				equipmentJComboBox.removeItemAt(i);
+				this.cmbRenderer.removeToolTip(i);
+			}
+		}
+	}
+
+
 
 	public Equipment getSelectedEquipment() {
 		return equipmentJComboBox.getItemAt(equipmentJComboBox.getSelectedIndex());

@@ -82,12 +82,12 @@ public class UIBookingSystemEquipmentPanel extends JPanel {
 		this.equipmentTableModel = equipmentTableModel;
 		this.bookingSystemEquipmentTable.setModel(this.equipmentTableModel);
 		this.bookingSystemEquipmentTable.setAutoCreateRowSorter(true);
-		bookingSystemEquipmentTable.getColumn("Equipment ID").setMinWidth(90);
-		bookingSystemEquipmentTable.getColumn("Equipment ID").setMaxWidth(90);
-		bookingSystemEquipmentTable.getColumn("Equipment ID").setPreferredWidth(90);
-		bookingSystemEquipmentTable.getColumn("Equipment Usage").setMinWidth(120);
-		bookingSystemEquipmentTable.getColumn("Equipment Usage").setMaxWidth(120);
-		bookingSystemEquipmentTable.getColumn("Equipment Usage").setPreferredWidth(120);
+		bookingSystemEquipmentTable.getColumn("Equipment ID").setMinWidth(00);
+		bookingSystemEquipmentTable.getColumn("Equipment ID").setMaxWidth(0);
+		bookingSystemEquipmentTable.getColumn("Equipment ID").setPreferredWidth(0);
+		bookingSystemEquipmentTable.getColumn("Usage").setMinWidth(50);
+		bookingSystemEquipmentTable.getColumn("Usage").setMaxWidth(50);
+		bookingSystemEquipmentTable.getColumn("Usage").setPreferredWidth(50);
 	}
 
 	public JTable getBookingSystemEquipmentTable() {

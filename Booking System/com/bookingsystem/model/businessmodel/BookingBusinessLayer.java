@@ -86,6 +86,7 @@ public class BookingBusinessLayer extends BusinessLayer implements Iterable<Book
                     callableStatement.setBoolean(8, booking.getBookingCompleted());
                     callableStatement.registerOutParameter(9, Types.INTEGER);
                     getDatabaseConnector().execute();
+                    System.out.println(booking.getRequiredEquipment().getEquipmentID());
                     equipments.increaseEquipmentUsage(booking.getRequiredEquipment().getEquipmentID());
                     booking.setBookingID(callableStatement.getInt(9));
                     if(booking.isBeforeToday()) {
@@ -195,8 +196,11 @@ public class BookingBusinessLayer extends BusinessLayer implements Iterable<Book
                     callableStatement.setString(7, newBooking.getBookingHolder());
                     callableStatement.setInt(8, newBooking.getRequiredEquipment().getEquipmentID());
                     getDatabaseConnector().execute();
+                    System.out.println(newBooking.getRequiredEquipment().getEquipmentID() + "|new | old|" + oldBooking.getRequiredEquipment().getEquipmentID());
                     if (newBooking.getRequiredEquipment().getEquipmentID() != oldBooking.getRequiredEquipment().getEquipmentID()) {
+                        System.out.println("mmmm");
                         equipments.decreaseEquipmentUsage(oldBooking.getRequiredEquipment().getEquipmentID());
+                        equipments.increaseEquipmentUsage(newBooking.getRequiredEquipment().getEquipmentID());
                     }
                     addBookingToListAtAGivenPosition(newBooking);
                 } catch (SQLException e) {

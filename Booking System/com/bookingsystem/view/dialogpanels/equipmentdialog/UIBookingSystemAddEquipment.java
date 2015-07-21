@@ -20,8 +20,8 @@ public class UIBookingSystemAddEquipment extends JPanel {
     private final JTextField txtEquipmentDesc;
 
     public UIBookingSystemAddEquipment() {
-    	txtEquipmentName = new JTextField(5);
-    	txtEquipmentDesc = new JPasswordField(5);
+    	txtEquipmentName = new JTextField(15);
+    	txtEquipmentDesc = new JTextField(15);
         setLayout(new GridBagLayout());
         addDefaultComponentsToPanel();
 
@@ -53,7 +53,7 @@ public class UIBookingSystemAddEquipment extends JPanel {
     }
 
     public String getEquipmentDescription() {
-        return txtEquipmentName.getText();
+        return txtEquipmentDesc.getText();
     }
 
     public int showDialog() {

@@ -78,7 +78,7 @@ public final class BookingHandler implements ActionListener {
         this.checkBookingDateTimeForErrors(IteratorUtils.toList(bookingTableModel.iterator()));
         generateBadBookingTable();
         bookingIDCurrentlyBeingProcessed = 1;
-        initialiseDialogs();
+        handler.initialiseDialogs();
         
 
         //these can be handled else where!
@@ -151,7 +151,7 @@ public final class BookingHandler implements ActionListener {
                 	if (handler.getAccountBusinessLayer().getAccountLoggedIn().getUserLevel() >=2) {
                     JFileChooser jFileChooser = new JFileChooser();
                     try {
-                        int returnVal = jFileChooser.showOpenDialog(bookingSystemPanel);
+                        int returnVal = jFileChooser.showOpenDialog(bookingSystemPanel.getParent());
                         if (returnVal == JFileChooser.APPROVE_OPTION) {
                             if (jFileChooser.getSelectedFile().getName()
                                     .endsWith(".xlsx")) {
@@ -221,7 +221,6 @@ public final class BookingHandler implements ActionListener {
                                     ActionEvent actionEvent2 = new ActionEvent(this, 0, "Load Archive");
                                     actionPerformed(actionEvent);
                                     actionPerformed(actionEvent2);
-                                    initialiseDialogs();
                                 }
                             } else {
                                 MessageBox.errorMessageBox(".xlsx spreadsheets are only accepted.");
@@ -470,8 +469,12 @@ public final class BookingHandler implements ActionListener {
                     break;
                 default:
                     System.out.println("control handler not found");
+
             }
-            handler.getView().repaint();
+        handler.getBookingBusinessLayer().getEquipments().populateEquipmentList();
+            handler.getView().getBookingSystemTabbedPane().getBookingSystemEquipmentPanel().getTableModel().clearEquipmentList();
+            handler.getView().getBookingSystemTabbedPane().getBookingSystemEquipmentPanel().getTableModel().addEquipmentList(IteratorUtils.toList(handler.getBookingBusinessLayer().getEquipments().iterator()));
+            handler.initialiseDialogs();
         }
     }
 
@@ -648,12 +651,6 @@ public final class BookingHandler implements ActionListener {
             }
             return day;
         }
-    }
-
-    private void initialiseDialogs() {
-        bookingSystemAddPanel.setEquipmentJComboBox(IteratorUtils.toList(handler.getBookingBusinessLayer().getEquipments().iterator()));
-        bookingSystemFindPanel.setEquipmentJComboBox(IteratorUtils.toList(handler.getBookingBusinessLayer().getEquipments().iterator()));
-        bookingSystemEditPanel.setEquipmentJComboBox(IteratorUtils.toList(handler.getBookingBusinessLayer().getEquipments().iterator()));
     }
     
 

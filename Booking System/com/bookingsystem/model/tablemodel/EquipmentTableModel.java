@@ -11,7 +11,7 @@ import java.util.*;
  * Created by Alex on 02/07/2015
  */
 public class EquipmentTableModel extends AbstractTableModel implements Iterable<Equipment> {
-    private static final String[] columnNames =  {"Equipment ID"," Equipment Name","Equipment Description", "Equipment Usage"};
+    private static final String[] columnNames =  {"Equipment ID"," Name","Description", "Usage"};
 
     private static final int COLUMN_ID = 0;
     private static final int COLUMN_NAME = 1;

@@ -37,7 +37,13 @@ public class EquipmentBusinessLayer  extends  BusinessLayer implements Iterable<
                     while (resultSet.next()) {
                         equipment = new Equipment(resultSet.getString(2));
                         equipment.setEquipmentID(resultSet.getInt(1));
-                        equipment.setEquipmentDescription(resultSet.getString(3));
+                        String desc = "";
+                        if (resultSet.getString(3) == null) {
+                        	desc = "No Description";
+                        } else {
+                        	desc = resultSet.getString(3);
+                        }
+                        equipment.setEquipmentDescription(desc);
                         equipment.setEquipmentUsage(resultSet.getInt(4));
                         equipmentList.add(equipment);
                     }

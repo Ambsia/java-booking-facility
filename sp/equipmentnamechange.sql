@@ -294,3 +294,48 @@ WHERE BookingEquipment LIKE '%[0-9]% Laptops'
 SELECT BookingEquipment FROM tblBookings WHERE BookingEquipment 
 LIKE '%[0-9]% Laptop' 
 AND BookingEquipment NOT LIKE '%Project%'
+
+
+
+UPDATE tblBookings
+	set BookingEquipment = 'iPads (A)'
+WHERE (BookingEquipment LIKE 'iPads') AND 
+(BookingLocation LIKE '%A[0-9]%' OR 
+BookingLocation LIKE '%AG[0-9]%')
+
+UPDATE tblBookings
+	set BookingEquipment = 'iPads (B)'
+WHERE (BookingEquipment LIKE 'iPads') AND 
+(BookingLocation LIKE '%B[0-9]%' OR 
+BookingLocation LIKE '%BG[0-9]%')
+
+UPDATE tblBookings
+	set BookingEquipment = 'iPads (C)'
+WHERE (BookingEquipment LIKE 'iPads') AND 
+(BookingLocation LIKE '%C[0-9]%' OR 
+BookingLocation LIKE '%CG[0-9]%')
+
+UPDATE tblBookings
+	set BookingEquipment = 'iPads (D)'
+WHERE (BookingEquipment LIKE 'iPads') AND 
+(BookingLocation LIKE '%S[0-9]%' OR 
+BookingLocation LIKE '%SG[0-9]%')
+
+UPDATE tblBookings
+	set BookingEquipment = 'iPads (J)'
+WHERE (BookingEquipment LIKE 'iPads') AND 
+(BookingLocation LIKE '%S[0-9]%' OR 
+BookingLocation LIKE '%SG[0-9]%')
+
+select BookingLocation, BookingEquipment from tblBookings
+WHERE (BookingEquipment = 'iPads') AND 
+(BookingLocation LIKE '%D[0-9]%' OR 
+BookingLocation LIKE '%DG[0-9]%')
+
+
+select BookingLocation, BookingEquipment FROM tblBookings
+WHERE (BookingEquipment = 'iPads')
+
+UPDATE tblBookings
+set BookingEquipment = 'iPads (D)'
+WHERE (BookingLocation = 'DG6' AND BookingEquipment = 'iPads')

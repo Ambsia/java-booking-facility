@@ -1,0 +1,15 @@
+EquipmentID,EquipmentName,EquipmentDescription,EquipmentUsageStatistics
+1,iPads (J),,613
+2,Laptops,,331
+3,iPads (C),,153
+4,Screen, Sound, Projector, Microphones Setup,,148
+5,iPads (D),,82
+6,iPads (A),,78
+7,Video Camera,,27
+8,Exam Laptop,,21
+9,Headphones,,12
+10,iPads (B),,8
+11,Recital Room Setup,,2
+12,Handheld Microphone,,1
+13,Smart Response Clickers,,1
+14,Tripod,,1

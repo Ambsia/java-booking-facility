@@ -117,7 +117,7 @@ public abstract class UIBookingSystemDialogPanel extends JPanel implements UIBoo
 		gbcc.anchor = GridBagConstraints.LAST_LINE_END;
 		gbcc.weighty = 1;
 		add(component, gbcc);
-	}
+	}	
 	
 	private void addControl(GridBagConstraints gbcc, Component component,int x, int y) {
 		gbcc.insets = new Insets(2,2,2,2);

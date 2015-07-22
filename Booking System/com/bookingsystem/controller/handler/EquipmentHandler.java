@@ -111,6 +111,7 @@ public class EquipmentHandler implements ActionListener {
 
                 }
                 break;
+                
             case "Add":
             	if (bookingSystemAddEquipment.showDialog() == 0) {
             		Equipment newEquipment = new Equipment(bookingSystemAddEquipment.getEquipmentName());
@@ -133,26 +134,23 @@ public class EquipmentHandler implements ActionListener {
             	handler.getLoggerBusinessLayer().insertLog(log);
                 break;
             case "Edit":
-            	 if(bookingSystemEquipmentPanel.selectedRowCount() > 0) {
+            	if(bookingSystemEquipmentPanel.selectedRowCount() > 0) {
             	int modelRow = this.bookingSystemEquipmentPanel.rowViewIndexToModel(this.bookingSystemEquipmentPanel.getSelectedRow());
                 this.currentEquipmentIDBeingHandled = (int) bookingSystemEquipmentPanel.getValueAt(modelRow, 0);
                 if (this.currentEquipmentIDBeingHandled != -1) {
+                	Equipment oldEquipment = equipmentTableModel.getEquipment(this.currentEquipmentIDBeingHandled);
+            		bookingSystemEditEquipment.setTxtBoxesText(oldEquipment);
                 	if (this.bookingSystemEditEquipment.showDialog() == 0) {
-                        System.out.println(modelRow);
                         Equipment newEquipment = new Equipment(this.bookingSystemEditEquipment.getEquipmentName());
                         newEquipment.setEquipmentDescription(this.bookingSystemEditEquipment.getEquipmentDescription());
                         newEquipment.setEquipmentID(this.currentEquipmentIDBeingHandled);
-                        newEquipment.setEquipmentUsage(equipmentTableModel.getEquipment(this.currentEquipmentIDBeingHandled).getEquipmentUsage());
-                		if (handler.getBookingBusinessLayer().getEquipments().editEquipment(equipmentTableModel.getEquipment(this.currentEquipmentIDBeingHandled).getEquipmentID(),newEquipment)) {
+                        newEquipment.setEquipmentUsage(oldEquipment.getEquipmentUsage());
+                		if (handler.getBookingBusinessLayer().getEquipments().editEquipment(oldEquipment.getEquipmentID(),newEquipment)) {
                             System.out.println("worked");
                             equipmentTableModel.setValueAt(this.currentEquipmentIDBeingHandled,modelRow,0);
                             equipmentTableModel.setValueAt(newEquipment.getEquipmentName(), modelRow, 1);
                             equipmentTableModel.setValueAt(newEquipment.getEquipmentDescription(), modelRow, 2);
                             equipmentTableModel.setValueAt(newEquipment.getEquipmentUsage(), modelRow, 3);
-                  //         handler.getView().getBookingSystemTabbedPane().getBookingSystemPanel().getBookingSystemControlPanel().getUIBookingSystemAddPanel().setEquipmentJComboBox(IteratorUtils.toList(handler.getBookingBusinessLayer().getEquipments().iterator()));
-//                            handler.getView().getBookingSystemTabbedPane().getBookingSystemPanel().getBookingSystemControlPanel().getUIBookingSystemEditPanel().replaceEquipment(newEquipment);
-//                            handler.getView().getBookingSystemTabbedPane().getBookingSystemPanel().getBookingSystemControlPanel().getUIBookingSystemFindPanel().replaceEquipment(newEquipment);
-//                            handler.getView().getBookingSystemTabbedPane().getBookingSystemPanel().getBookingSystemControlPanel().getUIBookingSystemAddPanel().replaceEquipment(newEquipment);
                             handler.initialiseDialogs();
                             handler.getView().getBookingSystemTabbedPane().getBookingSystemPanel().getJTableModel().clearBookingList();
                             handler.getView().getBookingSystemTabbedPane().getBookingSystemPanel().getBookingSystemViewPanel().removeAllProblems();
@@ -165,6 +163,9 @@ public class EquipmentHandler implements ActionListener {
 
             	 }
                 break;
+            case "Reset Statistic":
+            	
+            	break;
             case "Remove":
                     this.bookingSystemRemoveEquipment.showDialog();
                     

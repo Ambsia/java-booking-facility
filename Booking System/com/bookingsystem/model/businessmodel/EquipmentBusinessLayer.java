@@ -93,14 +93,19 @@ public class EquipmentBusinessLayer  extends  BusinessLayer implements Iterable<
             if (getDatabaseConnector().isConnectionClosed()) {
                 getDatabaseConnector().createNewCallableStatement("{CALL spCheckForDuplicateEquipmentName(?,?)}");
                 try (CallableStatement csCheckForDupeName = getDatabaseConnector().getCallableStatement()) {
+                	int duplicateEquipmentName = 0;
+                	if (!this.getEqiupment(equipmentID).getEquipmentName().equals(newEquipment.getEquipmentName())) {
+                	System.out.println("Names are not equal, therefore has been changed and needs to be checked. | " + this.getEqiupment(equipmentID).getEquipmentName()  +" | COMPARED TO | " + newEquipment.getEquipmentName()  +"|");
                     csCheckForDupeName.setString(1, newEquipment.getEquipmentName());
-                    System.out.println(newEquipment.getEquipmentName());
+                    //System.out.println(newEquipment.getEquipmentName());
                     csCheckForDupeName.registerOutParameter(2, Types.INTEGER);
                     csCheckForDupeName.execute();
-                    System.out.println("made it here though");
-                    System.out.println(csCheckForDupeName.getInt(2));
-                    if (csCheckForDupeName.getInt(2) == 0) {
-                        System.out.println("made it");
+                    duplicateEquipmentName = csCheckForDupeName.getInt(2);
+                    //System.out.println("made it here though");
+                    //System.out.println(csCheckForDupeName.getInt(2));
+                	}
+                    if (duplicateEquipmentName == 0) {
+                       // System.out.println("made it");
                         getDatabaseConnector().createNewCallableStatement("{CALL spMofifyEquipment(?,?,?)}");
                         try (CallableStatement callableStatement = getDatabaseConnector().getCallableStatement()) {
                             callableStatement.setInt(1, equipmentID);

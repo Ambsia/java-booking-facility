@@ -77,6 +77,8 @@ public class BookingSystemController {
         bookingSystemArchiveControlPanel.addListeners(archiveHandler);
         //
         bookingSystemEquipmentControlPanel.addListeners(equipmentHandler);
+        
+        bookingSystemEquipmentControlPanel.getBookingSystemEquipmenttEditPanel().addResetUsageActionListener(equipmentHandler);
 
 
 

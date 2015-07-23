@@ -18,7 +18,8 @@ public class AccountTableModel extends AbstractTableModel {
 	private static final int COLUMN_ACCOUNT_NAME = 1;
 	private static final int COLUMN_ACCOUNT_LEVEL = 2;
 
-	private static final String[] columnNames = {"Account ID", "Account Name", "Account Level"};
+	private static final String[] columnNames = { "Account ID", "Account Name",
+			"Account Level" };
 
 	private final List<Account> accountList;
 
@@ -55,17 +56,17 @@ public class AccountTableModel extends AbstractTableModel {
 		Account account = accountList.get(rowIndex);
 		Object returnValue;
 		switch (columnIndex) {
-			case COLUMN_NO:
-				returnValue = account.getUserID();
-				break;
-			case COLUMN_ACCOUNT_NAME:
-				returnValue = account.getUsername();
-				break;
-			case COLUMN_ACCOUNT_LEVEL:
-				returnValue = account.getUserLevel();
-				break;
-			default:
-				throw new IllegalArgumentException("Invalid column index");
+		case COLUMN_NO:
+			returnValue = account.getUserID();
+			break;
+		case COLUMN_ACCOUNT_NAME:
+			returnValue = account.getUsername();
+			break;
+		case COLUMN_ACCOUNT_LEVEL:
+			returnValue = account.getUserLevel();
+			break;
+		default:
+			throw new IllegalArgumentException("Invalid column index");
 		}
 		return returnValue;
 	}
@@ -75,15 +76,15 @@ public class AccountTableModel extends AbstractTableModel {
 		Account account = accountList.get(rowIndex);
 		System.out.println(columnIndex);
 		switch (columnIndex) {
-			case COLUMN_NO:
-				break;
-			case COLUMN_ACCOUNT_NAME:
-				break;
-			case COLUMN_ACCOUNT_LEVEL:
-				account.setUserLevel((int)value);
-				break;
-			default:
-				throw new IllegalArgumentException("Invalid column index");
+		case COLUMN_NO:
+			break;
+		case COLUMN_ACCOUNT_NAME:
+			break;
+		case COLUMN_ACCOUNT_LEVEL:
+			account.setUserLevel((int) value);
+			break;
+		default:
+			throw new IllegalArgumentException("Invalid column index");
 		}
 		this.fireTableCellUpdated(rowIndex, columnIndex);
 
@@ -106,12 +107,12 @@ public class AccountTableModel extends AbstractTableModel {
 		}
 	}
 
-// --Commented out by Inspection START (21/06/2015 00:48):
-//	public void removeAccount(Account account) {
-//		this.accountList.remove(account);
-//		this.fireTableDataChanged();
-//	}
-// --Commented out by Inspection STOP (21/06/2015 00:48)
+	// --Commented out by Inspection START (21/06/2015 00:48):
+	// public void removeAccount(Account account) {
+	// this.accountList.remove(account);
+	// this.fireTableDataChanged();
+	// }
+	// --Commented out by Inspection STOP (21/06/2015 00:48)
 
 	public Account getAccount(int id) {
 		for (Account account : this.accountList) {
@@ -132,6 +133,3 @@ public class AccountTableModel extends AbstractTableModel {
 	}
 
 }
-
-
-

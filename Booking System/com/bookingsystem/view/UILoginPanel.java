@@ -1,4 +1,4 @@
-package  com.bookingsystem.view;
+package com.bookingsystem.view;
 
 import javax.swing.*;
 import java.awt.*;
@@ -56,7 +56,7 @@ public class UILoginPanel extends JPanel {
 			}
 
 			@Override
-			public void keyReleased(KeyEvent e)  {
+			public void keyReleased(KeyEvent e) {
 			}
 		});
 
@@ -73,18 +73,15 @@ public class UILoginPanel extends JPanel {
 			}
 
 			@Override
-			public void keyReleased(KeyEvent e)  {
+			public void keyReleased(KeyEvent e) {
 			}
 		});
 	}
 
-
-
-
 	public void addSubmitListener(ActionListener al) {
 		btnLogin.addActionListener(al);
 	}
-	
+
 	public void addClearListener(ActionListener al) {
 		btnClear.addActionListener(al);
 	}
@@ -96,11 +93,10 @@ public class UILoginPanel extends JPanel {
 	public String getLoginPasswordText() {
 		return txtLoginPassword.getText();
 	}
-	
+
 	public void clearTextBoxes() {
 		this.txtLoginPassword.setText("");
 		this.txtLoginUsername.setText("");
 	}
-
 
 }

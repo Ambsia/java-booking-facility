@@ -10,27 +10,34 @@ import java.util.Properties;
  */
 public class ReturnSpecifiedPropertyValues {
 
-    private final Properties properties;
+	private final Properties properties;
 
-    //pass properties through if we have more property files..
-    public ReturnSpecifiedPropertyValues(String filePath) {
+	// pass properties through if we have more property files..
+	public ReturnSpecifiedPropertyValues(String filePath) {
 
-        properties = new Properties();
-        try {
-            InputStream inputStream = getClass().getResourceAsStream(filePath);
-            if (inputStream != null) {
-                properties.load(inputStream);
-            } else {
-                throw new FileNotFoundException("Property file '" + filePath + "' not found.");
-            }
-        } catch (IOException e) {
-            MessageBox.errorMessageBox("There was an issue whilst we were trying to open the property file!\n" + "Does this make any sense to you.." + e.toString() + "?");
-        }
-    }
+		properties = new Properties();
+		try {
+			InputStream inputStream = getClass().getResourceAsStream(filePath);
+			if (inputStream != null) {
+				properties.load(inputStream);
+			} else {
+				throw new FileNotFoundException("Property file '" + filePath
+						+ "' not found.");
+			}
+		} catch (IOException e) {
+			MessageBox
+					.errorMessageBox("There was an issue whilst we were trying to open the property file!\n"
+							+ "Does this make any sense to you.."
+							+ e.toString() + "?");
+		}
+	}
 
-    public String getDatabaseConnectionString() {
-        return "jdbc:sqlserver://" + properties.getProperty("server") + ":" + properties.getProperty("port") + ";user=" + properties.getProperty("user") + ";password=" + properties.getProperty("password") + ";databaseName=" +  properties.getProperty("database") + "";
-    }
-    
-    
+	public String getDatabaseConnectionString() {
+		return "jdbc:sqlserver://" + properties.getProperty("server") + ":"
+				+ properties.getProperty("port") + ";user="
+				+ properties.getProperty("user") + ";password="
+				+ properties.getProperty("password") + ";databaseName="
+				+ properties.getProperty("database") + "";
+	}
+
 }

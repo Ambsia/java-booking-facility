@@ -22,6 +22,6 @@ public class UIBookingSystemRemovePanel extends UIBookingSystemDialogPanel {
 	public int showDialog() {
 		return JOptionPane.showOptionDialog(null, this, "Remove Booking",
 				JOptionPane.PLAIN_MESSAGE, JOptionPane.PLAIN_MESSAGE, null,
-				new String[]{"Remove", "Cancel"}, "Add");
+				new String[] { "Remove", "Cancel" }, "Add");
 	}
 }

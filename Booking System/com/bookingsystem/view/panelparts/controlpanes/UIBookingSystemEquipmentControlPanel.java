@@ -15,7 +15,8 @@ import javax.swing.JButton;
 /**
  * Author: [Alex]
  */
-public class UIBookingSystemEquipmentControlPanel extends UIBookingSystemControlPanel {
+public class UIBookingSystemEquipmentControlPanel extends
+		UIBookingSystemControlPanel {
 
 	/**
 	 * 
@@ -29,7 +30,8 @@ public class UIBookingSystemEquipmentControlPanel extends UIBookingSystemControl
 		super();
 		super.setColumnns(4);
 		setLayout(new GridBagLayout());
-		setButtonNames(new String[] {"Refresh", "Import","Add","Edit","Remove"});
+		setButtonNames(new String[] { "Refresh", "Import", "Add", "Edit",
+				"Remove" });
 		setButtonDimension(new Dimension(125, 25));
 		createControlPanel();
 
@@ -38,25 +40,24 @@ public class UIBookingSystemEquipmentControlPanel extends UIBookingSystemControl
 		bookingSystemEquipmentRemovePanel = new UIBookingSystemRemoveEquipment();
 	}
 
-	
 	public void restrictControls() {
-	        ArrayList<JButton> jButtonArrayList = getControlButtonList();
-	        for(JButton jButton : jButtonArrayList) {
-	            if (jButton.getText() == "Import" || jButton.getText() == "Add"|| 
-	            		jButton.getText() == "Edit"||jButton.getText() == "Remove") {
-	                jButton.setText("No Access");
-	            }
-	        }
+		ArrayList<JButton> jButtonArrayList = getControlButtonList();
+		for (JButton jButton : jButtonArrayList) {
+			if (jButton.getText() == "Import" || jButton.getText() == "Add"
+					|| jButton.getText() == "Edit"
+					|| jButton.getText() == "Remove") {
+				jButton.setText("No Access");
+			}
+		}
 	}
-	  
+
 	public UIBookingSystemEditEquipment getBookingSystemEquipmenttEditPanel() {
-		return  bookingSystemEquipmentEditPanel;
+		return bookingSystemEquipmentEditPanel;
 	}
 
 	public UIBookingSystemRemoveEquipment getBookingSystemEquipmentRemovePanel() {
 		return bookingSystemEquipmentRemovePanel;
 	}
-
 
 	public UIBookingSystemAddEquipment getBookingSystemEquipmenttAddPanel() {
 		return bookingSystemEquipmentAddPanel;

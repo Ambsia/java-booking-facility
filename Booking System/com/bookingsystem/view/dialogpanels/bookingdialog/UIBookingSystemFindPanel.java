@@ -25,8 +25,8 @@ public class UIBookingSystemFindPanel extends UIBookingSystemDialogPanel {
 	@Override
 	public int showDialog() {
 		return JOptionPane.showOptionDialog(null, this, "Find Booking",
-				JOptionPane.PLAIN_MESSAGE, JOptionPane.PLAIN_MESSAGE,null,
-				new String[] {"Find", "Cancel" }, "Add");
+				JOptionPane.PLAIN_MESSAGE, JOptionPane.PLAIN_MESSAGE, null,
+				new String[] { "Find", "Cancel" }, "Add");
 	}
 
 }

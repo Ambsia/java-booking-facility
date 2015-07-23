@@ -9,7 +9,8 @@ import java.awt.*;
 /**
  * Author: [Alex]
  */
-public class UIBookingSystemAdminControlPanel extends UIBookingSystemControlPanel {
+public class UIBookingSystemAdminControlPanel extends
+		UIBookingSystemControlPanel {
 
 	/**
 	 * 
@@ -22,7 +23,9 @@ public class UIBookingSystemAdminControlPanel extends UIBookingSystemControlPane
 	public UIBookingSystemAdminControlPanel() {
 		super();
 		setLayout(new GridBagLayout());
-		setButtonNames(new String[] {"Load Accounts","Add Account","Remove Account","View Activity", "Change Password", "Change Level"});
+		setButtonNames(new String[] { "Load Accounts", "Add Account",
+				"Remove Account", "View Activity", "Change Password",
+				"Change Level" });
 		setButtonDimension(new Dimension(138, 25));
 		createControlPanel();
 
@@ -32,7 +35,7 @@ public class UIBookingSystemAdminControlPanel extends UIBookingSystemControlPane
 	}
 
 	public UIBookingSystemChangePasswordPanel getBookingSystemChangePasswordPanel() {
-		return  bookingSystemChangePasswordPanel;
+		return bookingSystemChangePasswordPanel;
 	}
 
 	public UIBookingSystemChangeUserLevel getBookingSystemChangeUserLevel() {

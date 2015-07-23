@@ -21,11 +21,13 @@ public class LogTableModel extends AbstractTableModel {
 	private static final int COLUMN_TIMESTAMP = 1;
 	private static final int COLUMN_CLASS = 2;
 	private static final int COLUMN_EVENT = 3;
-	private static final int COLUMN_ID_MODIFIED= 4;
+	private static final int COLUMN_ID_MODIFIED = 4;
 
-	private static final DateFormat BOOKING_TIME_FORMAT = new SimpleDateFormat("dd/MM/yy - HH:mm", Locale.ENGLISH);
+	private static final DateFormat BOOKING_TIME_FORMAT = new SimpleDateFormat(
+			"dd/MM/yy - HH:mm", Locale.ENGLISH);
 
-	private final String[] columnNames = {"ID", "Timestamp", "Class", "Event", "ID Modified"};
+	private final String[] columnNames = { "ID", "Timestamp", "Class", "Event",
+			"ID Modified" };
 	private final List<Log> logList;
 
 	public LogTableModel(List<Log> logList) {
@@ -53,23 +55,24 @@ public class LogTableModel extends AbstractTableModel {
 		Log log = logList.get(rowIndex);
 		Object returnValue;
 		switch (columnIndex) {
-			case COLUMN_NO:
-				returnValue = log.getLogID();
-				break;
-			case COLUMN_EVENT:
-				returnValue = log.getEventLogged();
-				break;
-			case COLUMN_CLASS:
-				returnValue = log.getClassEvent();
-				break;
-			case COLUMN_TIMESTAMP:
-				returnValue = BOOKING_TIME_FORMAT.format(log.getDateAndTimeOfEvent());
-				break;
-			case COLUMN_ID_MODIFIED:
-				returnValue = log.getIdPlayedWith();
-				break;
-			default:
-				throw new IllegalArgumentException("Invalid column index");
+		case COLUMN_NO:
+			returnValue = log.getLogID();
+			break;
+		case COLUMN_EVENT:
+			returnValue = log.getEventLogged();
+			break;
+		case COLUMN_CLASS:
+			returnValue = log.getClassEvent();
+			break;
+		case COLUMN_TIMESTAMP:
+			returnValue = BOOKING_TIME_FORMAT.format(log
+					.getDateAndTimeOfEvent());
+			break;
+		case COLUMN_ID_MODIFIED:
+			returnValue = log.getIdPlayedWith();
+			break;
+		default:
+			throw new IllegalArgumentException("Invalid column index");
 		}
 
 		return returnValue;
@@ -86,6 +89,7 @@ public class LogTableModel extends AbstractTableModel {
 		}
 		return getValueAt(0, columnIndex).getClass();
 	}
+
 	public void clearArchiveList() {
 		this.logList.clear();
 	}
@@ -98,5 +102,3 @@ public class LogTableModel extends AbstractTableModel {
 	}
 
 }
-
-

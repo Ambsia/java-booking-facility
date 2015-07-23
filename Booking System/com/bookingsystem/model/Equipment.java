@@ -1,9 +1,7 @@
-package  com.bookingsystem.model;
+package com.bookingsystem.model;
 
+public class Equipment {
 
-public final class Equipment {
-	
-	
 	private int equipmentID;
 	private String equipmentName;
 	private String equipmentDescription;
@@ -15,31 +13,43 @@ public final class Equipment {
 		this.equipmentDescription = "";
 	}
 
-// --Commented out by Inspection START (21/06/2015 00:54):
-//	public void setEquipmentName(String equipmentName) {
-//		this.equipmentName = equipmentName;
-//	}
-// --Commented out by Inspection STOP (21/06/2015 00:54)
+	// --Commented out by Inspection START (21/06/2015 00:54):
+	// public void setEquipmentName(String equipmentName) {
+	// this.equipmentName = equipmentName;
+	// }
+	// --Commented out by Inspection STOP (21/06/2015 00:54)
 
-	public int getEquipmentID(){ return this.equipmentID;}
+	public int getEquipmentID() {
+		return this.equipmentID;
+	}
 
-	public void setEquipmentID(int equipmentID) {this.equipmentID = equipmentID;}
+	public void setEquipmentID(int equipmentID) {
+		this.equipmentID = equipmentID;
+	}
 
 	public String getEquipmentName() {
 		return this.equipmentName;
 	}
-	
+
 	public int getEquipmentUsage() {
 		return this.equipmentUsage;
 	}
 
-	public void setEquipmentUsage(int equipmentUsage) { this.equipmentUsage = equipmentUsage;}
+	public void setEquipmentUsage(int equipmentUsage) {
+		this.equipmentUsage = equipmentUsage;
+	}
 
-	public void setEquipmentName(String equipmentName) { this.equipmentName = equipmentName; }
+	public void setEquipmentName(String equipmentName) {
+		this.equipmentName = equipmentName;
+	}
 
-	public String getEquipmentDescription() {return  this.equipmentDescription;}
+	public String getEquipmentDescription() {
+		return this.equipmentDescription;
+	}
 
-	public void setEquipmentDescription(String equipmentDescription) { this.equipmentDescription = equipmentDescription;}
+	public void setEquipmentDescription(String equipmentDescription) {
+		this.equipmentDescription = equipmentDescription;
+	}
 
 	public void increaseEquipmentUsage() {
 		this.equipmentUsage++;
@@ -57,6 +67,5 @@ public final class Equipment {
 	public boolean verify() {
 		return !this.equipmentName.isEmpty();
 	}
-
 
 }

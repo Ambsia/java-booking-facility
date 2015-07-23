@@ -15,6 +15,7 @@ public final class Account {
 	private String hashedPassword;
 	private int userLevel;
 	private String userSalt;
+
 	public int getUserLevel() {
 		return userLevel;
 	}
@@ -27,7 +28,9 @@ public final class Account {
 		this.userID = userID;
 	}
 
-	public int getUserID() { return this.userID; }
+	public int getUserID() {
+		return this.userID;
+	}
 
 	public String getUsername() {
 		return this.userLogonName;
@@ -37,9 +40,12 @@ public final class Account {
 		return this.hashedPassword;
 	}
 
-	public String getUserSalt() {return this.userSalt;}
+	public String getUserSalt() {
+		return this.userSalt;
+	}
 
-	public Account(int userID, int userLevel, String userLogonName,	String unHashedPassword) {
+	public Account(int userID, int userLevel, String userLogonName,
+			String unHashedPassword) {
 		this.userID = userID;
 		this.userLevel = userLevel;
 		this.userLogonName = userLogonName.trim();
@@ -55,12 +61,15 @@ public final class Account {
 	private void getSalt(String username) {
 		Connection con;
 		try {
-			ReturnSpecifiedPropertyValues returnSpecifiedPropertyValues = new ReturnSpecifiedPropertyValues("sqlconfig.properties");
-			con = DriverManager.getConnection(returnSpecifiedPropertyValues.getDatabaseConnectionString());
+			ReturnSpecifiedPropertyValues returnSpecifiedPropertyValues = new ReturnSpecifiedPropertyValues(
+					"sqlconfig.properties");
+			con = DriverManager.getConnection(returnSpecifiedPropertyValues
+					.getDatabaseConnectionString());
 
 			Statement stmt = con.createStatement();
-			ResultSet rs = stmt.executeQuery("EXECUTE spGetSalt '" + username + "'");
-			if(rs.next())  {
+			ResultSet rs = stmt.executeQuery("EXECUTE spGetSalt '" + username
+					+ "'");
+			if (rs.next()) {
 				this.userSalt = rs.getString(1);
 			} else {
 				generateSalt();
@@ -68,25 +77,34 @@ public final class Account {
 			stmt.close();
 			con.close();
 		} catch (SQLException e) {
-			MessageBox.errorMessageBox("There was an issue while we were trying to hash something..!\n" + "Does this make sense you to.." + e.toString() + "?");
+			MessageBox
+					.errorMessageBox("There was an issue while we were trying to hash something..!\n"
+							+ "Does this make sense you to.."
+							+ e.toString()
+							+ "?");
 		}
 	}
 
-	public boolean changePassword(int userID, String username, String newPassword) {
+	public boolean changePassword(int userID, String username,
+			String newPassword) {
 		String newPasswordHashed = SHA1_HASH(newPassword, username);
 		Connection con;
 		try {
-			ReturnSpecifiedPropertyValues returnSpecifiedPropertyValues = new ReturnSpecifiedPropertyValues("sqlconfig.properties");
-			con = DriverManager.getConnection(returnSpecifiedPropertyValues.getDatabaseConnectionString());
+			ReturnSpecifiedPropertyValues returnSpecifiedPropertyValues = new ReturnSpecifiedPropertyValues(
+					"sqlconfig.properties");
+			con = DriverManager.getConnection(returnSpecifiedPropertyValues
+					.getDatabaseConnectionString());
 
-			CallableStatement callableStatement = con.prepareCall("{CALL spChangePassword(?,?)}");
+			CallableStatement callableStatement = con
+					.prepareCall("{CALL spChangePassword(?,?)}");
 			callableStatement.setInt(1, userID);
 			callableStatement.setString(2, newPasswordHashed);
 			callableStatement.execute();
 			return true;
 		} catch (SQLException e) {
 			e.printStackTrace();
-			MessageBox.errorMessageBox("There was an issue whilst attempting to change an accounts password.");
+			MessageBox
+					.errorMessageBox("There was an issue whilst attempting to change an accounts password.");
 		}
 		return false;
 	}
@@ -94,16 +112,20 @@ public final class Account {
 	public boolean changeUserLevel(int userID, int newLevel) {
 		Connection con;
 		try {
-			ReturnSpecifiedPropertyValues returnSpecifiedPropertyValues = new ReturnSpecifiedPropertyValues("sqlconfig.properties");
-			con = DriverManager.getConnection(returnSpecifiedPropertyValues.getDatabaseConnectionString());
+			ReturnSpecifiedPropertyValues returnSpecifiedPropertyValues = new ReturnSpecifiedPropertyValues(
+					"sqlconfig.properties");
+			con = DriverManager.getConnection(returnSpecifiedPropertyValues
+					.getDatabaseConnectionString());
 
-			CallableStatement callableStatement = con.prepareCall("{CALL spChangeUserLevel(?,?)}");
+			CallableStatement callableStatement = con
+					.prepareCall("{CALL spChangeUserLevel(?,?)}");
 			callableStatement.setInt(1, userID);
 			callableStatement.setInt(2, newLevel);
 			callableStatement.execute();
 			return true;
 		} catch (SQLException e) {
-			MessageBox.errorMessageBox("There was an issue whilst attempting to change an accounts user level.");
+			MessageBox
+					.errorMessageBox("There was an issue whilst attempting to change an accounts user level.");
 		}
 		return false;
 	}
@@ -117,18 +139,15 @@ public final class Account {
 			salt = 0;
 		}
 		System.out.println(salt);
-		this.userSalt = ""+salt;
+		this.userSalt = "" + salt;
 	}
 
 	@Override
 	public String toString() {
-		return "Account{" +
-				"userID=" + userID +
-				", userLogonName='" + userLogonName + '\'' +
-				", hashedPassword='" + hashedPassword + '\'' +
-				", userLevel=" + userLevel +
-				", userSalt='" + userSalt + '\'' +
-				'}';
+		return "Account{" + "userID=" + userID + ", userLogonName='"
+				+ userLogonName + '\'' + ", hashedPassword='" + hashedPassword
+				+ '\'' + ", userLevel=" + userLevel + ", userSalt='" + userSalt
+				+ '\'' + '}';
 	}
 
 }

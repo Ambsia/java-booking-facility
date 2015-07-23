@@ -15,12 +15,11 @@ class BusinessLayer {
 	}
 
 	DatabaseConnector getDatabaseConnector() {
-		return  databaseConnector;
+		return databaseConnector;
 	}
 
-	//invoke the connection here and delegate it across
-	static java.sql.Date convertFromJAVADateToSQLDate(
-			java.util.Date javaDate) {
+	// invoke the connection here and delegate it across
+	static java.sql.Date convertFromJAVADateToSQLDate(java.util.Date javaDate) {
 		java.sql.Date sqlDate = null;
 		if (javaDate != null) {
 			sqlDate = new Date(javaDate.getTime());

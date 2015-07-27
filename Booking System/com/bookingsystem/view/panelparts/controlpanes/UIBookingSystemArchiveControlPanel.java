@@ -7,23 +7,23 @@ import java.awt.event.ActionListener;
  * Created by Alex on 30/05/2015
  */
 public class UIBookingSystemArchiveControlPanel extends
-		UIBookingSystemControlPanel {
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 3009865919675018585L;
+        UIBookingSystemControlPanel {
+    /**
+     *
+     */
+    private static final long serialVersionUID = 3009865919675018585L;
 
-	public UIBookingSystemArchiveControlPanel() {
-		super();
-		setLayout(new GridBagLayout());
-		setButtonNames(new String[] { "Refresh", "View Statistics" });
-		setButtonDimension(new Dimension(125, 25));
-		createControlPanel();
-	}
+    public UIBookingSystemArchiveControlPanel() {
+        super();
+        setLayout(new GridBagLayout());
+        setButtonNames(new String[]{"Refresh", "View Statistics"});
+        setButtonDimension(new Dimension(125, 25));
+        createControlPanel();
+    }
 
-	@Override
-	public void addListeners(ActionListener al) {
-		super.addListeners(al);
-	}
+    @Override
+    public void addListeners(ActionListener al) {
+        super.addListeners(al);
+    }
 
 }

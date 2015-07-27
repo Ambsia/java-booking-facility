@@ -13,61 +13,61 @@ import java.util.Date;
  */
 
 public class LoginHandler implements ActionListener {
-	private Account accountModel;
-	private final Handler handler;
+    private final Handler handler;
+    private Account accountModel;
 
-	public LoginHandler(Handler handler) {
-		this.handler = handler;
-		accountModel = null;
-	}
+    public LoginHandler(Handler handler) {
+        this.handler = handler;
+        accountModel = null;
+    }
 
-	@Override
-	public void actionPerformed(ActionEvent arg0) {
-		Log log = new Log(arg0.getActionCommand(), this.getClass()
-				.getSimpleName(), new Date());
-		switch (arg0.getActionCommand()) {
-		case "Login":
-			accountModel = handler.getAccountBusinessLayer().retrieveAccount(
-					handler.getView().getLoginPanel().getLoginUsernameText(),
-					handler.getView().getLoginPanel().getLoginPasswordText());
-			// accountModel =
-			// handler.getAccountBusinessLayer().retrieveAccount("alex",
-			// "donkey");
+    @Override
+    public void actionPerformed(ActionEvent arg0) {
+        Log log = new Log(arg0.getActionCommand(), this.getClass()
+                .getSimpleName(), new Date());
+        switch (arg0.getActionCommand()) {
+            case "Login":
+                accountModel = handler.getAccountBusinessLayer().retrieveAccount(
+                        handler.getView().getLoginPanel().getLoginUsernameText(),
+                        handler.getView().getLoginPanel().getLoginPasswordText());
+                // accountModel =
+                // handler.getAccountBusinessLayer().retrieveAccount("alex",
+                // "donkey");
 
-			if (handler.getAccountBusinessLayer().isAccountFound()) {
-				handler.getLoggerBusinessLayer().setAccountCurrentlyLoggedIn(
-						accountModel);
-				handler.getView().removeLoginPanel();
-				handler.getView().showBookingSystemPanel();
-				if (accountModel != null && accountModel.getUserLevel() >= 2) {
-					handler.getView().getBookingSystemTabbedPane()
-							.showAdminPanel();
-				} else if (accountModel.getUserLevel() == 0) {
-					System.out.println("true");
-					handler.getView().getBookingSystemTabbedPane()
-							.getBookingSystemPanel()
-							.getBookingSystemControlPanel().restrictControls();
-					handler.getView().getBookingSystemTabbedPane()
-							.getBookingSystemEquipmentPanel()
-							.getBookingSystemEquipmentControlPanel()
-							.restrictControls();
-				}
-				log.setAccountIDCreated(accountModel.getUserID());
-				handler.getView().setVisible(true);
-			} else {
-				MessageBox.errorMessageBox("Incorrect password or login.");
-			}
-			break;
-		case "Clear":
-			handler.getView().getLoginPanel().clearTextBoxes();
-			break;
-		default:
-			System.out.println("handler not found for "
-					+ arg0.getActionCommand());
-			break;
-		}
-		if (accountModel != null) {
-			handler.getLoggerBusinessLayer().insertLog(log);
-		}
-	}
+                if (handler.getAccountBusinessLayer().isAccountFound()) {
+                    handler.getLoggerBusinessLayer().setAccountCurrentlyLoggedIn(
+                            accountModel);
+                    handler.getView().removeLoginPanel();
+                    handler.getView().showBookingSystemPanel();
+                    if (accountModel != null && accountModel.getUserLevel() >= 2) {
+                        handler.getView().getBookingSystemTabbedPane()
+                                .showAdminPanel();
+                    } else if (accountModel.getUserLevel() == 0) {
+                        //System.out.println("true");
+                        handler.getView().getBookingSystemTabbedPane()
+                                .getBookingSystemPanel()
+                                .getBookingSystemControlPanel().restrictControls();
+                        handler.getView().getBookingSystemTabbedPane()
+                                .getBookingSystemEquipmentPanel()
+                                .getBookingSystemEquipmentControlPanel()
+                                .restrictControls();
+                    }
+                    log.setAccountIDCreated(accountModel.getUserID());
+                    handler.getView().setVisible(true);
+                } else {
+                    MessageBox.errorMessageBox("Incorrect password or login.");
+                }
+                break;
+            case "Clear":
+                handler.getView().getLoginPanel().clearTextBoxes();
+                break;
+            default:
+                System.out.println("handler not found for "
+                        + arg0.getActionCommand());
+                break;
+        }
+        if (accountModel != null) {
+            handler.getLoggerBusinessLayer().insertLog(log);
+        }
+    }
 }

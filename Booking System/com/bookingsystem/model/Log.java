@@ -7,114 +7,112 @@ import java.util.Date;
  */
 public final class Log {
 
-	public int getLogID() {
-		return logID;
-	}
+    private final String eventLogged;
+    private final Date dateAndTimeOfEvent;
+    private final String classEvent;
+    private final int accountIDLoggedIn;
+    private int logID;
+    private int bookingIDInserted;
+    private int bookingIDEdited;
+    private int bookingIDDeleted;
+    private int accountIDCreated;
+    private int accountIDDeleted;
+    private int idPlayedWith;
+    public Log(String eventLogged, String classEvent, Date dateAndTimeOfEvent) {
+        this.eventLogged = eventLogged;
+        this.classEvent = classEvent;
+        this.dateAndTimeOfEvent = dateAndTimeOfEvent;
 
-	public void setLogID(int logID) {
-		this.logID = logID;
-	}
+        this.logID = 0;
+        this.bookingIDDeleted = -1;
+        this.bookingIDEdited = -1;
+        this.bookingIDInserted = -1;
+        this.accountIDCreated = -1;
+        this.accountIDDeleted = -1;
+        this.accountIDLoggedIn = -1;
+        this.idPlayedWith = 0;
+    }
 
-	private int logID;
-	private final String eventLogged;
-	private final Date dateAndTimeOfEvent;
-	private final String classEvent;
+    public int getLogID() {
+        return logID;
+    }
 
-	private int bookingIDInserted;
-	private int bookingIDEdited;
-	private int bookingIDDeleted;
-	private int accountIDCreated;
-	private int accountIDDeleted;
-	private final int accountIDLoggedIn;
-	private int idPlayedWith;
+    public void setLogID(int logID) {
+        this.logID = logID;
+    }
 
-	public Log(String eventLogged, String classEvent, Date dateAndTimeOfEvent) {
-		this.eventLogged = eventLogged;
-		this.classEvent = classEvent;
-		this.dateAndTimeOfEvent = dateAndTimeOfEvent;
+    public Date getDateAndTimeOfEvent() {
+        return dateAndTimeOfEvent;
+    }
 
-		this.logID = 0;
-		this.bookingIDDeleted = -1;
-		this.bookingIDEdited = -1;
-		this.bookingIDInserted = -1;
-		this.accountIDCreated = -1;
-		this.accountIDDeleted = -1;
-		this.accountIDLoggedIn = -1;
-		this.idPlayedWith = 0;
-	}
+    public String getEventLogged() {
+        return eventLogged;
+    }
 
-	public Date getDateAndTimeOfEvent() {
-		return dateAndTimeOfEvent;
-	}
+    public String getClassEvent() {
+        return classEvent;
+    }
 
-	public String getEventLogged() {
-		return eventLogged;
-	}
+    // --Commented out by Inspection START (21/06/2015 00:49):
+    // public int getAccountIDLoggedIn() {
+    // return accountIDLoggedIn;
+    // }
+    // --Commented out by Inspection STOP (21/06/2015 00:49)
 
-	public String getClassEvent() {
-		return classEvent;
-	}
+    public int getIdPlayedWith() {
+        return idPlayedWith;
+    }
 
-	// --Commented out by Inspection START (21/06/2015 00:49):
-	// public int getAccountIDLoggedIn() {
-	// return accountIDLoggedIn;
-	// }
-	// --Commented out by Inspection STOP (21/06/2015 00:49)
+    public void setIdPlayedWith(int idPlayedWith) {
+        this.idPlayedWith = idPlayedWith;
+    }
 
-	public void setAccountIDDeleted(int accountIDDeleted) {
-		this.accountIDDeleted = accountIDDeleted;
-	}
+    public int getAccountIDDeleted() {
+        return accountIDDeleted;
+    }
 
-	public void setBookingIDInserted(int bookingIDInserted) {
-		this.bookingIDInserted = bookingIDInserted;
-	}
+    public void setAccountIDDeleted(int accountIDDeleted) {
+        this.accountIDDeleted = accountIDDeleted;
+    }
 
-	public void setBookingIDEdited(int bookingIDEdited) {
-		this.bookingIDEdited = bookingIDEdited;
-	}
+    public int getBookingIDInserted() {
+        return bookingIDInserted;
+    }
 
-	public void setBookingIDDeleted(int bookingIDDeleted) {
-		this.bookingIDDeleted = bookingIDDeleted;
-	}
+    public void setBookingIDInserted(int bookingIDInserted) {
+        this.bookingIDInserted = bookingIDInserted;
+    }
 
-	public void setAccountIDCreated(int accountIDCreated) {
-		this.accountIDCreated = accountIDCreated;
-	}
+    public int getBookingIDEdited() {
+        return bookingIDEdited;
+    }
 
-	public void setIdPlayedWith(int idPlayedWith) {
-		this.idPlayedWith = idPlayedWith;
-	}
+    public void setBookingIDEdited(int bookingIDEdited) {
+        this.bookingIDEdited = bookingIDEdited;
+    }
 
-	public int getIdPlayedWith() {
-		return idPlayedWith;
-	}
+    public int getBookingIDDeleted() {
+        return bookingIDDeleted;
+    }
 
-	public int getAccountIDDeleted() {
-		return accountIDDeleted;
-	}
+    public void setBookingIDDeleted(int bookingIDDeleted) {
+        this.bookingIDDeleted = bookingIDDeleted;
+    }
 
-	public int getBookingIDInserted() {
-		return bookingIDInserted;
-	}
+    public int getAccountIDCreated() {
+        return accountIDCreated;
+    }
 
-	public int getBookingIDEdited() {
-		return bookingIDEdited;
-	}
+    public void setAccountIDCreated(int accountIDCreated) {
+        this.accountIDCreated = accountIDCreated;
+    }
 
-	public int getBookingIDDeleted() {
-		return bookingIDDeleted;
-	}
-
-	public int getAccountIDCreated() {
-		return accountIDCreated;
-	}
-
-	@Override
-	public String toString() {
-		return "Log{" + "eventLogged='" + eventLogged + '\''
-				+ ", dateAndTimeOfEvent=" + dateAndTimeOfEvent
-				+ ", classEvent='" + classEvent + '\'' + ", idPlayedWith="
-				+ idPlayedWith + '}';
-	}
+    @Override
+    public String toString() {
+        return "Log{" + "eventLogged='" + eventLogged + '\''
+                + ", dateAndTimeOfEvent=" + dateAndTimeOfEvent
+                + ", classEvent='" + classEvent + '\'' + ", idPlayedWith="
+                + idPlayedWith + '}';
+    }
 
 }

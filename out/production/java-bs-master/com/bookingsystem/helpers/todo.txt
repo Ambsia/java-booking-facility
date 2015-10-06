@@ -1,0 +1,9 @@
+add functionallity of json object encoder/decoder
+create method that retreives logs for specific events
+- BookingHandler
+  - Import
+  - Add
+  - Remove
+  ...
+- EquipmentHandler
+- AccountHandler

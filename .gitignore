@@ -29,20 +29,6 @@ bin
 .classpath
 .project
 *.xlsx
-*.iml
-*.png
-*.json
-*.txt
-*.jar
-META-INF
-images
-out
-*.userlibraries
-sp
-*.sql
-*.gitattributes
-
-dataintext
 # =========================
 # Operating System Files
 # =========================

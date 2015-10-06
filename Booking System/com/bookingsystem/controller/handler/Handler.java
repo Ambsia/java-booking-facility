@@ -1,8 +1,14 @@
 package com.bookingsystem.controller.handler;
 
-import com.bookingsystem.model.businessmodel.*;
-import com.bookingsystem.view.BookingSystemUILoader;
+import com.bookingsystem.model.history.History;
 import org.apache.commons.collections.IteratorUtils;
+
+import com.bookingsystem.model.businessmodel.AccountBusinessLayer;
+import com.bookingsystem.model.businessmodel.AccountManagementBusinessLayer;
+import com.bookingsystem.model.businessmodel.ArchiveBusinessLayer;
+import com.bookingsystem.model.businessmodel.BookingBusinessLayer;
+import com.bookingsystem.model.businessmodel.LoggerBusinessLayer;
+import com.bookingsystem.view.BookingSystemUILoader;
 
 /**
  * Created by Alex on 04/05/2015
@@ -17,13 +23,16 @@ public class Handler {
     private final LoggerBusinessLayer loggerBusinessLayer;
     private final ArchiveBusinessLayer archiveBusinessLayer;
     private final BookingSystemUILoader view;
+    private final History history;
 
     public Handler(AccountBusinessLayer accountBusinessLayer,
                    AccountManagementBusinessLayer accountManagementBusinessLayer,
                    BookingBusinessLayer bookingBusinessLayer,
                    LoggerBusinessLayer loggerBusinessLayer,
                    BookingSystemUILoader view,
-                   ArchiveBusinessLayer archiveBusinessLayer) {
+                   ArchiveBusinessLayer archiveBusinessLayer,
+                   History history) {
+        this.history = history;
         this.accountBusinessLayer = accountBusinessLayer;
         this.accountManagementBusinessLayer = accountManagementBusinessLayer;
         this.bookingBusinessLayer = bookingBusinessLayer;
@@ -55,6 +64,8 @@ public class Handler {
     public ArchiveBusinessLayer getArchiveBusinessLayer() {
         return archiveBusinessLayer;
     }
+
+    public History getHistory() {return  history;}
 
     void initialiseDialogs() {
         view.getBookingSystemTabbedPane()

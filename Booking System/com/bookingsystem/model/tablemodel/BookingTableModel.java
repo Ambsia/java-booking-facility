@@ -1,13 +1,14 @@
 package com.bookingsystem.model.tablemodel;
 
-import com.bookingsystem.model.Booking;
-import com.bookingsystem.model.Equipment;
-
-import javax.swing.table.AbstractTableModel;
 import java.util.Collections;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
+
+import javax.swing.table.AbstractTableModel;
+
+import com.bookingsystem.model.Booking;
+import com.bookingsystem.model.Equipment;
 
 /**
  * Author: [Alex] on [$Date]

@@ -1,7 +1,14 @@
 package com.bookingsystem.view.dialogpanels.equipmentdialog;
 
-import javax.swing.*;
-import java.awt.*;
+import java.awt.Component;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
+
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
 
 public class UIBookingSystemAddEquipment extends JPanel {
 
@@ -12,6 +19,7 @@ public class UIBookingSystemAddEquipment extends JPanel {
     private Component[] components;
 
     public UIBookingSystemAddEquipment() {
+    	
         txtEquipmentName = new JTextField(15);
         txtEquipmentDesc = new JTextField(15);
         setLayout(new GridBagLayout());

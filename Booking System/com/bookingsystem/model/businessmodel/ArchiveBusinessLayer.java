@@ -1,14 +1,14 @@
 package com.bookingsystem.model.businessmodel;
 
-import com.bookingsystem.helpers.MessageBox;
-import com.bookingsystem.model.Equipment;
-
 import java.sql.CallableStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
 import java.util.ArrayList;
 import java.util.Date;
+
+import com.bookingsystem.helpers.MessageBox;
+import com.bookingsystem.model.Equipment;
 
 /**
  * Created by Alex on 31/05/2015

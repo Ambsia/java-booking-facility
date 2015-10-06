@@ -1,9 +1,17 @@
 package com.bookingsystem.view.dialogpanels.accountdialog;
 
-import com.bookingsystem.helpers.TextFieldRestriction;
+import java.awt.Component;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
 
-import javax.swing.*;
-import java.awt.*;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JPasswordField;
+import javax.swing.JTextField;
+
+import com.bookingsystem.helpers.TextFieldRestriction;
 
 /**
  * Created by Alex on 04/05/2015
@@ -22,12 +30,14 @@ public class UIBookingSystemAccountAddPanel extends JPanel {
     private Component[] components;
 
     public UIBookingSystemAccountAddPanel() {
+    	
         txtAccountName = new JTextField(5);
         txtAccountPassword = new JPasswordField(5);
         txtAccountLevel = new JTextField(5);
         txtAccountLevel.setDocument(new TextFieldRestriction());
         setLayout(new GridBagLayout());
         addDefaultComponentsToPanel();
+        
 
     }
 

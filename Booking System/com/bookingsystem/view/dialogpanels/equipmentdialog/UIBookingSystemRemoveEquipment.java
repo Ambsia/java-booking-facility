@@ -1,7 +1,10 @@
 package com.bookingsystem.view.dialogpanels.equipmentdialog;
 
-import javax.swing.*;
-import java.awt.*;
+import java.awt.Font;
+
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 
 public class UIBookingSystemRemoveEquipment extends JPanel {
 
@@ -9,6 +12,7 @@ public class UIBookingSystemRemoveEquipment extends JPanel {
     private JLabel lblWarningMessage;
 
     public UIBookingSystemRemoveEquipment() {
+    	
         Font f = new Font("Arial", Font.PLAIN, 14);
         lblWarningMessage = new JLabel();
         lblWarningMessage.setFont(f);

@@ -1,16 +1,35 @@
 package com.bookingsystem.controller;
 
-import com.bookingsystem.controller.handler.*;
-import com.bookingsystem.model.businessmodel.*;
-import com.bookingsystem.model.tablemodel.*;
+import com.bookingsystem.model.history.History;
+import org.apache.commons.collections.IteratorUtils;
+
+import com.bookingsystem.controller.handler.AccountHandler;
+import com.bookingsystem.controller.handler.ArchiveHandler;
+import com.bookingsystem.controller.handler.BookingHandler;
+import com.bookingsystem.controller.handler.EquipmentHandler;
+import com.bookingsystem.controller.handler.Handler;
+import com.bookingsystem.controller.handler.LoginHandler;
+import com.bookingsystem.model.businessmodel.AccountBusinessLayer;
+import com.bookingsystem.model.businessmodel.AccountManagementBusinessLayer;
+import com.bookingsystem.model.businessmodel.ArchiveBusinessLayer;
+import com.bookingsystem.model.businessmodel.BookingBusinessLayer;
+import com.bookingsystem.model.businessmodel.LoggerBusinessLayer;
+import com.bookingsystem.model.tablemodel.AccountTableModel;
+import com.bookingsystem.model.tablemodel.ArchiveTableModel;
+import com.bookingsystem.model.tablemodel.BookingTableModel;
+import com.bookingsystem.model.tablemodel.EquipmentTableModel;
+import com.bookingsystem.model.tablemodel.LogTableModel;
 import com.bookingsystem.view.BookingSystemUILoader;
 import com.bookingsystem.view.UILoginPanel;
 import com.bookingsystem.view.panelparts.controlpanes.UIBookingSystemAdminControlPanel;
 import com.bookingsystem.view.panelparts.controlpanes.UIBookingSystemArchiveControlPanel;
 import com.bookingsystem.view.panelparts.controlpanes.UIBookingSystemBookingControlPanel;
 import com.bookingsystem.view.panelparts.controlpanes.UIBookingSystemEquipmentControlPanel;
-import com.bookingsystem.view.panes.*;
-import org.apache.commons.collections.IteratorUtils;
+import com.bookingsystem.view.panes.UIBookingSystemAdminPanel;
+import com.bookingsystem.view.panes.UIBookingSystemArchivePanel;
+import com.bookingsystem.view.panes.UIBookingSystemBookingPanel;
+import com.bookingsystem.view.panes.UIBookingSystemEquipmentPanel;
+import com.bookingsystem.view.panes.UIBookingSystemTabbedPane;
 
 public class BookingSystemController {
     // account not instantiated until logged in or created!
@@ -21,6 +40,7 @@ public class BookingSystemController {
                                    LoggerBusinessLayer loggerBusinessLayer,
                                    AccountManagementBusinessLayer accountManagementBusinessLayer,
                                    ArchiveBusinessLayer archiveBusinessLayer) {
+        History history = new History(loggerBusinessLayer);
 
         view.showLoginPanel();
 
@@ -83,7 +103,7 @@ public class BookingSystemController {
 
         Handler handler = new Handler(accountBusinessLayer,
                 accountManagementBusinessLayer, bookingBusinessLayer,
-                loggerBusinessLayer, view, archiveBusinessLayer);
+                loggerBusinessLayer, view, archiveBusinessLayer,history);
         LoginHandler loginHandler = new LoginHandler(handler);
         BookingHandler bookingHandler = new BookingHandler(handler);
         AccountHandler accountHandler = new AccountHandler(handler);

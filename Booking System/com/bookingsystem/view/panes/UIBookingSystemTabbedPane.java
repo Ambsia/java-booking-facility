@@ -1,6 +1,6 @@
 package com.bookingsystem.view.panes;
 
-import javax.swing.*;
+import javax.swing.JTabbedPane;
 
 public class UIBookingSystemTabbedPane extends JTabbedPane {
 
@@ -11,6 +11,7 @@ public class UIBookingSystemTabbedPane extends JTabbedPane {
     private final UIBookingSystemEquipmentPanel bookingSystemEquipmentPanel;
 
     public UIBookingSystemTabbedPane() {
+    	
         bookingSystemPanel = new UIBookingSystemBookingPanel();
         this.add(bookingSystemPanel, "View Bookings");
         bookingSystemAdminPanel = new UIBookingSystemAdminPanel();

@@ -1,6 +1,6 @@
 package com.bookingsystem.helpers;
 
-import javax.swing.*;
+import javax.swing.JOptionPane;
 
 /**
  * This class is used to implement two static methods that take a message and
@@ -20,7 +20,7 @@ public final class MessageBox {
      *                dialog.
      */
     public static void warningMessageBox(String message) {
-        show(message, "Warning", JOptionPane.WARNING_MESSAGE);
+        show(message.trim(), "Warning", JOptionPane.WARNING_MESSAGE);
     }
 
     /**
@@ -33,7 +33,7 @@ public final class MessageBox {
      *                dialog.
      */
     public static void infoMessageBox(String message) {
-        show(message, "Information", JOptionPane.INFORMATION_MESSAGE);
+        show(message.trim(), "Information", JOptionPane.INFORMATION_MESSAGE);
     }
 
     /**
@@ -47,7 +47,7 @@ public final class MessageBox {
      *                dialog.
      */
     public static void errorMessageBox(String message) {
-        show("Error; " + message, "Error", JOptionPane.ERROR_MESSAGE);
+        show(message.trim(), "Error", JOptionPane.ERROR_MESSAGE);
     }
 
     /**
@@ -60,7 +60,7 @@ public final class MessageBox {
      * @param iconId  , the id of the icon to set the message dialog as.
      */
     private static void show(String message, String title, int iconId) {
-        JOptionPane.showMessageDialog(null, message, title, iconId);
+        JOptionPane.showMessageDialog(null, message.trim(), title, iconId);
     }
 
 }

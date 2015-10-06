@@ -1,11 +1,29 @@
 package com.bookingsystem.model;
 
-public class Equipment {
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.Statement;
+
+import com.bookingsystem.helpers.MessageBox;
+import com.bookingsystem.helpers.ReturnSpecifiedPropertyValues;
+
+public final class Equipment {
 
     private int equipmentID;
     private String equipmentName;
     private String equipmentDescription;
     private int equipmentUsage;
+
+    @Override
+    public String toString() {
+        return "Equipment{" +
+                "equipmentID=" + equipmentID +
+                ", equipmentName='" + equipmentName + '\'' +
+                ", equipmentDescription='" + equipmentDescription + '\'' +
+                ", equipmentUsage=" + equipmentUsage +
+                '}';
+    }
 
     public Equipment(String equipmentName) {
         this.equipmentName = equipmentName.trim();
@@ -59,13 +77,35 @@ public class Equipment {
         this.equipmentUsage--;
     }
 
-    @Override
-    public String toString() {
+
+    public String fakeToString() {
         return this.equipmentName + " (" + this.equipmentUsage + ")";
     }
 
     public boolean verify() {
         return !this.equipmentName.isEmpty();
     }
+
+	public void resetUsage() {
+        Connection con;
+        try {
+            ReturnSpecifiedPropertyValues returnSpecifiedPropertyValues = new ReturnSpecifiedPropertyValues(
+                    "sqlconfig.properties");
+            con = DriverManager.getConnection(returnSpecifiedPropertyValues
+                    .getDatabaseConnectionString());
+
+            Statement stmt = con.createStatement();
+            stmt.execute("EXECUTE spResetUsageStatistic '" + this.getEquipmentID()
+                    + "'");
+            stmt.close();
+            con.close();
+        } catch (SQLException e) {
+            MessageBox
+                    .errorMessageBox("There was an issue while trying to reset a usage statistic\n"
+                            + "Does this make sense to you?\n"
+                            + e.toString()
+                            );
+        }
+	}
 
 }

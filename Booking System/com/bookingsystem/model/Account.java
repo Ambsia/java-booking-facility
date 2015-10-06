@@ -1,12 +1,18 @@
 package com.bookingsystem.model;
 
-import com.bookingsystem.helpers.MessageBox;
-import com.bookingsystem.helpers.ReturnSpecifiedPropertyValues;
-import org.apache.commons.codec.digest.DigestUtils;
-
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
-import java.sql.*;
+import java.sql.CallableStatement;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+
+import org.apache.commons.codec.digest.DigestUtils;
+
+import com.bookingsystem.helpers.MessageBox;
+import com.bookingsystem.helpers.ReturnSpecifiedPropertyValues;
 
 public final class Account {
 
@@ -79,9 +85,8 @@ public final class Account {
         } catch (SQLException e) {
             MessageBox
                     .errorMessageBox("There was an issue while we were trying to hash something..!\n"
-                            + "Does this make sense you to.."
-                            + e.toString()
-                            + "?");
+                            + "Does this make sense to you?\n."
+                            + e.toString());
         }
     }
 

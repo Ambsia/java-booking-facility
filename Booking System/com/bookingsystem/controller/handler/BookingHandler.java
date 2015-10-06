@@ -1,5 +1,34 @@
 package com.bookingsystem.controller.handler;
 
+import java.awt.Point;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
+
+import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
+import javax.swing.JTable;
+
+import com.bookingsystem.helpers.JSONObjectEncoder;
+import org.apache.commons.collections.IteratorUtils;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.WorkbookFactory;
+import org.apache.poi.xssf.usermodel.XSSFRow;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+
 import com.bookingsystem.helpers.MessageBox;
 import com.bookingsystem.model.Booking;
 import com.bookingsystem.model.Equipment;
@@ -11,27 +40,6 @@ import com.bookingsystem.view.dialogpanels.bookingdialog.UIBookingSystemEditPane
 import com.bookingsystem.view.dialogpanels.bookingdialog.UIBookingSystemFindPanel;
 import com.bookingsystem.view.panelparts.controlpanes.UIBookingSystemBookingControlPanel;
 import com.bookingsystem.view.panes.UIBookingSystemBookingPanel;
-import org.apache.commons.collections.IteratorUtils;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.WorkbookFactory;
-import org.apache.poi.xssf.usermodel.XSSFRow;
-import org.apache.poi.xssf.usermodel.XSSFSheet;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.*;
-import java.util.List;
 
 public final class BookingHandler implements ActionListener {
 
@@ -92,15 +100,23 @@ public final class BookingHandler implements ActionListener {
 		bookingSystemPanel.getBookingSystemViewPanel()
 			.getBookingSystemJTableProblems()
 			.addMouseListener(new MouseAdapter() {
-                public void mousePressed(MouseEvent me) {
+                @Override
+				public void mousePressed(MouseEvent me) {
                     if (handler.getAccountBusinessLayer()
                             .getAccountLoggedIn().getUserLevel() > 0) {
                         JTable table = (JTable) me.getSource();
+                        int row = 0;
+                        int id = -1;
+                        try {
                         Point p = me.getPoint();
-                        int row = table.rowAtPoint(p);
-                        int id = (int) bookingSystemPanel.getBookingSystemViewPanel()
+                        row = table.rowAtPoint(p);
+                        id = (int) bookingSystemPanel.getBookingSystemViewPanel()
                                 .getBookingSystemJTableProblems()
                                 .getValueAt(row, 0);
+                        } catch (Exception e) {
+                        	id =-1;
+                        }
+                        if (id != -1) {
                         Booking b = bookingTableModel.getBooking(id);
                         if (b != null) {
                             if (me.getClickCount() == 2) {
@@ -111,25 +127,34 @@ public final class BookingHandler implements ActionListener {
 
                             }
                         }
+                        }
                     }
                 }
             });
 
 		bookingSystemPanel.getBookingSystemJTable().addMouseListener(
 		new MouseAdapter() {
+			@Override
 			public void mousePressed(MouseEvent me) {
 				if (handler.getAccountBusinessLayer()
 					.getAccountLoggedIn().getUserLevel() > 0 && bookingTableModel.getRowCount() > 0) {
-					JTable table = (JTable) me.getSource();
-					Point p = me.getPoint();
-					int row = table.rowAtPoint(p);
-					int id = (int) bookingSystemPanel.getBookingSystemJTable()
-						.getValueAt(row, 0);
+					JTable table = (JTable) me.getSource();				
+					int id = -1;
+					int row = 0;
+					try {
+						Point p = me.getPoint();
+						row = table.rowAtPoint(p);
+						id = (int) bookingSystemPanel.getBookingSystemJTable().getValueAt(row, 0);
+					} catch (Exception e) {
+						id =-1;
+					}
+					if (id != -1) {
 					Booking b = bookingTableModel.getBooking(id);
 					if (b != null) {
 						if (me.getClickCount() == 2) {
 							editBooking(id);
 						}
+					}
 					}
 				}
 			}
@@ -165,6 +190,13 @@ public final class BookingHandler implements ActionListener {
 			.getSimpleName(), new Date());
 		if (handler.getAccountBusinessLayer().isAccountFound()) {
 			switch (eventOccurred.getActionCommand()) {
+				case "Undo":
+					//JSONObjectEncoder objectEncoderJSON = new JSONObjectEncoder();
+					JSONObjectEncoder.writeEquipmentAsJSON(new Equipment("nop"));
+					JSONObjectEncoder.writeBookingAsJSON(new Booking(1, "Friday", new Date(), new Date(), new Date(),
+							"", "", new Equipment("equipt")));
+
+					break;
 				case "Import":
 					if (handler.getAccountBusinessLayer().getAccountLoggedIn()
 						.getUserLevel() >= 2) {
@@ -384,6 +416,7 @@ public final class BookingHandler implements ActionListener {
 					handler.getLoggerBusinessLayer().insertLog(log);
 					break;
 				case "Add":
+					if (handler.getBookingBusinessLayer().getEquipments().iterator().hasNext()) {
 					if (bookingSystemAddPanel.showDialog() == 0) {
 						Booking newBooking = convertStringArrayToBooking(bookingSystemAddPanel.getBookingStringArray());
 						newBooking.setIsRecurring(bookingSystemAddPanel.getRecurringSelected());
@@ -433,6 +466,9 @@ public final class BookingHandler implements ActionListener {
 							MessageBox.errorMessageBox("Please enter all of the required details for booking");
 						}
 					}
+					} else {
+						MessageBox.errorMessageBox("No equipment found, please add some before you make bookings.");
+					}
 					handler.getLoggerBusinessLayer().insertLog(log);
 					break;
 				case "Remove":
@@ -463,6 +499,7 @@ public final class BookingHandler implements ActionListener {
 								}
 							}
 							bookingTableModel.removeRows(bookingSystemPanel.getSelectedRows());
+						
 							generateBadBookingTable();
 						}
 					} else {
@@ -538,7 +575,7 @@ public final class BookingHandler implements ActionListener {
 					bookingTableModel.addBookingList(handler.getBookingBusinessLayer().findBookings(b));
 					handler.getLoggerBusinessLayer().insertLog(log);
 					break;
-				case "Tomorrows":
+				case "Tomorrow's":
 					Calendar date2 = Calendar.getInstance();
 					Date d = date2.getTime();
 					SimpleDateFormat sdf = new SimpleDateFormat("d");

@@ -1,10 +1,11 @@
 package com.bookingsystem.view.panelparts.controlpanes;
 
+import java.awt.Dimension;
+import java.awt.GridBagLayout;
+
 import com.bookingsystem.view.dialogpanels.accountdialog.UIBookingSystemAccountAddPanel;
 import com.bookingsystem.view.dialogpanels.accountdialog.UIBookingSystemChangePasswordPanel;
 import com.bookingsystem.view.dialogpanels.accountdialog.UIBookingSystemChangeUserLevel;
-
-import java.awt.*;
 
 /**
  * Author: [Alex]
@@ -22,6 +23,7 @@ public class UIBookingSystemAdminControlPanel extends
 
     public UIBookingSystemAdminControlPanel() {
         super();
+        
         setLayout(new GridBagLayout());
         setButtonNames(new String[]{"Load Accounts", "Add Account",
                 "Remove Account", "View Activity", "Change Password",

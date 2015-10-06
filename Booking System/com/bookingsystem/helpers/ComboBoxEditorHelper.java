@@ -1,9 +1,10 @@
 package com.bookingsystem.helpers;
 
-import javax.swing.*;
-import java.awt.*;
+import java.awt.Component;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+
+import javax.swing.ComboBoxEditor;
 
 /**
  * Created by Alex on 20/07/2015

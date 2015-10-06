@@ -1,13 +1,15 @@
 package com.bookingsystem.view.panelparts.controlpanes;
 
+import java.awt.Dimension;
+import java.awt.GridBagLayout;
+import java.util.ArrayList;
+
+import javax.swing.JButton;
+
 import com.bookingsystem.view.dialogpanels.bookingdialog.UIBookingSystemAddPanel;
 import com.bookingsystem.view.dialogpanels.bookingdialog.UIBookingSystemEditPanel;
 import com.bookingsystem.view.dialogpanels.bookingdialog.UIBookingSystemFindPanel;
 import com.bookingsystem.view.dialogpanels.bookingdialog.UIBookingSystemRemovePanel;
-
-import javax.swing.*;
-import java.awt.*;
-import java.util.ArrayList;
 
 /**
  * Author: [Alex] on [$Date]
@@ -28,8 +30,8 @@ public class UIBookingSystemBookingControlPanel extends
         super();
         setLayout(new GridBagLayout());
         setButtonNames(new String[]{"Refresh", "Search", "Complete", "Add",
-                "Edit", "Remove", "Export", "Today's", "Tomorrows"});
-        setButtonDimension(new Dimension(100, 25));
+                "Edit", "Remove", "Today's", "Tomorrow's"});
+        setButtonDimension(new Dimension(105, 25));
         createControlPanel();
         uiBookingSystemAddPanel = new UIBookingSystemAddPanel();
         uiBookingSystemFindPanel = new UIBookingSystemFindPanel();

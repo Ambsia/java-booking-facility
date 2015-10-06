@@ -1,9 +1,13 @@
 package com.bookingsystem.view.controls;
 
-import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.KeyStroke;
 
 /**
  * Author: [Alex] on [$Date]
@@ -17,29 +21,43 @@ public class UIBookingSystemMenuBarLoader extends JMenuBar {
     private JMenuItem importMenuOption;
     private JMenuItem exportMenuOption;
     private JMenuItem exitProgramOption;
-    private JMenu jMenu;
+    private JMenuItem undoOption;
+    private JMenu jMenuFile;
+    private JMenu jMenuEdit;
     private JMenuItem[] jMenuItems = {};
 
     public UIBookingSystemMenuBarLoader() {
+    	
 
-        importMenuOption = new JMenuItem("Import", new ImageIcon("import.png"));
-        exportMenuOption = new JMenuItem("Export", new ImageIcon("export.png"));
-        exitProgramOption = new JMenuItem("Exit", new ImageIcon("exit.png"));
-        jMenuItems = new JMenuItem[] {importMenuOption,exportMenuOption,exitProgramOption};
-        jMenu = new JMenu("File");
+        importMenuOption = new JMenuItem("Import");//, new ImageIcon("import.png"));
+        exportMenuOption = new JMenuItem("Export");//, new ImageIcon("export.png"));
+        exitProgramOption = new JMenuItem("Exit");//, new ImageIcon("exit.png"));
+        undoOption = new JMenuItem("Undo");
+        jMenuItems = new JMenuItem[] {importMenuOption,exportMenuOption,exitProgramOption, undoOption};
+        jMenuFile = new JMenu("File");
+        jMenuEdit = new JMenu("Edit");
 
-        importMenuOption.setMnemonic(KeyEvent.VK_O);
-        importMenuOption.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, ActionEvent.CTRL_MASK));
-        exportMenuOption.setMnemonic(KeyEvent.VK_S);
-        exportMenuOption.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.CTRL_MASK));
+        importMenuOption.setMnemonic(KeyEvent.VK_I);
+        importMenuOption.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_I, ActionEvent.CTRL_MASK));
+        exportMenuOption.setMnemonic(KeyEvent.VK_E);
+        exportMenuOption.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_E, ActionEvent.CTRL_MASK));
         exitProgramOption.setMnemonic(KeyEvent.VK_X);
         exitProgramOption.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_X, ActionEvent.CTRL_MASK));
 
-        jMenu.add(importMenuOption);
-        jMenu.add(exportMenuOption);
-        jMenu.addSeparator();
-        jMenu.add(exitProgramOption);
-        this.add(jMenu);
+        jMenuFile.add(importMenuOption);
+        jMenuFile.add(exportMenuOption);
+        jMenuFile.addSeparator();
+        jMenuFile.add(exitProgramOption);
+        this.add(jMenuFile);
+
+
+        undoOption.setMnemonic(KeyEvent.VK_Z);
+        undoOption.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Z, ActionEvent.CTRL_MASK));
+
+        jMenuEdit.add(undoOption);
+
+        this.add(jMenuEdit);
+
     }
 
     public void addImportOptionListener(ActionListener al) {

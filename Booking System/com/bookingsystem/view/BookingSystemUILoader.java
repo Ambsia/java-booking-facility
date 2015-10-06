@@ -1,11 +1,16 @@
 package com.bookingsystem.view;
 
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+
+import javax.swing.JFrame;
+import javax.swing.UIManager;
+import javax.swing.WindowConstants;
+
 import com.bookingsystem.view.controls.UIBookingSystemMenuBarLoader;
 import com.bookingsystem.view.panes.UIBookingSystemTabbedPane;
-
-
-import javax.swing.*;
-import java.awt.*;
 
 
 public class BookingSystemUILoader extends JFrame {
@@ -30,12 +35,14 @@ public class BookingSystemUILoader extends JFrame {
         this.setTitle("LGS Booking System");
 
         try {
+        	
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+            //UIManager.setLookAndFeel("javax.swing.plaf.synth.SynthLookAndFeel");
         } catch (Exception e) {
             e.printStackTrace();
         }
         this.setFocusable(true);
-        this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        this.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
     }
 
     public UIBookingSystemMenuBarLoader getMenuBarLoader() {
@@ -81,11 +88,13 @@ public class BookingSystemUILoader extends JFrame {
         this.remove(loginPanel);
     }
 
-    public void setSize(Dimension size) {
+    @Override
+	public void setSize(Dimension size) {
         this.size = size;
     }
 
-    public Dimension getSize() {
+    @Override
+	public Dimension getSize() {
         return size;
     }
 }

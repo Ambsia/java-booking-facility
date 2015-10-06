@@ -1,9 +1,10 @@
 package com.bookingsystem.view.dialogpanels.bookingdialog;
 
+import javax.swing.JOptionPane;
+import javax.swing.JTextField;
+
 import com.bookingsystem.helpers.MessageBox;
 import com.bookingsystem.view.dialogpanels.UIBookingSystemDialogPanel;
-
-import javax.swing.*;
 
 public class UIBookingSystemFindPanel extends UIBookingSystemDialogPanel {
 
@@ -14,6 +15,7 @@ public class UIBookingSystemFindPanel extends UIBookingSystemDialogPanel {
 
     public UIBookingSystemFindPanel() {
         super();
+        
         addDefaultComponentsToPanel();
         try {
             ((JTextField) getComponentsAsList()[0]).setEditable(true);

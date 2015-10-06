@@ -1,8 +1,8 @@
 package com.bookingsystem.view.dialogpanels.bookingdialog;
 
-import com.bookingsystem.view.dialogpanels.UIBookingSystemDialogPanel;
+import javax.swing.JOptionPane;
 
-import javax.swing.*;
+import com.bookingsystem.view.dialogpanels.UIBookingSystemDialogPanel;
 
 /**
  * Author: [Alex]
@@ -15,6 +15,7 @@ public class UIBookingSystemRemovePanel extends UIBookingSystemDialogPanel {
 
     public UIBookingSystemRemovePanel() {
         super();
+        
         addDefaultComponentsToPanel();
     }
 

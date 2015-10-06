@@ -1,12 +1,12 @@
 package com.bookingsystem.controller.handler;
 
-import com.bookingsystem.helpers.MessageBox;
-import com.bookingsystem.model.Account;
-import com.bookingsystem.model.Log;
-
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Date;
+
+import com.bookingsystem.helpers.MessageBox;
+import com.bookingsystem.model.Account;
+import com.bookingsystem.model.Log;
 
 /**
  * Author: [Alex] on [$Date]
@@ -27,12 +27,12 @@ public class LoginHandler implements ActionListener {
                 .getSimpleName(), new Date());
         switch (arg0.getActionCommand()) {
             case "Login":
-                accountModel = handler.getAccountBusinessLayer().retrieveAccount(
-                        handler.getView().getLoginPanel().getLoginUsernameText(),
-                        handler.getView().getLoginPanel().getLoginPasswordText());
-                // accountModel =
-                // handler.getAccountBusinessLayer().retrieveAccount("alex",
-                // "donkey");
+//                accountModel = handler.getAccountBusinessLayer().retrieveAccount(
+//                        handler.getView().getLoginPanel().getLoginUsernameText(),
+//                        handler.getView().getLoginPanel().getLoginPasswordText());
+                 accountModel =
+                 handler.getAccountBusinessLayer().retrieveAccount("alex",
+                 "donkey");
 
                 if (handler.getAccountBusinessLayer().isAccountFound()) {
                     handler.getLoggerBusinessLayer().setAccountCurrentlyLoggedIn(

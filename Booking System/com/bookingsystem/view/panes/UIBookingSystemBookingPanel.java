@@ -1,18 +1,30 @@
 package com.bookingsystem.view.panes;
 
-import com.bookingsystem.model.tablemodel.BookingTableModel;
-import com.bookingsystem.view.panelparts.UIBookingSystemBookingViewPanel;
-import com.bookingsystem.view.panelparts.controlpanes.UIBookingSystemBookingControlPanel;
-
-import javax.swing.*;
-import javax.swing.table.TableModel;
-import javax.swing.table.TableRowSorter;
-import java.awt.*;
+import java.awt.Dimension;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
+
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.RowSorter;
+import javax.swing.SortOrder;
+import javax.swing.table.TableModel;
+import javax.swing.table.TableRowSorter;
+
+import com.bookingsystem.model.tablemodel.BookingTableModel;
+import com.bookingsystem.view.panelparts.UIBookingSystemBookingViewPanel;
+import com.bookingsystem.view.panelparts.controlpanes.UIBookingSystemBookingControlPanel;
 
 public class UIBookingSystemBookingPanel extends JPanel {
 

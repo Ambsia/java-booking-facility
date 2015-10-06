@@ -1,18 +1,29 @@
 package com.bookingsystem.view.panes;
 
-import com.bookingsystem.model.tablemodel.ArchiveTableModel;
-import com.bookingsystem.view.panelparts.UIBookingSystemArchiveViewPanel;
-import com.bookingsystem.view.panelparts.controlpanes.UIBookingSystemArchiveControlPanel;
-
-import javax.swing.*;
-import javax.swing.table.TableModel;
-import javax.swing.table.TableRowSorter;
-import java.awt.*;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
+
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.RowSorter;
+import javax.swing.SortOrder;
+import javax.swing.table.TableModel;
+import javax.swing.table.TableRowSorter;
+
+import com.bookingsystem.model.tablemodel.ArchiveTableModel;
+import com.bookingsystem.view.panelparts.UIBookingSystemArchiveViewPanel;
+import com.bookingsystem.view.panelparts.controlpanes.UIBookingSystemArchiveControlPanel;
 
 /**
  * Created by Alex on 24/05/2015

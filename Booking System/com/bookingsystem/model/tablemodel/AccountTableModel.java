@@ -1,10 +1,11 @@
 package com.bookingsystem.model.tablemodel;
 
-import com.bookingsystem.model.Account;
-
-import javax.swing.table.AbstractTableModel;
 import java.util.Collections;
 import java.util.List;
+
+import javax.swing.table.AbstractTableModel;
+
+import com.bookingsystem.model.Account;
 
 /**
  * Author: [Alex]

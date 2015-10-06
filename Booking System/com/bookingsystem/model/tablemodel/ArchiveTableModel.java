@@ -1,9 +1,10 @@
 package com.bookingsystem.model.tablemodel;
 
-import com.bookingsystem.model.Booking;
+import java.util.List;
 
 import javax.swing.table.AbstractTableModel;
-import java.util.List;
+
+import com.bookingsystem.model.Booking;
 
 /**
  * Created by Alex on 24/05/2015

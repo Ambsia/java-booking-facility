@@ -1,12 +1,14 @@
 package com.bookingsystem.view.panelparts.controlpanes;
 
+import java.awt.Dimension;
+import java.awt.GridBagLayout;
+import java.util.ArrayList;
+
+import javax.swing.JButton;
+
 import com.bookingsystem.view.dialogpanels.equipmentdialog.UIBookingSystemAddEquipment;
 import com.bookingsystem.view.dialogpanels.equipmentdialog.UIBookingSystemEditEquipment;
 import com.bookingsystem.view.dialogpanels.equipmentdialog.UIBookingSystemRemoveEquipment;
-
-import javax.swing.*;
-import java.awt.*;
-import java.util.ArrayList;
 
 /**
  * Author: [Alex]
@@ -24,9 +26,10 @@ public class UIBookingSystemEquipmentControlPanel extends
 
     public UIBookingSystemEquipmentControlPanel() {
         super();
+        
         super.setColumnns(4);
         setLayout(new GridBagLayout());
-        setButtonNames(new String[]{"Refresh", "Import", "Add", "Edit",
+        setButtonNames(new String[]{"Refresh", "Import", "Export", "Add", "Edit",
                 "Remove"});
         setButtonDimension(new Dimension(125, 25));
         createControlPanel();

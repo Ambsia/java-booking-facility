@@ -1,8 +1,9 @@
 package com.bookingsystem.view.dialogpanels.bookingdialog;
 
-import com.bookingsystem.view.dialogpanels.UIBookingSystemDialogPanel;
+import javax.swing.JDialog;
+import javax.swing.JOptionPane;
 
-import javax.swing.*;
+import com.bookingsystem.view.dialogpanels.UIBookingSystemDialogPanel;
 
 /**
  * Author: [Alex] on [$Date]
@@ -14,6 +15,7 @@ public class UIBookingSystemAddPanel extends UIBookingSystemDialogPanel {
     private static final long serialVersionUID = -5267785275189676299L;
 
     public UIBookingSystemAddPanel() {
+    	
         super();
 
         setLayout(super.getLayout());
@@ -35,7 +37,7 @@ public class UIBookingSystemAddPanel extends UIBookingSystemDialogPanel {
 
         //dialog.setVisible(true);
 
-        return pane.showOptionDialog(null,this,"Add Booking",
+        return JOptionPane.showOptionDialog(null,this,"Add Booking",
                 JOptionPane.PLAIN_MESSAGE, JOptionPane.PLAIN_MESSAGE, null,
                 new String[]{"Add", "Cancel"}, "Add");
     }

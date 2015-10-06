@@ -1,7 +1,14 @@
 package com.bookingsystem.view.dialogpanels.accountdialog;
 
-import javax.swing.*;
-import java.awt.*;
+import java.awt.Component;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
+
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JPasswordField;
 
 /**
  * Created by Alex on 23/06/2015
@@ -24,6 +31,7 @@ public class UIBookingSystemChangePasswordPanel extends JPanel {
     private Component[] components;
 
     public UIBookingSystemChangePasswordPanel() {
+    	
         lblUsername = new JLabel("Username");
         txtAccountPassword = new JPasswordField(5);
         txtAccountPasswordConfirmed = new JPasswordField(5);

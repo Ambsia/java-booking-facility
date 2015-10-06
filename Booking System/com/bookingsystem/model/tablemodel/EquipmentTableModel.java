@@ -1,19 +1,20 @@
 package com.bookingsystem.model.tablemodel;
 
-import com.bookingsystem.model.Equipment;
-
-import javax.swing.table.AbstractTableModel;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+
+import javax.swing.table.AbstractTableModel;
+
+import com.bookingsystem.model.Equipment;
 
 /**
  * Created by Alex on 02/07/2015
  */
 public class EquipmentTableModel extends AbstractTableModel implements
         Iterable<Equipment> {
-    private static final String[] columnNames = {"Equipment ID", " Name",
-            "Description", "Usage"};
+    private static final String[] columnNames = {"Equipment ID", "Equipment Name",
+            "Equipment Description", "Usage"};
 
     private static final int COLUMN_ID = 0;
     private static final int COLUMN_NAME = 1;
@@ -53,7 +54,6 @@ public class EquipmentTableModel extends AbstractTableModel implements
     public Object getValueAt(int rowIndex, int columnIndex) {
         Equipment equipment = equipmentList.get(rowIndex);
         Object returnValue;
-
         switch (columnIndex) {
             case COLUMN_ID:
                 returnValue = equipment.getEquipmentID();

@@ -1,15 +1,19 @@
 package com.bookingsystem.model.businessmodel;
 
-import com.bookingsystem.helpers.MessageBox;
-import com.bookingsystem.model.Booking;
-
-import java.sql.*;
+import java.sql.CallableStatement;
+import java.sql.Date;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Types;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
+
+import com.bookingsystem.helpers.MessageBox;
+import com.bookingsystem.model.Booking;
 
 /**
  * Author: [Alex] on [$Date]

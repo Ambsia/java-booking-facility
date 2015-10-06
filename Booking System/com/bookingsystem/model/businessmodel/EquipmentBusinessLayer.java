@@ -1,8 +1,5 @@
 package com.bookingsystem.model.businessmodel;
 
-import com.bookingsystem.helpers.MessageBox;
-import com.bookingsystem.model.Equipment;
-
 import java.sql.CallableStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -10,6 +7,9 @@ import java.sql.Types;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+
+import com.bookingsystem.helpers.MessageBox;
+import com.bookingsystem.model.Equipment;
 
 /**
  * Created by Alex on 30/06/2015
@@ -195,8 +195,8 @@ public class EquipmentBusinessLayer extends BusinessLayer implements
                 } catch (SQLException e) {
                     MessageBox
                             .errorMessageBox("There was an issue while we were trying to remove equipment from the database.\n"
-                                    + "Does this make any sense to you.."
-                                    + e.toString() + "?");
+                                    + "Does this make any sense to you?\n"
+                                    + e.toString());
                 }
                 getDatabaseConnector().closeConnection();
             }
@@ -216,8 +216,8 @@ public class EquipmentBusinessLayer extends BusinessLayer implements
                 } catch (SQLException e) {
                     MessageBox
                             .errorMessageBox("There was an issue while we were trying to increase equipment usage.\n"
-                                    + "Does this make any sense to you.."
-                                    + e.toString() + "?");
+                                    + "Does this make any sense to you?\n"
+                                    + e.toString());
                 }
                 if (this.getEqiupment(equipmentID) != null) {
                     this.getEqiupment(equipmentID).increaseEquipmentUsage();
@@ -231,6 +231,7 @@ public class EquipmentBusinessLayer extends BusinessLayer implements
         getDatabaseConnector().openConnection();
         if (getDatabaseConnector().isConnected()) {
             if (getDatabaseConnector().isConnectionClosed()) {
+            	if (this.getEqiupment(equipmentID) != null && this.getEqiupment(equipmentID).getEquipmentUsage() > 0) {
                 getDatabaseConnector().createNewCallableStatement(
                         "{CALL spDecreaseEquipmentUsage(?)}");
                 try (CallableStatement callableStatement = getDatabaseConnector()
@@ -240,11 +241,12 @@ public class EquipmentBusinessLayer extends BusinessLayer implements
                 } catch (SQLException e) {
                     MessageBox
                             .errorMessageBox("There was an issue while we were trying to decrease equipment usage.\n"
-                                    + "Does this make any sense to you.."
-                                    + e.toString() + "?");
+                                    + "Does this make any sense to you?\n"
+                                    + e.toString());
                 }
-                if (this.getEqiupment(equipmentID) != null) {
-                    this.getEqiupment(equipmentID).decreaseEquipmentUsage();
+                System.out.println(this.getEqiupment(equipmentID).getEquipmentUsage());
+                
+                this.getEqiupment(equipmentID).decreaseEquipmentUsage();
                 }
                 getDatabaseConnector().closeConnection();
             }

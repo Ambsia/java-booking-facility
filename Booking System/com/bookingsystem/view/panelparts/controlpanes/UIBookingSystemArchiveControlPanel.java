@@ -1,6 +1,7 @@
 package com.bookingsystem.view.panelparts.controlpanes;
 
-import java.awt.*;
+import java.awt.Dimension;
+import java.awt.GridBagLayout;
 import java.awt.event.ActionListener;
 
 /**
@@ -15,6 +16,7 @@ public class UIBookingSystemArchiveControlPanel extends
 
     public UIBookingSystemArchiveControlPanel() {
         super();
+        
         setLayout(new GridBagLayout());
         setButtonNames(new String[]{"Refresh", "View Statistics"});
         setButtonDimension(new Dimension(125, 25));

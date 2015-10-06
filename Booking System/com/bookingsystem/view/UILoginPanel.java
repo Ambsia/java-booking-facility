@@ -1,10 +1,18 @@
 package com.bookingsystem.view;
 
-import javax.swing.*;
-import java.awt.*;
+import java.awt.Color;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JPasswordField;
+import javax.swing.JTextField;
 
 public class UILoginPanel extends JPanel {
 
@@ -18,6 +26,7 @@ public class UILoginPanel extends JPanel {
     private final JButton btnClear;
 
     public UILoginPanel() {
+    	
         JLabel lblLoginUsername = new JLabel("Username:");
         JLabel lblLoginPassword = new JLabel("Password:");
         txtLoginUsername = new JTextField(10);
@@ -42,7 +51,7 @@ public class UILoginPanel extends JPanel {
         gbc.gridx = 1;
         gbc.anchor = GridBagConstraints.EAST;
         this.add(btnClear, gbc);
-
+        this.setBackground(Color.WHITE);
         txtLoginPassword.addKeyListener(new KeyListener() {
             @Override
             public void keyTyped(KeyEvent e) {

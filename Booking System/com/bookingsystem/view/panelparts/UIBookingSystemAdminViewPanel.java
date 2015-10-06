@@ -1,9 +1,15 @@
 package com.bookingsystem.view.panelparts;
 
-import com.bookingsystem.model.tablemodel.LogTableModel;
+import java.awt.Component;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
 
-import javax.swing.*;
-import java.awt.*;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+
+import com.bookingsystem.model.tablemodel.LogTableModel;
 
 /**
  * Author: [Alex]
@@ -18,6 +24,7 @@ public class UIBookingSystemAdminViewPanel extends JPanel {
     private LogTableModel logTableModel;
 
     public UIBookingSystemAdminViewPanel() {
+    	
         bookingSystemJTableLogs = new JTable(logTableModel);
         setLayout(new GridBagLayout());
         jScrollPane = new JScrollPane(bookingSystemJTableLogs);

@@ -1,12 +1,13 @@
 package com.bookingsystem.model.tablemodel;
 
-import com.bookingsystem.model.Log;
-
-import javax.swing.table.AbstractTableModel;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Locale;
+
+import javax.swing.table.AbstractTableModel;
+
+import com.bookingsystem.model.Log;
 
 /**
  * Author: [Alex]

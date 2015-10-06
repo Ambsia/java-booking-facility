@@ -1,8 +1,13 @@
 package com.bookingsystem.helpers;
 
-import javax.swing.*;
-import java.awt.*;
+import com.bookingsystem.model.Equipment;
+
+import java.awt.Component;
 import java.util.ArrayList;
+
+import javax.swing.DefaultListCellRenderer;
+import javax.swing.JComponent;
+import javax.swing.JList;
 
 public class ComboBoxRenderer extends DefaultListCellRenderer {
     /**
@@ -15,13 +20,13 @@ public class ComboBoxRenderer extends DefaultListCellRenderer {
     public Component getListCellRendererComponent(JList list, Object value,
                                                   int index, boolean isSelected, boolean cellHasFocus) {
 
-        JComponent comp = (JComponent) super.getListCellRendererComponent(list,
-                value, index, isSelected, cellHasFocus);
+        value = ((Equipment) value).fakeToString();
 
         if (-1 < index && null != value && null != tooltips) {
             list.setToolTipText(tooltips.get(index));
-
         }
+        JComponent comp = (JComponent) super.getListCellRendererComponent(list,
+                value, index, isSelected, cellHasFocus);
         return comp;
     }
 
@@ -31,11 +36,6 @@ public class ComboBoxRenderer extends DefaultListCellRenderer {
 
     public void removeToolTip(int index) {
         this.tooltips.remove(index);
-    }
-
-    public void replaceToolTip(int index, String replacementString) {
-        this.tooltips.remove(index);
-        this.tooltips.add(index, replacementString);
     }
 
     public void setTooltips(ArrayList<String> tooltips) {

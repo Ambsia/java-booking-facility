@@ -1,10 +1,18 @@
 package com.bookingsystem.view.dialogpanels.equipmentdialog;
 
-import com.bookingsystem.model.Equipment;
-
-import javax.swing.*;
-import java.awt.*;
+import java.awt.Component;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.awt.event.ActionListener;
+
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+
+import com.bookingsystem.model.Equipment;
 
 public class UIBookingSystemEditEquipment extends JPanel {
 
@@ -18,6 +26,7 @@ public class UIBookingSystemEditEquipment extends JPanel {
     private Component[] components;
 
     public UIBookingSystemEditEquipment() {
+    	
         txtEquipmentID = new JTextField(25);
         txtEquipmentName = new JTextField(25);
         txtEquipmentDesc = new JTextField(25);
@@ -81,9 +90,17 @@ public class UIBookingSystemEditEquipment extends JPanel {
     public String getEquipmentDescription() {
         return txtEquipmentDesc.getText();
     }
+    
+    public void resetEquipmentUsage() {
+    	this.txtEquipmentUsage.setText("0");
+    }
 
     public int getEquipmentID() {
-        return Integer.parseInt(txtEquipmentID.getText());
+        try {
+        	return Integer.parseInt(txtEquipmentID.getText());
+        } catch (Exception e) {
+        	return -1;
+        }
     }
 
     public void setTxtBoxesText(Equipment e) {

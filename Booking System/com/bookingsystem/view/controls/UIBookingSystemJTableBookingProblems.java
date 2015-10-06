@@ -1,11 +1,11 @@
 package com.bookingsystem.view.controls;
 
+import java.util.ArrayList;
+import java.util.Date;
+
 import com.bookingsystem.model.Booking;
 import com.bookingsystem.model.Log;
 import com.bookingsystem.model.tablemodel.BookingProblemModel;
-
-import java.util.ArrayList;
-import java.util.Date;
 
 /**
  * Created by Alex on 24/05/2015
@@ -19,7 +19,9 @@ public class UIBookingSystemJTableBookingProblems extends UIBookingSystemJTable 
 
     public UIBookingSystemJTableBookingProblems(
             BookingProblemModel bookingProblemModel) {
+    	
         super();
+        
         this.bookingProblemModel = bookingProblemModel;
         this.setModel(this.bookingProblemModel);
     }
@@ -32,7 +34,7 @@ public class UIBookingSystemJTableBookingProblems extends UIBookingSystemJTable 
         Booking booking = (Booking) data;
         bookingProblemModel.addRow(new Object[]{booking.getBookingID(),
                 booking.getBookingDay(), booking.getBookingHolder(),
-                booking.getBookingLocation(), booking.getRequiredEquipment()});
+                booking.getBookingLocation(), booking.getRequiredEquipment().fakeToString()});
     }
 
     public Object getRowFromList(int identifierOfData) {

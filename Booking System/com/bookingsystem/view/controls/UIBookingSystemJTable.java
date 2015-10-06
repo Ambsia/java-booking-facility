@@ -1,6 +1,6 @@
 package com.bookingsystem.view.controls;
 
-import javax.swing.*;
+import javax.swing.JTable;
 
 /**
  * Author: [Alex]
@@ -13,6 +13,7 @@ public abstract class UIBookingSystemJTable extends JTable {
     private static final long serialVersionUID = 5534068596222951987L;
 
     UIBookingSystemJTable() {
+    	
         this.getTableHeader().setReorderingAllowed(false);
     }
 

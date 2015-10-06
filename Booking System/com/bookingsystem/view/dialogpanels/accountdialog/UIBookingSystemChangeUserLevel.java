@@ -1,9 +1,16 @@
 package com.bookingsystem.view.dialogpanels.accountdialog;
 
-import com.bookingsystem.helpers.TextFieldRestriction;
+import java.awt.Component;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
 
-import javax.swing.*;
-import java.awt.*;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+
+import com.bookingsystem.helpers.TextFieldRestriction;
 
 /**
  * Created by Alex on 23/06/2015
@@ -20,6 +27,7 @@ public class UIBookingSystemChangeUserLevel extends JPanel {
     private Component[] components;
 
     public UIBookingSystemChangeUserLevel() {
+    	
         lblUsername = new JLabel("Username");
         txtUserLevel = new JTextField(3);
         txtUserLevel.setDocument(new TextFieldRestriction());

@@ -1,5 +1,11 @@
 package com.bookingsystem.controller.handler;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.Date;
+
+import org.apache.commons.collections.IteratorUtils;
+
 import com.bookingsystem.helpers.MessageBox;
 import com.bookingsystem.model.Account;
 import com.bookingsystem.model.Log;
@@ -9,11 +15,6 @@ import com.bookingsystem.view.dialogpanels.accountdialog.UIBookingSystemChangePa
 import com.bookingsystem.view.dialogpanels.accountdialog.UIBookingSystemChangeUserLevel;
 import com.bookingsystem.view.panelparts.UIBookingSystemAdminViewPanel;
 import com.bookingsystem.view.panes.UIBookingSystemAdminPanel;
-import org.apache.commons.collections.IteratorUtils;
-
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.Date;
 
 /**
  * Author: [Alex]

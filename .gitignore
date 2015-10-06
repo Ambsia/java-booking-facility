@@ -25,6 +25,8 @@ $RECYCLE.BIN/
 *.class
 *.log
 bin
+dataintext
+sp
 .settings
 .classpath
 .project

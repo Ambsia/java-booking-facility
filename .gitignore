@@ -24,6 +24,8 @@ $RECYCLE.BIN/
 .idea
 *.class
 *.log
+*.jar
+*.png
 bin
 dataintext
 sp
